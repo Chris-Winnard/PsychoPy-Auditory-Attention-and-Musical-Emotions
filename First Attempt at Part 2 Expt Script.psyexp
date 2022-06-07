@@ -70,7 +70,7 @@
         <Param val="True" valType="bool" updates="constant" name="hamming"/>
         <Param val="stimuli3streams" valType="code" updates="None" name="name"/>
         <Param val="True" valType="bool" updates="None" name="saveStartStop"/>
-        <Param val="$stimuli" valType="str" updates="constant" name="sound"/>
+        <Param val="$stimuliOddballs" valType="str" updates="constant" name="sound"/>
         <Param val="" valType="code" updates="None" name="startEstim"/>
         <Param val="time (s)" valType="str" updates="None" name="startType"/>
         <Param val="2.0" valType="code" updates="None" name="startVal"/>
@@ -165,7 +165,7 @@
         <Param val="" valType="code" updates="None" name="durationEstim"/>
         <Param val="False" valType="bool" updates="constant" name="flipHoriz"/>
         <Param val="False" valType="bool" updates="constant" name="flipVert"/>
-        <Param val="" valType="file" updates="constant" name="image"/>
+        <Param val="$arrowImages" valType="file" updates="constant" name="image"/>
         <Param val="linear" valType="str" updates="constant" name="interpolate"/>
         <Param val="" valType="str" updates="constant" name="mask"/>
         <Param val="arrow" valType="code" updates="None" name="name"/>
