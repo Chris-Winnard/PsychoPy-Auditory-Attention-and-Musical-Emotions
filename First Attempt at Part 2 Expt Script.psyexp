@@ -459,9 +459,9 @@
     <Routine name="instructions"/>
     <Routine name="Ready1stBlock"/>
     <LoopInitiator loopType="TrialHandler" name="trials">
-      <Param name="Selected rows" updates="None" val="1:14" valType="str"/>
-      <Param name="conditions" updates="None" val="[{'stimuli': 'Stimuli/Albums-AnaBelen_Veneo-03.wav'}, {'stimuli': 'Stimuli/Albums-Ballroom_Classics4-11.wav'}, {'stimuli': 'Stimuli/Albums-Ballroom_Classics4-12.wav'}, {'stimuli': 'Stimuli/Albums-Ballroom_Magic-09.wav'}, {'stimuli': 'Stimuli/Albums-Cafe_Paradiso-06.wav'}, {'stimuli': 'Stimuli/Albums-Cafe_Paradiso-07.wav'}, {'stimuli': 'Stimuli/Albums-Cafe_Paradiso-09.wav'}, {'stimuli': 'Stimuli/Albums-Cafe_Paradiso-10.wav'}, {'stimuli': 'Stimuli/Albums-Cafe_Paradiso-15.wav'}, {'stimuli': 'Stimuli/Albums-Cafe_Paradiso-16.wav'}, {'stimuli': 'Stimuli/Albums-Commitments-10.wav'}, {'stimuli': 'Stimuli/Albums-Fire-01.wav'}, {'stimuli': 'Stimuli/Albums-GloriaEstefan_MiTierra-04.wav'}, {'stimuli': 'Stimuli/Albums-GloriaEstefan_MiTierra-06.wav'}, {'stimuli': 'Stimuli/Albums-Latino_Latino-05.wav'}]" valType="str"/>
-      <Param name="conditionsFile" updates="None" val="stimuliList.xlsx" valType="file"/>
+      <Param name="Selected rows" updates="None" val="1:4" valType="str"/>
+      <Param name="conditions" updates="None" val="None" valType="str"/>
+      <Param name="conditionsFile" updates="None" val="stimuliOddballsList.xlsx" valType="file"/>
       <Param name="endPoints" updates="None" val="[0, 1]" valType="num"/>
       <Param name="isTrials" updates="None" val="True" valType="bool"/>
       <Param name="loopType" updates="None" val="random" valType="str"/>
@@ -474,9 +474,9 @@
     <Routine name="break_2"/>
     <Routine name="Ready"/>
     <LoopInitiator loopType="TrialHandler" name="trials_2">
-      <Param name="Selected rows" updates="None" val="1:14" valType="str"/>
-      <Param name="conditions" updates="None" val="[{'stimuli': 'Stimuli/Albums-AnaBelen_Veneo-03.wav'}, {'stimuli': 'Stimuli/Albums-Ballroom_Classics4-11.wav'}, {'stimuli': 'Stimuli/Albums-Ballroom_Classics4-12.wav'}, {'stimuli': 'Stimuli/Albums-Ballroom_Magic-09.wav'}, {'stimuli': 'Stimuli/Albums-Cafe_Paradiso-06.wav'}, {'stimuli': 'Stimuli/Albums-Cafe_Paradiso-07.wav'}, {'stimuli': 'Stimuli/Albums-Cafe_Paradiso-09.wav'}, {'stimuli': 'Stimuli/Albums-Cafe_Paradiso-10.wav'}, {'stimuli': 'Stimuli/Albums-Cafe_Paradiso-15.wav'}, {'stimuli': 'Stimuli/Albums-Cafe_Paradiso-16.wav'}, {'stimuli': 'Stimuli/Albums-Commitments-10.wav'}, {'stimuli': 'Stimuli/Albums-Fire-01.wav'}, {'stimuli': 'Stimuli/Albums-GloriaEstefan_MiTierra-04.wav'}, {'stimuli': 'Stimuli/Albums-GloriaEstefan_MiTierra-06.wav'}, {'stimuli': 'Stimuli/Albums-Latino_Latino-05.wav'}]" valType="str"/>
-      <Param name="conditionsFile" updates="None" val="stimuliList.xlsx" valType="file"/>
+      <Param name="Selected rows" updates="None" val="5:8" valType="str"/>
+      <Param name="conditions" updates="None" val="None" valType="str"/>
+      <Param name="conditionsFile" updates="None" val="stimuliOddballsList.xlsx" valType="file"/>
       <Param name="endPoints" updates="None" val="[0, 1]" valType="num"/>
       <Param name="isTrials" updates="None" val="True" valType="bool"/>
       <Param name="loopType" updates="None" val="random" valType="str"/>
@@ -489,13 +489,13 @@
     <Routine name="break_2"/>
     <Routine name="Ready"/>
     <LoopInitiator loopType="TrialHandler" name="trials_3">
-      <Param name="Selected rows" updates="None" val="" valType="str"/>
+      <Param name="Selected rows" updates="None" val="9:12" valType="str"/>
       <Param name="conditions" updates="None" val="None" valType="str"/>
-      <Param name="conditionsFile" updates="None" val="" valType="file"/>
+      <Param name="conditionsFile" updates="None" val="stimuliOddballsList.xlsx" valType="file"/>
       <Param name="endPoints" updates="None" val="[0, 1]" valType="num"/>
       <Param name="isTrials" updates="None" val="True" valType="bool"/>
       <Param name="loopType" updates="None" val="random" valType="str"/>
-      <Param name="nReps" updates="None" val="4" valType="num"/>
+      <Param name="nReps" updates="None" val="1" valType="num"/>
       <Param name="name" updates="None" val="trials_3" valType="code"/>
       <Param name="random seed" updates="None" val="" valType="code"/>
     </LoopInitiator>
@@ -504,13 +504,13 @@
     <Routine name="break_2"/>
     <Routine name="Ready"/>
     <LoopInitiator loopType="TrialHandler" name="trials_4">
-      <Param name="Selected rows" updates="None" val="" valType="str"/>
+      <Param name="Selected rows" updates="None" val="13:15" valType="str"/>
       <Param name="conditions" updates="None" val="None" valType="str"/>
-      <Param name="conditionsFile" updates="None" val="" valType="file"/>
+      <Param name="conditionsFile" updates="None" val="stimuliOddballsList.xlsx" valType="file"/>
       <Param name="endPoints" updates="None" val="[0, 1]" valType="num"/>
       <Param name="isTrials" updates="None" val="True" valType="bool"/>
       <Param name="loopType" updates="None" val="random" valType="str"/>
-      <Param name="nReps" updates="None" val="3" valType="num"/>
+      <Param name="nReps" updates="None" val="1" valType="num"/>
       <Param name="name" updates="None" val="trials_4" valType="code"/>
       <Param name="random seed" updates="None" val="" valType="code"/>
     </LoopInitiator>
