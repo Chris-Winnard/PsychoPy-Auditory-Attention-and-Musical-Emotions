@@ -67,7 +67,7 @@ frameTolerance = 0.001  # how close to onset before 'same' frame
 win = visual.Window(
     size=[1536, 864], fullscr=True, screen=0, 
     winType='pyglet', allowGUI=False, allowStencil=False,
-    monitor='testMonitor', color=[0,0,0], colorSpace='rgb',
+    monitor='testMonitor', color=[-0.4510, 0.0196, 0.4118], colorSpace='rgb',
     blendMode='avg', useFBO=True, 
     units='height')
 # store frame rate of monitor if we can measure it
@@ -688,7 +688,7 @@ routineTimer.reset()
 # set up handler to look after randomisation of conditions etc
 block1 = data.TrialHandler(nReps=1.0, method='random', 
     extraInfo=expInfo, originPath=-1,
-    trialList=data.importConditions('stimuliList.xlsx', selection=randnums[0:6]),
+    trialList=data.importConditions('stimuliList.xlsx', selection=randnums[1:7]),
     seed=None, name='block1')
 thisExp.addLoop(block1)  # add the loop to the experiment
 thisBlock1 = block1.trialList[0]  # so we can initialise stimuli with some values
@@ -992,7 +992,7 @@ for thisBlock1 in block1:
 # set up handler to look after randomisation of conditions etc
 trial8 = data.TrialHandler(nReps=1.0, method='random', 
     extraInfo=expInfo, originPath=-1,
-    trialList=data.importConditions('stimuliList.xlsx', selection=randnums[7]),
+    trialList=data.importConditions('stimuliList.xlsx', selection=randnums[8]),
     seed=None, name='trial8')
 thisExp.addLoop(trial8)  # add the loop to the experiment
 thisTrial8 = trial8.trialList[0]  # so we can initialise stimuli with some values
@@ -1425,7 +1425,7 @@ routineTimer.reset()
 # set up handler to look after randomisation of conditions etc
 block2 = data.TrialHandler(nReps=1.0, method='random', 
     extraInfo=expInfo, originPath=-1,
-    trialList=data.importConditions('stimuliList.xlsx', selection=randnums[8:13]),
+    trialList=data.importConditions('stimuliList.xlsx', selection=randnums[9:14]),
     seed=None, name='block2')
 thisExp.addLoop(block2)  # add the loop to the experiment
 thisBlock2 = block2.trialList[0]  # so we can initialise stimuli with some values
@@ -1729,7 +1729,7 @@ for thisBlock2 in block2:
 # set up handler to look after randomisation of conditions etc
 trial15 = data.TrialHandler(nReps=1.0, method='random', 
     extraInfo=expInfo, originPath=-1,
-    trialList=data.importConditions('stimuliList.xlsx', selection=randnums[14]),
+    trialList=data.importConditions('stimuliList.xlsx', selection=randnums[15]),
     seed=None, name='trial15')
 thisExp.addLoop(trial15)  # add the loop to the experiment
 thisTrial15 = trial15.trialList[0]  # so we can initialise stimuli with some values
