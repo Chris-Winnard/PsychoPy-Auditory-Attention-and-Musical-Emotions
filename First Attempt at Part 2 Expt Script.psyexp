@@ -459,7 +459,7 @@
     <Routine name="instructions"/>
     <Routine name="Ready1stBlock"/>
     <LoopInitiator loopType="TrialHandler" name="trials">
-      <Param name="Selected rows" updates="None" val="1:4" valType="str"/>
+      <Param name="Selected rows" updates="None" val="$randnums[1:4]" valType="str"/>
       <Param name="conditions" updates="None" val="None" valType="str"/>
       <Param name="conditionsFile" updates="None" val="stimuliOddballsList.xlsx" valType="file"/>
       <Param name="endPoints" updates="None" val="[0, 1]" valType="num"/>
@@ -474,8 +474,8 @@
     <Routine name="break_2"/>
     <Routine name="Ready"/>
     <LoopInitiator loopType="TrialHandler" name="trials_2">
-      <Param name="Selected rows" updates="None" val="5:8" valType="str"/>
-      <Param name="conditions" updates="None" val="None" valType="str"/>
+      <Param name="Selected rows" updates="None" val="$randnums[5:8]" valType="str"/>
+      <Param name="conditions" updates="None" val="[{'stimuliOddballs': 'StimuliOddballs/', 'arrowImages': 'arrowImages/'}, {'stimuliOddballs': 'StimuliOddballs/', 'arrowImages': 'arrowImages/'}, {'stimuliOddballs': 'StimuliOddballs/', 'arrowImages': 'arrowImages/'}, {'stimuliOddballs': 'StimuliOddballs/', 'arrowImages': 'arrowImages/'}, {'stimuliOddballs': 'StimuliOddballs/', 'arrowImages': 'arrowImages/'}, {'stimuliOddballs': 'StimuliOddballs/', 'arrowImages': 'arrowImages/'}, {'stimuliOddballs': 'StimuliOddballs/', 'arrowImages': 'arrowImages/'}, {'stimuliOddballs': 'StimuliOddballs/', 'arrowImages': 'arrowImages/'}, {'stimuliOddballs': 'StimuliOddballs/', 'arrowImages': 'arrowImages/'}, {'stimuliOddballs': 'StimuliOddballs/', 'arrowImages': 'arrowImages/'}, {'stimuliOddballs': 'StimuliOddballs/', 'arrowImages': 'arrowImages/'}, {'stimuliOddballs': 'StimuliOddballs/', 'arrowImages': 'arrowImages/'}, {'stimuliOddballs': 'StimuliOddballs/', 'arrowImages': 'arrowImages/'}, {'stimuliOddballs': 'StimuliOddballs/', 'arrowImages': 'arrowImages/'}, {'stimuliOddballs': 'StimuliOddballs/', 'arrowImages': 'arrowImages/'}]" valType="str"/>
       <Param name="conditionsFile" updates="None" val="stimuliOddballsList.xlsx" valType="file"/>
       <Param name="endPoints" updates="None" val="[0, 1]" valType="num"/>
       <Param name="isTrials" updates="None" val="True" valType="bool"/>
@@ -489,8 +489,8 @@
     <Routine name="break_2"/>
     <Routine name="Ready"/>
     <LoopInitiator loopType="TrialHandler" name="trials_3">
-      <Param name="Selected rows" updates="None" val="9:12" valType="str"/>
-      <Param name="conditions" updates="None" val="None" valType="str"/>
+      <Param name="Selected rows" updates="None" val="$randnums[9:12]" valType="str"/>
+      <Param name="conditions" updates="None" val="[{'stimuliOddballs': 'StimuliOddballs/', 'arrowImages': 'arrowImages/'}, {'stimuliOddballs': 'StimuliOddballs/', 'arrowImages': 'arrowImages/'}, {'stimuliOddballs': 'StimuliOddballs/', 'arrowImages': 'arrowImages/'}, {'stimuliOddballs': 'StimuliOddballs/', 'arrowImages': 'arrowImages/'}, {'stimuliOddballs': 'StimuliOddballs/', 'arrowImages': 'arrowImages/'}, {'stimuliOddballs': 'StimuliOddballs/', 'arrowImages': 'arrowImages/'}, {'stimuliOddballs': 'StimuliOddballs/', 'arrowImages': 'arrowImages/'}, {'stimuliOddballs': 'StimuliOddballs/', 'arrowImages': 'arrowImages/'}, {'stimuliOddballs': 'StimuliOddballs/', 'arrowImages': 'arrowImages/'}, {'stimuliOddballs': 'StimuliOddballs/', 'arrowImages': 'arrowImages/'}, {'stimuliOddballs': 'StimuliOddballs/', 'arrowImages': 'arrowImages/'}, {'stimuliOddballs': 'StimuliOddballs/', 'arrowImages': 'arrowImages/'}, {'stimuliOddballs': 'StimuliOddballs/', 'arrowImages': 'arrowImages/'}, {'stimuliOddballs': 'StimuliOddballs/', 'arrowImages': 'arrowImages/'}, {'stimuliOddballs': 'StimuliOddballs/', 'arrowImages': 'arrowImages/'}]" valType="str"/>
       <Param name="conditionsFile" updates="None" val="stimuliOddballsList.xlsx" valType="file"/>
       <Param name="endPoints" updates="None" val="[0, 1]" valType="num"/>
       <Param name="isTrials" updates="None" val="True" valType="bool"/>
@@ -504,8 +504,8 @@
     <Routine name="break_2"/>
     <Routine name="Ready"/>
     <LoopInitiator loopType="TrialHandler" name="trials_4">
-      <Param name="Selected rows" updates="None" val="13:15" valType="str"/>
-      <Param name="conditions" updates="None" val="None" valType="str"/>
+      <Param name="Selected rows" updates="None" val="$randnums[13:15]" valType="str"/>
+      <Param name="conditions" updates="None" val="[{'stimuliOddballs': 'StimuliOddballs/', 'arrowImages': 'arrowImages/'}, {'stimuliOddballs': 'StimuliOddballs/', 'arrowImages': 'arrowImages/'}, {'stimuliOddballs': 'StimuliOddballs/', 'arrowImages': 'arrowImages/'}, {'stimuliOddballs': 'StimuliOddballs/', 'arrowImages': 'arrowImages/'}, {'stimuliOddballs': 'StimuliOddballs/', 'arrowImages': 'arrowImages/'}, {'stimuliOddballs': 'StimuliOddballs/', 'arrowImages': 'arrowImages/'}, {'stimuliOddballs': 'StimuliOddballs/', 'arrowImages': 'arrowImages/'}, {'stimuliOddballs': 'StimuliOddballs/', 'arrowImages': 'arrowImages/'}, {'stimuliOddballs': 'StimuliOddballs/', 'arrowImages': 'arrowImages/'}, {'stimuliOddballs': 'StimuliOddballs/', 'arrowImages': 'arrowImages/'}, {'stimuliOddballs': 'StimuliOddballs/', 'arrowImages': 'arrowImages/'}, {'stimuliOddballs': 'StimuliOddballs/', 'arrowImages': 'arrowImages/'}, {'stimuliOddballs': 'StimuliOddballs/', 'arrowImages': 'arrowImages/'}, {'stimuliOddballs': 'StimuliOddballs/', 'arrowImages': 'arrowImages/'}, {'stimuliOddballs': 'StimuliOddballs/', 'arrowImages': 'arrowImages/'}]" valType="str"/>
       <Param name="conditionsFile" updates="None" val="stimuliOddballsList.xlsx" valType="file"/>
       <Param name="endPoints" updates="None" val="[0, 1]" valType="num"/>
       <Param name="isTrials" updates="None" val="True" valType="bool"/>
