@@ -2,6 +2,9 @@ Part 2:
 -Similar process as in part 1 for stimuli (for each set of three streams there will be three copies, but in each case there will be an oddball and arrow pointing left/right/centre).
 -Must display arrow.
 -Will have to set the system up to give feedback.
+   -For this, I think I will set up a "correctAnswer" boolean. Iff the input to textbox = the number of oddballs, then correctAnswer = True.
+   -I'm not entirely sure how to set up the oddballs. Perhaps it will need to be done manually, a number of times for each stream combination and each attended instrument (I could use
+   random number generators to decide when to have them/how many to have).
 
 Part 3:
 -Exact same process as in part 1 for stimuli.
