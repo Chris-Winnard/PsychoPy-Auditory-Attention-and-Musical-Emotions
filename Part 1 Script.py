@@ -26,10 +26,31 @@ import sys  # to get file system encoding
 
 import psychopy.iohub as io
 from psychopy.hardware import keyboard
-
+from pyo import *
 import random
+import json
 
+from constants import *
 
+SOUNDCARD_DEVICE_NAME = 'DAC8PRO'
+volume_level = 0.05
+volume_ratio = [1, 1]
+spk_volume = [x * volume_level for x in volume_ratio]
+
+s = Server(nchnls=PART_1_OUT_CHANNELS, duplex=0)
+devices = pa_get_output_devices()
+for name in devices[0]:
+    if SOUNDCARD_DEVICE_NAME in name:
+        soundcard_idx = devices[1][devices[0].index(name)]
+        print('sound card: ', name)
+        s.setOutputDevice(soundcard_idx)
+        break
+
+s = s.boot()
+s.start()
+
+chns = [None]*(PART_1_OUT_CHANNELS-1)
+mm = Mixer(outs=PART_1_OUT_CHANNELS)
 
 # Ensure that relative paths start from the same directory as this script
 _thisDir = os.path.dirname(os.path.abspath(__file__))
@@ -47,6 +68,9 @@ expInfo['psychopyVersion'] = psychopyVersion
 
 # Data file name stem = absolute path + name; later add .psyexp, .csv, .log, etc
 filename = _thisDir + os.sep + u'data/%s/%s/experiment' % (expInfo['participant'], expName)
+jsonfilename = filename + '_stimuli.json'
+jsondata = {}
+jsondata['trials'] = []
 
 # An ExperimentHandler isn't essential but helps with data saving
 thisExp = data.ExperimentHandler(name=expName, version='',
@@ -135,9 +159,7 @@ nextButton_R1B = visual.ImageStim(
 
 # Initialize components for Routine "trial"
 trialClock = core.Clock()
-stimulus = sound.Sound('A', secs=-1, stereo=True, hamming=True,
-    name='stimulus')
-stimulus.setVolume(1.0)
+
 valence = visual.TextStim(win=win, name='valence',
     text='How positive or negative do you feel right now?',
     font='Open Sans',
@@ -204,9 +226,7 @@ Break25s = visual.TextStim(win=win, name='Break25s',
 
 # Initialize components for Routine "trial"
 trialClock = core.Clock()
-stimulus = sound.Sound('A', secs=-1, stereo=True, hamming=True,
-    name='stimulus')
-stimulus.setVolume(1.0)
+
 valence = visual.TextStim(win=win, name='valence',
     text='How positive or negative do you feel right now?',
     font='Open Sans',
@@ -294,9 +314,7 @@ nextButton_R = visual.ImageStim(
 
 # Initialize components for Routine "trial"
 trialClock = core.Clock()
-stimulus = sound.Sound('A', secs=-1, stereo=True, hamming=True,
-    name='stimulus')
-stimulus.setVolume(1.0)
+
 valence = visual.TextStim(win=win, name='valence',
     text='How positive or negative do you feel right now?',
     font='Open Sans',
@@ -363,9 +381,7 @@ Break25s = visual.TextStim(win=win, name='Break25s',
 
 # Initialize components for Routine "trial"
 trialClock = core.Clock()
-stimulus = sound.Sound('A', secs=-1, stereo=True, hamming=True,
-    name='stimulus')
-stimulus.setVolume(1.0)
+
 valence = visual.TextStim(win=win, name='valence',
     text='How positive or negative do you feel right now?',
     font='Open Sans',
@@ -556,6 +572,25 @@ thisExp.addData('nextButton_instruct.stopped', nextButton_instruct.tStopRefresh)
 # the Routine "instructions" was not non-slip safe, so reset the non-slip timer
 routineTimer.reset()
 
+# playing part starting trig
+continueRoutine = True
+routineTimer.add(1)
+startExpTrigger = SfPlayer('start_trigger.wav')
+for i in range(PART_1_OUT_CHANNELS):
+    mm.delInput(i)
+mm.addInput(0, startExpTrigger)
+for i in range(PART_1_OUT_CHANNELS):
+    mm.setAmp(0,i,0)
+mm.setAmp(0,0,spk_volume[0])
+thisExp.addData('startExpTrigger.started', win.getFutureFlipTime(clock='now'))
+while continueRoutine and routineTimer.getTime() > 0:
+    mm.out()
+mm.stop()
+thisExp.addData('startExpTrigger.stopped', win.getFutureFlipTime(clock='now'))
+routineTimer.reset()
+thisExp.nextEntry()
+# end of playing part starting trig
+
 # ------Prepare to start Routine "Ready1stBlock"-------
 continueRoutine = True
 # update component parameters for each repeat
@@ -697,7 +732,11 @@ if thisBlock1 != None:
     for paramName in thisBlock1:
         exec('{} = thisBlock1[paramName]'.format(paramName))
 
+idx = -1
 for thisBlock1 in block1:
+    trial = {}
+    idx += 1
+    print(f'trial {idx}')
     currentLoop = block1
     # abbreviate parameter names if possible (e.g. rgb = thisBlock1.rgb)
     if thisBlock1 != None:
@@ -707,8 +746,38 @@ for thisBlock1 in block1:
     # ------Prepare to start Routine "trial"-------
     continueRoutine = True
     # update component parameters for each repeat
-    stimulus.setSound(stimuli, secs=30, hamming=True)
-    stimulus.setVolume(1.0, log=False)
+    print(f'trigger: {trigger}')
+
+    trigger_filename, trigger_ext = os.path.splitext(trigger)
+    trigger_logfile = os.path.abspath(trigger_filename + '.txt')
+    trial['trigger'] = os.path.abspath(trigger)
+    trial['trigger_log'] = os.path.abspath(trigger_logfile)
+
+    # trigger channel
+    trigger_chn = SfPlayer(trigger)
+    mm.delInput(0)
+    mm.addInput(0, trigger_chn)
+    # stimuli channels
+    trial['stimulies'] = []
+    for i in range(0, PART_1_OUT_CHANNELS-1):
+        spk_name = "stimuli_{}".format(i)
+        print(f'{spk_name}: {globals()[spk_name]}')
+        trial['stimulies'].append(os.path.abspath(globals()[spk_name]))
+        chns[i] = SfPlayer(globals()[spk_name])
+        mm.delInput(i+1)
+        mm.addInput(i+1,chns[i])
+
+    jsondata['trials'].append(trial) 
+    
+    for i in range(PART_1_OUT_CHANNELS):
+        for j in range(PART_1_OUT_CHANNELS):
+            mm.setAmp(i,j,0)
+    # set volume for output
+    output_idx = [0] + list(range(1,PART_1_OUT_CHANNELS))
+    input_idx = [0] + list(range(1,PART_1_OUT_CHANNELS))
+    for i in input_idx:
+        mm.setAmp(i, output_idx[i], spk_volume[i])
+        
     valenceResp.reset()
     arousalResp.reset()
     dominanceResp.reset()
@@ -716,7 +785,7 @@ for thisBlock1 in block1:
     mouse.clicked_name = []
     gotValidClick = False  # until a click is received
     # keep track of which components have finished
-    trialComponents = [stimulus, valence, valenceResp, arousal, arousalResp, dominance, dominanceResp, mouse, nextButton]
+    trialComponents = [valence, valenceResp, arousal, arousalResp, dominance, dominanceResp, mouse, nextButton]
     for thisComponent in trialComponents:
         thisComponent.tStart = None
         thisComponent.tStop = None
@@ -738,24 +807,9 @@ for thisBlock1 in block1:
         tThisFlipGlobal = win.getFutureFlipTime(clock=None)
         frameN = frameN + 1  # number of completed frames (so 0 is the first frame)
         # update/draw components on each frame
-        # start/stop stimulus
-        if stimulus.status == NOT_STARTED and tThisFlip >= 0.0-frameTolerance:
-            # keep track of start time/frame for later
-            stimulus.frameNStart = frameN  # exact frame index
-            stimulus.tStart = t  # local t and not account for scr refresh
-            stimulus.tStartRefresh = tThisFlipGlobal  # on global time
-            stimulus.play(when=win)  # sync with win flip
-        if stimulus.status == STARTED:
-            # is it time to stop? (based on global clock, using actual start)
-            if tThisFlipGlobal > stimulus.tStartRefresh + 30-frameTolerance:
-                # keep track of stop time/frame for later
-                stimulus.tStop = t  # not accounting for scr refresh
-                stimulus.frameNStop = frameN  # exact frame index
-                win.timeOnFlip(stimulus, 'tStopRefresh')  # time at next scr refresh
-                stimulus.stop()
-        
+        mm.out()
         # *valence* updates
-        if valence.status == NOT_STARTED and tThisFlip >= 30-frameTolerance:
+        if valence.status == NOT_STARTED and tThisFlip >= PART_1_STIMULI_LEN-frameTolerance:
             # keep track of start time/frame for later
             valence.frameNStart = frameN  # exact frame index
             valence.tStart = t  # local t and not account for scr refresh
@@ -764,7 +818,7 @@ for thisBlock1 in block1:
             valence.setAutoDraw(True)
         
         # *valenceResp* updates
-        if valenceResp.status == NOT_STARTED and tThisFlip >= 30-frameTolerance:
+        if valenceResp.status == NOT_STARTED and tThisFlip >= PART_1_STIMULI_LEN-frameTolerance:
             # keep track of start time/frame for later
             valenceResp.frameNStart = frameN  # exact frame index
             valenceResp.tStart = t  # local t and not account for scr refresh
@@ -773,7 +827,7 @@ for thisBlock1 in block1:
             valenceResp.setAutoDraw(True)
         
         # *arousal* updates
-        if arousal.status == NOT_STARTED and tThisFlip >= 30-frameTolerance:
+        if arousal.status == NOT_STARTED and tThisFlip >= PART_1_STIMULI_LEN-frameTolerance:
             # keep track of start time/frame for later
             arousal.frameNStart = frameN  # exact frame index
             arousal.tStart = t  # local t and not account for scr refresh
@@ -782,7 +836,7 @@ for thisBlock1 in block1:
             arousal.setAutoDraw(True)
         
         # *arousalResp* updates
-        if arousalResp.status == NOT_STARTED and tThisFlip >= 30-frameTolerance:
+        if arousalResp.status == NOT_STARTED and tThisFlip >= PART_1_STIMULI_LEN-frameTolerance:
             # keep track of start time/frame for later
             arousalResp.frameNStart = frameN  # exact frame index
             arousalResp.tStart = t  # local t and not account for scr refresh
@@ -791,7 +845,7 @@ for thisBlock1 in block1:
             arousalResp.setAutoDraw(True)
         
         # *dominance* updates
-        if dominance.status == NOT_STARTED and tThisFlip >= 30-frameTolerance:
+        if dominance.status == NOT_STARTED and tThisFlip >= PART_1_STIMULI_LEN-frameTolerance:
             # keep track of start time/frame for later
             dominance.frameNStart = frameN  # exact frame index
             dominance.tStart = t  # local t and not account for scr refresh
@@ -800,7 +854,7 @@ for thisBlock1 in block1:
             dominance.setAutoDraw(True)
         
         # *dominanceResp* updates
-        if dominanceResp.status == NOT_STARTED and tThisFlip >= 30-frameTolerance:
+        if dominanceResp.status == NOT_STARTED and tThisFlip >= PART_1_STIMULI_LEN-frameTolerance:
             # keep track of start time/frame for later
             dominanceResp.frameNStart = frameN  # exact frame index
             dominanceResp.tStart = t  # local t and not account for scr refresh
@@ -861,14 +915,17 @@ for thisBlock1 in block1:
         # refresh the screen
         if continueRoutine:  # don't flip if this routine is over or we'll get a blank screen
             win.flip()
-    
+    mm.stop()
+    jsondata['trial_number'] = len(jsondata['trials'])
+    # save json file
+    with open(jsonfilename, 'w') as fp:
+        json.dump(jsondata, fp, separators=(',\n', ': '))
+        fp.close()
     # -------Ending Routine "trial"-------
     for thisComponent in trialComponents:
         if hasattr(thisComponent, "setAutoDraw"):
             thisComponent.setAutoDraw(False)
-    stimulus.stop()  # ensure sound has stopped at end of routine
-    block1.addData('stimulus.started', stimulus.tStartRefresh)
-    block1.addData('stimulus.stopped', stimulus.tStopRefresh)
+    
     block1.addData('valence.started', valence.tStartRefresh)
     block1.addData('valence.stopped', valence.tStopRefresh)
     block1.addData('valenceResp.response', valenceResp.getRating())
@@ -1011,8 +1068,31 @@ for thisTrial8 in trial8:
     # ------Prepare to start Routine "trial"-------
     continueRoutine = True
     # update component parameters for each repeat
-    stimulus.setSound(stimuli, secs=30, hamming=True)
-    stimulus.setVolume(1.0, log=False)
+    # trigger channel
+    trigger_chn = SfPlayer(trigger)
+    mm.delInput(0)
+    mm.addInput(0, trigger_chn)
+    # stimuli channels
+    trial['stimulies'] = []
+    for i in range(0, PART_1_OUT_CHANNELS-1):
+        spk_name = "stimuli_{}".format(i)
+        print(f'{spk_name}: {globals()[spk_name]}')
+        trial['stimulies'].append(os.path.abspath(globals()[spk_name]))
+        chns[i] = SfPlayer(globals()[spk_name])
+        mm.delInput(i+1)
+        mm.addInput(i+1,chns[i])
+
+    jsondata['trials'].append(trial) 
+    
+    for i in range(PART_1_OUT_CHANNELS):
+        for j in range(PART_1_OUT_CHANNELS):
+            mm.setAmp(i,j,0)
+    # set volume for output
+    output_idx = [0] + list(range(1,PART_1_OUT_CHANNELS))
+    input_idx = [0] + list(range(1,PART_1_OUT_CHANNELS))
+    for i in input_idx:
+        mm.setAmp(i, output_idx[i], spk_volume[i])
+        
     valenceResp.reset()
     arousalResp.reset()
     dominanceResp.reset()
@@ -1020,7 +1100,7 @@ for thisTrial8 in trial8:
     mouse.clicked_name = []
     gotValidClick = False  # until a click is received
     # keep track of which components have finished
-    trialComponents = [stimulus, valence, valenceResp, arousal, arousalResp, dominance, dominanceResp, mouse, nextButton]
+    trialComponents = [valence, valenceResp, arousal, arousalResp, dominance, dominanceResp, mouse, nextButton]
     for thisComponent in trialComponents:
         thisComponent.tStart = None
         thisComponent.tStop = None
@@ -1042,24 +1122,9 @@ for thisTrial8 in trial8:
         tThisFlipGlobal = win.getFutureFlipTime(clock=None)
         frameN = frameN + 1  # number of completed frames (so 0 is the first frame)
         # update/draw components on each frame
-        # start/stop stimulus
-        if stimulus.status == NOT_STARTED and tThisFlip >= 0.0-frameTolerance:
-            # keep track of start time/frame for later
-            stimulus.frameNStart = frameN  # exact frame index
-            stimulus.tStart = t  # local t and not account for scr refresh
-            stimulus.tStartRefresh = tThisFlipGlobal  # on global time
-            stimulus.play(when=win)  # sync with win flip
-        if stimulus.status == STARTED:
-            # is it time to stop? (based on global clock, using actual start)
-            if tThisFlipGlobal > stimulus.tStartRefresh + 30-frameTolerance:
-                # keep track of stop time/frame for later
-                stimulus.tStop = t  # not accounting for scr refresh
-                stimulus.frameNStop = frameN  # exact frame index
-                win.timeOnFlip(stimulus, 'tStopRefresh')  # time at next scr refresh
-                stimulus.stop()
-        
+        mm.out()
         # *valence* updates
-        if valence.status == NOT_STARTED and tThisFlip >= 30-frameTolerance:
+        if valence.status == NOT_STARTED and tThisFlip >= PART_1_STIMULI_LEN-frameTolerance:
             # keep track of start time/frame for later
             valence.frameNStart = frameN  # exact frame index
             valence.tStart = t  # local t and not account for scr refresh
@@ -1068,7 +1133,7 @@ for thisTrial8 in trial8:
             valence.setAutoDraw(True)
         
         # *valenceResp* updates
-        if valenceResp.status == NOT_STARTED and tThisFlip >= 30-frameTolerance:
+        if valenceResp.status == NOT_STARTED and tThisFlip >= PART_1_STIMULI_LEN-frameTolerance:
             # keep track of start time/frame for later
             valenceResp.frameNStart = frameN  # exact frame index
             valenceResp.tStart = t  # local t and not account for scr refresh
@@ -1077,7 +1142,7 @@ for thisTrial8 in trial8:
             valenceResp.setAutoDraw(True)
         
         # *arousal* updates
-        if arousal.status == NOT_STARTED and tThisFlip >= 30-frameTolerance:
+        if arousal.status == NOT_STARTED and tThisFlip >= PART_1_STIMULI_LEN-frameTolerance:
             # keep track of start time/frame for later
             arousal.frameNStart = frameN  # exact frame index
             arousal.tStart = t  # local t and not account for scr refresh
@@ -1086,7 +1151,7 @@ for thisTrial8 in trial8:
             arousal.setAutoDraw(True)
         
         # *arousalResp* updates
-        if arousalResp.status == NOT_STARTED and tThisFlip >= 30-frameTolerance:
+        if arousalResp.status == NOT_STARTED and tThisFlip >= PART_1_STIMULI_LEN-frameTolerance:
             # keep track of start time/frame for later
             arousalResp.frameNStart = frameN  # exact frame index
             arousalResp.tStart = t  # local t and not account for scr refresh
@@ -1095,7 +1160,7 @@ for thisTrial8 in trial8:
             arousalResp.setAutoDraw(True)
         
         # *dominance* updates
-        if dominance.status == NOT_STARTED and tThisFlip >= 30-frameTolerance:
+        if dominance.status == NOT_STARTED and tThisFlip >= PART_1_STIMULI_LEN-frameTolerance:
             # keep track of start time/frame for later
             dominance.frameNStart = frameN  # exact frame index
             dominance.tStart = t  # local t and not account for scr refresh
@@ -1104,7 +1169,7 @@ for thisTrial8 in trial8:
             dominance.setAutoDraw(True)
         
         # *dominanceResp* updates
-        if dominanceResp.status == NOT_STARTED and tThisFlip >= 30-frameTolerance:
+        if dominanceResp.status == NOT_STARTED and tThisFlip >= PART_1_STIMULI_LEN-frameTolerance:
             # keep track of start time/frame for later
             dominanceResp.frameNStart = frameN  # exact frame index
             dominanceResp.tStart = t  # local t and not account for scr refresh
@@ -1165,14 +1230,18 @@ for thisTrial8 in trial8:
         # refresh the screen
         if continueRoutine:  # don't flip if this routine is over or we'll get a blank screen
             win.flip()
+    mm.stop()
+    jsondata['trial_number'] = len(jsondata['trials'])
+    # save json file
+    with open(jsonfilename, 'w') as fp:
+        json.dump(jsondata, fp, separators=(',\n', ': '))
+        fp.close()
     
     # -------Ending Routine "trial"-------
     for thisComponent in trialComponents:
         if hasattr(thisComponent, "setAutoDraw"):
             thisComponent.setAutoDraw(False)
-    stimulus.stop()  # ensure sound has stopped at end of routine
-    trial8.addData('stimulus.started', stimulus.tStartRefresh)
-    trial8.addData('stimulus.stopped', stimulus.tStopRefresh)
+    
     trial8.addData('valence.started', valence.tStartRefresh)
     trial8.addData('valence.stopped', valence.tStopRefresh)
     trial8.addData('valenceResp.response', valenceResp.getRating())
@@ -1444,8 +1513,31 @@ for thisBlock2 in block2:
     # ------Prepare to start Routine "trial"-------
     continueRoutine = True
     # update component parameters for each repeat
-    stimulus.setSound(stimuli, secs=30, hamming=True)
-    stimulus.setVolume(1.0, log=False)
+    # trigger channel
+    trigger_chn = SfPlayer(trigger)
+    mm.delInput(0)
+    mm.addInput(0, trigger_chn)
+    # stimuli channels
+    trial['stimulies'] = []
+    for i in range(0, PART_1_OUT_CHANNELS-1):
+        spk_name = "stimuli_{}".format(i)
+        print(f'{spk_name}: {globals()[spk_name]}')
+        trial['stimulies'].append(os.path.abspath(globals()[spk_name]))
+        chns[i] = SfPlayer(globals()[spk_name])
+        mm.delInput(i+1)
+        mm.addInput(i+1,chns[i])
+
+    jsondata['trials'].append(trial) 
+    
+    for i in range(PART_1_OUT_CHANNELS):
+        for j in range(PART_1_OUT_CHANNELS):
+            mm.setAmp(i,j,0)
+    # set volume for output
+    output_idx = [0] + list(range(1,PART_1_OUT_CHANNELS))
+    input_idx = [0] + list(range(1,PART_1_OUT_CHANNELS))
+    for i in input_idx:
+        mm.setAmp(i, output_idx[i], spk_volume[i])
+        
     valenceResp.reset()
     arousalResp.reset()
     dominanceResp.reset()
@@ -1453,7 +1545,7 @@ for thisBlock2 in block2:
     mouse.clicked_name = []
     gotValidClick = False  # until a click is received
     # keep track of which components have finished
-    trialComponents = [stimulus, valence, valenceResp, arousal, arousalResp, dominance, dominanceResp, mouse, nextButton]
+    trialComponents = [valence, valenceResp, arousal, arousalResp, dominance, dominanceResp, mouse, nextButton]
     for thisComponent in trialComponents:
         thisComponent.tStart = None
         thisComponent.tStop = None
@@ -1475,24 +1567,9 @@ for thisBlock2 in block2:
         tThisFlipGlobal = win.getFutureFlipTime(clock=None)
         frameN = frameN + 1  # number of completed frames (so 0 is the first frame)
         # update/draw components on each frame
-        # start/stop stimulus
-        if stimulus.status == NOT_STARTED and tThisFlip >= 0.0-frameTolerance:
-            # keep track of start time/frame for later
-            stimulus.frameNStart = frameN  # exact frame index
-            stimulus.tStart = t  # local t and not account for scr refresh
-            stimulus.tStartRefresh = tThisFlipGlobal  # on global time
-            stimulus.play(when=win)  # sync with win flip
-        if stimulus.status == STARTED:
-            # is it time to stop? (based on global clock, using actual start)
-            if tThisFlipGlobal > stimulus.tStartRefresh + 30-frameTolerance:
-                # keep track of stop time/frame for later
-                stimulus.tStop = t  # not accounting for scr refresh
-                stimulus.frameNStop = frameN  # exact frame index
-                win.timeOnFlip(stimulus, 'tStopRefresh')  # time at next scr refresh
-                stimulus.stop()
-        
+        mm.out()
         # *valence* updates
-        if valence.status == NOT_STARTED and tThisFlip >= 30-frameTolerance:
+        if valence.status == NOT_STARTED and tThisFlip >= PART_1_STIMULI_LEN-frameTolerance:
             # keep track of start time/frame for later
             valence.frameNStart = frameN  # exact frame index
             valence.tStart = t  # local t and not account for scr refresh
@@ -1501,7 +1578,7 @@ for thisBlock2 in block2:
             valence.setAutoDraw(True)
         
         # *valenceResp* updates
-        if valenceResp.status == NOT_STARTED and tThisFlip >= 30-frameTolerance:
+        if valenceResp.status == NOT_STARTED and tThisFlip >= PART_1_STIMULI_LEN-frameTolerance:
             # keep track of start time/frame for later
             valenceResp.frameNStart = frameN  # exact frame index
             valenceResp.tStart = t  # local t and not account for scr refresh
@@ -1510,7 +1587,7 @@ for thisBlock2 in block2:
             valenceResp.setAutoDraw(True)
         
         # *arousal* updates
-        if arousal.status == NOT_STARTED and tThisFlip >= 30-frameTolerance:
+        if arousal.status == NOT_STARTED and tThisFlip >= PART_1_STIMULI_LEN-frameTolerance:
             # keep track of start time/frame for later
             arousal.frameNStart = frameN  # exact frame index
             arousal.tStart = t  # local t and not account for scr refresh
@@ -1519,7 +1596,7 @@ for thisBlock2 in block2:
             arousal.setAutoDraw(True)
         
         # *arousalResp* updates
-        if arousalResp.status == NOT_STARTED and tThisFlip >= 30-frameTolerance:
+        if arousalResp.status == NOT_STARTED and tThisFlip >= PART_1_STIMULI_LEN-frameTolerance:
             # keep track of start time/frame for later
             arousalResp.frameNStart = frameN  # exact frame index
             arousalResp.tStart = t  # local t and not account for scr refresh
@@ -1528,7 +1605,7 @@ for thisBlock2 in block2:
             arousalResp.setAutoDraw(True)
         
         # *dominance* updates
-        if dominance.status == NOT_STARTED and tThisFlip >= 30-frameTolerance:
+        if dominance.status == NOT_STARTED and tThisFlip >= PART_1_STIMULI_LEN-frameTolerance:
             # keep track of start time/frame for later
             dominance.frameNStart = frameN  # exact frame index
             dominance.tStart = t  # local t and not account for scr refresh
@@ -1537,7 +1614,7 @@ for thisBlock2 in block2:
             dominance.setAutoDraw(True)
         
         # *dominanceResp* updates
-        if dominanceResp.status == NOT_STARTED and tThisFlip >= 30-frameTolerance:
+        if dominanceResp.status == NOT_STARTED and tThisFlip >= PART_1_STIMULI_LEN-frameTolerance:
             # keep track of start time/frame for later
             dominanceResp.frameNStart = frameN  # exact frame index
             dominanceResp.tStart = t  # local t and not account for scr refresh
@@ -1598,14 +1675,18 @@ for thisBlock2 in block2:
         # refresh the screen
         if continueRoutine:  # don't flip if this routine is over or we'll get a blank screen
             win.flip()
-    
+    mm.stop()
+    jsondata['trial_number'] = len(jsondata['trials'])
+    # save json file
+    with open(jsonfilename, 'w') as fp:
+        json.dump(jsondata, fp, separators=(',\n', ': '))
+        fp.close()
+        
     # -------Ending Routine "trial"-------
     for thisComponent in trialComponents:
         if hasattr(thisComponent, "setAutoDraw"):
             thisComponent.setAutoDraw(False)
-    stimulus.stop()  # ensure sound has stopped at end of routine
-    block2.addData('stimulus.started', stimulus.tStartRefresh)
-    block2.addData('stimulus.stopped', stimulus.tStopRefresh)
+
     block2.addData('valence.started', valence.tStartRefresh)
     block2.addData('valence.stopped', valence.tStopRefresh)
     block2.addData('valenceResp.response', valenceResp.getRating())
@@ -1748,8 +1829,31 @@ for thisTrial15 in trial15:
     # ------Prepare to start Routine "trial"-------
     continueRoutine = True
     # update component parameters for each repeat
-    stimulus.setSound(stimuli, secs=30, hamming=True)
-    stimulus.setVolume(1.0, log=False)
+    # trigger channel
+    trigger_chn = SfPlayer(trigger)
+    mm.delInput(0)
+    mm.addInput(0, trigger_chn)
+    # stimuli channels
+    trial['stimulies'] = []
+    for i in range(0, PART_1_OUT_CHANNELS-1):
+        spk_name = "stimuli_{}".format(i)
+        print(f'{spk_name}: {globals()[spk_name]}')
+        trial['stimulies'].append(os.path.abspath(globals()[spk_name]))
+        chns[i] = SfPlayer(globals()[spk_name])
+        mm.delInput(i+1)
+        mm.addInput(i+1,chns[i])
+
+    jsondata['trials'].append(trial) 
+    
+    for i in range(PART_1_OUT_CHANNELS):
+        for j in range(PART_1_OUT_CHANNELS):
+            mm.setAmp(i,j,0)
+    # set volume for output
+    output_idx = [0] + list(range(1,PART_1_OUT_CHANNELS))
+    input_idx = [0] + list(range(1,PART_1_OUT_CHANNELS))
+    for i in input_idx:
+        mm.setAmp(i, output_idx[i], spk_volume[i])
+        
     valenceResp.reset()
     arousalResp.reset()
     dominanceResp.reset()
@@ -1757,7 +1861,7 @@ for thisTrial15 in trial15:
     mouse.clicked_name = []
     gotValidClick = False  # until a click is received
     # keep track of which components have finished
-    trialComponents = [stimulus, valence, valenceResp, arousal, arousalResp, dominance, dominanceResp, mouse, nextButton]
+    trialComponents = [valence, valenceResp, arousal, arousalResp, dominance, dominanceResp, mouse, nextButton]
     for thisComponent in trialComponents:
         thisComponent.tStart = None
         thisComponent.tStop = None
@@ -1779,24 +1883,9 @@ for thisTrial15 in trial15:
         tThisFlipGlobal = win.getFutureFlipTime(clock=None)
         frameN = frameN + 1  # number of completed frames (so 0 is the first frame)
         # update/draw components on each frame
-        # start/stop stimulus
-        if stimulus.status == NOT_STARTED and tThisFlip >= 0.0-frameTolerance:
-            # keep track of start time/frame for later
-            stimulus.frameNStart = frameN  # exact frame index
-            stimulus.tStart = t  # local t and not account for scr refresh
-            stimulus.tStartRefresh = tThisFlipGlobal  # on global time
-            stimulus.play(when=win)  # sync with win flip
-        if stimulus.status == STARTED:
-            # is it time to stop? (based on global clock, using actual start)
-            if tThisFlipGlobal > stimulus.tStartRefresh + 30-frameTolerance:
-                # keep track of stop time/frame for later
-                stimulus.tStop = t  # not accounting for scr refresh
-                stimulus.frameNStop = frameN  # exact frame index
-                win.timeOnFlip(stimulus, 'tStopRefresh')  # time at next scr refresh
-                stimulus.stop()
-        
+        mm.out()
         # *valence* updates
-        if valence.status == NOT_STARTED and tThisFlip >= 30-frameTolerance:
+        if valence.status == NOT_STARTED and tThisFlip >= PART_1_STIMULI_LEN-frameTolerance:
             # keep track of start time/frame for later
             valence.frameNStart = frameN  # exact frame index
             valence.tStart = t  # local t and not account for scr refresh
@@ -1805,7 +1894,7 @@ for thisTrial15 in trial15:
             valence.setAutoDraw(True)
         
         # *valenceResp* updates
-        if valenceResp.status == NOT_STARTED and tThisFlip >= 30-frameTolerance:
+        if valenceResp.status == NOT_STARTED and tThisFlip >= PART_1_STIMULI_LEN-frameTolerance:
             # keep track of start time/frame for later
             valenceResp.frameNStart = frameN  # exact frame index
             valenceResp.tStart = t  # local t and not account for scr refresh
@@ -1814,7 +1903,7 @@ for thisTrial15 in trial15:
             valenceResp.setAutoDraw(True)
         
         # *arousal* updates
-        if arousal.status == NOT_STARTED and tThisFlip >= 30-frameTolerance:
+        if arousal.status == NOT_STARTED and tThisFlip >= PART_1_STIMULI_LEN-frameTolerance:
             # keep track of start time/frame for later
             arousal.frameNStart = frameN  # exact frame index
             arousal.tStart = t  # local t and not account for scr refresh
@@ -1823,7 +1912,7 @@ for thisTrial15 in trial15:
             arousal.setAutoDraw(True)
         
         # *arousalResp* updates
-        if arousalResp.status == NOT_STARTED and tThisFlip >= 30-frameTolerance:
+        if arousalResp.status == NOT_STARTED and tThisFlip >= PART_1_STIMULI_LEN-frameTolerance:
             # keep track of start time/frame for later
             arousalResp.frameNStart = frameN  # exact frame index
             arousalResp.tStart = t  # local t and not account for scr refresh
@@ -1832,7 +1921,7 @@ for thisTrial15 in trial15:
             arousalResp.setAutoDraw(True)
         
         # *dominance* updates
-        if dominance.status == NOT_STARTED and tThisFlip >= 30-frameTolerance:
+        if dominance.status == NOT_STARTED and tThisFlip >= PART_1_STIMULI_LEN-frameTolerance:
             # keep track of start time/frame for later
             dominance.frameNStart = frameN  # exact frame index
             dominance.tStart = t  # local t and not account for scr refresh
@@ -1841,7 +1930,7 @@ for thisTrial15 in trial15:
             dominance.setAutoDraw(True)
         
         # *dominanceResp* updates
-        if dominanceResp.status == NOT_STARTED and tThisFlip >= 30-frameTolerance:
+        if dominanceResp.status == NOT_STARTED and tThisFlip >= PART_1_STIMULI_LEN-frameTolerance:
             # keep track of start time/frame for later
             dominanceResp.frameNStart = frameN  # exact frame index
             dominanceResp.tStart = t  # local t and not account for scr refresh
@@ -1907,9 +1996,7 @@ for thisTrial15 in trial15:
     for thisComponent in trialComponents:
         if hasattr(thisComponent, "setAutoDraw"):
             thisComponent.setAutoDraw(False)
-    stimulus.stop()  # ensure sound has stopped at end of routine
-    trial15.addData('stimulus.started', stimulus.tStartRefresh)
-    trial15.addData('stimulus.stopped', stimulus.tStopRefresh)
+
     trial15.addData('valence.started', valence.tStartRefresh)
     trial15.addData('valence.stopped', valence.tStopRefresh)
     trial15.addData('valenceResp.response', valenceResp.getRating())
@@ -1960,6 +2047,23 @@ for thisTrial15 in trial15:
     
 # completed 1.0 repeats of 'trial15'
 
+# playing part stop trig
+continueRoutine = True
+routineTimer.add(1)
+stopExpTrigger = SfPlayer('stop_trigger.wav')
+mm.delInput(0)
+mm.addInput(0, stopExpTrigger)
+for i in range(PART_1_OUT_CHANNELS):
+    mm.setAmp(0,i,0)
+mm.setAmp(0,0,spk_volume[0])
+thisExp.addData('stopExpTrigger.started', win.getFutureFlipTime(clock='now'))
+while continueRoutine and routineTimer.getTime() > 0:
+    mm.out()
+mm.stop()
+thisExp.addData('stopExpTrigger.stopped', win.getFutureFlipTime(clock='now'))
+routineTimer.reset()
+thisExp.nextEntry()
+# End of playing part stop trig
 
 # Flip one final time so any remaining win.callOnFlip() 
 # and win.timeOnFlip() tasks get executed before quitting

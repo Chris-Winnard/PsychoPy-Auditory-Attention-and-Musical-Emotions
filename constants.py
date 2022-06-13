@@ -1,0 +1,8 @@
+PART_1_STIMULI_LEN = 31 # upper bound length of trigger and stimuli in seconds
+PART_1_OUT_CHANNELS = 2
+
+PART_2_STIMULI_LEN = 31
+PART_2_OUT_CHANNELS = 2
+
+PART_3_STIMULI_LEN = 31
+PART_3_OUT_CHANNELS = 2
