@@ -253,7 +253,34 @@
         <Param val="from exp settings" valType="str" updates="None" name="units"/>
       </ImageComponent>
     </Routine>
-    <Routine name="Ready1stBlock">
+    <Routine name="interTrialPause">
+      <TextComponent name="Break25s">
+        <Param val="white" valType="color" updates="constant" name="color"/>
+        <Param val="rgb" valType="str" updates="constant" name="colorSpace"/>
+        <Param val="1" valType="num" updates="constant" name="contrast"/>
+        <Param val="False" valType="bool" updates="None" name="disabled"/>
+        <Param val="" valType="code" updates="None" name="durationEstim"/>
+        <Param val="None" valType="str" updates="constant" name="flip"/>
+        <Param val="Open Sans" valType="str" updates="constant" name="font"/>
+        <Param val="LTR" valType="str" updates="None" name="languageStyle"/>
+        <Param val="0.1" valType="num" updates="constant" name="letterHeight"/>
+        <Param val="Break25s" valType="code" updates="None" name="name"/>
+        <Param val="" valType="num" updates="constant" name="opacity"/>
+        <Param val="0" valType="num" updates="constant" name="ori"/>
+        <Param val="(0, 0)" valType="list" updates="constant" name="pos"/>
+        <Param val="True" valType="bool" updates="None" name="saveStartStop"/>
+        <Param val="" valType="code" updates="None" name="startEstim"/>
+        <Param val="time (s)" valType="str" updates="None" name="startType"/>
+        <Param val="0.0" valType="code" updates="None" name="startVal"/>
+        <Param val="duration (s)" valType="str" updates="None" name="stopType"/>
+        <Param val="25" valType="code" updates="constant" name="stopVal"/>
+        <Param val="True" valType="bool" updates="None" name="syncScreenRefresh"/>
+        <Param val="25 second break - feel free to stretch/blink/etc." valType="str" updates="constant" name="text"/>
+        <Param val="from exp settings" valType="str" updates="None" name="units"/>
+        <Param val="" valType="num" updates="constant" name="wrapWidth"/>
+      </TextComponent>
+    </Routine>
+    <Routine name="Ready">
       <TextComponent name="top_instr_txt_3">
         <Param val="white" valType="color" updates="constant" name="color"/>
         <Param val="rgb" valType="str" updates="constant" name="colorSpace"/>
@@ -275,7 +302,7 @@
         <Param val="duration (s)" valType="str" updates="None" name="stopType"/>
         <Param val="" valType="code" updates="constant" name="stopVal"/>
         <Param val="True" valType="bool" updates="None" name="syncScreenRefresh"/>
-        <Param val="Are you ready for the first block of trials?" valType="str" updates="constant" name="text"/>
+        <Param val="When you are ready, click &quot;NEXT&quot;." valType="str" updates="constant" name="text"/>
         <Param val="from exp settings" valType="str" updates="None" name="units"/>
         <Param val="" valType="num" updates="constant" name="wrapWidth"/>
       </TextComponent>
@@ -325,111 +352,12 @@
         <Param val="from exp settings" valType="str" updates="None" name="units"/>
       </ImageComponent>
     </Routine>
-    <Routine name="Ready">
-      <TextComponent name="top_instr_txt_2">
-        <Param val="white" valType="color" updates="constant" name="color"/>
-        <Param val="rgb" valType="str" updates="constant" name="colorSpace"/>
-        <Param val="1" valType="num" updates="constant" name="contrast"/>
-        <Param val="False" valType="bool" updates="None" name="disabled"/>
-        <Param val="" valType="code" updates="None" name="durationEstim"/>
-        <Param val="None" valType="str" updates="constant" name="flip"/>
-        <Param val="Open Sans" valType="str" updates="constant" name="font"/>
-        <Param val="LTR" valType="str" updates="None" name="languageStyle"/>
-        <Param val="0.1" valType="num" updates="constant" name="letterHeight"/>
-        <Param val="top_instr_txt_2" valType="code" updates="None" name="name"/>
-        <Param val="" valType="num" updates="constant" name="opacity"/>
-        <Param val="0" valType="num" updates="constant" name="ori"/>
-        <Param val="(0, 0.15)" valType="list" updates="constant" name="pos"/>
-        <Param val="True" valType="bool" updates="None" name="saveStartStop"/>
-        <Param val="" valType="code" updates="None" name="startEstim"/>
-        <Param val="time (s)" valType="str" updates="None" name="startType"/>
-        <Param val="0.0" valType="code" updates="None" name="startVal"/>
-        <Param val="duration (s)" valType="str" updates="None" name="stopType"/>
-        <Param val="" valType="code" updates="constant" name="stopVal"/>
-        <Param val="True" valType="bool" updates="None" name="syncScreenRefresh"/>
-        <Param val="Welcome to Part 3 of the experiment. The instructions are as follows:&amp;#10;&amp;#10;First, you will be told if you should attend, or not attend, to the music piece that will be played.&amp;#10;&amp;#10;Then, a random music clip will be played. A silent film will also be played. Remember, nou will not have to answer any questions during the trials - just try to focus/not focus on the music as instructed. Please try not to blink or move during this 30s period.&amp;#10;&amp;#10;There will then be a 25s break (blink/stretch/etc as much as you like during this), before the next trial begins.&amp;#10;&amp;#10;After eight trials, there will be a five minute break, before the final seven trials run.&amp;#10;&amp;#10;If you have any questions at all please ask the experimenters." valType="str" updates="constant" name="text"/>
-        <Param val="from exp settings" valType="str" updates="None" name="units"/>
-        <Param val="" valType="num" updates="constant" name="wrapWidth"/>
-      </TextComponent>
-      <MouseComponent name="mouse_3">
-        <Param val="nextButton_R" valType="list" updates="constant" name="clickable"/>
-        <Param val="False" valType="bool" updates="None" name="disabled"/>
-        <Param val="" valType="code" updates="None" name="durationEstim"/>
-        <Param val="valid click" valType="str" updates="constant" name="forceEndRoutineOnPress"/>
-        <Param val="mouse_3" valType="code" updates="None" name="name"/>
-        <Param val="True" valType="bool" updates="constant" name="newClicksOnly"/>
-        <Param val="final" valType="str" updates="None" name="saveMouseState"/>
-        <Param val="name," valType="list" updates="constant" name="saveParamsClickable"/>
-        <Param val="True" valType="bool" updates="None" name="saveStartStop"/>
-        <Param val="" valType="code" updates="None" name="startEstim"/>
-        <Param val="time (s)" valType="str" updates="None" name="startType"/>
-        <Param val="0.0" valType="code" updates="None" name="startVal"/>
-        <Param val="duration (s)" valType="str" updates="None" name="stopType"/>
-        <Param val="" valType="code" updates="constant" name="stopVal"/>
-        <Param val="False" valType="bool" updates="None" name="syncScreenRefresh"/>
-        <Param val="mouse onset" valType="str" updates="constant" name="timeRelativeTo"/>
-      </MouseComponent>
-      <ImageComponent name="nextButton_R">
-        <Param val="center" valType="str" updates="constant" name="anchor"/>
-        <Param val="$[1,1,1]" valType="color" updates="constant" name="color"/>
-        <Param val="rgb" valType="str" updates="constant" name="colorSpace"/>
-        <Param val="1" valType="num" updates="constant" name="contrast"/>
-        <Param val="False" valType="bool" updates="None" name="disabled"/>
-        <Param val="" valType="code" updates="None" name="durationEstim"/>
-        <Param val="False" valType="bool" updates="constant" name="flipHoriz"/>
-        <Param val="False" valType="bool" updates="constant" name="flipVert"/>
-        <Param val="next.png" valType="file" updates="constant" name="image"/>
-        <Param val="linear" valType="str" updates="constant" name="interpolate"/>
-        <Param val="" valType="str" updates="constant" name="mask"/>
-        <Param val="nextButton_R" valType="code" updates="None" name="name"/>
-        <Param val="" valType="num" updates="constant" name="opacity"/>
-        <Param val="0" valType="num" updates="constant" name="ori"/>
-        <Param val="(0, -0.4)" valType="list" updates="constant" name="pos"/>
-        <Param val="True" valType="bool" updates="None" name="saveStartStop"/>
-        <Param val="(0.15, 0.075)" valType="list" updates="constant" name="size"/>
-        <Param val="" valType="code" updates="None" name="startEstim"/>
-        <Param val="time (s)" valType="str" updates="None" name="startType"/>
-        <Param val="0.0" valType="code" updates="None" name="startVal"/>
-        <Param val="duration (s)" valType="str" updates="None" name="stopType"/>
-        <Param val="" valType="code" updates="constant" name="stopVal"/>
-        <Param val="True" valType="bool" updates="None" name="syncScreenRefresh"/>
-        <Param val="128" valType="num" updates="constant" name="texture resolution"/>
-        <Param val="from exp settings" valType="str" updates="None" name="units"/>
-      </ImageComponent>
-    </Routine>
-    <Routine name="interTrialPause">
-      <TextComponent name="Break25s">
-        <Param val="white" valType="color" updates="constant" name="color"/>
-        <Param val="rgb" valType="str" updates="constant" name="colorSpace"/>
-        <Param val="1" valType="num" updates="constant" name="contrast"/>
-        <Param val="False" valType="bool" updates="None" name="disabled"/>
-        <Param val="" valType="code" updates="None" name="durationEstim"/>
-        <Param val="None" valType="str" updates="constant" name="flip"/>
-        <Param val="Open Sans" valType="str" updates="constant" name="font"/>
-        <Param val="LTR" valType="str" updates="None" name="languageStyle"/>
-        <Param val="0.1" valType="num" updates="constant" name="letterHeight"/>
-        <Param val="Break25s" valType="code" updates="None" name="name"/>
-        <Param val="" valType="num" updates="constant" name="opacity"/>
-        <Param val="0" valType="num" updates="constant" name="ori"/>
-        <Param val="(0, 0)" valType="list" updates="constant" name="pos"/>
-        <Param val="True" valType="bool" updates="None" name="saveStartStop"/>
-        <Param val="" valType="code" updates="None" name="startEstim"/>
-        <Param val="time (s)" valType="str" updates="None" name="startType"/>
-        <Param val="0.0" valType="code" updates="None" name="startVal"/>
-        <Param val="duration (s)" valType="str" updates="None" name="stopType"/>
-        <Param val="25" valType="code" updates="constant" name="stopVal"/>
-        <Param val="True" valType="bool" updates="None" name="syncScreenRefresh"/>
-        <Param val="25 second break - feel free to stretch/blink/etc." valType="str" updates="constant" name="text"/>
-        <Param val="from exp settings" valType="str" updates="None" name="units"/>
-        <Param val="" valType="num" updates="constant" name="wrapWidth"/>
-      </TextComponent>
-    </Routine>
   </Routines>
   <Flow>
     <Routine name="instructions"/>
-    <Routine name="Ready1stBlock"/>
+    <Routine name="Ready"/>
     <LoopInitiator loopType="TrialHandler" name="block_end">
-      <Param name="Selected rows" updates="None" val="1:7" valType="str"/>
+      <Param name="Selected rows" updates="None" val="$randnums[1:15]" valType="str"/>
       <Param name="conditions" updates="None" val="[{'stimuli': 'Stimuli/Albums-AnaBelen_Veneo-03.wav'}, {'stimuli': 'Stimuli/Albums-Ballroom_Classics4-11.wav'}, {'stimuli': 'Stimuli/Albums-Ballroom_Classics4-12.wav'}, {'stimuli': 'Stimuli/Albums-Ballroom_Magic-09.wav'}, {'stimuli': 'Stimuli/Albums-Cafe_Paradiso-06.wav'}, {'stimuli': 'Stimuli/Albums-Cafe_Paradiso-07.wav'}, {'stimuli': 'Stimuli/Albums-Cafe_Paradiso-09.wav'}, {'stimuli': 'Stimuli/Albums-Cafe_Paradiso-10.wav'}, {'stimuli': 'Stimuli/Albums-Cafe_Paradiso-15.wav'}, {'stimuli': 'Stimuli/Albums-Cafe_Paradiso-16.wav'}, {'stimuli': 'Stimuli/Albums-Commitments-10.wav'}, {'stimuli': 'Stimuli/Albums-Fire-01.wav'}, {'stimuli': 'Stimuli/Albums-GloriaEstefan_MiTierra-04.wav'}, {'stimuli': 'Stimuli/Albums-GloriaEstefan_MiTierra-06.wav'}, {'stimuli': 'Stimuli/Keyboard - major - minor - A-G-F-E 80BPM'}]" valType="str"/>
       <Param name="conditionsFile" updates="None" val="stimuliList.xlsx" valType="file"/>
       <Param name="endPoints" updates="None" val="[0, 1]" valType="num"/>
@@ -442,47 +370,5 @@
     <Routine name="trial"/>
     <Routine name="interTrialPause"/>
     <LoopTerminator name="block_end"/>
-    <LoopInitiator loopType="TrialHandler" name="block_1end">
-      <Param name="Selected rows" updates="None" val="8" valType="str"/>
-      <Param name="conditions" updates="None" val="[{'stimuli': 'Stimuli/Albums-AnaBelen_Veneo-03.wav'}, {'stimuli': 'Stimuli/Albums-Ballroom_Classics4-11.wav'}, {'stimuli': 'Stimuli/Albums-Ballroom_Classics4-12.wav'}, {'stimuli': 'Stimuli/Albums-Ballroom_Magic-09.wav'}, {'stimuli': 'Stimuli/Albums-Cafe_Paradiso-06.wav'}, {'stimuli': 'Stimuli/Albums-Cafe_Paradiso-07.wav'}, {'stimuli': 'Stimuli/Albums-Cafe_Paradiso-09.wav'}, {'stimuli': 'Stimuli/Albums-Cafe_Paradiso-10.wav'}, {'stimuli': 'Stimuli/Albums-Cafe_Paradiso-15.wav'}, {'stimuli': 'Stimuli/Albums-Cafe_Paradiso-16.wav'}, {'stimuli': 'Stimuli/Albums-Commitments-10.wav'}, {'stimuli': 'Stimuli/Albums-Fire-01.wav'}, {'stimuli': 'Stimuli/Albums-GloriaEstefan_MiTierra-04.wav'}, {'stimuli': 'Stimuli/Albums-GloriaEstefan_MiTierra-06.wav'}, {'stimuli': 'Stimuli/Keyboard - major - minor - A-G-F-E 80BPM'}]" valType="str"/>
-      <Param name="conditionsFile" updates="None" val="stimuliList.xlsx" valType="file"/>
-      <Param name="endPoints" updates="None" val="[0, 1]" valType="num"/>
-      <Param name="isTrials" updates="None" val="True" valType="bool"/>
-      <Param name="loopType" updates="None" val="random" valType="str"/>
-      <Param name="nReps" updates="None" val="1" valType="num"/>
-      <Param name="name" updates="None" val="block_1end" valType="code"/>
-      <Param name="random seed" updates="None" val="" valType="code"/>
-    </LoopInitiator>
-    <Routine name="trial"/>
-    <LoopTerminator name="block_1end"/>
-    <Routine name="break_2"/>
-    <Routine name="Ready"/>
-    <LoopInitiator loopType="TrialHandler" name="block_2">
-      <Param name="Selected rows" updates="None" val="9:14" valType="str"/>
-      <Param name="conditions" updates="None" val="[{'stimuli': 'Stimuli/Albums-AnaBelen_Veneo-03.wav'}, {'stimuli': 'Stimuli/Albums-Ballroom_Classics4-11.wav'}, {'stimuli': 'Stimuli/Albums-Ballroom_Classics4-12.wav'}, {'stimuli': 'Stimuli/Albums-Ballroom_Magic-09.wav'}, {'stimuli': 'Stimuli/Albums-Cafe_Paradiso-06.wav'}, {'stimuli': 'Stimuli/Albums-Cafe_Paradiso-07.wav'}, {'stimuli': 'Stimuli/Albums-Cafe_Paradiso-09.wav'}, {'stimuli': 'Stimuli/Albums-Cafe_Paradiso-10.wav'}, {'stimuli': 'Stimuli/Albums-Cafe_Paradiso-15.wav'}, {'stimuli': 'Stimuli/Albums-Cafe_Paradiso-16.wav'}, {'stimuli': 'Stimuli/Albums-Commitments-10.wav'}, {'stimuli': 'Stimuli/Albums-Fire-01.wav'}, {'stimuli': 'Stimuli/Albums-GloriaEstefan_MiTierra-04.wav'}, {'stimuli': 'Stimuli/Albums-GloriaEstefan_MiTierra-06.wav'}, {'stimuli': 'Stimuli/Keyboard - major - minor - A-G-F-E 80BPM'}]" valType="str"/>
-      <Param name="conditionsFile" updates="None" val="stimuliList.xlsx" valType="file"/>
-      <Param name="endPoints" updates="None" val="[0, 1]" valType="num"/>
-      <Param name="isTrials" updates="None" val="True" valType="bool"/>
-      <Param name="loopType" updates="None" val="random" valType="str"/>
-      <Param name="nReps" updates="None" val="1" valType="num"/>
-      <Param name="name" updates="None" val="block_2" valType="code"/>
-      <Param name="random seed" updates="None" val="" valType="code"/>
-    </LoopInitiator>
-    <Routine name="trial"/>
-    <Routine name="interTrialPause"/>
-    <LoopTerminator name="block_2"/>
-    <LoopInitiator loopType="TrialHandler" name="block_2end">
-      <Param name="Selected rows" updates="None" val="15" valType="str"/>
-      <Param name="conditions" updates="None" val="[{'stimuli': 'Stimuli/Albums-AnaBelen_Veneo-03.wav'}, {'stimuli': 'Stimuli/Albums-Ballroom_Classics4-11.wav'}, {'stimuli': 'Stimuli/Albums-Ballroom_Classics4-12.wav'}, {'stimuli': 'Stimuli/Albums-Ballroom_Magic-09.wav'}, {'stimuli': 'Stimuli/Albums-Cafe_Paradiso-06.wav'}, {'stimuli': 'Stimuli/Albums-Cafe_Paradiso-07.wav'}, {'stimuli': 'Stimuli/Albums-Cafe_Paradiso-09.wav'}, {'stimuli': 'Stimuli/Albums-Cafe_Paradiso-10.wav'}, {'stimuli': 'Stimuli/Albums-Cafe_Paradiso-15.wav'}, {'stimuli': 'Stimuli/Albums-Cafe_Paradiso-16.wav'}, {'stimuli': 'Stimuli/Albums-Commitments-10.wav'}, {'stimuli': 'Stimuli/Albums-Fire-01.wav'}, {'stimuli': 'Stimuli/Albums-GloriaEstefan_MiTierra-04.wav'}, {'stimuli': 'Stimuli/Albums-GloriaEstefan_MiTierra-06.wav'}, {'stimuli': 'Stimuli/Keyboard - major - minor - A-G-F-E 80BPM'}]" valType="str"/>
-      <Param name="conditionsFile" updates="None" val="stimuliList.xlsx" valType="file"/>
-      <Param name="endPoints" updates="None" val="[0, 1]" valType="num"/>
-      <Param name="isTrials" updates="None" val="True" valType="bool"/>
-      <Param name="loopType" updates="None" val="random" valType="str"/>
-      <Param name="nReps" updates="None" val="1" valType="num"/>
-      <Param name="name" updates="None" val="block_2end" valType="code"/>
-      <Param name="random seed" updates="None" val="" valType="code"/>
-    </LoopInitiator>
-    <Routine name="trial"/>
-    <LoopTerminator name="block_2end"/>
   </Flow>
 </PsychoPy2experiment>
