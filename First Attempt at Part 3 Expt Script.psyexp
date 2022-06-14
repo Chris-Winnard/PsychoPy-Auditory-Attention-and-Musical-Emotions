@@ -9,10 +9,10 @@
     <Param val="True" valType="bool" updates="None" name="Enable Escape"/>
     <Param val="{'participant': ''}" valType="code" updates="None" name="Experiment info"/>
     <Param val="True" valType="bool" updates="None" name="Force stereo"/>
-    <Param val="True" valType="bool" updates="None" name="Full-screen window"/>
+    <Param val="False" valType="bool" updates="None" name="Full-screen window"/>
     <Param val="" valType="str" updates="None" name="HTML path"/>
     <Param val="" valType="str" updates="None" name="Incomplete URL"/>
-    <Param val="testMonitor" valType="str" updates="None" name="Monitor"/>
+    <Param val="externalMonitor" valType="str" updates="None" name="Monitor"/>
     <Param val="[]" valType="list" updates="None" name="Resources"/>
     <Param val="False" valType="bool" updates="None" name="Save csv file"/>
     <Param val="False" valType="bool" updates="None" name="Save excel file"/>
@@ -20,12 +20,12 @@
     <Param val="True" valType="bool" updates="None" name="Save log file"/>
     <Param val="True" valType="bool" updates="None" name="Save psydat file"/>
     <Param val="True" valType="bool" updates="None" name="Save wide csv file"/>
-    <Param val="1" valType="num" updates="None" name="Screen"/>
+    <Param val="2" valType="num" updates="None" name="Screen"/>
     <Param val="True" valType="bool" updates="None" name="Show info dlg"/>
     <Param val="False" valType="bool" updates="None" name="Show mouse"/>
     <Param val="height" valType="str" updates="None" name="Units"/>
     <Param val="" valType="str" updates="None" name="Use version"/>
-    <Param val="[1536, 864]" valType="list" updates="None" name="Window size (pixels)"/>
+    <Param val="[2560, 1440]" valType="list" updates="None" name="Window size (pixels)"/>
     <Param val="avg" valType="str" updates="None" name="blendMode"/>
     <Param val="-0.4510, 0.0196, 0.4118" valType="color" updates="None" name="color"/>
     <Param val="rgb" valType="str" updates="None" name="colorSpace"/>
@@ -64,30 +64,6 @@
   </Settings>
   <Routines>
     <Routine name="trial">
-      <MovieComponent name="silentFilm">
-        <Param val="False" valType="bool" updates="None" name="No audio"/>
-        <Param val="center" valType="str" updates="constant" name="anchor"/>
-        <Param val="moviepy" valType="str" updates="None" name="backend"/>
-        <Param val="1" valType="num" updates="constant" name="contrast"/>
-        <Param val="False" valType="bool" updates="None" name="disabled"/>
-        <Param val="" valType="code" updates="None" name="durationEstim"/>
-        <Param val="False" valType="bool" updates="constant" name="forceEndRoutine"/>
-        <Param val="False" valType="bool" updates="None" name="loop"/>
-        <Param val="" valType="file" updates="constant" name="movie"/>
-        <Param val="silentFilm" valType="code" updates="None" name="name"/>
-        <Param val="" valType="num" updates="constant" name="opacity"/>
-        <Param val="0" valType="num" updates="constant" name="ori"/>
-        <Param val="(0, 0)" valType="list" updates="constant" name="pos"/>
-        <Param val="True" valType="bool" updates="None" name="saveStartStop"/>
-        <Param val="" valType="list" updates="constant" name="size"/>
-        <Param val="" valType="code" updates="None" name="startEstim"/>
-        <Param val="time (s)" valType="str" updates="None" name="startType"/>
-        <Param val="5.0" valType="code" updates="None" name="startVal"/>
-        <Param val="duration (s)" valType="str" updates="None" name="stopType"/>
-        <Param val="30.0" valType="code" updates="constant" name="stopVal"/>
-        <Param val="True" valType="bool" updates="None" name="syncScreenRefresh"/>
-        <Param val="from exp settings" valType="str" updates="None" name="units"/>
-      </MovieComponent>
       <TextComponent name="attendNote">
         <Param val="white" valType="color" updates="constant" name="color"/>
         <Param val="rgb" valType="str" updates="constant" name="colorSpace"/>
@@ -203,7 +179,7 @@
         <Param val="duration (s)" valType="str" updates="None" name="stopType"/>
         <Param val="" valType="code" updates="constant" name="stopVal"/>
         <Param val="True" valType="bool" updates="None" name="syncScreenRefresh"/>
-        <Param val="Welcome to Part 3 of the experiment. The instructions are as follows:&amp;#10;&amp;#10;&amp;#10;&amp;#10;&amp;#10;If you have any questions at all please ask the experimenters." valType="str" updates="constant" name="text"/>
+        <Param val="First, you will be told to either &quot;attend&quot;, or to &quot;NOT attend&quot; to the music that will be played.&amp;#10;&amp;#10;Then, one of the music pieces from before will be played, alongside a silent film. Please try not to blink or move during this period.&amp;#10;&amp;#10;You will not need to do anything else, and there will be a short break before the next trial.&amp;#10;&amp;#10;If you have any questions at all please ask the experimenters." valType="str" updates="constant" name="text"/>
         <Param val="from exp settings" valType="str" updates="None" name="units"/>
         <Param val="1.8" valType="num" updates="constant" name="wrapWidth"/>
       </TextComponent>
@@ -356,19 +332,19 @@
   <Flow>
     <Routine name="instructions"/>
     <Routine name="Ready"/>
-    <LoopInitiator loopType="TrialHandler" name="block_end">
-      <Param name="Selected rows" updates="None" val="$randnums[1:15]" valType="str"/>
-      <Param name="conditions" updates="None" val="[{'stimuli': 'Stimuli/Albums-AnaBelen_Veneo-03.wav'}, {'stimuli': 'Stimuli/Albums-Ballroom_Classics4-11.wav'}, {'stimuli': 'Stimuli/Albums-Ballroom_Classics4-12.wav'}, {'stimuli': 'Stimuli/Albums-Ballroom_Magic-09.wav'}, {'stimuli': 'Stimuli/Albums-Cafe_Paradiso-06.wav'}, {'stimuli': 'Stimuli/Albums-Cafe_Paradiso-07.wav'}, {'stimuli': 'Stimuli/Albums-Cafe_Paradiso-09.wav'}, {'stimuli': 'Stimuli/Albums-Cafe_Paradiso-10.wav'}, {'stimuli': 'Stimuli/Albums-Cafe_Paradiso-15.wav'}, {'stimuli': 'Stimuli/Albums-Cafe_Paradiso-16.wav'}, {'stimuli': 'Stimuli/Albums-Commitments-10.wav'}, {'stimuli': 'Stimuli/Albums-Fire-01.wav'}, {'stimuli': 'Stimuli/Albums-GloriaEstefan_MiTierra-04.wav'}, {'stimuli': 'Stimuli/Albums-GloriaEstefan_MiTierra-06.wav'}, {'stimuli': 'Stimuli/Keyboard - major - minor - A-G-F-E 80BPM'}]" valType="str"/>
-      <Param name="conditionsFile" updates="None" val="stimuliList.xlsx" valType="file"/>
+    <LoopInitiator loopType="TrialHandler" name="block">
+      <Param name="Selected rows" updates="None" val="1:15" valType="str"/>
+      <Param name="conditions" updates="None" val="[{'stimuli': 'Stimuli/Placeholder1.wav'}, {'stimuli': 'Stimuli/Harmonica1.wav'}, {'stimuli': 'Stimuli/Harmonica2.wav'}, {'stimuli': 'Stimuli/Harmonica3.wav'}, {'stimuli': 'Stimuli/Placeholder2.wav'}, {'stimuli': 'Stimuli/Placeholder3.wav'}, {'stimuli': 'Stimuli/Placeholder4.wav'}, {'stimuli': 'Stimuli/Keyboard-Happy-KeyOfAMinor.wav'}, {'stimuli': 'Stimuli/Keyboard-Sad-KeyOfAMinor.wav'}, {'stimuli': 'Stimuli/Keyboard-AggressivelyMelancholic-KeyofAMinor.wav'}, {'stimuli': 'Stimuli/Vibraphone-Major-AGFE-80BPM.wav'}, {'stimuli': 'Stimuli/Vibraphone-Minor-AGFE-80BPM.wav'}, {'stimuli': 'Stimuli/Keyboard-Major-AGFE-80BPM.wav'}, {'stimuli': 'Stimuli/Keyboard-Minor-AGFE-80BPM.wav'}, {'stimuli': 'Stimuli/Keyboard-MajorMinor-AGFE-80BPM.wav'}]" valType="str"/>
+      <Param name="conditionsFile" updates="None" val="stimuliListNoTriggers.xlsx" valType="file"/>
       <Param name="endPoints" updates="None" val="[0, 1]" valType="num"/>
       <Param name="isTrials" updates="None" val="True" valType="bool"/>
       <Param name="loopType" updates="None" val="random" valType="str"/>
       <Param name="nReps" updates="None" val="1" valType="num"/>
-      <Param name="name" updates="None" val="block_end" valType="code"/>
+      <Param name="name" updates="None" val="block" valType="code"/>
       <Param name="random seed" updates="None" val="" valType="code"/>
     </LoopInitiator>
     <Routine name="trial"/>
     <Routine name="interTrialPause"/>
-    <LoopTerminator name="block_end"/>
+    <LoopTerminator name="block"/>
   </Flow>
 </PsychoPy2experiment>
