@@ -34,19 +34,26 @@ sys.path.append('.')
 from constants import *
 
 SOUNDCARD_DEVICE_NAME = 'DAC8PRO'
+
 volume_level = 0.05
 volume_ratio = [1, 1]
 spk_volume = [x * volume_level for x in volume_ratio]
-
+pa_list_devices()
 s = Server(nchnls=PART_1_OUT_CHANNELS, duplex=0)
 devices = pa_get_output_devices()
-for name in devices[0]:
+print(devices[0])
+print(devices[1])
+indx = []
+#for name in devices[0]:
+for i in range(len(devices[0])):
+    name = devices[0][i]
     if SOUNDCARD_DEVICE_NAME in name:
+        print(name)
         soundcard_idx = devices[1][devices[0].index(name)]
-        print('sound card: ', name)
         s.setOutputDevice(soundcard_idx)
+        indx.append(devices[1][i])
         break
-
+print(indx)
 s = s.boot()
 s.start()
 
@@ -372,7 +379,7 @@ thisExp.addData('startExpTrigger.started', win.getFutureFlipTime(clock='now'))
 while continueRoutine and routineTimer.getTime() > 0:
     mm.out()
 mm.stop()
-thisExp.addData('startExpTrigger.stopped', win.getFutureFlipTime(clock='now'))
+thisExp.addData('startExpTrigger.stopped', win.getFutureFlipTime(clock='now'))  
 routineTimer.reset()
 thisExp.nextEntry()
 # end of playing part starting trig
