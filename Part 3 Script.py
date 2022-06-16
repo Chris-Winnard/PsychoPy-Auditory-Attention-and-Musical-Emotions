@@ -177,8 +177,8 @@ dontAttendNote = visual.TextStim(win=win, name='dontAttendNote',
 
 # Initialize components for Routine "interTrialPause"
 interTrialPauseClock = core.Clock()
-Break25s = visual.TextStim(win=win, name='Break25s',
-    text='25 second break - feel free to stretch/blink/etc.',
+Break20s = visual.TextStim(win=win, name='Break20s',
+    text='20 second break - feel free to stretch/blink/etc.',
     font='Open Sans',
     pos=(0, 0), height=0.1, wrapWidth=None, ori=0.0, 
     color='white', colorSpace='rgb', opacity=None, 
@@ -491,39 +491,9 @@ for thisBlock in block:
     
     # ------Prepare to start Routine "trial"-------
     continueRoutine = True
-    # update component parameters for each repeat
-    print(f'trigger: {trigger}')
-
-    trigger_filename, trigger_ext = os.path.splitext(trigger)
-    trigger_logfile = os.path.abspath(trigger_filename + '.txt')
-    trial['trigger'] = os.path.abspath(trigger)
-    trial['trigger_log'] = os.path.abspath(trigger_logfile)
-
-    # trigger channel
-    trigger_chn = SfPlayer(trigger)
-    mm.delInput(0)
-    mm.addInput(0, trigger_chn)
-    # stimuli channels
-    trial['stimulies'] = []
-    for i in range(0, PART_1_OUT_CHANNELS-1):
-        spk_name = "stimuli_{}".format(i)
-        print(f'{spk_name}: {globals()[spk_name]}')
-        trial['stimulies'].append(os.path.abspath(globals()[spk_name]))
-        chns[i] = SfPlayer(globals()[spk_name])
-        mm.delInput(i+1)
-        mm.addInput(i+1,chns[i])
-
-    jsondata['trials'].append(trial) 
+    # update stimuliStarted parameter for each repeat
+    stimuliStarted = False
     
-    for i in range(PART_1_OUT_CHANNELS):
-        for j in range(PART_1_OUT_CHANNELS):
-            mm.setAmp(i,j,0)
-    # set volume for output
-    output_idx = [0] + list(range(1,PART_1_OUT_CHANNELS))
-    input_idx = [0] + list(range(1,PART_1_OUT_CHANNELS))
-    for i in input_idx:
-        mm.setAmp(i, output_idx[i], spk_volume[i])
-        
     # keep track of which components have finished
     trialComponents = [attendNote, dontAttendNote]
     for thisComponent in trialComponents:
@@ -552,7 +522,7 @@ for thisBlock in block:
         # update/draw components on each frame
         
         # *attendNote* updates
-        if attendNote.status == NOT_STARTED and attend==True:
+        if attend==True and attendNote.status == NOT_STARTED:
             # keep track of start time/frame for later
             attendNote.frameNStart = frameN  # exact frame index
             attendNote.tStart = t  # local t and not account for scr refresh
@@ -569,7 +539,7 @@ for thisBlock in block:
                 attendNote.setAutoDraw(False)
         
         # *dontAttendNote* updates
-        if dontAttendNote.status == NOT_STARTED and attend==False:
+        if attend==False and dontAttendNote.status == NOT_STARTED:
             # keep track of start time/frame for later
             dontAttendNote.frameNStart = frameN  # exact frame index
             dontAttendNote.tStart = t  # local t and not account for scr refresh
@@ -584,9 +554,41 @@ for thisBlock in block:
                 dontAttendNote.frameNStop = frameN  # exact frame index
                 win.timeOnFlip(dontAttendNote, 'tStopRefresh')  # time at next scr refresh
                 dontAttendNote.setAutoDraw(False)
-    
-        if attendNote.status == FINISHED or dontAttendNote.status == FINISHED:
+        
+        if stimuliStarted == False and (attendNote.status == FINISHED or dontAttendNote.status == FINISHED):
+            print(f'trigger: {trigger}')
+        
+            trigger_filename, trigger_ext = os.path.splitext(trigger)
+            trigger_logfile = os.path.abspath(trigger_filename + '.txt')
+            trial['trigger'] = os.path.abspath(trigger)
+            trial['trigger_log'] = os.path.abspath(trigger_logfile)
+        
+            # trigger channel
+            trigger_chn = SfPlayer(trigger)
+            mm.delInput(0)
+            mm.addInput(0, trigger_chn)
+            # stimuli channels
+            trial['stimulies'] = []
+            for i in range(0, PART_1_OUT_CHANNELS-1):
+                spk_name = "stimuli_{}".format(i)
+                print(f'{spk_name}: {globals()[spk_name]}')
+                trial['stimulies'].append(os.path.abspath(globals()[spk_name]))
+                chns[i] = SfPlayer(globals()[spk_name])
+                mm.delInput(i+1)
+                mm.addInput(i+1,chns[i])
+        
+            jsondata['trials'].append(trial) 
+            
+            for i in range(PART_1_OUT_CHANNELS):
+                for j in range(PART_1_OUT_CHANNELS):
+                    mm.setAmp(i,j,0)
+            # set volume for output
+            output_idx = [0] + list(range(1,PART_1_OUT_CHANNELS))
+            input_idx = [0] + list(range(1,PART_1_OUT_CHANNELS))
+            for i in input_idx:
+                mm.setAmp(i, output_idx[i], spk_volume[i])
             mm.out()
+            stimuliStarted = True
      
         # check for quit (typically the Esc key)
         if endExpNow or defaultKeyboard.getKeys(keyList=["escape"]):
@@ -617,20 +619,24 @@ for thisBlock in block:
     for thisComponent in trialComponents:
         if hasattr(thisComponent, "setAutoDraw"):
             thisComponent.setAutoDraw(False)
-            
-    block.addData('attendNote.started', attendNote.tStartRefresh)
-    block.addData('attendNote.stopped', attendNote.tStopRefresh)
-    block.addData('dontAttendNote.started', dontAttendNote.tStartRefresh) #Will this record if it was attended or not..?
-    block.addData('dontAttendNote.stopped', dontAttendNote.tStopRefresh)
+    
+    if attend == True:
+        block.addData('attendNote.started', attendNote.tStartRefresh)
+        block.addData('attendNote.stopped', attendNote.tStopRefresh)
+        print("attended")
+    else:
+        block.addData('dontAttendNote.started', dontAttendNote.tStartRefresh) #Will this record if it was attended or not..?
+        block.addData('dontAttendNote.stopped', dontAttendNote.tStopRefresh)
+        print("not attended")
     # the Routine "trial" was not non-slip safe, so reset the non-slip timer
     routineTimer.reset()
     
     # ------Prepare to start Routine "interTrialPause"-------
     continueRoutine = True
-    routineTimer.add(25.000000)
+    routineTimer.add(20.000000)
     # update component parameters for each repeat
     # keep track of which components have finished
-    interTrialPauseComponents = [Break25s]
+    interTrialPauseComponents = [Break20s]
     for thisComponent in interTrialPauseComponents:
         thisComponent.tStart = None
         thisComponent.tStop = None
@@ -653,22 +659,22 @@ for thisBlock in block:
         frameN = frameN + 1  # number of completed frames (so 0 is the first frame)
         # update/draw components on each frame
         
-        # *Break25s* updates
-        if Break25s.status == NOT_STARTED and tThisFlip >= 0.0-frameTolerance:
+        # *Break20s* updates
+        if Break20s.status == NOT_STARTED and tThisFlip >= 0.0-frameTolerance:
             # keep track of start time/frame for later
-            Break25s.frameNStart = frameN  # exact frame index
-            Break25s.tStart = t  # local t and not account for scr refresh
-            Break25s.tStartRefresh = tThisFlipGlobal  # on global time
-            win.timeOnFlip(Break25s, 'tStartRefresh')  # time at next scr refresh
-            Break25s.setAutoDraw(True)
-        if Break25s.status == STARTED:
+            Break20s.frameNStart = frameN  # exact frame index
+            Break20s.tStart = t  # local t and not account for scr refresh
+            Break20s.tStartRefresh = tThisFlipGlobal  # on global time
+            win.timeOnFlip(Break20s, 'tStartRefresh')  # time at next scr refresh
+            Break20s.setAutoDraw(True)
+        if Break20s.status == STARTED:
             # is it time to stop? (based on global clock, using actual start)
-            if tThisFlipGlobal > Break25s.tStartRefresh + 25-frameTolerance:
+            if tThisFlipGlobal > Break20s.tStartRefresh + 20-frameTolerance:
                 # keep track of stop time/frame for later
-                Break25s.tStop = t  # not accounting for scr refresh
-                Break25s.frameNStop = frameN  # exact frame index
-                win.timeOnFlip(Break25s, 'tStopRefresh')  # time at next scr refresh
-                Break25s.setAutoDraw(False)
+                Break20s.tStop = t  # not accounting for scr refresh
+                Break20s.frameNStop = frameN  # exact frame index
+                win.timeOnFlip(Break20s, 'tStopRefresh')  # time at next scr refresh
+                Break20s.setAutoDraw(False)
         
         # check for quit (typically the Esc key)
         if endExpNow or defaultKeyboard.getKeys(keyList=["escape"]):
@@ -691,8 +697,8 @@ for thisBlock in block:
     for thisComponent in interTrialPauseComponents:
         if hasattr(thisComponent, "setAutoDraw"):
             thisComponent.setAutoDraw(False)
-    block.addData('Break25s.started', Break25s.tStartRefresh)
-    block.addData('Break25s.stopped', Break25s.tStopRefresh)
+    block.addData('Break20s.started', Break20s.tStartRefresh)
+    block.addData('Break20s.stopped', Break20s.tStopRefresh)
     thisExp.nextEntry()
     
 # completed 1.0 repeats of 'block'
