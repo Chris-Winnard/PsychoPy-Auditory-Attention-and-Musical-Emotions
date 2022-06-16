@@ -92,7 +92,7 @@ frameTolerance = 0.001  # how close to onset before 'same' frame
 win = visual.Window(
     size=[2560, 1440], fullscr=False, screen=1, 
     winType='pyglet', allowGUI=True, allowStencil=False,
-    monitor='externalMonitor', color=[-0.4510, 0.0196, 0.4118], colorSpace='rgb',
+    monitor='otherExternalMonitor', color=[-0.4510, 0.0196, 0.4118], colorSpace='rgb',
     blendMode='avg', useFBO=True, 
     units='height')
 # store frame rate of monitor if we can measure it
