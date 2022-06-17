@@ -90,7 +90,7 @@ frameTolerance = 0.001  # how close to onset before 'same' frame
 
 # Setup the Window
 win = visual.Window(
-    size=[2560, 1440], fullscr=False, screen=1, 
+    size=[1920, 1080], fullscr=False, screen=0, 
     winType='pyglet', allowGUI=True, allowStencil=False,
     monitor='otherExternalMonitor', color=[-0.4510, 0.0196, 0.4118], colorSpace='rgb',
     blendMode='avg', useFBO=True, 
@@ -508,6 +508,8 @@ for thisBlock in block:
     _timeToFirstFrame = win.getFutureFlipTime(clock="now")
     trialClock.reset(-_timeToFirstFrame)  # t0 is time of first possible flip
     frameN = -1
+    #Reset window minimisation parameter
+    windowMinimised = False
     
     #Set random attend condition:
     attend = bool(random.getrandbits(1))
@@ -521,6 +523,18 @@ for thisBlock in block:
         frameN = frameN + 1  # number of completed frames (so 0 is the first frame)
         # update/draw components on each frame
         
+        #Minimise window when music starts:
+        if tThisFlip >= 5 and windowMinimised == False:
+            win.winHandle.minimize() # minimise the PsychoPy window
+            #win.flip() # redraw the (minimised) window
+            windowMinimised=True
+        
+        #Maximise window when music ends:
+        if  tThisFlip >= PART_1_STIMULI_LEN-frameTolerance+5 and windowMinimised == True:
+            win.winHandle.maximize()
+            win.winHandle.activate()
+            windowMinimised = False
+            
         # *attendNote* updates
         if attend==True and attendNote.status == NOT_STARTED:
             # keep track of start time/frame for later
