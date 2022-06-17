@@ -224,8 +224,8 @@ nextButton = visual.ImageStim(
 
 # Initialize components for Routine "interTrialPause"
 interTrialPauseClock = core.Clock()
-Break25s = visual.TextStim(win=win, name='Break25s',
-    text='25 second break - feel free to stretch/blink/etc.',
+Break20s = visual.TextStim(win=win, name='Break20s',
+    text='20 second break - feel free to stretch/blink/etc.',
     font='Open Sans',
     pos=(0, 0), height=0.1, wrapWidth=None, ori=0.0, 
     color='white', colorSpace='rgb', opacity=None, 
@@ -768,10 +768,10 @@ for thisBlock1 in block1:
     
     # ------Prepare to start Routine "interTrialPause"-------
     continueRoutine = True
-    routineTimer.add(25.000000)
+    routineTimer.add(20.000000)
     # update component parameters for each repeat
     # keep track of which components have finished
-    interTrialPauseComponents = [Break25s]
+    interTrialPauseComponents = [Break20s]
     for thisComponent in interTrialPauseComponents:
         thisComponent.tStart = None
         thisComponent.tStop = None
@@ -794,22 +794,22 @@ for thisBlock1 in block1:
         frameN = frameN + 1  # number of completed frames (so 0 is the first frame)
         # update/draw components on each frame
         
-        # *Break25s* updates
-        if Break25s.status == NOT_STARTED and tThisFlip >= 0.0-frameTolerance:
+        # *Break20s* updates
+        if Break20s.status == NOT_STARTED and tThisFlip >= 0.0-frameTolerance:
             # keep track of start time/frame for later
-            Break25s.frameNStart = frameN  # exact frame index
-            Break25s.tStart = t  # local t and not account for scr refresh
-            Break25s.tStartRefresh = tThisFlipGlobal  # on global time
-            win.timeOnFlip(Break25s, 'tStartRefresh')  # time at next scr refresh
-            Break25s.setAutoDraw(True)
-        if Break25s.status == STARTED:
+            Break20s.frameNStart = frameN  # exact frame index
+            Break20s.tStart = t  # local t and not account for scr refresh
+            Break20s.tStartRefresh = tThisFlipGlobal  # on global time
+            win.timeOnFlip(Break20s, 'tStartRefresh')  # time at next scr refresh
+            Break20s.setAutoDraw(True)
+        if Break20s.status == STARTED:
             # is it time to stop? (based on global clock, using actual start)
-            if tThisFlipGlobal > Break25s.tStartRefresh + 25-frameTolerance:
+            if tThisFlipGlobal > Break20s.tStartRefresh + 20-frameTolerance:
                 # keep track of stop time/frame for later
-                Break25s.tStop = t  # not accounting for scr refresh
-                Break25s.frameNStop = frameN  # exact frame index
-                win.timeOnFlip(Break25s, 'tStopRefresh')  # time at next scr refresh
-                Break25s.setAutoDraw(False)
+                Break20s.tStop = t  # not accounting for scr refresh
+                Break20s.frameNStop = frameN  # exact frame index
+                win.timeOnFlip(Break20s, 'tStopRefresh')  # time at next scr refresh
+                Break20s.setAutoDraw(False)
         
         # check for quit (typically the Esc key)
         if endExpNow or defaultKeyboard.getKeys(keyList=["escape"]):
@@ -832,8 +832,8 @@ for thisBlock1 in block1:
     for thisComponent in interTrialPauseComponents:
         if hasattr(thisComponent, "setAutoDraw"):
             thisComponent.setAutoDraw(False)
-    block1.addData('Break25s.started', Break25s.tStartRefresh)
-    block1.addData('Break25s.stopped', Break25s.tStopRefresh)
+    block1.addData('Break20s.started', Break20s.tStartRefresh)
+    block1.addData('Break20s.stopped', Break20s.tStopRefresh)
     thisExp.nextEntry()
     
 # completed 1.0 repeats of 'block1'
