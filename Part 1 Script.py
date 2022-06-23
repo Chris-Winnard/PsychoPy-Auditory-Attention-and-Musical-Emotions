@@ -41,19 +41,19 @@ spk_volume = [x * volume_level for x in volume_ratio]
 pa_list_devices()
 s = Server(nchnls=PART_1_OUT_CHANNELS, duplex=0)
 devices = pa_get_output_devices()
-print(devices[0])
-print(devices[1])
+#print(devices[0])
+#print(devices[1])
 indx = []
 #for name in devices[0]:
 for i in range(len(devices[0])):
     name = devices[0][i]
     if SOUNDCARD_DEVICE_NAME in name:
-        print(name)
+    #    print(name)
         soundcard_idx = devices[1][devices[0].index(name)]
         s.setOutputDevice(soundcard_idx)
         indx.append(devices[1][i])
         break
-print(indx)
+#print(indx)
 s = s.boot()
 s.start()
 
@@ -126,9 +126,9 @@ defaultKeyboard = keyboard.Keyboard(backend='iohub')
 # Initialize components for Routine "instructions"
 instructionsClock = core.Clock()
 instr_txt = visual.TextStim(win=win, name='instr_txt',
-    text='A music clip will be played, alongside a silent film. Try to listen to the music, but you can enjoy the film as well. Please try not to blink or move during this period.\n\nYou will then be asked to rate your emotions. Feel free to take a break here and blink/stretch/etc. There will then be a pause before the next trial.\n\nIf you have any questions at all please ask the experimenters.',
+    text='A music excerpt and a silent film will both play- try to listen to the music, but you can enjoy the film as well. Please try not to blink or move during this period.\n\nYou will then be asked to rate your emotions. You can take a break here before the next trial.\n\nIf you have any questions at all please ask the experimenters.',
     font='Open Sans',
-    pos=(0, 0.15), height=0.04, wrapWidth=1.8, ori=0.0, 
+    pos=(0, 0.15), height=0.05, wrapWidth=1.8, ori=0.0, 
     color='white', colorSpace='rgb', opacity=None, 
     languageStyle='LTR',
     depth=0.0);
@@ -149,7 +149,7 @@ ReadyClock = core.Clock()
 top_instr_txt_3 = visual.TextStim(win=win, name='top_instr_txt_3',
     text='When you are ready, click "NEXT".',
     font='Open Sans',
-    pos=(0, 0.15), height=0.04, wrapWidth=None, ori=0.0, 
+    pos=(0, 0.15), height=0.05, wrapWidth=None, ori=0.0, 
     color='white', colorSpace='rgb', opacity=None, 
     languageStyle='LTR',
     depth=0.0);
@@ -224,8 +224,8 @@ nextButton = visual.ImageStim(
 
 # Initialize components for Routine "interTrialPause"
 interTrialPauseClock = core.Clock()
-Break20s = visual.TextStim(win=win, name='Break20s',
-    text='20 second break - feel free to stretch/blink/etc.',
+Break5s = visual.TextStim(win=win, name='Break5s',
+    text='Get ready for the next trial.',
     font='Open Sans',
     pos=(0, 0), height=0.1, wrapWidth=None, ori=0.0, 
     color='white', colorSpace='rgb', opacity=None, 
@@ -783,10 +783,10 @@ for thisBlock1 in block1:
     
     # ------Prepare to start Routine "interTrialPause"-------
     continueRoutine = True
-    routineTimer.add(20.000000)
+    routineTimer.add(5.000000)
     # update component parameters for each repeat
     # keep track of which components have finished
-    interTrialPauseComponents = [Break20s]
+    interTrialPauseComponents = [Break5s]
     for thisComponent in interTrialPauseComponents:
         thisComponent.tStart = None
         thisComponent.tStop = None
@@ -809,22 +809,22 @@ for thisBlock1 in block1:
         frameN = frameN + 1  # number of completed frames (so 0 is the first frame)
         # update/draw components on each frame
         
-        # *Break20s* updates
-        if Break20s.status == NOT_STARTED and tThisFlip >= 0.0-frameTolerance:
+        # *Break5s* updates
+        if Break5s.status == NOT_STARTED and tThisFlip >= 0.0-frameTolerance:
             # keep track of start time/frame for later
-            Break20s.frameNStart = frameN  # exact frame index
-            Break20s.tStart = t  # local t and not account for scr refresh
-            Break20s.tStartRefresh = tThisFlipGlobal  # on global time
-            win.timeOnFlip(Break20s, 'tStartRefresh')  # time at next scr refresh
-            Break20s.setAutoDraw(True)
-        if Break20s.status == STARTED:
+            Break5s.frameNStart = frameN  # exact frame index
+            Break5s.tStart = t  # local t and not account for scr refresh
+            Break5s.tStartRefresh = tThisFlipGlobal  # on global time
+            win.timeOnFlip(Break5s, 'tStartRefresh')  # time at next scr refresh
+            Break5s.setAutoDraw(True)
+        if Break5s.status == STARTED:
             # is it time to stop? (based on global clock, using actual start)
-            if tThisFlipGlobal > Break20s.tStartRefresh + 20-frameTolerance:
+            if tThisFlipGlobal > Break5s.tStartRefresh + 5-frameTolerance:
                 # keep track of stop time/frame for later
-                Break20s.tStop = t  # not accounting for scr refresh
-                Break20s.frameNStop = frameN  # exact frame index
-                win.timeOnFlip(Break20s, 'tStopRefresh')  # time at next scr refresh
-                Break20s.setAutoDraw(False)
+                Break5s.tStop = t  # not accounting for scr refresh
+                Break5s.frameNStop = frameN  # exact frame index
+                win.timeOnFlip(Break5s, 'tStopRefresh')  # time at next scr refresh
+                Break5s.setAutoDraw(False)
         
         # check for quit (typically the Esc key)
         if endExpNow or defaultKeyboard.getKeys(keyList=["escape"]):
@@ -847,8 +847,8 @@ for thisBlock1 in block1:
     for thisComponent in interTrialPauseComponents:
         if hasattr(thisComponent, "setAutoDraw"):
             thisComponent.setAutoDraw(False)
-    block1.addData('Break20s.started', Break20s.tStartRefresh)
-    block1.addData('Break20s.stopped', Break20s.tStopRefresh)
+    block1.addData('Break5s.started', Break5s.tStartRefresh)
+    block1.addData('Break5s.stopped', Break5s.tStopRefresh)
     thisExp.nextEntry()
     
 # completed 1.0 repeats of 'block1'
