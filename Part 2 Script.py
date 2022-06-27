@@ -27,7 +27,6 @@ import sys  # to get file system encoding
 import psychopy.iohub as io
 from psychopy.hardware import keyboard
 from pyo import *
-import random
 import json
 
 sys.path.append('.')
@@ -38,7 +37,7 @@ volume_level = 0.05
 volume_ratio = [1, 1]
 spk_volume = [x * volume_level for x in volume_ratio]
 
-s = Server(nchnls=PART_1_OUT_CHANNELS, duplex=0)
+s = Server(nchnls=PART_2_OUT_CHANNELS, duplex=0)
 devices = pa_get_output_devices()
 for name in devices[0]:
     if SOUNDCARD_DEVICE_NAME in name:
@@ -50,15 +49,15 @@ for name in devices[0]:
 s = s.boot()
 s.start()
 
-chns = [None]*(PART_1_OUT_CHANNELS-1)
-mm = Mixer(outs=PART_1_OUT_CHANNELS)
+chns = [None]*(PART_2_OUT_CHANNELS-1)
+mm = Mixer(outs=PART_2_OUT_CHANNELS)
 
 # Ensure that relative paths start from the same directory as this script
 _thisDir = os.path.dirname(os.path.abspath(__file__))
 os.chdir(_thisDir)
 # Store info about the experiment session
 psychopyVersion = '2022.1.3'
-expName = 'Part 3 Script'  # from the Builder filename that created this script
+expName = 'First Attempt at Part 2 Expt Script'  # from the Builder filename that created this script
 expInfo = {'participant': ''}
 dlg = gui.DlgFromDict(dictionary=expInfo, sortKeys=False, title=expName)
 if dlg.OK == False:
@@ -69,14 +68,14 @@ expInfo['psychopyVersion'] = psychopyVersion
 
 # Data file name stem = absolute path + name; later add .psyexp, .csv, .log, etc
 filename = _thisDir + os.sep + u'data/%s/%s/experiment' % (expInfo['participant'], expName)
-jsonfilename = filename + '_stimuli.json'
+jsonfilename = filename + '_oddballStimuli.json'
 jsondata = {}
 jsondata['trials'] = []
 
 # An ExperimentHandler isn't essential but helps with data saving
 thisExp = data.ExperimentHandler(name=expName, version='',
     extraInfo=expInfo, runtimeInfo=None,
-    originPath='C:\\Users\\Chris\\Documents\\Music Interestingness in the Brain\\NEWEST PsychoPy-Auditory-Attention-and-Musical-Emotions-main\\PsychoPy-Auditory-Attention-and-Musical-Emotions-main\\Part 3 Script.py',
+    originPath='C:\\Users\\Chris\\Documents\\Music Interestingness in the Brain\\NEWEST PsychoPy-Auditory-Attention-and-Musical-Emotions-main\\PsychoPy-Auditory-Attention-and-Musical-Emotions-main\\Part 2 Script.py',
     savePickle=True, saveWideText=True,
     dataFileName=filename)
 # save a log file for detail verbose info
@@ -119,7 +118,7 @@ defaultKeyboard = keyboard.Keyboard(backend='iohub')
 # Initialize components for Routine "instructions"
 instructionsClock = core.Clock()
 top_instr_txt = visual.TextStim(win=win, name='top_instr_txt',
-    text='A music excerpt and a silent film will both play- you will be told to focus on one of these just before they start. Please try not to blink or move whilst the stimuli are playing.\n\nAfterwards, the experimenter will ask you about the stimulus you were told to focus on. You can take a break here before the next trial.\n\nIf you have any questions at all please ask the experimenters.',
+    text='Three music pieces will play at the same time: one vibraphone piece, one keyboard piece, and one harmonica piece. These will play from the left, centre, and right respectively.\n\nFirst, you will be told to pay attention to one of these pieces in particular. E.g, if you see an "^" arrow, then you should pay attention to the keyboard piece, coming from the centre.\n\nThen, the pieces will play twice in a row. The first time will just be to remind you of the pieces. During the second time, there will be some "oddballs" where the pitch is shifted for two seconds. Try to count these. Please try not to blink or move during the minute whilst the music plays.\n\nYou will need to type in how many oddballs you heard. You will then receive feedback.\n\nAfter this you will have the chance to take a break and blink/stretch/etc, before starting the next trial. The pieces played next may be the same as previously or different ones.\n\nIf you have any questions at all please ask the experimenters.',
     font='Open Sans',
     pos=(0, 0.15), height=0.05, wrapWidth=1.8, ori=0.0, 
     color='white', colorSpace='rgb', opacity=None, 
@@ -160,15 +159,22 @@ nextButton_R1B = visual.ImageStim(
 
 # Initialize components for Routine "trial"
 trialClock = core.Clock()
-attendNote = visual.TextStim(win=win, name='attendNote',
-    text='Attend to the music\n',
+attendVibraphoneNote = visual.TextStim(win=win, name='attendVibraphoneNote',
+    text='Attend to the vibraphone (left)\n',
     font='Open Sans',
     pos=(0, 0), height=0.05, wrapWidth=None, ori=0.0, 
     color='white', colorSpace='rgb', opacity=None, 
     languageStyle='LTR',
     depth=0.0);
-dontAttendNote = visual.TextStim(win=win, name='dontAttendNote',
-    text='Do NOT attend to the music\n',
+attendHarmonicaNote = visual.TextStim(win=win, name='attendHarmonicaNote',
+    text='Attend to the harmonica (centre)\n',
+    font='Open Sans',
+    pos=(0, 0), height=0.05, wrapWidth=None, ori=0.0, 
+    color='white', colorSpace='rgb', opacity=None, 
+    languageStyle='LTR',
+    depth=-1.0);
+attendKeyboardNote = visual.TextStim(win=win, name='attendKeyboardNote',
+    text='Attend to the keyboard (right)\n',
     font='Open Sans',
     pos=(0, 0), height=0.05, wrapWidth=None, ori=0.0, 
     color='white', colorSpace='rgb', opacity=None, 
@@ -177,13 +183,30 @@ dontAttendNote = visual.TextStim(win=win, name='dontAttendNote',
 
 # Initialize components for Routine "QuestionBreakPause"
 QuestionBreakPauseClock = core.Clock()
-top_instr_txt_4 = visual.TextStim(win=win, name='top_instr_txt_4',
-    text='The experimenter will now ask you about the stimulus you were focusing on, and you can take a break. When you are ready for the next trial, click "NEXT".',
+oddballsQuestion = visual.TextStim(win=win, name='oddballsQuestion',
+    text='How many oddballs did you hear?',
     font='Open Sans',
     pos=(0, 0.15), height=0.05, wrapWidth=1.8, ori=0.0, 
     color='white', colorSpace='rgb', opacity=None, 
     languageStyle='LTR',
-    depth=0.0);
+    depth=0.0); ####HAVE TEXTBOX HERE, AND SOME SORT OF 'oddballNumber' parameter, so if the answer = oddballNumber, then they were correct. NEED TO INCLUDE
+    #REFERENCES TO oddballsResp elsewhere in the script!!! -> THINK I have done (at least mostly, but still need to account for 'if oddballResp == ...'
+oddballsResp = visual.TextBox2(
+     win, text=None, font='Open Sans',
+     pos=(0.0, 0.01),     letterHeight=0.025,
+     size=(0.3, 0.04), borderWidth=2.0,
+     color='Black', colorSpace='rgb',
+     opacity=None,
+     bold=False, italic=False,
+     lineSpacing=1.0,
+     padding=0.0, alignment='center',
+     anchor='center',
+     fillColor='White', borderColor='Black',
+     flipHoriz=False, flipVert=False, languageStyle='LTR',
+     editable=True,
+     name='oddballsResp',
+     autoLog=True,
+)
 mouse_4 = event.Mouse(win=win)
 x, y = [None, None]
 mouse_4.mouseClock = core.Clock()
@@ -285,9 +308,9 @@ while continueRoutine:
         break
     continueRoutine = False  # will revert to True if at least one component still running
     for thisComponent in instructionsComponents:
-        if attendNote != FINISHED and dontAttendNote != FINISHED:
+        if attendVibraphoneNote != FINISHED and attendHarmonicaNote != FINISHED and attendKeyboardNote:
             continueRoutine = True
-            break  # at least one component has not yet finished
+            break  # if none have finished
     
     # refresh the screen
     if continueRoutine:  # don't flip if this routine is over or we'll get a blank screen
@@ -333,10 +356,10 @@ routineTimer.reset()
 continueRoutine = True
 routineTimer.add(1)
 startExpTrigger = SfPlayer('start_trigger.wav')
-for i in range(PART_1_OUT_CHANNELS):
+for i in range(PART_2_OUT_CHANNELS):
     mm.delInput(i)
 mm.addInput(0, startExpTrigger)
-for i in range(PART_1_OUT_CHANNELS):
+for i in range(PART_2_OUT_CHANNELS):
     mm.setAmp(0,i,0)
 mm.setAmp(0,0,spk_volume[0])
 thisExp.addData('startExpTrigger.started', win.getFutureFlipTime(clock='now'))
@@ -479,7 +502,7 @@ routineTimer.reset()
 # set up handler to look after randomisation of conditions etc
 block = data.TrialHandler(nReps=1.0, method='random', 
     extraInfo=expInfo, originPath=-1,
-    trialList=data.importConditions('stimuliList.xlsx', selection='1:15'),
+    trialList=data.importConditions('oddballStimuliList.xlsx', selection='1:15'),
     seed=None, name='block')
 thisExp.addLoop(block)  # add the loop to the experiment
 thisBlock = block.trialList[0]  # so we can initialise stimuli with some values
@@ -505,7 +528,7 @@ for thisBlock in block:
     stimuliStarted = False
     
     # keep track of which components have finished
-    trialComponents = [attendNote, dontAttendNote]
+    trialComponents = [attendVibraphoneNote, attendHarmonicaNote, attendKeyboardNote]
     for thisComponent in trialComponents:
         thisComponent.tStart = None
         thisComponent.tStop = None
@@ -521,9 +544,6 @@ for thisBlock in block:
     #Reset window minimisation parameter
     windowMinimised = False
     
-    #Set random attend condition:
-    attend = bool(random.getrandbits(1))
-    
     # -------Run Routine "trial"-------
     while continueRoutine:
         # get current time
@@ -533,53 +553,60 @@ for thisBlock in block:
         frameN = frameN + 1  # number of completed frames (so 0 is the first frame)
         # update/draw components on each frame
         
-        #Minimise window when music starts:
-        if tThisFlip >= 5 and windowMinimised == False:
-            win.winHandle.minimize() # minimise the PsychoPy window
-            #win.flip() # redraw the (minimised) window
-            windowMinimised=True
+        attendedInstrument = f'{attendedInstrument}' #Setting the attended instrument, from the column in oddballStimuliList.xlsx
         
-        #Maximise window when music ends:
-        if  tThisFlip >= PART_1_STIMULI_LEN-frameTolerance+5 and windowMinimised == True:
-            win.winHandle.maximize()
-            win.winHandle.activate()
-            windowMinimised = False
-            
-        # *attendNote* updates
-        if attend==True and attendNote.status == NOT_STARTED:
+        # *attendVibraphoneNote* updates
+        if attendedInstrument == 'vibraphone' and attendVibraphoneNote.status == NOT_STARTED:
             # keep track of start time/frame for later
-            attendNote.frameNStart = frameN  # exact frame index
-            attendNote.tStart = t  # local t and not account for scr refresh
-            attendNote.tStartRefresh = tThisFlipGlobal  # on global time
-            win.timeOnFlip(attendNote, 'tStartRefresh')  # time at next scr refresh
-            attendNote.setAutoDraw(True)
-        if attendNote.status == STARTED:
+            attendVibraphoneNote.frameNStart = frameN  # exact frame index
+            attendVibraphoneNote.tStart = t  # local t and not account for scr refresh
+            attendVibraphoneNote.tStartRefresh = tThisFlipGlobal  # on global time
+            win.timeOnFlip(attendVibraphoneNote, 'tStartRefresh')  # time at next scr refresh
+            attendVibraphoneNote.setAutoDraw(True)
+        if attendVibraphoneNote.status == STARTED:
             # is it time to stop? (based on global clock, using actual start)
-            if tThisFlipGlobal > attendNote.tStartRefresh + 5.0-frameTolerance:
+            if tThisFlipGlobal > attendVibraphoneNote.tStartRefresh + 5.0-frameTolerance:
                 # keep track of stop time/frame for later
-                attendNote.tStop = t  # not accounting for scr refresh
-                attendNote.frameNStop = frameN  # exact frame index
-                win.timeOnFlip(attendNote, 'tStopRefresh')  # time at next scr refresh
-                attendNote.setAutoDraw(False)
+                attendVibraphoneNote.tStop = t  # not accounting for scr refresh
+                attendVibraphoneNote.frameNStop = frameN  # exact frame index
+                win.timeOnFlip(attendVibraphoneNote, 'tStopRefresh')  # time at next scr refresh
+                attendVibraphoneNote.setAutoDraw(False)
         
-        # *dontAttendNote* updates
-        if attend==False and dontAttendNote.status == NOT_STARTED:
+        # *attendHarmonicaNote* updates
+        if attendedInstrument == 'harmonica' and attendHarmonicaNote.status == NOT_STARTED:
             # keep track of start time/frame for later
-            dontAttendNote.frameNStart = frameN  # exact frame index
-            dontAttendNote.tStart = t  # local t and not account for scr refresh
-            dontAttendNote.tStartRefresh = tThisFlipGlobal  # on global time
-            win.timeOnFlip(dontAttendNote, 'tStartRefresh')  # time at next scr refresh
-            dontAttendNote.setAutoDraw(True)
-        if dontAttendNote.status == STARTED:
+            attendHarmonicaNote.frameNStart = frameN  # exact frame index
+            attendHarmonicaNote.tStart = t  # local t and not account for scr refresh
+            attendHarmonicaNote.tStartRefresh = tThisFlipGlobal  # on global time
+            win.timeOnFlip(attendHarmonicaNote, 'tStartRefresh')  # time at next scr refresh
+            attendHarmonicaNote.setAutoDraw(True)
+        if attendHarmonicaNote.status == STARTED:
             # is it time to stop? (based on global clock, using actual start)
-            if tThisFlipGlobal > dontAttendNote.tStartRefresh + 5.0-frameTolerance:
+            if tThisFlipGlobal > attendHarmonicaNote.tStartRefresh + 5.0-frameTolerance:
                 # keep track of stop time/frame for later
-                dontAttendNote.tStop = t  # not accounting for scr refresh
-                dontAttendNote.frameNStop = frameN  # exact frame index
-                win.timeOnFlip(dontAttendNote, 'tStopRefresh')  # time at next scr refresh
-                dontAttendNote.setAutoDraw(False)
+                attendHarmonicaNote.tStop = t  # not accounting for scr refresh
+                attendHarmonicaNote.frameNStop = frameN  # exact frame index
+                win.timeOnFlip(attendHarmonicaNote, 'tStopRefresh')  # time at next scr refresh
+                attendHarmonicaNote.setAutoDraw(False)
         
-        if stimuliStarted == False and (attendNote.status == FINISHED or dontAttendNote.status == FINISHED):
+                # *attendKeyboardNote* updates
+        if attendedInstrument == 'keyboard' and attendKeyboardNote.status == NOT_STARTED:
+            # keep track of start time/frame for later
+            attendKeyboardNote.frameNStart = frameN  # exact frame index
+            attendKeyboardNote.tStart = t  # local t and not account for scr refresh
+            attendKeyboardNote.tStartRefresh = tThisFlipGlobal  # on global time
+            win.timeOnFlip(attendKeyboardNote, 'tStartRefresh')  # time at next scr refresh
+            attendKeyboardNote.setAutoDraw(True)
+        if attendKeyboardNote.status == STARTED:
+            # is it time to stop? (based on global clock, using actual start)
+            if tThisFlipGlobal > attendKeyboardNote.tStartRefresh + 5.0-frameTolerance:
+                # keep track of stop time/frame for later
+                attendKeyboardNote.tStop = t  # not accounting for scr refresh
+                attendKeyboardNote.frameNStop = frameN  # exact frame index
+                win.timeOnFlip(attendKeyboardNote, 'tStopRefresh')  # time at next scr refresh
+                attendKeyboardNote.setAutoDraw(False)
+        
+        if stimuliStarted == False and (attendVibraphoneNote.status == FINISHED or attendHarmonicaNote.status == FINISHED or attendKeyboardNote.status == FINISHED):
             print(f'trigger: {trigger}')
         
             trigger_filename, trigger_ext = os.path.splitext(trigger)
@@ -593,7 +620,7 @@ for thisBlock in block:
             mm.addInput(0, trigger_chn)
             # stimuli channels
             trial['stimulies'] = []
-            for i in range(0, PART_1_OUT_CHANNELS-1):
+            for i in range(0, PART_2_OUT_CHANNELS-1):
                 spk_name = "stimuli_{}".format(i)
                 print(f'{spk_name}: {globals()[spk_name]}')
                 trial['stimulies'].append(os.path.abspath(globals()[spk_name]))
@@ -603,12 +630,12 @@ for thisBlock in block:
         
             jsondata['trials'].append(trial) 
             
-            for i in range(PART_1_OUT_CHANNELS):
-                for j in range(PART_1_OUT_CHANNELS):
+            for i in range(PART_2_OUT_CHANNELS):
+                for j in range(PART_2_OUT_CHANNELS):
                     mm.setAmp(i,j,0)
             # set volume for output
-            output_idx = [0] + list(range(1,PART_1_OUT_CHANNELS))
-            input_idx = [0] + list(range(1,PART_1_OUT_CHANNELS))
+            output_idx = [0] + list(range(1,PART_2_OUT_CHANNELS))
+            input_idx = [0] + list(range(1,PART_2_OUT_CHANNELS))
             for i in input_idx:
                 mm.setAmp(i, output_idx[i], spk_volume[i])
             mm.out()
@@ -627,7 +654,7 @@ for thisBlock in block:
                 continueRoutine = True
                 break  # at least one component has not yet finished
         
-        if tThisFlip >= PART_3_STIMULI_LEN+5.0-frameTolerance:
+        if tThisFlip >= PART_2_STIMULI_LEN+5.0-frameTolerance:
             continueRoutine = False
         
         # refresh the screen
@@ -644,14 +671,18 @@ for thisBlock in block:
         if hasattr(thisComponent, "setAutoDraw"):
             thisComponent.setAutoDraw(False)
     
-    if attend == True:
-        block.addData('attendNote.started', attendNote.tStartRefresh)
-        block.addData('attendNote.stopped', attendNote.tStopRefresh)
-        print("attended")
-    else:
-        block.addData('dontAttendNote.started', dontAttendNote.tStartRefresh) #Will this record if it was attended or not..?
-        block.addData('dontAttendNote.stopped', dontAttendNote.tStopRefresh)
-        print("not attended")
+    if attendedInstrument == 'vibraphone':
+        block.addData('attendVibraphone.started', attendVibraphoneNote.tStartRefresh)
+        block.addData('attendVibraphone.stopped', attendVibraphoneNote.tStopRefresh)
+        print("Vibraphone is to be attended.")
+    elif attendedInstrument == 'harmonica':
+        block.addData('attendHarmonica.started', attendHarmonicaNote.tStartRefresh)
+        block.addData('attendHarmonica.stopped', attendHarmonicaNote.tStopRefresh)
+        print("Harmonica is to be attended.")
+    elif attendedInstrument == 'keyboard':
+        block.addData('attendKeyboardNote.started', attendKeyboardNote.tStartRefresh) #Will this record if it was attended or not..?
+        block.addData('attendKeyboardNote.stopped', attendKeyboardNote.tStopRefresh)
+        print("Keyboard is to be attended.")
     # the Routine "trial" was not non-slip safe, so reset the non-slip timer
     routineTimer.reset()
     
@@ -662,7 +693,7 @@ for thisBlock in block:
     mouse_4.clicked_name = []
     gotValidClick = False  # until a click is received
     # keep track of which components have finished
-    QuestionBreakPauseComponents = [top_instr_txt_4, mouse_4, nextButton_R1B]
+    QuestionBreakPauseComponents = [oddballsQuestion, oddballsResp, mouse_4, nextButton_R1B]
     for thisComponent in QuestionBreakPauseComponents:
         thisComponent.tStart = None
         thisComponent.tStop = None
@@ -685,14 +716,22 @@ for thisBlock in block:
         frameN = frameN + 1  # number of completed frames (so 0 is the first frame)
         # update/draw components on each frame
         
-        # *top_instr_txt_4* updates
-        if top_instr_txt_4.status == NOT_STARTED and tThisFlip >= 0.0-frameTolerance:
+        # *oddballsQuestion* updates
+        if oddballsQuestion.status == NOT_STARTED and tThisFlip >= 0.0-frameTolerance:
             # keep track of start time/frame for later
-            top_instr_txt_4.frameNStart = frameN  # exact frame index
-            top_instr_txt_4.tStart = t  # local t and not account for scr refresh
-            top_instr_txt_4.tStartRefresh = tThisFlipGlobal  # on global time
-            win.timeOnFlip(top_instr_txt_4, 'tStartRefresh')  # time at next scr refresh
-            top_instr_txt_4.setAutoDraw(True)
+            oddballsQuestion.frameNStart = frameN  # exact frame index
+            oddballsQuestion.tStart = t  # local t and not account for scr refresh
+            oddballsQuestion.tStartRefresh = tThisFlipGlobal  # on global time
+            win.timeOnFlip(oddballsQuestion, 'tStartRefresh')  # time at next scr refresh
+            oddballsQuestion.setAutoDraw(True)        
+        # *oddballsResp* updates
+        if oddballsResp.status == NOT_STARTED and tThisFlip >= 0.0-frameTolerance:
+            # keep track of start time/frame for later
+            oddballsResp.frameNStart = frameN  # exact frame index
+            oddballsResp.tStart = t  # local t and not account for scr refresh
+            oddballsResp.tStartRefresh = tThisFlipGlobal  # on global time
+            win.timeOnFlip(oddballsResp, 'tStartRefresh')  # time at next scr refresh
+            oddballsResp.setAutoDraw(True)
         # *mouse_4* updates
         if mouse_4.status == NOT_STARTED and t >= 0.0-frameTolerance:
             # keep track of start time/frame for later
@@ -752,8 +791,10 @@ for thisBlock in block:
     for thisComponent in QuestionBreakPauseComponents:
         if hasattr(thisComponent, "setAutoDraw"):
             thisComponent.setAutoDraw(False)
-    thisExp.addData('top_instr_txt_4.started', top_instr_txt_4.tStartRefresh)
-    thisExp.addData('top_instr_txt_4.stopped', top_instr_txt_4.tStopRefresh)
+    thisExp.addData('oddballsQuestion.started', oddballsQuestion.tStartRefresh)
+    thisExp.addData('oddballsQuestion.stopped', oddballsQuestion.tStopRefresh)
+    thisExp.addData('oddballsResp.started', oddballsResp.tStartRefresh)
+    thisExp.addData('oddballsResp.stopped', oddballsResp.tStopRefresh)
     # store data for thisExp (ExperimentHandler)
     x, y = mouse_4.getPos()
     buttons = mouse_4.getPressed()
@@ -792,7 +833,7 @@ routineTimer.add(1)
 stopExpTrigger = SfPlayer('stop_trigger.wav')
 mm.delInput(0)
 mm.addInput(0, stopExpTrigger)
-for i in range(PART_1_OUT_CHANNELS):
+for i in range(PART_2_OUT_CHANNELS):
     mm.setAmp(0,i,0)
 mm.setAmp(0,0,spk_volume[0])
 thisExp.addData('stopExpTrigger.started', win.getFutureFlipTime(clock='now'))
