@@ -126,7 +126,7 @@ defaultKeyboard = keyboard.Keyboard(backend='iohub')
 # Initialize components for Routine "instructions"
 instructionsClock = core.Clock()
 instr_txt = visual.TextStim(win=win, name='instr_txt',
-    text='A music excerpt and a silent film will both play- try to listen to the music, but you can enjoy the film as well. Please try not to blink or move during this period.\n\nYou will then be asked to rate your emotions. You can then take a break.\n\nIf you have any questions at all please ask the experimenters.',
+    text='A music excerpt and a silent film will both play- try to focus on the music, but you can enjoy the film as well. Please try not to blink/move during this period.\n\nYou will then be asked to rate your emotions. You can then take a break.\n\nIf you have any questions at all please ask the experimenters.',
     font='Open Sans',
     pos=(0, 0.15), height=0.05, wrapWidth=1.8, ori=0.0, 
     color='white', colorSpace='rgb', opacity=None, 
