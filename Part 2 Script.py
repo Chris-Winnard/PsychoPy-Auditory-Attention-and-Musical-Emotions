@@ -362,8 +362,6 @@ while continueRoutine:
 for thisComponent in instructionsComponents:
     if hasattr(thisComponent, "setAutoDraw"):
         thisComponent.setAutoDraw(False)
-thisExp.addData('top_instr_txt.started', top_instr_txt.tStartRefresh)
-thisExp.addData('top_instr_txt.stopped', top_instr_txt.tStopRefresh)
 # store data for thisExp (ExperimentHandler)
 x, y = mouse_2.getPos()
 buttons = mouse_2.getPressed()
@@ -379,18 +377,6 @@ if sum(buttons):
         if obj.contains(mouse_2):
             gotValidClick = True
             mouse_2.clicked_name.append(obj.name)
-thisExp.addData('mouse_2.x', x)
-thisExp.addData('mouse_2.y', y)
-thisExp.addData('mouse_2.leftButton', buttons[0])
-thisExp.addData('mouse_2.midButton', buttons[1])
-thisExp.addData('mouse_2.rightButton', buttons[2])
-if len(mouse_2.clicked_name):
-    thisExp.addData('mouse_2.clicked_name', mouse_2.clicked_name[0])
-thisExp.addData('mouse_2.started', mouse_2.tStart)
-thisExp.addData('mouse_2.stopped', mouse_2.tStop)
-thisExp.nextEntry()
-thisExp.addData('nextButton_instruct.started', nextButton_instruct.tStartRefresh)
-thisExp.addData('nextButton_instruct.stopped', nextButton_instruct.tStopRefresh)
 # the Routine "instructions" was not non-slip safe, so reset the non-slip timer
 routineTimer.reset()
 
@@ -404,11 +390,9 @@ mm.addInput(0, startExpTrigger)
 for i in range(PART_2_OUT_CHANNELS):
     mm.setAmp(0,i,0)
 mm.setAmp(0,0,spk_volume[0])
-thisExp.addData('startExpTrigger.started', win.getFutureFlipTime(clock='now'))
 while continueRoutine and routineTimer.getTime() > 0:
     mm.out()
 mm.stop()
-thisExp.addData('startExpTrigger.stopped', win.getFutureFlipTime(clock='now'))
 routineTimer.reset()
 thisExp.nextEntry()
 # end of playing part starting trig
@@ -509,8 +493,6 @@ while continueRoutine:
 for thisComponent in ReadyComponents:
     if hasattr(thisComponent, "setAutoDraw"):
         thisComponent.setAutoDraw(False)
-thisExp.addData('top_instr_txt_3.started', top_instr_txt_3.tStartRefresh)
-thisExp.addData('top_instr_txt_3.stopped', top_instr_txt_3.tStopRefresh)
 # store data for thisExp (ExperimentHandler)
 x, y = mouse_4.getPos()
 buttons = mouse_4.getPressed()
@@ -526,18 +508,6 @@ if sum(buttons):
         if obj.contains(mouse_4):
             gotValidClick = True
             mouse_4.clicked_name.append(obj.name)
-thisExp.addData('mouse_4.x', x)
-thisExp.addData('mouse_4.y', y)
-thisExp.addData('mouse_4.leftButton', buttons[0])
-thisExp.addData('mouse_4.midButton', buttons[1])
-thisExp.addData('mouse_4.rightButton', buttons[2])
-if len(mouse_4.clicked_name):
-    thisExp.addData('mouse_4.clicked_name', mouse_4.clicked_name[0])
-thisExp.addData('mouse_4.started', mouse_4.tStart)
-thisExp.addData('mouse_4.stopped', mouse_4.tStop)
-thisExp.nextEntry()
-thisExp.addData('nextButton_R1B.started', nextButton_R1B.tStartRefresh)
-thisExp.addData('nextButton_R1B.stopped', nextButton_R1B.tStopRefresh)
 # the Routine "Ready" was not non-slip safe, so reset the non-slip timer
 routineTimer.reset()
 
@@ -715,17 +685,15 @@ for thisBlock in block:
             thisComponent.setAutoDraw(False)
     
     if attendedInstrument == 'vibraphone':
-        block.addData('attendVibraphone.started', attendVibraphoneNote.tStartRefresh)
-        block.addData('attendVibraphone.stopped', attendVibraphoneNote.tStopRefresh)
+        block.addData(attendedInstrument, 'Vibraphone attended')
         print("Vibraphone is to be attended.")
     elif attendedInstrument == 'harmonica':
-        block.addData('attendHarmonica.started', attendHarmonicaNote.tStartRefresh)
-        block.addData('attendHarmonica.stopped', attendHarmonicaNote.tStopRefresh)
+        block.addData(attendedInstrument, 'Harmonica attended')
         print("Harmonica is to be attended.")
     elif attendedInstrument == 'keyboard':
-        block.addData('attendKeyboardNote.started', attendKeyboardNote.tStartRefresh) #Will this record if it was attended or not..?
-        block.addData('attendKeyboardNote.stopped', attendKeyboardNote.tStopRefresh)
+        block.addData(attendedInstrument, 'Keyboard attended')
         print("Keyboard is to be attended.")
+    thisExp.nextEntry() #Next row on the record.
     # the Routine "trial" was not non-slip safe, so reset the non-slip timer
     routineTimer.reset()
     
@@ -834,10 +802,6 @@ for thisBlock in block:
     for thisComponent in QuestionBreakPauseComponents:
         if hasattr(thisComponent, "setAutoDraw"):
             thisComponent.setAutoDraw(False)
-    thisExp.addData('oddballsQuestion.started', oddballsQuestion.tStartRefresh)
-    thisExp.addData('oddballsQuestion.stopped', oddballsQuestion.tStopRefresh)
-    thisExp.addData('oddballsResp.started', oddballsResp.tStartRefresh)
-    thisExp.addData('oddballsResp.stopped', oddballsResp.tStopRefresh)
     # store data for thisExp (ExperimentHandler)
     x, y = mouse_4.getPos()
     buttons = mouse_4.getPressed()
@@ -853,18 +817,6 @@ for thisBlock in block:
             if obj.contains(mouse_4):
                 gotValidClick = True
                 mouse_4.clicked_name.append(obj.name)
-    thisExp.addData('mouse_4.x', x)
-    thisExp.addData('mouse_4.y', y)
-    thisExp.addData('mouse_4.leftButton', buttons[0])
-    thisExp.addData('mouse_4.midButton', buttons[1])
-    thisExp.addData('mouse_4.rightButton', buttons[2])
-    if len(mouse_4.clicked_name):
-        thisExp.addData('mouse_4.clicked_name', mouse_4.clicked_name[0])
-    thisExp.addData('mouse_4.started', mouse_4.tStart)
-    thisExp.addData('mouse_4.stopped', mouse_4.tStop)
-    thisExp.nextEntry()
-    thisExp.addData('nextButton_R1B.started', nextButton_R1B.tStartRefresh)
-    thisExp.addData('nextButton_R1B.stopped', nextButton_R1B.tStopRefresh)
     # the Routine "QuestionBreakPause" was not non-slip safe, so reset the non-slip timer
     routineTimer.reset()
     
@@ -972,8 +924,6 @@ for thisBlock in block:
         for thisComponent in CorrectAnswerFeedbackComponents:
             if hasattr(thisComponent, "setAutoDraw"):
                 thisComponent.setAutoDraw(False)
-        thisExp.addData('CorrectAnswerFeedbackTxt.started', CorrectAnswerFeedbackTxt.tStartRefresh)
-        thisExp.addData('CorrectAnswerFeedbackTxt.stopped', CorrectAnswerFeedbackTxt.tStopRefresh)
         # store data for thisExp (ExperimentHandler)
         x, y = mouse_4.getPos()
         buttons = mouse_4.getPressed()
@@ -989,18 +939,6 @@ for thisBlock in block:
                 if obj.contains(mouse_4):
                     gotValidClick = True
                     mouse_4.clicked_name.append(obj.name)
-        thisExp.addData('mouse_4.x', x)
-        thisExp.addData('mouse_4.y', y)
-        thisExp.addData('mouse_4.leftButton', buttons[0])
-        thisExp.addData('mouse_4.midButton', buttons[1])
-        thisExp.addData('mouse_4.rightButton', buttons[2])
-        if len(mouse_4.clicked_name):
-            thisExp.addData('mouse_4.clicked_name', mouse_4.clicked_name[0])
-        thisExp.addData('mouse_4.started', mouse_4.tStart)
-        thisExp.addData('mouse_4.stopped', mouse_4.tStop)
-        thisExp.nextEntry()
-        thisExp.addData('nextButton_R1B.started', nextButton_R1B.tStartRefresh)
-        thisExp.addData('nextButton_R1B.stopped', nextButton_R1B.tStopRefresh)
         # the Routine "CorrectAnswerFeedback" was not non-slip safe, so reset the non-slip timer
         routineTimer.reset()
     
@@ -1102,8 +1040,6 @@ for thisBlock in block:
         for thisComponent in IncorrectAnswerFeedbackComponents:
             if hasattr(thisComponent, "setAutoDraw"):
                 thisComponent.setAutoDraw(False)
-        thisExp.addData('IncorrectAnswerFeedbackTxt.started', IncorrectAnswerFeedbackTxt.tStartRefresh)
-        thisExp.addData('IncorrectAnswerFeedbackTxt.stopped', IncorrectAnswerFeedbackTxt.tStopRefresh)
         # store data for thisExp (ExperimentHandler)
         x, y = mouse_4.getPos()
         buttons = mouse_4.getPressed()
@@ -1119,21 +1055,8 @@ for thisBlock in block:
                 if obj.contains(mouse_4):
                     gotValidClick = True
                     mouse_4.clicked_name.append(obj.name)
-        thisExp.addData('mouse_4.x', x)
-        thisExp.addData('mouse_4.y', y)
-        thisExp.addData('mouse_4.leftButton', buttons[0])
-        thisExp.addData('mouse_4.midButton', buttons[1])
-        thisExp.addData('mouse_4.rightButton', buttons[2])
-        if len(mouse_4.clicked_name):
-            thisExp.addData('mouse_4.clicked_name', mouse_4.clicked_name[0])
-        thisExp.addData('mouse_4.started', mouse_4.tStart)
-        thisExp.addData('mouse_4.stopped', mouse_4.tStop)
-        thisExp.nextEntry()
-        thisExp.addData('nextButton_R1B.started', nextButton_R1B.tStartRefresh)
-        thisExp.addData('nextButton_R1B.stopped', nextButton_R1B.tStopRefresh)
         # the Routine "IncorrectAnswerFeedback" was not non-slip safe, so reset the non-slip timer
         routineTimer.reset()
-        
         
 # completed 1.0 repeats of 'block'
 
@@ -1146,11 +1069,9 @@ mm.addInput(0, stopExpTrigger)
 for i in range(PART_2_OUT_CHANNELS):
     mm.setAmp(0,i,0)
 mm.setAmp(0,0,spk_volume[0])
-thisExp.addData('stopExpTrigger.started', win.getFutureFlipTime(clock='now'))
 while continueRoutine and routineTimer.getTime() > 0:
     mm.out()
 mm.stop()
-thisExp.addData('stopExpTrigger.stopped', win.getFutureFlipTime(clock='now'))
 routineTimer.reset()
 thisExp.nextEntry()
 # End of playing part stop trig

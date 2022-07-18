@@ -615,11 +615,12 @@ for thisBlock in block:
             thisComponent.setAutoDraw(False)
     
     if attend == True:
-        block.addData('Attended the music')
+        block.addData('attendanceCondition','Attended to music')
         print("attended")
     else:
-        block.addData('Did not attend the music')
+        block.addData('attendanceCondition','Did not attend to music')
         print("not attended")
+    thisExp.nextEntry() #New line on the record.
     # the Routine "trial" was not non-slip safe, so reset the non-slip timer
     routineTimer.reset()
     

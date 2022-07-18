@@ -789,6 +789,7 @@ for thisBlock1 in block1:
         block1.addData('valenceResp.response', valenceResp.getRating())
         block1.addData('arousalResp.response', arousalResp.getRating())
         block1.addData('dominanceResp.response', dominanceResp.getRating())
+        thisExp.nextEntry() #Next row on the record.
         # store data for block1 (TrialHandler)
         x, y = mouse.getPos()
         buttons = mouse.getPressed()
