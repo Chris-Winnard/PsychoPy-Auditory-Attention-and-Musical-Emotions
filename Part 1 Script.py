@@ -389,8 +389,6 @@ while continueRoutine:
 for thisComponent in instructionsComponents:
     if hasattr(thisComponent, "setAutoDraw"):
         thisComponent.setAutoDraw(False)
-thisExp.addData('instr_txt.started', instr_txt.tStartRefresh)
-thisExp.addData('instr_txt.stopped', instr_txt.tStopRefresh)
 # store data for thisExp (ExperimentHandler)
 x, y = mouse_2.getPos()
 buttons = mouse_2.getPressed()
@@ -406,18 +404,6 @@ if sum(buttons):
         if obj.contains(mouse_2):
             gotValidClick = True
             mouse_2.clicked_name.append(obj.name)
-thisExp.addData('mouse_2.x', x)
-thisExp.addData('mouse_2.y', y)
-thisExp.addData('mouse_2.leftButton', buttons[0])
-thisExp.addData('mouse_2.midButton', buttons[1])
-thisExp.addData('mouse_2.rightButton', buttons[2])
-if len(mouse_2.clicked_name):
-    thisExp.addData('mouse_2.clicked_name', mouse_2.clicked_name[0])
-thisExp.addData('mouse_2.started', mouse_2.tStart)
-thisExp.addData('mouse_2.stopped', mouse_2.tStop)
-thisExp.nextEntry()
-thisExp.addData('nextButton_instruct.started', nextButton_instruct.tStartRefresh)
-thisExp.addData('nextButton_instruct.stopped', nextButton_instruct.tStopRefresh)
 # the Routine "instructions" was not non-slip safe, so reset the non-slip timer
 routineTimer.reset()
 
@@ -431,11 +417,9 @@ mm.addInput(0, startExpTrigger)
 for i in range(PART_1_OUT_CHANNELS):
     mm.setAmp(0,i,0)
 mm.setAmp(0,0,spk_volume[0])
-thisExp.addData('startExpTrigger.started', win.getFutureFlipTime(clock='now'))
 while continueRoutine and routineTimer.getTime() > 0:
     mm.out()
 mm.stop()
-thisExp.addData('startExpTrigger.stopped', win.getFutureFlipTime(clock='now'))  
 routineTimer.reset()
 thisExp.nextEntry()
 # end of playing part starting trig
@@ -537,8 +521,6 @@ while continueRoutine:
 for thisComponent in ReadyComponents:
     if hasattr(thisComponent, "setAutoDraw"):
         thisComponent.setAutoDraw(False)
-thisExp.addData('top_instr_txt_3.started', top_instr_txt_3.tStartRefresh)
-thisExp.addData('top_instr_txt_3.stopped', top_instr_txt_3.tStopRefresh)
 # store data for thisExp (ExperimentHandler)
 x, y = mouse_4.getPos()
 buttons = mouse_4.getPressed()
@@ -554,18 +536,6 @@ if sum(buttons):
         if obj.contains(mouse_4):
             gotValidClick = True
             mouse_4.clicked_name.append(obj.name)
-thisExp.addData('mouse_4.x', x)
-thisExp.addData('mouse_4.y', y)
-thisExp.addData('mouse_4.leftButton', buttons[0])
-thisExp.addData('mouse_4.midButton', buttons[1])
-thisExp.addData('mouse_4.rightButton', buttons[2])
-if len(mouse_4.clicked_name):
-    thisExp.addData('mouse_4.clicked_name', mouse_4.clicked_name[0])
-thisExp.addData('mouse_4.started', mouse_4.tStart)
-thisExp.addData('mouse_4.stopped', mouse_4.tStop)
-thisExp.nextEntry()
-thisExp.addData('nextButton_R1B.started', nextButton_R1B.tStartRefresh)
-thisExp.addData('nextButton_R1B.stopped', nextButton_R1B.tStopRefresh)
 # the Routine "Ready" was not non-slip safe, so reset the non-slip timer
 routineTimer.reset()
 
@@ -816,26 +786,9 @@ for thisBlock1 in block1:
             if hasattr(thisComponent, "setAutoDraw"):
                 thisComponent.setAutoDraw(False)
         
-        thisExp.addData('clickForEmotionInfo.started', clickForEmotionInfo.tStartRefresh)
-        thisExp.addData('clickForEmotionInfo.stopped', clickForEmotionInfo.tStopRefresh)
-        block1.addData('valence.started', valence.tStartRefresh)
-        block1.addData('valence.stopped', valence.tStopRefresh)
         block1.addData('valenceResp.response', valenceResp.getRating())
-        block1.addData('valenceResp.rt', valenceResp.getRT())
-        block1.addData('valenceResp.started', valenceResp.tStartRefresh)
-        block1.addData('valenceResp.stopped', valenceResp.tStopRefresh)
-        block1.addData('arousal.started', arousal.tStartRefresh)
-        block1.addData('arousal.stopped', arousal.tStopRefresh)
         block1.addData('arousalResp.response', arousalResp.getRating())
-        block1.addData('arousalResp.rt', arousalResp.getRT())
-        block1.addData('arousalResp.started', arousalResp.tStartRefresh)
-        block1.addData('arousalResp.stopped', arousalResp.tStopRefresh)
-        block1.addData('dominance.started', dominance.tStartRefresh)
-        block1.addData('dominance.stopped', dominance.tStopRefresh)
         block1.addData('dominanceResp.response', dominanceResp.getRating())
-        block1.addData('dominanceResp.rt', dominanceResp.getRT())
-        block1.addData('dominanceResp.started', dominanceResp.tStartRefresh)
-        block1.addData('dominanceResp.stopped', dominanceResp.tStopRefresh)
         # store data for block1 (TrialHandler)
         x, y = mouse.getPos()
         buttons = mouse.getPressed()
@@ -862,17 +815,6 @@ for thisBlock1 in block1:
                     if obj.contains(mouse):
                         gotValidClick = True
                         mouse.clicked_name.append(obj.name)
-        block1.addData('mouse.x', x)
-        block1.addData('mouse.y', y)
-        block1.addData('mouse.leftButton', buttons[0])
-        block1.addData('mouse.midButton', buttons[1])
-        block1.addData('mouse.rightButton', buttons[2])
-        if len(mouse.clicked_name):
-            block1.addData('mouse.clicked_name', mouse.clicked_name[0])
-        block1.addData('mouse.started', mouse.tStart)
-        block1.addData('mouse.stopped', mouse.tStop)
-        block1.addData('nextButton.started', nextButton.tStartRefresh)
-        block1.addData('nextButton.stopped', nextButton.tStopRefresh)
         # the Routine "trial" was not non-slip safe, so reset the non-slip timer
         routineTimer.reset()
         
@@ -985,9 +927,7 @@ for thisBlock1 in block1:
                 if hasattr(thisComponent, "setAutoDraw"):
                     thisComponent.setAutoDraw(False)
             thisExp.addData('Emotions_Mapping_Figure.started', Emotions_Mapping_Figure.tStartRefresh)
-            thisExp.addData('Emotions_Mapping_Figure.stopped', Emotions_Mapping_Figure.tStopRefresh)
-            thisExp.addData('nextButton_3.started', nextButton_3.tStartRefresh)
-            thisExp.addData('nextButton_3.stopped', nextButton_3.tStopRefresh)
+            thisExp.addData('Emotions_Mapping_Figure.stopped', Emotions_Mapping_Figure.tStopRefresh) #keep this?
             # store data for thisExp (ExperimentHandler)
             x, y = mouse_3.getPos()
             buttons = mouse_3.getPressed()
@@ -1003,18 +943,6 @@ for thisBlock1 in block1:
                     if obj.contains(mouse_3):
                         gotValidClick = True
                         mouse_3.clicked_name.append(obj.name)
-            thisExp.addData('mouse_3.x', x)
-            thisExp.addData('mouse_3.y', y)
-            thisExp.addData('mouse_3.leftButton', buttons[0])
-            thisExp.addData('mouse_3.midButton', buttons[1])
-            thisExp.addData('mouse_3.rightButton', buttons[2])
-            if len(mouse_3.clicked_name):
-                thisExp.addData('mouse_3.clicked_name', mouse_3.clicked_name[0])
-            thisExp.addData('mouse_3.started', mouse_3.tStart)
-            thisExp.addData('mouse_3.stopped', mouse_3.tStop)
-            thisExp.nextEntry()
-            thisExp.addData('text_3.started', text_3.tStartRefresh)
-            thisExp.addData('text_3.stopped', text_3.tStopRefresh)
             # the Routine "Categorical_Emotions_to_VAD_Mapping" was not non-slip safe, so reset the non-slip timer
             routineTimer.reset()
             continueRoutine = True
@@ -1112,8 +1040,6 @@ for thisBlock1 in block1:
     for thisComponent in interTrialPauseComponents:
         if hasattr(thisComponent, "setAutoDraw"):
             thisComponent.setAutoDraw(False)
-    thisExp.addData('interTrialPauseText.started', interTrialPauseText.tStartRefresh)
-    thisExp.addData('interTrialPauseText.stopped', interTrialPauseText.tStopRefresh)
     # store data for thisExp (ExperimentHandler)
     x, y = mouse_4.getPos()
     buttons = mouse_4.getPressed()
@@ -1129,18 +1055,6 @@ for thisBlock1 in block1:
             if obj.contains(mouse_4):
                 gotValidClick = True
                 mouse_4.clicked_name.append(obj.name)
-    thisExp.addData('mouse_4.x', x)
-    thisExp.addData('mouse_4.y', y)
-    thisExp.addData('mouse_4.leftButton', buttons[0])
-    thisExp.addData('mouse_4.midButton', buttons[1])
-    thisExp.addData('mouse_4.rightButton', buttons[2])
-    if len(mouse_4.clicked_name):
-        thisExp.addData('mouse_4.clicked_name', mouse_4.clicked_name[0])
-    thisExp.addData('mouse_4.started', mouse_4.tStart)
-    thisExp.addData('mouse_4.stopped', mouse_4.tStop)
-    thisExp.nextEntry()
-    thisExp.addData('nextButton_R1B.started', nextButton_R1B.tStartRefresh)
-    thisExp.addData('nextButton_R1B.stopped', nextButton_R1B.tStopRefresh)
     # the Routine "interTrialPause" was not non-slip safe, so reset the non-slip timer
     routineTimer.reset()
         
@@ -1155,11 +1069,9 @@ mm.addInput(0, stopExpTrigger)
 for i in range(PART_1_OUT_CHANNELS):
     mm.setAmp(0,i,0)
 mm.setAmp(0,0,spk_volume[0])
-thisExp.addData('stopExpTrigger.started', win.getFutureFlipTime(clock='now'))
 while continueRoutine and routineTimer.getTime() > 0:
     mm.out()
 mm.stop()
-thisExp.addData('stopExpTrigger.stopped', win.getFutureFlipTime(clock='now'))
 routineTimer.reset()
 thisExp.nextEntry()
 # End of playing part stop trig

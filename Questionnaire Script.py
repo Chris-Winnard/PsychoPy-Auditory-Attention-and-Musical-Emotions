@@ -297,14 +297,14 @@ clickForEmotionInfo = visual.TextBox2(
      name='clickForEmotionInfo',
      autoLog=True,
 )
-moodValence_2 = visual.TextStim(win=win, name='moodValence_2',
+moodValence = visual.TextStim(win=win, name='moodValence',
     text='Q7: How positive or negative is your current mood?\n',
     font='Open Sans',
     pos=(0.0, 0.23), height=0.03, wrapWidth=None, ori=0.0, 
     color='white', colorSpace='rgb', opacity=None, 
     languageStyle='LTR',
     depth=-6.0);
-moodValenceResp_2 = visual.Slider(win=win, name='moodValenceResp_2',
+moodValenceResp = visual.Slider(win=win, name='moodValenceResp',
     startValue=None, size=(1.1, 0.02), pos=(0.0, 0.16), units=None,
     labels=("Very negative", "Neutral", "Very positive"), ticks=(1, 2, 3), granularity=0.0,
     style='rating', styleTweaks=(), opacity=None,
@@ -819,34 +819,11 @@ while continueRoutine:
 for thisComponent in DemographicsComponents:
     if hasattr(thisComponent, "setAutoDraw"):
         thisComponent.setAutoDraw(False)
-thisExp.addData('DemoHeading.started', DemoHeading.tStartRefresh)
-thisExp.addData('DemoHeading.stopped', DemoHeading.tStopRefresh)
-thisExp.addData('gender.started', gender.tStartRefresh)
-thisExp.addData('gender.stopped', gender.tStopRefresh)
 thisExp.addData('genderResp.response', genderResp.getRating())
-thisExp.addData('genderResp.rt', genderResp.getRT())
-thisExp.addData('genderResp.started', genderResp.tStartRefresh)
-thisExp.addData('genderResp.stopped', genderResp.tStopRefresh)
 thisExp.addData('genderRespOther.text',genderRespOther.text)
-thisExp.addData('genderRespOther.started', genderRespOther.tStartRefresh)
-thisExp.addData('genderRespOther.stopped', genderRespOther.tStopRefresh)
-thisExp.addData('age.started', age.tStartRefresh)
-thisExp.addData('age.stopped', age.tStopRefresh)
 thisExp.addData('ageResp.text',ageResp.text)
-thisExp.addData('ageResp.started', ageResp.tStartRefresh)
-thisExp.addData('ageResp.stopped', ageResp.tStopRefresh)
-thisExp.addData('nationality.started', nationality.tStartRefresh)
-thisExp.addData('nationality.stopped', nationality.tStopRefresh)
 thisExp.addData('nationalityResp.text',nationalityResp.text)
-thisExp.addData('nationalityResp.started', nationalityResp.tStartRefresh)
-thisExp.addData('nationalityResp.stopped', nationalityResp.tStopRefresh)
-thisExp.addData('originCountry.started', originCountry.tStartRefresh)
-thisExp.addData('originCountry.stopped', originCountry.tStopRefresh)
 thisExp.addData('originCountryResp.text',originCountryResp.text)
-thisExp.addData('originCountryResp.started', originCountryResp.tStartRefresh)
-thisExp.addData('originCountryResp.stopped', originCountryResp.tStopRefresh)
-thisExp.addData('nextButton.started', nextButton.tStartRefresh)
-thisExp.addData('nextButton.stopped', nextButton.tStopRefresh)
 # store data for thisExp (ExperimentHandler)
 x, y = mouse.getPos()
 buttons = mouse.getPressed()
@@ -862,16 +839,6 @@ if sum(buttons):
         if obj.contains(mouse):
             gotValidClick = True
             mouse.clicked_name.append(obj.name)
-thisExp.addData('mouse.x', x)
-thisExp.addData('mouse.y', y)
-thisExp.addData('mouse.leftButton', buttons[0])
-thisExp.addData('mouse.midButton', buttons[1])
-thisExp.addData('mouse.rightButton', buttons[2])
-if len(mouse.clicked_name):
-    thisExp.addData('mouse.clicked_name', mouse.clicked_name[0])
-thisExp.addData('mouse.started', mouse.tStart)
-thisExp.addData('mouse.stopped', mouse.tStop)
-thisExp.nextEntry()
 # the Routine "Demographics" was not non-slip safe, so reset the non-slip timer
 routineTimer.reset()
 
@@ -1019,24 +986,8 @@ while continueRoutine:
 for thisComponent in Current_Mental_Property_pg1Components:
     if hasattr(thisComponent, "setAutoDraw"):
         thisComponent.setAutoDraw(False)
-thisExp.addData('cmpHeading.started', cmpHeading.tStartRefresh)
-thisExp.addData('cmpHeading.stopped', cmpHeading.tStopRefresh)
-thisExp.addData('text.started', text.tStartRefresh)
-thisExp.addData('text.stopped', text.tStopRefresh)
-thisExp.addData('tired.started', tired.tStartRefresh)
-thisExp.addData('tired.stopped', tired.tStopRefresh)
 thisExp.addData('tiredResp.response', tiredResp.getRating())
-thisExp.addData('tiredResp.rt', tiredResp.getRT())
-thisExp.addData('tiredResp.started', tiredResp.tStartRefresh)
-thisExp.addData('tiredResp.stopped', tiredResp.tStopRefresh)
-thisExp.addData('wired.started', wired.tStartRefresh)
-thisExp.addData('wired.stopped', wired.tStopRefresh)
 thisExp.addData('wiredResp.response', wiredResp.getRating())
-thisExp.addData('wiredResp.rt', wiredResp.getRT())
-thisExp.addData('wiredResp.started', wiredResp.tStartRefresh)
-thisExp.addData('wiredResp.stopped', wiredResp.tStopRefresh)
-thisExp.addData('nextButton2.started', nextButton2.tStartRefresh)
-thisExp.addData('nextButton2.stopped', nextButton2.tStopRefresh)
 # store data for thisExp (ExperimentHandler)
 x, y = mouse2.getPos()
 buttons = mouse2.getPressed()
@@ -1052,16 +1003,6 @@ if sum(buttons):
         if obj.contains(mouse2):
             gotValidClick = True
             mouse2.clicked_name.append(obj.name)
-thisExp.addData('mouse2.x', x)
-thisExp.addData('mouse2.y', y)
-thisExp.addData('mouse2.leftButton', buttons[0])
-thisExp.addData('mouse2.midButton', buttons[1])
-thisExp.addData('mouse2.rightButton', buttons[2])
-if len(mouse2.clicked_name):
-    thisExp.addData('mouse2.clicked_name', mouse2.clicked_name[0])
-thisExp.addData('mouse2.started', mouse2.tStart)
-thisExp.addData('mouse2.stopped', mouse2.tStop)
-thisExp.nextEntry()
 # the Routine "Current_Mental_Property_pg1" was not non-slip safe, so reset the non-slip timer
 routineTimer.reset()
 moveToPersonalResponses = False #So we can open an information page without skipping ahead to the next section of questions.
@@ -1071,14 +1012,14 @@ while moveToPersonalResponses == False:
     continueRoutine = True
     # update component parameters for each repeat
     clickForEmotionInfo.reset()
-    moodValenceResp_2.reset()
+    moodValenceResp.reset()
     moodArousalResp.reset()
     moodDominanceResp.reset()
     # setup some python lists for storing info about the mouse2_2
     mouse2_2.clicked_name = []
     gotValidClick = False  # until a click is received
     # keep track of which components have finished
-    Current_Mental_Property_pg2Components = [cmpHeading_2, text_2, clickForEmotionInfo, moodValence_2, moodValenceResp_2, moodArousal, moodArousalResp, moodDominance, moodDominanceResp, nextButton2_2, mouse2_2]
+    Current_Mental_Property_pg2Components = [cmpHeading_2, text_2, clickForEmotionInfo, moodValence, moodValenceResp, moodArousal, moodArousalResp, moodDominance, moodDominanceResp, nextButton2_2, mouse2_2]
     for thisComponent in Current_Mental_Property_pg2Components:
         thisComponent.tStart = None
         thisComponent.tStop = None
@@ -1128,23 +1069,23 @@ while moveToPersonalResponses == False:
             win.timeOnFlip(clickForEmotionInfo, 'tStartRefresh')  # time at next scr refresh
             clickForEmotionInfo.setAutoDraw(True)
         
-        # *moodValence_2* updates
-        if moodValence_2.status == NOT_STARTED and tThisFlip >= 0.0-frameTolerance:
+        # *moodValence* updates
+        if moodValence.status == NOT_STARTED and tThisFlip >= 0.0-frameTolerance:
             # keep track of start time/frame for later
-            moodValence_2.frameNStart = frameN  # exact frame index
-            moodValence_2.tStart = t  # local t and not account for scr refresh
-            moodValence_2.tStartRefresh = tThisFlipGlobal  # on global time
-            win.timeOnFlip(moodValence_2, 'tStartRefresh')  # time at next scr refresh
-            moodValence_2.setAutoDraw(True)
+            moodValence.frameNStart = frameN  # exact frame index
+            moodValence.tStart = t  # local t and not account for scr refresh
+            moodValence.tStartRefresh = tThisFlipGlobal  # on global time
+            win.timeOnFlip(moodValence, 'tStartRefresh')  # time at next scr refresh
+            moodValence.setAutoDraw(True)
         
-        # *moodValenceResp_2* updates
-        if moodValenceResp_2.status == NOT_STARTED and tThisFlip >= 0.0-frameTolerance:
+        # *moodValenceResp* updates
+        if moodValenceResp.status == NOT_STARTED and tThisFlip >= 0.0-frameTolerance:
             # keep track of start time/frame for later
-            moodValenceResp_2.frameNStart = frameN  # exact frame index
-            moodValenceResp_2.tStart = t  # local t and not account for scr refresh
-            moodValenceResp_2.tStartRefresh = tThisFlipGlobal  # on global time
-            win.timeOnFlip(moodValenceResp_2, 'tStartRefresh')  # time at next scr refresh
-            moodValenceResp_2.setAutoDraw(True)
+            moodValenceResp.frameNStart = frameN  # exact frame index
+            moodValenceResp.tStart = t  # local t and not account for scr refresh
+            moodValenceResp.tStartRefresh = tThisFlipGlobal  # on global time
+            win.timeOnFlip(moodValenceResp, 'tStartRefresh')  # time at next scr refresh
+            moodValenceResp.setAutoDraw(True)
         
         # *moodArousal* updates
         if moodArousal.status == NOT_STARTED and tThisFlip >= 0.0-frameTolerance:
@@ -1229,9 +1170,6 @@ while moveToPersonalResponses == False:
         if not continueRoutine:  # a component has requested a forced-end of Routine
             break
         continueRoutine = False  # will revert to True if at least one component still running
-       # if mouse2_2.clicked_name[0] == nextButton:
-       #         moveToPersonalResponses = True
-        #        print("test")
         for thisComponent in Current_Mental_Property_pg2Components:
             if hasattr(thisComponent, "status") and thisComponent.status != FINISHED:
                 continueRoutine = True
@@ -1245,32 +1183,9 @@ while moveToPersonalResponses == False:
     for thisComponent in Current_Mental_Property_pg2Components:
         if hasattr(thisComponent, "setAutoDraw"):
             thisComponent.setAutoDraw(False)
-    thisExp.addData('cmpHeading_2.started', cmpHeading_2.tStartRefresh)
-    thisExp.addData('cmpHeading_2.stopped', cmpHeading_2.tStopRefresh)
-    thisExp.addData('text_2.started', text_2.tStartRefresh)
-    thisExp.addData('text_2.stopped', text_2.tStopRefresh)
-    thisExp.addData('clickForEmotionInfo.started', clickForEmotionInfo.tStartRefresh)
-    thisExp.addData('clickForEmotionInfo.stopped', clickForEmotionInfo.tStopRefresh)
-    thisExp.addData('moodValence_2.started', moodValence_2.tStartRefresh)
-    thisExp.addData('moodValence_2.stopped', moodValence_2.tStopRefresh)
-    thisExp.addData('moodValenceResp_2.response', moodValenceResp_2.getRating())
-    thisExp.addData('moodValenceResp_2.rt', moodValenceResp_2.getRT())
-    thisExp.addData('moodValenceResp_2.started', moodValenceResp_2.tStartRefresh)
-    thisExp.addData('moodValenceResp_2.stopped', moodValenceResp_2.tStopRefresh)
-    thisExp.addData('moodArousal.started', moodArousal.tStartRefresh)
-    thisExp.addData('moodArousal.stopped', moodArousal.tStopRefresh)
+    thisExp.addData('moodValenceResp.response', moodValenceResp.getRating())
     thisExp.addData('moodArousalResp.response', moodArousalResp.getRating())
-    thisExp.addData('moodArousalResp.rt', moodArousalResp.getRT())
-    thisExp.addData('moodArousalResp.started', moodArousalResp.tStartRefresh)
-    thisExp.addData('moodArousalResp.stopped', moodArousalResp.tStopRefresh)
-    thisExp.addData('moodDominance.started', moodDominance.tStartRefresh)
-    thisExp.addData('moodDominance.stopped', moodDominance.tStopRefresh)
     thisExp.addData('moodDominanceResp.response', moodDominanceResp.getRating())
-    thisExp.addData('moodDominanceResp.rt', moodDominanceResp.getRT())
-    thisExp.addData('moodDominanceResp.started', moodDominanceResp.tStartRefresh)
-    thisExp.addData('moodDominanceResp.stopped', moodDominanceResp.tStopRefresh)
-    thisExp.addData('nextButton2_2.started', nextButton2_2.tStartRefresh)
-    thisExp.addData('nextButton2_2.stopped', nextButton2_2.tStopRefresh)
     # store data for thisExp (ExperimentHandler)
     x, y = mouse2_2.getPos()
     buttons = mouse2_2.getPressed()
@@ -1286,16 +1201,6 @@ while moveToPersonalResponses == False:
             if obj.contains(mouse2_2):
                 gotValidClick = True
                 mouse2_2.clicked_name.append(obj.name)
-    thisExp.addData('mouse2_2.x', x)
-    thisExp.addData('mouse2_2.y', y)
-    thisExp.addData('mouse2_2.leftButton', buttons[0])
-    thisExp.addData('mouse2_2.midButton', buttons[1])
-    thisExp.addData('mouse2_2.rightButton', buttons[2])
-    if len(mouse2_2.clicked_name):
-        thisExp.addData('mouse2_2.clicked_name', mouse2_2.clicked_name[0])
-    thisExp.addData('mouse2_2.started', mouse2_2.tStart)
-    thisExp.addData('mouse2_2.stopped', mouse2_2.tStop)
-    thisExp.nextEntry()
     # the Routine "Current_Mental_Property_pg2" was not non-slip safe, so reset the non-slip timer
     routineTimer.reset()
     
@@ -1406,10 +1311,6 @@ while moveToPersonalResponses == False:
         for thisComponent in Categorical_Emotions_to_VAD_MappingComponents:
             if hasattr(thisComponent, "setAutoDraw"):
                 thisComponent.setAutoDraw(False)
-        thisExp.addData('Emotions_Mapping_Figure.started', Emotions_Mapping_Figure.tStartRefresh)
-        thisExp.addData('Emotions_Mapping_Figure.stopped', Emotions_Mapping_Figure.tStopRefresh)
-        thisExp.addData('nextButton_3.started', nextButton_3.tStartRefresh)
-        thisExp.addData('nextButton_3.stopped', nextButton_3.tStopRefresh)
         # store data for thisExp (ExperimentHandler)
         x, y = mouse_3.getPos()
         buttons = mouse_3.getPressed()
@@ -1425,18 +1326,6 @@ while moveToPersonalResponses == False:
                 if obj.contains(mouse_3):
                     gotValidClick = True
                     mouse_3.clicked_name.append(obj.name)
-        thisExp.addData('mouse_3.x', x)
-        thisExp.addData('mouse_3.y', y)
-        thisExp.addData('mouse_3.leftButton', buttons[0])
-        thisExp.addData('mouse_3.midButton', buttons[1])
-        thisExp.addData('mouse_3.rightButton', buttons[2])
-        if len(mouse_3.clicked_name):
-            thisExp.addData('mouse_3.clicked_name', mouse_3.clicked_name[0])
-        thisExp.addData('mouse_3.started', mouse_3.tStart)
-        thisExp.addData('mouse_3.stopped', mouse_3.tStop)
-        thisExp.nextEntry()
-        thisExp.addData('text_3.started', text_3.tStartRefresh)
-        thisExp.addData('text_3.stopped', text_3.tStopRefresh)
         # the Routine "Categorical_Emotions_to_VAD_Mapping" was not non-slip safe, so reset the non-slip timer
         routineTimer.reset()
 
@@ -1708,64 +1597,15 @@ while continueRoutine:
 for thisComponent in Personal_Responses_to_Music__PerceptionComponents:
     if hasattr(thisComponent, "setAutoDraw"):
         thisComponent.setAutoDraw(False)
-thisExp.addData('personalResponsesHeadingP.started', personalResponsesHeadingP.tStartRefresh)
-thisExp.addData('personalResponsesHeadingP.stopped', personalResponsesHeadingP.tStopRefresh)
-thisExp.addData('Q10.started', Q10.tStartRefresh)
-thisExp.addData('Q10.stopped', Q10.tStopRefresh)
 thisExp.addData('Q10Resp.response', Q10Resp.getRating())
-thisExp.addData('Q10Resp.rt', Q10Resp.getRT())
-thisExp.addData('Q10Resp.started', Q10Resp.tStartRefresh)
-thisExp.addData('Q10Resp.stopped', Q10Resp.tStopRefresh)
-thisExp.addData('Q11.started', Q11.tStartRefresh)
-thisExp.addData('Q11.stopped', Q11.tStopRefresh)
 thisExp.addData('Q11Resp.response', Q11Resp.getRating())
-thisExp.addData('Q11Resp.rt', Q11Resp.getRT())
-thisExp.addData('Q11Resp.started', Q11Resp.tStartRefresh)
-thisExp.addData('Q11Resp.stopped', Q11Resp.tStopRefresh)
-thisExp.addData('Q12.started', Q12.tStartRefresh)
-thisExp.addData('Q12.stopped', Q12.tStopRefresh)
 thisExp.addData('Q12Resp.response', Q12Resp.getRating())
-thisExp.addData('Q12Resp.rt', Q12Resp.getRT())
-thisExp.addData('Q12Resp.started', Q12Resp.tStartRefresh)
-thisExp.addData('Q12Resp.stopped', Q12Resp.tStopRefresh)
-thisExp.addData('Q13.started', Q13.tStartRefresh)
-thisExp.addData('Q13.stopped', Q13.tStopRefresh)
 thisExp.addData('Q13Resp.response', Q13Resp.getRating())
-thisExp.addData('Q13Resp.rt', Q13Resp.getRT())
-thisExp.addData('Q13Resp.started', Q13Resp.tStartRefresh)
-thisExp.addData('Q13Resp.stopped', Q13Resp.tStopRefresh)
-thisExp.addData('Q14.started', Q14.tStartRefresh)
-thisExp.addData('Q14.stopped', Q14.tStopRefresh)
 thisExp.addData('Q14Resp.response', Q14Resp.getRating())
-thisExp.addData('Q14Resp.rt', Q14Resp.getRT())
-thisExp.addData('Q14Resp.started', Q14Resp.tStartRefresh)
-thisExp.addData('Q14Resp.stopped', Q14Resp.tStopRefresh)
-thisExp.addData('Q15.started', Q15.tStartRefresh)
-thisExp.addData('Q15.stopped', Q15.tStopRefresh)
 thisExp.addData('Q15Resp.response', Q15Resp.getRating())
-thisExp.addData('Q15Resp.rt', Q15Resp.getRT())
-thisExp.addData('Q15Resp.started', Q15Resp.tStartRefresh)
-thisExp.addData('Q15Resp.stopped', Q15Resp.tStopRefresh)
-thisExp.addData('Q16.started', Q16.tStartRefresh)
-thisExp.addData('Q16.stopped', Q16.tStopRefresh)
 thisExp.addData('Q16Resp.response', Q16Resp.getRating())
-thisExp.addData('Q16Resp.rt', Q16Resp.getRT())
-thisExp.addData('Q16Resp.started', Q16Resp.tStartRefresh)
-thisExp.addData('Q16Resp.stopped', Q16Resp.tStopRefresh)
-thisExp.addData('Q17.started', Q17.tStartRefresh)
-thisExp.addData('Q17.stopped', Q17.tStopRefresh)
 thisExp.addData('Q17Resp.response', Q17Resp.getRating())
-thisExp.addData('Q17Resp.rt', Q17Resp.getRT())
-thisExp.addData('Q17Resp.started', Q17Resp.tStartRefresh)
-thisExp.addData('Q17Resp.stopped', Q17Resp.tStopRefresh)
-thisExp.addData('Q18.started', Q18.tStartRefresh)
-thisExp.addData('Q18.stopped', Q18.tStopRefresh)
 thisExp.addData('Q18Resp.response', Q18Resp.getRating())
-thisExp.addData('Q18Resp.rt', Q18Resp.getRT())
-thisExp.addData('Q18Resp.started', Q18Resp.tStartRefresh)
-thisExp.addData('Q18Resp.stopped', Q18Resp.tStopRefresh)
-thisExp.addData('nextButton_2.started', nextButton_2.tStartRefresh)
-thisExp.addData('nextButton_2.stopped', nextButton_2.tStopRefresh)
 # store data for thisExp (ExperimentHandler)
 x, y = mouse_2.getPos()
 buttons = mouse_2.getPressed()
@@ -1781,16 +1621,6 @@ if sum(buttons):
         if obj.contains(mouse_2):
             gotValidClick = True
             mouse_2.clicked_name.append(obj.name)
-thisExp.addData('mouse_2.x', x)
-thisExp.addData('mouse_2.y', y)
-thisExp.addData('mouse_2.leftButton', buttons[0])
-thisExp.addData('mouse_2.midButton', buttons[1])
-thisExp.addData('mouse_2.rightButton', buttons[2])
-if len(mouse_2.clicked_name):
-    thisExp.addData('mouse_2.clicked_name', mouse_2.clicked_name[0])
-thisExp.addData('mouse_2.started', mouse_2.tStart)
-thisExp.addData('mouse_2.stopped', mouse_2.tStop)
-thisExp.nextEntry()
 # the Routine "Personal_Responses_to_Music__Perception" was not non-slip safe, so reset the non-slip timer
 routineTimer.reset()
 
@@ -2005,46 +1835,12 @@ while continueRoutine:
 for thisComponent in Personal_Responses_to_Music__EmotionComponents:
     if hasattr(thisComponent, "setAutoDraw"):
         thisComponent.setAutoDraw(False)
-thisExp.addData('personalResponsesHeadingE.started', personalResponsesHeadingE.tStartRefresh)
-thisExp.addData('personalResponsesHeadingE.stopped', personalResponsesHeadingE.tStopRefresh)
-thisExp.addData('Q19.started', Q19.tStartRefresh)
-thisExp.addData('Q19.stopped', Q19.tStopRefresh)
 thisExp.addData('Q19Resp.response', Q19Resp.getRating())
-thisExp.addData('Q19Resp.rt', Q19Resp.getRT())
-thisExp.addData('Q19Resp.started', Q19Resp.tStartRefresh)
-thisExp.addData('Q19Resp.stopped', Q19Resp.tStopRefresh)
-thisExp.addData('Q20.started', Q20.tStartRefresh)
-thisExp.addData('Q20.stopped', Q20.tStopRefresh)
 thisExp.addData('Q20Resp.response', Q20Resp.getRating())
-thisExp.addData('Q20Resp.rt', Q20Resp.getRT())
-thisExp.addData('Q20Resp.started', Q20Resp.tStartRefresh)
-thisExp.addData('Q20Resp.stopped', Q20Resp.tStopRefresh)
-thisExp.addData('Q21.started', Q21.tStartRefresh)
-thisExp.addData('Q21.stopped', Q21.tStopRefresh)
 thisExp.addData('Q21Resp.response', Q21Resp.getRating())
-thisExp.addData('Q21Resp.rt', Q21Resp.getRT())
-thisExp.addData('Q21Resp.started', Q21Resp.tStartRefresh)
-thisExp.addData('Q21Resp.stopped', Q21Resp.tStopRefresh)
-thisExp.addData('Q22.started', Q22.tStartRefresh)
-thisExp.addData('Q22.stopped', Q22.tStopRefresh)
 thisExp.addData('Q22Resp.response', Q22Resp.getRating())
-thisExp.addData('Q22Resp.rt', Q22Resp.getRT())
-thisExp.addData('Q22Resp.started', Q22Resp.tStartRefresh)
-thisExp.addData('Q22Resp.stopped', Q22Resp.tStopRefresh)
-thisExp.addData('Q23.started', Q23.tStartRefresh)
-thisExp.addData('Q23.stopped', Q23.tStopRefresh)
 thisExp.addData('Q23Resp.response', Q23Resp.getRating())
-thisExp.addData('Q23Resp.rt', Q23Resp.getRT())
-thisExp.addData('Q23Resp.started', Q23Resp.tStartRefresh)
-thisExp.addData('Q23Resp.stopped', Q23Resp.tStopRefresh)
-thisExp.addData('Q24.started', Q24.tStartRefresh)
-thisExp.addData('Q24.stopped', Q24.tStopRefresh)
 thisExp.addData('Q24Resp.response', Q24Resp.getRating())
-thisExp.addData('Q24Resp.rt', Q24Resp.getRT())
-thisExp.addData('Q24Resp.started', Q24Resp.tStartRefresh)
-thisExp.addData('Q24Resp.stopped', Q24Resp.tStopRefresh)
-thisExp.addData('nextButton_4.started', nextButton_4.tStartRefresh)
-thisExp.addData('nextButton_4.stopped', nextButton_4.tStopRefresh)
 # store data for thisExp (ExperimentHandler)
 x, y = mouse_4.getPos()
 buttons = mouse_4.getPressed()
@@ -2060,16 +1856,6 @@ if sum(buttons):
         if obj.contains(mouse_4):
             gotValidClick = True
             mouse_4.clicked_name.append(obj.name)
-thisExp.addData('mouse_4.x', x)
-thisExp.addData('mouse_4.y', y)
-thisExp.addData('mouse_4.leftButton', buttons[0])
-thisExp.addData('mouse_4.midButton', buttons[1])
-thisExp.addData('mouse_4.rightButton', buttons[2])
-if len(mouse_4.clicked_name):
-    thisExp.addData('mouse_4.clicked_name', mouse_4.clicked_name[0])
-thisExp.addData('mouse_4.started', mouse_4.tStart)
-thisExp.addData('mouse_4.stopped', mouse_4.tStop)
-thisExp.nextEntry()
 # the Routine "Personal_Responses_to_Music__Emotion" was not non-slip safe, so reset the non-slip timer
 routineTimer.reset()
 
