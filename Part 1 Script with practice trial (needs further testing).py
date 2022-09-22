@@ -72,7 +72,6 @@ if dlg.OK == False:
     core.quit()  # user pressed cancel
 expInfo['date'] = data.getDateStr()  # add a simple timestamp
 expInfo['expName'] = expName
-expInfo['psychopyVersion'] = psychopyVersion
 
 # Data file name stem = absolute path + name; later add .psyexp, .csv, .log, etc
 filename = _thisDir + os.sep + u'data/%s/%s/experiment' % (expInfo['participant'], expName)
@@ -81,7 +80,7 @@ jsondata = {}
 jsondata['trials'] = []
 
 # An ExperimentHandler isn't essential but helps with data saving
-thisExp = data.ExperimentHandler(name=expName, version='',
+thisExp = data.ExperimentHandler(name=expName,
     extraInfo=expInfo, runtimeInfo=None,
     originPath='./Part 1 Script.py',
     savePickle=True, saveWideText=True,
@@ -102,12 +101,6 @@ win = visual.Window(
     monitor='otherExternalMonitor', color=[-0.4510, 0.0196, 0.4118], colorSpace='rgb',
     blendMode='avg', useFBO=True, 
     units='height')
-# store frame rate of monitor if we can measure it
-expInfo['frameRate'] = win.getActualFrameRate()
-if expInfo['frameRate'] != None:
-    frameDur = 1.0 / round(expInfo['frameRate'])
-else:
-    frameDur = 1.0 / 60.0  # could not measure, so guess
 # Setup ioHub
 ioConfig = {}
 
@@ -529,7 +522,6 @@ block0 = data.TrialHandler(nReps=1.0, method='random',
     extraInfo=expInfo, originPath=-1,
     trialList=data.importConditions('practiceStimulus.xlsx', selection='1:2'),
     seed=None, name='block0')
-thisExp.addLoop(block0)  # add the loop to the experiment
 thisBlock0 = block0.trialList[0]  # so we can initialise stimuli with some values
 # abbreviate parameter names if possible (e.g. rgb = thisBlock1.rgb)
 if thisBlock0 != None:
@@ -996,7 +988,6 @@ while continueRoutine and routineTimer.getTime() > 0:
     mm.out()
 mm.stop()
 routineTimer.reset()
-thisExp.nextEntry()
 # end of playing part starting trig
 
 
@@ -1388,8 +1379,6 @@ for thisBlock1 in block1:
             for thisComponent in Categorical_Emotions_to_VAD_MappingComponents:
                 if hasattr(thisComponent, "setAutoDraw"):
                     thisComponent.setAutoDraw(False)
-            thisExp.addData('Emotions_Mapping_Figure.started', Emotions_Mapping_Figure.tStartRefresh)
-            thisExp.addData('Emotions_Mapping_Figure.stopped', Emotions_Mapping_Figure.tStopRefresh) #keep this?
             # store data for thisExp (ExperimentHandler)
             x, y = mouse_3.getPos()
             buttons = mouse_3.getPressed()
@@ -1542,10 +1531,6 @@ thisExp.nextEntry()
 # and win.timeOnFlip() tasks get executed before quitting
 win.flip()
 
-# these shouldn't be strictly necessary (should auto-save)
-thisExp.saveAsWideText(filename+'.csv', delim='auto')
-thisExp.saveAsPickle(filename)
-logging.flush()
 # make sure everything is closed down
 if eyetracker:
     eyetracker.setConnectionState(False)

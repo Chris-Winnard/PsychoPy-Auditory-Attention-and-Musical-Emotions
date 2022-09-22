@@ -58,14 +58,13 @@ _thisDir = os.path.dirname(os.path.abspath(__file__))
 os.chdir(_thisDir)
 # Store info about the experiment session
 psychopyVersion = '2022.1.3'
-expName = 'Part 3 Script'  # from the Builder filename that created this script
+expName = 'Part 3'  # from the Builder filename that created this script
 expInfo = {'participant': ''}
 dlg = gui.DlgFromDict(dictionary=expInfo, sortKeys=False, title=expName)
 if dlg.OK == False:
     core.quit()  # user pressed cancel
 expInfo['date'] = data.getDateStr()  # add a simple timestamp
 expInfo['expName'] = expName
-expInfo['psychopyVersion'] = psychopyVersion
 
 # Data file name stem = absolute path + name; later add .psyexp, .csv, .log, etc
 filename = _thisDir + os.sep + u'data/%s/%s/experiment' % (expInfo['participant'], expName)
@@ -74,7 +73,7 @@ jsondata = {}
 jsondata['trials'] = []
 
 # An ExperimentHandler isn't essential but helps with data saving
-thisExp = data.ExperimentHandler(name=expName, version='',
+thisExp = data.ExperimentHandler(name=expName,
     extraInfo=expInfo, runtimeInfo=None,
     originPath='C:\\Users\\Chris\\Documents\\Music Interestingness in the Brain\\NEWEST PsychoPy-Auditory-Attention-and-Musical-Emotions-main\\PsychoPy-Auditory-Attention-and-Musical-Emotions-main\\Part 3 Script.py',
     savePickle=True, saveWideText=True,
@@ -95,12 +94,6 @@ win = visual.Window(
     monitor='otherExternalMonitor', color=[-0.4510, 0.0196, 0.4118], colorSpace='rgb',
     blendMode='avg', useFBO=True, 
     units='height')
-# store frame rate of monitor if we can measure it
-expInfo['frameRate'] = win.getActualFrameRate()
-if expInfo['frameRate'] != None:
-    frameDur = 1.0 / round(expInfo['frameRate'])
-else:
-    frameDur = 1.0 / 60.0  # could not measure, so guess
 # Setup ioHub
 ioConfig = {}
 
@@ -437,7 +430,6 @@ block0 = data.TrialHandler(nReps=1.0, method='random',
     extraInfo=expInfo, originPath=-1,
     trialList=data.importConditions('practiceStimulus.xlsx', selection='1:2'),
     seed=None, name='block0')
-thisExp.addLoop(block0)  # add the loop to the experiment
 thisBlock0 = block0.trialList[0]  # so we can initialise stimuli with some values
 # abbreviate parameter names if possible (e.g. rgb = thisBlock1.rgb)
 if thisBlock0 != None:
@@ -544,8 +536,6 @@ for thisBlock0 in block0:
                 chns[i] = SfPlayer(globals()[spk_name])
                 mm.delInput(i+1)
                 mm.addInput(i+1,chns[i])
-        
-            jsondata['trials'].append(trial) 
             
             for i in range(PART_1_OUT_CHANNELS):
                 for j in range(PART_1_OUT_CHANNELS):
@@ -587,7 +577,6 @@ for thisBlock0 in block0:
         print("attended")
     else:
         print("not attended")
-    thisExp.nextEntry() #Next row on the record.
     # the Routine "practiceTrial" was not non-slip safe, so reset the non-slip timer
     routineTimer.reset()
     
@@ -723,7 +712,6 @@ while continueRoutine and routineTimer.getTime() > 0:
     mm.out()
 mm.stop()
 routineTimer.reset()
-thisExp.nextEntry()
 # end of playing part starting trig
 
 
@@ -1042,10 +1030,6 @@ thisExp.nextEntry()
 # and win.timeOnFlip() tasks get executed before quitting
 win.flip()
 
-# these shouldn't be strictly necessary (should auto-save)
-thisExp.saveAsWideText(filename+'.csv', delim='auto')
-thisExp.saveAsPickle(filename)
-logging.flush()
 # make sure everything is closed down
 if eyetracker:
     eyetracker.setConnectionState(False)

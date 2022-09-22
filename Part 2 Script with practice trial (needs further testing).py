@@ -57,14 +57,13 @@ _thisDir = os.path.dirname(os.path.abspath(__file__))
 os.chdir(_thisDir)
 # Store info about the experiment session
 psychopyVersion = '2022.1.3'
-expName = 'First Attempt at Part 2 Expt Script'  # from the Builder filename that created this script
+expName = 'Part 2'  # from the Builder filename that created this script
 expInfo = {'participant': ''}
 dlg = gui.DlgFromDict(dictionary=expInfo, sortKeys=False, title=expName)
 if dlg.OK == False:
     core.quit()  # user pressed cancel
 expInfo['date'] = data.getDateStr()  # add a simple timestamp
 expInfo['expName'] = expName
-expInfo['psychopyVersion'] = psychopyVersion
 
 # Data file name stem = absolute path + name; later add .psyexp, .csv, .log, etc
 filename = _thisDir + os.sep + u'data/%s/%s/experiment' % (expInfo['participant'], expName)
@@ -73,7 +72,7 @@ jsondata = {}
 jsondata['trials'] = []
 
 # An ExperimentHandler isn't essential but helps with data saving
-thisExp = data.ExperimentHandler(name=expName, version='',
+thisExp = data.ExperimentHandler(name=expName,
     extraInfo=expInfo, runtimeInfo=None,
     originPath='C:\\Users\\Chris\\Documents\\Music Interestingness in the Brain\\NEWEST PsychoPy-Auditory-Attention-and-Musical-Emotions-main\\PsychoPy-Auditory-Attention-and-Musical-Emotions-main\\Part 2 Script.py',
     savePickle=True, saveWideText=True,
@@ -94,12 +93,6 @@ win = visual.Window(
     monitor='otherExternalMonitor', color=[-0.4510, 0.0196, 0.4118], colorSpace='rgb',
     blendMode='avg', useFBO=True, 
     units='height')
-# store frame rate of monitor if we can measure it
-expInfo['frameRate'] = win.getActualFrameRate()
-if expInfo['frameRate'] != None:
-    frameDur = 1.0 / round(expInfo['frameRate'])
-else:
-    frameDur = 1.0 / 60.0  # could not measure, so guess
 # Setup ioHub
 ioConfig = {}
 
@@ -502,7 +495,6 @@ block0 = data.TrialHandler(nReps=1.0, method='random',
     extraInfo=expInfo, originPath=-1,
     trialList=data.importConditions('practiceOddballStimuli.xlsx', selection='1:2'),
     seed=None, name='block0')
-thisExp.addLoop(block0)  # add the loop to the experiment
 thisBlock0 = block0.trialList[0]  # so we can initialise stimuli with some values
 # abbreviate parameter names if possible (e.g. rgb = thisBlock0.rgb)
 if thisBlock0 != None:
@@ -647,21 +639,20 @@ for thisBlock0 in block0:
             win.flip()            
     mm.stop()
 
-    # -------Ending Routine "trial"-------
+    # -------Ending Routine "practiceTrial"-------
     for thisComponent in trialComponents:
         if hasattr(thisComponent, "setAutoDraw"):
             thisComponent.setAutoDraw(False)
     
     if attendedInstrument == 'vibraphone':
-        block0.addData(attendedInstrument, 'Vibraphone attended')
+        block0.addData('attendedInstrument', 'Vibraphone')
         print("Vibraphone is to be attended.")
     elif attendedInstrument == 'harmonica':
-        block0.addData(attendedInstrument, 'Harmonica attended')
+        block0.addData('attendedInstrument', 'Harmonica')
         print("Harmonica is to be attended.")
     elif attendedInstrument == 'keyboard':
-        block0.addData(attendedInstrument, 'Keyboard attended')
+        block0.addData('attendedInstrument', 'Keyboard')
         print("Keyboard is to be attended.")
-    thisExp.nextEntry() #Next row on the record.
     # the Routine "trial" was not non-slip safe, so reset the non-slip timer
     routineTimer.reset()
     
@@ -785,15 +776,16 @@ for thisBlock0 in block0:
             if obj.contains(mouse_4):
                 gotValidClick = True
                 mouse_4.clicked_name.append(obj.name)
+                
+    oddballsMinusResp = float(f'{numberOddballs}') - float(oddballsResp.text)
     # the Routine "QuestionBreakPause" was not non-slip safe, so reset the non-slip timer
     routineTimer.reset()
     
     print(f'{numberOddballs}')
-    x = float(oddballsResp.text) - float(f'{numberOddballs}')
-    print(x)
+    print(oddballsMinusResp)    
     
     ##FEEDBACK:
-    if float(oddballsResp.text) == float(f'{numberOddballs}'):
+    if oddballsMinusResp == 0:
     
         # ------Prepare to start Routine "CorrectAnswerFeedback"-------
         continueRoutine = True
@@ -1042,7 +1034,6 @@ while continueRoutine and routineTimer.getTime() > 0:
     mm.out()
 mm.stop()
 routineTimer.reset()
-thisExp.nextEntry()
 # end of playing part starting trig
 
 
@@ -1155,7 +1146,6 @@ for thisBlock1 in block1:
         
         if stimuliStarted == False and (attendVibraphoneNote.status == FINISHED or attendHarmonicaNote.status == FINISHED or attendKeyboardNote.status == FINISHED):
             print(f'trigger: {trigger}')
-            print(f'trigger: {trigger}')
         
             trigger_filename, trigger_ext = os.path.splitext(trigger)
             trigger_logfile = os.path.abspath(trigger_filename + '.txt')
@@ -1218,17 +1208,7 @@ for thisBlock1 in block1:
     for thisComponent in trialComponents:
         if hasattr(thisComponent, "setAutoDraw"):
             thisComponent.setAutoDraw(False)
-    
-    if attendedInstrument == 'vibraphone':
-        block1.addData(attendedInstrument, 'Vibraphone attended')
-        print("Vibraphone is to be attended.")
-    elif attendedInstrument == 'harmonica':
-        block1.addData(attendedInstrument, 'Harmonica attended')
-        print("Harmonica is to be attended.")
-    elif attendedInstrument == 'keyboard':
-        block1.addData(attendedInstrument, 'Keyboard attended')
-        print("Keyboard is to be attended.")
-    thisExp.nextEntry() #Next row on the record.
+
     # the Routine "trial" was not non-slip safe, so reset the non-slip timer
     routineTimer.reset()
     
@@ -1352,15 +1332,19 @@ for thisBlock1 in block1:
             if obj.contains(mouse_4):
                 gotValidClick = True
                 mouse_4.clicked_name.append(obj.name)
+    
+    oddballsMinusResp = float(f'{numberOddballs}') - float(oddballsResp.text)           
+    block1.addData('oddballsMinusResp', oddballsMinusResp)
+    
+    thisExp.nextEntry() #Next row on the record.
     # the Routine "QuestionBreakPause" was not non-slip safe, so reset the non-slip timer
     routineTimer.reset()
     
     print(f'{numberOddballs}')
-    x = float(oddballsResp.text) - float(f'{numberOddballs}')
-    print(x)
+    print(oddballsMinusResp)
     
     ##FEEDBACK:
-    if float(oddballsResp.text) == float(f'{numberOddballs}'):
+    if oddballsMinusResp == 0:
     
         # ------Prepare to start Routine "CorrectAnswerFeedback"-------
         continueRoutine = True
@@ -1371,6 +1355,7 @@ for thisBlock1 in block1:
         # keep track of which components have finished
         CorrectAnswerFeedbackComponents = [CorrectAnswerFeedbackTxt, mouse_4, nextButton_R1B]
         for thisComponent in CorrectAnswerFeedbackComponents:
+            thisComponent.tStart = None
             thisComponent.tStart = None
             thisComponent.tStop = None
             thisComponent.tStartRefresh = None
@@ -1615,10 +1600,6 @@ thisExp.nextEntry()
 # and win.timeOnFlip() tasks get executed before quitting
 win.flip()
 
-# these shouldn't be strictly necessary (should auto-save)
-thisExp.saveAsWideText(filename+'.csv', delim='auto')
-thisExp.saveAsPickle(filename)
-logging.flush()
 # make sure everything is closed down
 if eyetracker:
     eyetracker.setConnectionState(False)
