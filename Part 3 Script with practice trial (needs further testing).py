@@ -578,7 +578,7 @@ for thisBlock0 in block0:
         if continueRoutine:  # don't flip if this routine is over or we'll get a blank screen
             win.flip()            
     mm.stop()
-    # -------Ending Routine "trial"-------
+    # -------Ending Routine "practiceTrial"-------
     for thisComponent in trialComponents:
         if hasattr(thisComponent, "setAutoDraw"):
             thisComponent.setAutoDraw(False)
@@ -588,7 +588,7 @@ for thisBlock0 in block0:
     else:
         print("not attended")
     thisExp.nextEntry() #Next row on the record.
-    # the Routine "trial" was not non-slip safe, so reset the non-slip timer
+    # the Routine "practiceTrial" was not non-slip safe, so reset the non-slip timer
     routineTimer.reset()
     
     # ------Prepare to start Routine "QuestionBreakPause"-------
