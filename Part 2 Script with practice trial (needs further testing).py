@@ -111,7 +111,7 @@ defaultKeyboard = keyboard.Keyboard(backend='iohub')
 # Initialize components for Routine "instructions"
 instructionsClock = core.Clock()
 top_instr_txt = visual.TextStim(win=win, name='top_instr_txt',
-    text='You will hear three music pieces at once from different directions. You will be told to focus on one before they play twice.\n\nThe first time will remind you what they sound like. The second time, the attended piece will have random 2s pitch raises ("oddballs"). Count them. Please try not to blink/move until the second playing ends.\n\nYou will be asked how many oddballs you heard. You can then take a break.\n\nIf you have any questions at all please ask the experimenters.',
+    text='You will hear three music pieces at once from different directions. You will be told to focus on one before they play twice.\n\nThe first time will remind you what they sound like. The second time, the pieces will have random 2s pitch raises ("oddballs"). Please close your eyes, and try not to move during this period. Count the attended instrument\'s oddballs.\n\nYou will be asked how many oddballs you heard. You can then take a break.\n\nIf you have any questions at all please ask the experimenters.',
     font='Open Sans',
     pos=(0, 0.15), height=0.05, wrapWidth=1.8, ori=0.0, 
     color='white', colorSpace='rgb', opacity=None, 
@@ -493,7 +493,7 @@ routineTimer.reset()
 # set up handler to look after randomisation of conditions etc
 block0 = data.TrialHandler(nReps=1.0, method='random', 
     extraInfo=expInfo, originPath=-1,
-    trialList=data.importConditions('practiceOddballStimuli.xlsx', selection='1:2'),
+    trialList=data.importConditions('practiceOddballStimuli.xlsx', selection='0:1'),
     seed=None, name='block0')
 thisBlock0 = block0.trialList[0]  # so we can initialise stimuli with some values
 # abbreviate parameter names if possible (e.g. rgb = thisBlock0.rgb)
@@ -1040,7 +1040,7 @@ routineTimer.reset()
 # set up handler to look after randomisation of conditions etc
 block1 = data.TrialHandler(nReps=1.0, method='random', 
     extraInfo=expInfo, originPath=-1,
-    trialList=data.importConditions('oddballStimuliList.xlsx', selection='1:15'),
+    trialList=data.importConditions('oddballStimuliList.xlsx', selection='0:15'),
     seed=None, name='block1')
 thisExp.addLoop(block1)  # add the loop to the experiment
 thisBlock1 = block1.trialList[0]  # so we can initialise stimuli with some values
@@ -1049,11 +1049,11 @@ if thisBlock1 != None:
     for paramName in thisBlock1:
         exec('{} = thisBlock1[paramName]'.format(paramName))
 
-idx = -1
+idx = 0
 for thisBlock1 in block1:
     trial = {}
     idx += 1
-    print(f'trial {idx}')
+    print(f'Not counting the practice trial, this is trial {idx}')
     currentLoop = block1
     # abbreviate parameter names if possible (e.g. rgb = thisBlock1.rgb)
     if thisBlock1 != None:

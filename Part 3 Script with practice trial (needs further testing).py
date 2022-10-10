@@ -428,7 +428,7 @@ routineTimer.reset()
 # set up handler to look after randomisation of conditions etc
 block0 = data.TrialHandler(nReps=1.0, method='random', 
     extraInfo=expInfo, originPath=-1,
-    trialList=data.importConditions('practiceStimulus.xlsx', selection='1:2'),
+    trialList=data.importConditions('practiceStimulus.xlsx', selection='0:1'),
     seed=None, name='block0')
 thisBlock0 = block0.trialList[0]  # so we can initialise stimuli with some values
 # abbreviate parameter names if possible (e.g. rgb = thisBlock1.rgb)
@@ -718,7 +718,7 @@ routineTimer.reset()
 # set up handler to look after randomisation of conditions etc
 block1 = data.TrialHandler(nReps=1.0, method='random', 
     extraInfo=expInfo, originPath=-1,
-    trialList=data.importConditions('stimuliList.xlsx', selection='1:15'),
+    trialList=data.importConditions('stimuliList.xlsx', selection='0:15'),
     seed=None, name='block1')
 thisExp.addLoop(block1)  # add the loop to the experiment
 thisBlock1 = block1.trialList[0]  # so we can initialise stimuli with some values
@@ -727,11 +727,11 @@ if thisBlock1 != None:
     for paramName in thisBlock1:
         exec('{} = thisBlock1[paramName]'.format(paramName))
 
-idx = -1
+idx = 0
 for thisBlock1 in block1:
     trial = {}
     idx += 1
-    print(f'trial {idx}')
+    print(f'Not counting the practice trial, this is trial {idx}')
     currentLoop = block1
     # abbreviate parameter names if possible (e.g. rgb = thisBlock1.rgb)
     if thisBlock1 != None:
@@ -820,16 +820,7 @@ for thisBlock1 in block1:
         
         if stimuliStarted == False and (attendNote.status == FINISHED or dontAttendNote.status == FINISHED):
             print(f'trigger: {trigger}')
-        
-            trigger_filename, trigger_ext = os.path.splitext(trigger)
-            trigger_logfile = os.path.abspath(trigger_filename + '.txt')
-            trial['trigger'] = os.path.abspath(trigger)
-            trial['trigger_log'] = os.path.abspath(trigger_logfile)
-        
-            # trigger channel
-            trigger_chn = SfPlayer(trigger)
-            mm.delInput(0)
-            mm.addInput(0, trigger_chn)
+                    
             # stimuli channels
             trial['stimulies'] = []
             for i in range(0, PART_1_OUT_CHANNELS-1):
@@ -839,8 +830,6 @@ for thisBlock1 in block1:
                 chns[i] = SfPlayer(globals()[spk_name])
                 mm.delInput(i+1)
                 mm.addInput(i+1,chns[i])
-        
-            jsondata['trials'].append(trial) 
             
             for i in range(PART_1_OUT_CHANNELS):
                 for j in range(PART_1_OUT_CHANNELS):
@@ -852,6 +841,7 @@ for thisBlock1 in block1:
                 mm.setAmp(i, output_idx[i], spk_volume[i])
             mm.out()
             stimuliStarted = True
+     
      
         # check for quit (typically the Esc key)
         if endExpNow or defaultKeyboard.getKeys(keyList=["escape"]):

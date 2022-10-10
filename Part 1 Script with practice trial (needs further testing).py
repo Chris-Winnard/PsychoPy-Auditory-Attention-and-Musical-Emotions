@@ -119,7 +119,7 @@ defaultKeyboard = keyboard.Keyboard(backend='iohub')
 # Initialize components for Routine "instructions"
 instructionsClock = core.Clock()
 instr_txt = visual.TextStim(win=win, name='instr_txt',
-    text='A music excerpt and a silent film will both play- try to focus on the music, but you can enjoy the film as well. Please try not to blink/move during this period.\n\nYou will then be asked to rate your emotions. You can then take a break.\n\nIf you have any questions at all please ask the experimenters.',
+    text='A music will play. Please close your eyes, and try not to move during this period. \n\nYou will then be asked to rate your emotions. You can then take a break.\n\nIf you have any questions at all please ask the experimenters.',
     font='Open Sans',
     pos=(0, 0.15), height=0.05, wrapWidth=1.8, ori=0.0, 
     color='white', colorSpace='rgb', opacity=None, 
@@ -520,7 +520,7 @@ routineTimer.reset()
 # set up handler to look after randomisation of conditions etc
 block0 = data.TrialHandler(nReps=1.0, method='random', 
     extraInfo=expInfo, originPath=-1,
-    trialList=data.importConditions('practiceStimulus.xlsx', selection='1:2'),
+    trialList=data.importConditions('practiceStimulus.xlsx', selection='0:1'),
     seed=None, name='block0')
 thisBlock0 = block0.trialList[0]  # so we can initialise stimuli with some values
 # abbreviate parameter names if possible (e.g. rgb = thisBlock1.rgb)
@@ -746,68 +746,85 @@ for thisBlock0 in block0:
 
         # the Routine "practiceTrial" was not non-slip safe, so reset the non-slip timer
         routineTimer.reset()
-        # reset timers
-        t = 0
-        _timeToFirstFrame = win.getFutureFlipTime(clock="now")
-        Categorical_Emotions_to_VAD_MappingClock.reset(-_timeToFirstFrame)  # t0 is time of first possible flip
-        frameN = -1
+        
+        if moveToPause == False: #Due to a bug, this needs to be here as well.
+            # ------Prepare to start Routine "Categorical_Emotions_to_VAD_Mapping"-------
+            continueRoutine = True
+            # update component parameters for each repeat
+            # setup some python lists for storing info about the mouse_3
+            mouse_3.clicked_name = []
+            gotValidClick = False  # until a click is received
+            # keep track of which components have finished
+            Categorical_Emotions_to_VAD_MappingComponents = [Emotions_Mapping_Figure, nextButton_3, mouse_3, text_3]
+            for thisComponent in Categorical_Emotions_to_VAD_MappingComponents:
+                thisComponent.tStart = None
+                thisComponent.tStop = None
+                thisComponent.tStartRefresh = None
+                thisComponent.tStopRefresh = None
+                if hasattr(thisComponent, 'status'):
+                    thisComponent.status = NOT_STARTED
+            # reset timers
+            t = 0
+            _timeToFirstFrame = win.getFutureFlipTime(clock="now")
+            Categorical_Emotions_to_VAD_MappingClock.reset(-_timeToFirstFrame)  # t0 is time of first possible flip
+            frameN = -1
             
-        # -------Run Routine "Categorical_Emotions_to_VAD_Mapping"-------
-        while continueRoutine:
-            # get current time
-            t = Categorical_Emotions_to_VAD_MappingClock.getTime()
-            tThisFlip = win.getFutureFlipTime(clock=Categorical_Emotions_to_VAD_MappingClock)
-            tThisFlipGlobal = win.getFutureFlipTime(clock=None)
-            frameN = frameN + 1  # number of completed frames (so 0 is the first frame)
-            # update/draw components on each frame
-            
-            # *Emotions_Mapping_Figure* updates
-            if Emotions_Mapping_Figure.status == NOT_STARTED and tThisFlip >= 0.0-frameTolerance:
-                # keep track of start time/frame for later
-                Emotions_Mapping_Figure.frameNStart = frameN  # exact frame index
-                Emotions_Mapping_Figure.tStart = t  # local t and not account for scr refresh
-                Emotions_Mapping_Figure.tStartRefresh = tThisFlipGlobal  # on global time
-                win.timeOnFlip(Emotions_Mapping_Figure, 'tStartRefresh')  # time at next scr refresh
-                Emotions_Mapping_Figure.setAutoDraw(True)
-            
-            # *nextButton_3* updates
-            if nextButton_3.status == NOT_STARTED and tThisFlip >= 0.0-frameTolerance:
-                # keep track of start time/frame for later
-                nextButton_3.frameNStart = frameN  # exact frame index
-                nextButton_3.tStart = t  # local t and not account for scr refresh
-                nextButton_3.tStartRefresh = tThisFlipGlobal  # on global time
-                win.timeOnFlip(nextButton_3, 'tStartRefresh')  # time at next scr refresh
-                nextButton_3.setAutoDraw(True)
-            # *mouse_3* updates
-            if mouse_3.status == NOT_STARTED and t >= 0.0-frameTolerance:
-                # keep track of start time/frame for later
-                mouse_3.frameNStart = frameN  # exact frame index
-                mouse_3.tStart = t  # local t and not account for scr refresh
-                mouse_3.tStartRefresh = tThisFlipGlobal  # on global time
-                win.timeOnFlip(mouse_3, 'tStartRefresh')  # time at next scr refresh
-                mouse_3.status = STARTED
-                mouse_3.mouseClock.reset()
-                prevButtonState = mouse_3.getPressed()  # if button is down already this ISN'T a new click
-            if mouse_3.status == STARTED:  # only update if started and not finished!
-                buttons = mouse_3.getPressed()
-                if buttons != prevButtonState:  # button state changed?
-                    prevButtonState = buttons
-                    if sum(buttons) > 0:  # state changed to a new click
-                        # check if the mouse was inside our 'clickable' objects
-                        gotValidClick = False
-                        try:
-                            iter([nextButton])
-                            clickableList = [nextButton]
-                        except:
-                            clickableList = [[nextButton]]
-                        for obj in clickableList:
-                            if obj.contains(mouse_3):
-                                gotValidClick = True
-                                mouse_3.clicked_name.append(obj.name)
-                                goToQuestions = True
-                        if gotValidClick:  
-                            continueRoutine = False  # abort routine on response
+            # -------Run Routine "Categorical_Emotions_to_VAD_Mapping"-------
+            while continueRoutine:
+                # get current time
+                t = Categorical_Emotions_to_VAD_MappingClock.getTime()
+                tThisFlip = win.getFutureFlipTime(clock=Categorical_Emotions_to_VAD_MappingClock)
+                tThisFlipGlobal = win.getFutureFlipTime(clock=None)
+                frameN = frameN + 1  # number of completed frames (so 0 is the first frame)
+                # update/draw components on each frame
                 
+                # *Emotions_Mapping_Figure* updates
+                if Emotions_Mapping_Figure.status == NOT_STARTED and tThisFlip >= 0.0-frameTolerance:
+                    # keep track of start time/frame for later
+                    Emotions_Mapping_Figure.frameNStart = frameN  # exact frame index
+                    Emotions_Mapping_Figure.tStart = t  # local t and not account for scr refresh
+                    Emotions_Mapping_Figure.tStartRefresh = tThisFlipGlobal  # on global time
+                    win.timeOnFlip(Emotions_Mapping_Figure, 'tStartRefresh')  # time at next scr refresh
+                    Emotions_Mapping_Figure.setAutoDraw(True)
+                
+                # *nextButton_3* updates
+                if nextButton_3.status == NOT_STARTED and tThisFlip >= 0.0-frameTolerance:
+                    # keep track of start time/frame for later
+                    nextButton_3.frameNStart = frameN  # exact frame index
+                    nextButton_3.tStart = t  # local t and not account for scr refresh
+                    nextButton_3.tStartRefresh = tThisFlipGlobal  # on global time
+                    win.timeOnFlip(nextButton_3, 'tStartRefresh')  # time at next scr refresh
+                    nextButton_3.setAutoDraw(True)
+                # *mouse_3* updates
+                if mouse_3.status == NOT_STARTED and t >= 0.0-frameTolerance:
+                    # keep track of start time/frame for later
+                    mouse_3.frameNStart = frameN  # exact frame index
+                    mouse_3.tStart = t  # local t and not account for scr refresh
+                    mouse_3.tStartRefresh = tThisFlipGlobal  # on global time
+                    win.timeOnFlip(mouse_3, 'tStartRefresh')  # time at next scr refresh
+                    mouse_3.status = STARTED
+                    mouse_3.mouseClock.reset()
+                    prevButtonState = mouse_3.getPressed()  # if button is down already this ISN'T a new click
+                if mouse_3.status == STARTED:  # only update if started and not finished!
+                    buttons = mouse_3.getPressed()
+                    if buttons != prevButtonState:  # button state changed?
+                        prevButtonState = buttons
+                        if sum(buttons) > 0:  # state changed to a new click
+                            # check if the mouse was inside our 'clickable' objects
+                            gotValidClick = False
+                            try:
+                                iter([nextButton])
+                                clickableList = [nextButton]
+                            except:
+                                clickableList = [[nextButton]]
+                            for obj in clickableList:
+                                if obj.contains(mouse_3):
+                                    gotValidClick = True
+                                    mouse_3.clicked_name.append(obj.name)
+                                    goToQuestions = True
+                            if gotValidClick:  
+                                continueRoutine = False  # abort routine on response
+                                
                 # *text_3* updates
                 if text_3.status == NOT_STARTED and tThisFlip >= 0.0-frameTolerance:
                     # keep track of start time/frame for later
@@ -838,8 +855,6 @@ for thisBlock0 in block0:
             for thisComponent in Categorical_Emotions_to_VAD_MappingComponents:
                 if hasattr(thisComponent, "setAutoDraw"):
                     thisComponent.setAutoDraw(False)
-            thisExp.addData('Emotions_Mapping_Figure.started', Emotions_Mapping_Figure.tStartRefresh)
-            thisExp.addData('Emotions_Mapping_Figure.stopped', Emotions_Mapping_Figure.tStopRefresh) #keep this?
             # store data for thisExp (ExperimentHandler)
             x, y = mouse_3.getPos()
             buttons = mouse_3.getPressed()
@@ -994,7 +1009,7 @@ routineTimer.reset()
 # set up handler to look after randomisation of conditions etc
 block1 = data.TrialHandler(nReps=1.0, method='random', 
     extraInfo=expInfo, originPath=-1,
-    trialList=data.importConditions('stimuliList.xlsx', selection='1:15'),
+    trialList=data.importConditions('stimuliList.xlsx', selection='0:15'),
     seed=None, name='block1')
 thisExp.addLoop(block1)  # add the loop to the experiment
 thisBlock1 = block1.trialList[0]  # so we can initialise stimuli with some values
@@ -1003,11 +1018,11 @@ if thisBlock1 != None:
     for paramName in thisBlock1:
         exec('{} = thisBlock1[paramName]'.format(paramName))
 
-idx = -1
+idx = 0
 for thisBlock1 in block1:
     trial = {}
     idx += 1
-    print(f'trial {idx}')
+    print(f'Not counting the practice trial, this is trial {idx}')
     currentLoop = block1
     # abbreviate parameter names if possible (e.g. rgb = thisBlock1.rgb)
     if thisBlock1 != None:
