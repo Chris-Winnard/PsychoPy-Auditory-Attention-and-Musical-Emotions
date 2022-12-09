@@ -113,7 +113,7 @@ defaultKeyboard = keyboard.Keyboard(backend='iohub')
 # Initialize components for Routine "instructions"
 instructionsClock = core.Clock()
 top_instr_txt = visual.TextStim(win=win, name='top_instr_txt',
-    text='You will be told to focus on either music or a silent film. They will then play together; please try not to blink/move during this period.\n\nNext, the experimenter will ask you about the stimulus you were told to focus on. You can take a break here before the next trial.\n\nIf you have any questions at all please ask the experimenters.',
+    text='You will be told to either attend or NOT attend to some music, before it plays. Please close your eyes, and try not to move during this period. Once the music has played, you can take a break here before the next trial.\n\nIf you have any questions at all please ask the experimenters.',
     font='Open Sans',
     pos=(0, 0.15), height=0.05, wrapWidth=1.8, ori=0.0, 
     color='white', colorSpace='rgb', opacity=None, 
