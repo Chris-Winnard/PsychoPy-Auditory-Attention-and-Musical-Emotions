@@ -1,6 +1,6 @@
 #Created with help from ChatGPT (a lot of the code written by it, then edited)
 
-#PART 1: MULTI-STREAM WEIGHTINGS:
+#PART 1: MULTI-STREAM GAINS:
 
 from psychopy import core, gui
 from pyo import Server, SfPlayer, Pan
@@ -31,7 +31,7 @@ while True:
     # Create a GUI to get loudness values from the user for each audio stream
     dlg = gui.Dlg(title="Loudness Adjustment")
     dlg.addText("Please adjust the loudness of the instruments, so that you can hear them and pay "
-                 + "attention to them both comfortably. The weightings do not need to add up to 1.")
+                 + "attention to them both comfortably. The gains do not need to add up to 1.")
     dlg.addField("Vibraphone Loudness:", initial=vibraphone.mul)
     dlg.addField("Piano Loudness:", initial=piano.mul)
     dlg.show()
@@ -58,20 +58,20 @@ while True:
     # Stop the server
     s.stop()
 
-    # Ask user if they are happy with the loudness weightings
+    # Ask user if they are happy with the loudness gains:
     dlg = gui.Dlg(title="Loudness Adjustment")
-    dlg.addField("Are you happy with the weightings?", choices=["Yes", "No"])
+    dlg.addField("Are you happy with the gains?", choices=["Yes", "No"])
     dlg.show()
     
     if dlg.OK and dlg.data[0] == "Yes":
        
         #Save the results:        
-        weightings = ["Vibraphone: ", vibraphone_loudness, "\nPiano: ", piano_loudness]        
+        gains = ["Vibraphone: ", vibraphone_loudness, "\nPiano: ", piano_loudness]        
         #Create a new file in the appropriate location. If there's already a file there of the same name, it's wiped:
-        File = ("Multi-stream weightings for " + str(expInfo['Participant']) + ".txt")
+        File = ("Multi-stream gains for " + str(expInfo['Participant']) + ".txt")
         #Open, write to file, and close.
         with open(File, 'w') as f:
-            for x in weightings:
+            for x in gains:
                 f.write("%s" % x )
             f.close
         ctypes.windll.user32.MessageBoxW(0, "Your settings have been saved.", "Success!")        
@@ -89,7 +89,7 @@ continue_adjusting = True
 # Create a server and start it
 s = Server().boot()
 
-#Set default weightings. To avoid confusion, these are not necessarily the same as the .mul
+#Set default gains. To avoid confusion, these are not necessarily the same as the .mul
 #values which are actually used to control loudness. E.g, piano_loudness might be 1, but the
 #piano output will be 0 whilst the vibraphone plays.
 vibraphone_loudness = 0.5
@@ -158,12 +158,12 @@ while continue_adjusting:
         
         if continue_adjusting == 0:           
             #Save the results:        
-            weightings = ["Vibraphone: ", vibraphone_loudness, "\nPiano: ", piano_loudness]        
+            gains = ["Vibraphone: ", vibraphone_loudness, "\nPiano: ", piano_loudness]        
             #Create a new file in the appropriate location. If there's already a file there of the same name, it's wiped:
-            File = ("Single-stream Weightings for " + str(expInfo['Participant']) + ".txt")
+            File = ("Single-stream Gains for " + str(expInfo['Participant']) + ".txt")
             #Open, write to file, and close.
             with open(File, 'w') as f:
-                for x in weightings:
+                for x in gains:
                     f.write("%s" % x )
                 f.close
             break
