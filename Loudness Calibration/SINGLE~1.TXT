@@ -1,3 +1,0 @@
-Vibraphone: 0.5
-Harmonica: 0.6
-Piano: 0.45
