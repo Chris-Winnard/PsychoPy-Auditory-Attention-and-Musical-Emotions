@@ -1,0 +1,2 @@
+Vibraphone: 0.5
+Piano: 0.5
