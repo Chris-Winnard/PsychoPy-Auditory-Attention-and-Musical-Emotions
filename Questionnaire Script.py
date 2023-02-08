@@ -44,12 +44,12 @@ expInfo['expName'] = expName
 expInfo['psychopyVersion'] = psychopyVersion
 
 # Data file name stem = absolute path + name; later add .psyexp, .csv, .log, etc
-filename = _thisDir + os.sep + u'data/%s_%s_%s' % (expInfo['participant'], expName, expInfo['date'])
+filename = _thisDir + '/Data/' + expInfo['participant'] + '/Questionnaire Answers'
 
 # An ExperimentHandler isn't essential but helps with data saving
 thisExp = data.ExperimentHandler(name=expName, version='',
     extraInfo=expInfo, runtimeInfo=None,
-    originPath='C:\\Users\\Chris\\Documents\\Music Interestingness in the Brain\\Paradigm newest 23-06-22\\PsychoPy-Auditory-Attention-and-Musical-Emotions-main\\Questionnaire Script.py',
+    originPath= _thisDir + '/Questionnaire Script.py',
     savePickle=True, saveWideText=True,
     dataFileName=filename)
 # save a log file for detail verbose info
@@ -356,7 +356,7 @@ Categorical_Emotions_to_VAD_MappingClock = core.Clock()
 Emotions_Mapping_Figure = visual.ImageStim(
     win=win,
     name='Emotions_Mapping_Figure', 
-    image='C:/Users/Chris/Pictures/V-A-D to Ekman model mapping.png', mask=None, anchor='center',
+    image=_thisDir + '/V-A-D to Ekman model mapping.png', mask=None, anchor='center',
     ori=0.0, pos=(0, 0.06), size=(1.07117, 0.8),
     color=[1,1,1], colorSpace='rgb', opacity=None,
     flipHoriz=False, flipVert=False,

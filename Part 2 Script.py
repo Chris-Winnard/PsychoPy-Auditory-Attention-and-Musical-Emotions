@@ -67,7 +67,7 @@ expInfo['date'] = data.getDateStr()  # add a simple timestamp
 expInfo['expName'] = expName
 
 # Data file name stem = absolute path + name; later add .psyexp, .csv, .log, etc
-filename = _thisDir + os.sep + u'data/%s/%s/experiment' % (expInfo['participant'], expName)
+filename = _thisDir + '/Data/' + expInfo['participant'] + '/Part 2 Data'
 jsonfilename = filename + '_oddballStimuli.json'
 jsondata = {}
 jsondata['trials'] = []
@@ -75,7 +75,7 @@ jsondata['trials'] = []
 # An ExperimentHandler isn't essential but helps with data saving
 thisExp = data.ExperimentHandler(name=expName,
     extraInfo=expInfo, runtimeInfo=None,
-    originPath='C:\\Users\\Chris\\Documents\\Music Interestingness in the Brain\\NEWEST PsychoPy-Auditory-Attention-and-Musical-Emotions-main\\PsychoPy-Auditory-Attention-and-Musical-Emotions-main\\Part 2 Script.py',
+    originPath= _thisDir + '/Part 2 Script.py',
     savePickle=True, saveWideText=True,
     dataFileName=filename)
 # save a log file for detail verbose info
