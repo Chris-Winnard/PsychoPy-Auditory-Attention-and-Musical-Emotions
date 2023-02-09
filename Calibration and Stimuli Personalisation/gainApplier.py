@@ -3,6 +3,7 @@ import glob
 import os
 import soundfile as sf
 import librosa
+import numpy as np
 
 """Note: to ensure pieces are exactly 30s each, we remove any excess data points."""
 
@@ -69,9 +70,10 @@ msVibrGain = float(msGains[1])
 msKeybGain = float(msGains[3])
 #msKeybGain = float(msGains[5]) #Later adapt all of this to include harmonica.
 
-import numpy as np
-VibrDone = False
-KeybDone = False
+#To confirm if each stream has had the gain applied:
+vibrDone = False
+keybDone = False
+
 for file in os.scandir(participantPath):
 
     for i in range(1, 8):
@@ -80,38 +82,15 @@ for file in os.scandir(participantPath):
                 signal = signal[0:661500] #Remove any excess points
                 
                 if file.name[5:9] == "Vibr":
-                   VibrSignal = signal*msVibrGain
-                   VibrDone = True
+                   vibrSignal = signal*msVibrGain
+                   vibrDone = True
                     
                 elif file.name[5:9] == "Keyb":
-                    KeybSignal = signal*msKeybGain
-                    KeybDone = True
-                print(str(KeybDone))
-                print(str(VibrDone))
+                    keybSignal = signal*msKeybGain
+                    keybDone = True
                             
-                if KeybDone == True and VibrDone == True:
-                    oddballStimMix = np.column_stack((VibrSignal, KeybSignal)) #mixed properly?
-                    print(oddballStimMix)
-                    sf.write(participantPath + "/" + str(file.name)[:-21] + "mixed for oddball test.wav", oddballStimMix, sr)
-                    VibrDone = False
-                    KeybDone = False
-
-   # merger = np.array([VibrSignal, KeybSignal])
-    
-     #   merged = zip(VibrSignal, KeybSignal) #right way round?
-  #  print(merger)
- #   merger = [VibrSignal, KeybSignal]
-  #  print(merger)
-   # Use zip to get item pairs
-     #   merged = zip(VibrSignal, KeybSignal) #right way round?
-        
-        # Print out the merged list
-     #   print(merged)
-      #  sf.write("Weighted Mix.wav", list(merged), sr)
-       # i = 0
-        #j = 0
-            
-        #remember to mix them.. do I literally just concatenate the two lists/arrays (one 
-        #left, one right)?
-        
-        #Create new folder w/ stimuli specifically for the participant
+                if keybDone == True and vibrDone == True: #If both signals are ready for mixing
+                    oddballStimMix = np.column_stack((vibrSignal, keybSignal)) #Mixing
+                    f = sf.write(participantPath + "/" + str(file.name)[:-21] + "mixed for oddball test.wav", oddballStimMix, sr)
+                    vibrDone = False #To prevent confusion regarding the next set.
+                    keybDone = False

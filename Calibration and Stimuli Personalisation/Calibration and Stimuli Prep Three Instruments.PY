@@ -12,6 +12,7 @@ import os
 from pyo import Server, SfPlayer, Pan
 import time
 import ctypes  #For dialogue boxes without option to cancel.
+import glob, sys
 
 expName = 'Loudness Calibration'  # from the Builder filename that created this script
 expInfo = {'Participant': ''}
@@ -116,8 +117,9 @@ piano = SfPlayer("Set5-Keyb.wav", loop=True, mul=piano_loudness)
 while continue_adjusting:
     # Create a GUI to get the instrument selection from the user
     dlg = gui.Dlg(title="Single Instrument Calibration")
-    dlg.addField("You will now need to adjust the instruments whilst they play one-at-a-time. "
-                 + "Which instrument would you like to listen to first?", choices=["Vibraphone", "Harmonica", "Piano"])
+    dlg.addField("You will now need to adjust the instruments whilst they play one-at-a-time. You can\nswitch between"
+                 + " them as you do this. Which instrument would you like to listen to first?",
+                 choices=["Vibraphone", "Harmonica", "Piano"])
     dlg.show()
     if dlg.OK:
         selected_instrument = dlg.data[0]
@@ -201,5 +203,16 @@ s.shutdown()
 
 ctypes.windll.user32.MessageBoxW(0, "Your settings have been saved.", "Success!")
 
-exec(open('randomOddballCreator.py').read())
-exec(open('gainApplier.py').read())
+##############################################################################################################
+exec(open('randomOddballCreator.py').read()) #Create versions of the stimuli with oddballs in
+exec(open('personalisedStimuliMixer.py').read()) #Create stimuli with gains applied: both single-stream, and
+#mixes of the oddball stimuli.
+
+#Additional note: trigger files have already been created. By the nature of gainApplier and randomOddballCreator,
+#all pieces have the exact same lengths enforced, so can just use one start/end trigger pair for the Set1-Harm files
+#(i.e not different versions of the triggers for different participants), etc.
+
+#Also note that for the trigger files: for oddball tests the start is at the v start of the audio file.
+
+exec(open('listMaker.py').read()) #Create lists of the stimuli and the trigger files that can be used in the scripts
+#with minimal extra work.

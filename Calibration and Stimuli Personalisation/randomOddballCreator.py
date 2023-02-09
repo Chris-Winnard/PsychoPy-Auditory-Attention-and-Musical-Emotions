@@ -63,7 +63,7 @@ def addOddballs(signalCopy):
             start = random.randint(0, adaptedSignalEnd) #Accounting for time oddball might play at end
             oddball1 = createOddball(signalCopy, start)
             signalCopy[start:start+oddballLength] = oddball1 #Insert the oddball.
-            
+
         if i == 1:            
             start2 = random.choice([j for j in range(0, adaptedSignalEnd) if j not in range(start-oddballLength, start+2*oddballLength)])
             oddball2 = createOddball(signalCopy, start2)
@@ -75,7 +75,13 @@ def addOddballs(signalCopy):
             signalCopy[start3:start3+oddballLength] = oddball3
     
     return signalCopy
-        
+
+def oddballFileWriter(signal, attendedInst):
+        pause = np.zeros(110250)
+        augmentedSignalCopy = addOddballs(signal)
+
+        oddballStimulusFull = np.concatenate((signal, pause, augmentedSignalCopy))
+        sf.write(participantPath + "/" + str(file.name)[:-4] + " oddball test-" + attendedInst + " attended.wav", oddballStimulusFull, sr)
 
 for file in os.scandir(stimuliPath):
     if file.name[:3] == "Set": #Because of naming convention used, this will ignore trigs etc.
@@ -87,8 +93,13 @@ for file in os.scandir(stimuliPath):
         signalEnd = len(signal)
         adaptedSignalEnd = signalEnd - oddballLength
         
-        pause = np.zeros(110250)
-        augmentedSignalCopy = addOddballs(signal)
-
-        oddballStimulusFull = np.concatenate((signal, pause, augmentedSignalCopy))
-        sf.write(participantPath + "/" + str(file.name)[:-4] + " oddball test.wav", oddballStimulusFull, sr)
+        #Have multiple versions, all with random oddballs. This means that e.g for Set1 mix with Vibr attended
+        #there will be different vibraphone oddballs to Set1 mix with Keyb attended
+        attendedInst = "Vibr"
+        oddballFileWriter(signal, attendedInst)
+        attendedInst = "Keyb"
+        oddballFileWriter(signal, attendedInst)
+        
+        if int(file.name[3]) > 4: #For sets with harmonica pieces.
+            attendedInst = "Harm"
+            oddballFileWriter(signal, attendedInst)
