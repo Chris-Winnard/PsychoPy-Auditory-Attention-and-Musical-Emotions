@@ -70,82 +70,40 @@ msVibrGain = float(msGains[1])
 msKeybGain = float(msGains[3])
 #msKeybGain = float(msGains[5]) #Later adapt all of this to include harmonica.
 
-for file in os.scandir(participantPath):  
-    
-    for i in range(1, 8): 
-        attendedInst = "Vibr attended" #MUST include " attended"
-        vibrDone = False
-        keybDone = False
-        for attendedInst in file.name:
-            print(file.name)
-            if file.name[3] == str(i): #Ignores other sets/attended instruments, trigers etc
-                    signal, sr = librosa.load(file)
-                    signal = signal[0:661500] #Remove any excess points
+def mixer(attendedInst):
+    VibrDone = False
+    KeybDone = False
+    for file in os.scandir(participantPath):  
+        for i in range(1, 8):
+            if file.name[3] == str(i) and attendedInst in file.name: #Only oddball versions. This will also ignore triggers etc.
+                signal, sr = librosa.load(file)
+                signal = signal[0:661500] #Remove any excess points
+                
+                if file.name[5:9] == "Vibr":
+                   VibrSignal = signal*msVibrGain
+                   VibrDone = True
+                   os.remove(file) #Delete single streams when they're no longer needed.
                     
-                    if file.name[5:9] == "Vibr":
-                       vibrSignal = signal*msVibrGain
-                       vibrDone = True
-                        
-                    elif file.name[5:9] == "Keyb":
-                        keybSignal = signal*msKeybGain
-                        keybDone = True
-                        
-                    if keybDone == True and vibrDone == True: #If both signals are ready for mixing
-                        print("done")
-                        oddballStimMix = np.column_stack((vibrSignal, keybSignal)) #Mixing
-                        sf.write(participantPath + "/" + str(file.name)[:-21] + "oddball test mix- " 
-                                 + attendedInst + " attended.wav", oddballStimMix, sr)
-                    
-                    
-        attendedInst = "Keyb attended" #MUST include " attended"            
-        if file.name[3] == str(i) and attendedInst in file.name: #Ignores other sets/attended instruments, trigers etc
-         signal, sr = librosa.load(file)
-         signal = signal[0:661500] #Remove any excess points
-         
-         if file.name[5:9] == "Vibr":
-            vibrSignal = signal*msVibrGain
-            vibrDone = True
-             
-         elif file.name[5:9] == "Keyb":
-             keybSignal = signal*msKeybGain
-             keybDone = True
-             
-         if keybDone == True and vibrDone == True: #If both signals are ready for mixing
-             print("done")
-             oddballStimMix = np.column_stack((vibrSignal, keybSignal)) #Mixing
-             sf.write(participantPath + "/" + str(file.name)[:-21] + "oddball test mix- " 
-                      + attendedInst + " attended.wav", oddballStimMix, sr)
-        
-        attendedInst = "Vibr attended"   
-        vibrDone = False
-        keybDone = False
-        mixer(attendedInst, vibrDone, keybDone)
-        attendedInst = "Keyb attended"        
-        vibrDone = False
-        keybDone = False
-        mixer(attendedInst, vibrDone, keybDone)
-        if i > 4:
-            attendedInst = "Harm attended"       
-            vibrDone = False
-            keybDone = False         
-            if file.name[3] == str(i) and attendedInst in file.name: #Ignores other sets/attended instruments, trigers etc
-             signal, sr = librosa.load(file)
-             signal = signal[0:661500] #Remove any excess points
-             
-             if file.name[5:9] == "Vibr":
-                vibrSignal = signal*msVibrGain
-                vibrDone = True
-                 
-             elif file.name[5:9] == "Keyb":
-                 keybSignal = signal*msKeybGain
-                 keybDone = True
-                 
-             if keybDone == True and vibrDone == True: #If both signals are ready for mixing
-                 print("done")
-                 oddballStimMix = np.column_stack((vibrSignal, keybSignal)) #Mixing
-                 sf.write(participantPath + "/" + str(file.name)[:-21] + "oddball test mix- " 
-                          + attendedInst + " attended.wav", oddballStimMix, sr)
-            
+                elif file.name[5:9] == "Keyb":
+                    KeybSignal = signal*msKeybGain
+                    KeybDone = True
+                    os.remove(file) #Delete single streams when they're no longer needed.
+                            
+                if KeybDone == True and VibrDone == True:
+                    oddballStimMix = np.column_stack((VibrSignal, KeybSignal)) #mixed properly?
+                    sf.write(participantPath + "/Set" + str(i) + "-oddball test mix - " + attendedInst + ".wav", oddballStimMix, sr)
+
+attendedInst = "Vibr attended"
+mixer(attendedInst)
+
+attendedInst = "Keyb attended"
+mixer(attendedInst)
+
+#Also do harmonica..
+
+
+
+
 #for file in os.scandir(participantPath):     
  #   if "oddball test" in file.name and "mix" not in file.name:
   #      os.remove(file) #Delete the single streams when they're no longer needed.
