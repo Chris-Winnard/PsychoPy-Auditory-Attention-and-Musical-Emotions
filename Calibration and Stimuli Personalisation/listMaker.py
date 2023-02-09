@@ -77,16 +77,6 @@ workbook = xlsxwriter.Workbook('practiceStimuliList.xlsx')
 worksheet = workbook.add_worksheet()
 
 #First column- names of stimuli files:
-    
-#Find the personalised stimuli path:
-currentFolderPath = pathlib.Path(__file__).parent.resolve() #Current folder path
-upperFolderPath = currentFolderPath.parent.resolve() #Path for next level up.
-dataPath = str(upperFolderPath) + "/Data" 
-participantPath = max(glob.glob(os.path.join(dataPath, '*/')), key=os.path.getmtime) #Last updated
-#subfolder in Data folder.
-
-#Also, change to the participant path so that this .xlsx list is saved there:
-os.chdir(participantPath)
  
 worksheet.write('A1', 'stimuli_0')
 i = 2 #Index for row in sheet.
