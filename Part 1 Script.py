@@ -75,7 +75,8 @@ expInfo['date'] = data.getDateStr()  # add a simple timestamp
 expInfo['expName'] = expName
 
 # Data file name stem = absolute path + name; later add .psyexp, .csv, .log, etc
-filename = _thisDir + '/Data/' + expInfo['participant'] + '/Part 1 Data'
+participantPath = _thisDir + '/Data/' + expInfo['participant'] #participantPath also used for locating stimuli lists for this particular participant.
+filename = participantPath + '/Part 1 Data'
 jsonfilename = filename + '_stimuli.json'
 jsondata = {}
 jsondata['trials'] = []
@@ -238,7 +239,7 @@ Categorical_Emotions_to_VAD_MappingClock = core.Clock()
 Emotions_Mapping_Figure = visual.ImageStim(
     win=win,
     name='Emotions_Mapping_Figure', 
-    image='C:/Users/Chris/Pictures/V-A-D to Ekman model mapping.png', mask=None, anchor='center',
+    image='V-A-D to Ekman model mapping.png', mask=None, anchor='center',
     ori=0.0, pos=(0, 0.06), size=(1.07117, 0.8),
     color=[1,1,1], colorSpace='rgb', opacity=None,
     flipHoriz=False, flipVert=False,
@@ -521,7 +522,7 @@ routineTimer.reset()
 # set up handler to look after randomisation of conditions etc
 block0 = data.TrialHandler(nReps=1.0, method='random', 
     extraInfo=expInfo, originPath=-1,
-    trialList=data.importConditions('practiceStimulus.xlsx', selection='0:1'),
+    trialList=data.importConditions(participantPath + '\practiceStimuliList.xlsx', selection='0:1'),
     seed=None, name='block0')
 thisBlock0 = block0.trialList[0]  # so we can initialise stimuli with some values
 # abbreviate parameter names if possible (e.g. rgb = thisBlock1.rgb)
@@ -1010,7 +1011,7 @@ routineTimer.reset()
 # set up handler to look after randomisation of conditions etc
 block1 = data.TrialHandler(nReps=1.0, method='random', 
     extraInfo=expInfo, originPath=-1,
-    trialList=data.importConditions('stimuliList.xlsx', selection='0:15'),
+    trialList=data.importConditions(participantPath + '\stimuliList.xlsx', selection='0:15'),
     seed=None, name='block1')
 thisExp.addLoop(block1)  # add the loop to the experiment
 thisBlock1 = block1.trialList[0]  # so we can initialise stimuli with some values
