@@ -538,7 +538,6 @@ for thisBlock0 in block0:
     
     # -------Run Routine "practiceTrial"-------
     while continueRoutine:
-        print("starting practice trial")
         # get current time
         t = trialClock.getTime()
         tThisFlip = win.getFutureFlipTime(clock=trialClock)
@@ -620,6 +619,7 @@ for thisBlock0 in block0:
             for i in input_idx:
                 mm.setAmp(i, output_idx[i], spk_volume[i])
             mm.out()
+            
             stimuliStarted = True
             
         # check for quit (typically the Esc key)
