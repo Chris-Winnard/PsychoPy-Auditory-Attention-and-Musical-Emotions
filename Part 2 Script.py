@@ -18,7 +18,7 @@ from psychopy import sound, gui, visual, core, data, event, logging, clock, colo
 from psychopy.constants import (NOT_STARTED, STARTED, PLAYING, PAUSED,
                                 STOPPED, FINISHED, PRESSED, RELEASED, FOREVER)
 
-import numpy as np  # whole numpy lib is available, prepend 'np.'
+import numpy as np
 from numpy import (sin, cos, tan, log, log10, pi, average,
                    sqrt, std, deg2rad, rad2deg, linspace, asarray)
 from numpy.random import random, randint, normal, shuffle, choice as randchoice
@@ -67,7 +67,8 @@ expInfo['date'] = data.getDateStr()  # add a simple timestamp
 expInfo['expName'] = expName
 
 # Data file name stem = absolute path + name; later add .psyexp, .csv, .log, etc
-filename = _thisDir + '/Data/' + expInfo['participant'] + '/Part 2 Data'
+participantPath = _thisDir + '/Data/' + expInfo['participant'] #participantPath also used for locating stimuli lists for this particular participant.
+filename = participantPath + '/Part 2 Data'
 jsonfilename = filename + '_oddballStimuli.json'
 jsondata = {}
 jsondata['trials'] = []
@@ -112,7 +113,7 @@ defaultKeyboard = keyboard.Keyboard(backend='iohub')
 # Initialize components for Routine "instructions"
 instructionsClock = core.Clock()
 top_instr_txt = visual.TextStim(win=win, name='top_instr_txt',
-    text='You will hear two/three music pieces at once from different directions. You will be told to focus on one before they play twice.\n\nThe first time will remind you what they sound like. There will be a pause before the second playing, which will feature 1-4 oddballs for each instrument. Please close your eyes, and try not to move during this period. Count the attended instrument\'s oddballs.\n\nYou will be asked how many oddballs you heard. You can then take a break.\n\nIf you have any questions at all please ask the experimenters.',
+    text='You will hear two/three music pieces at once from different directions. You will be told to focus on one before they play twice.\n\nThe first time will remind you what they sound like. There will be a pause before the second playing, which will feature 1-3 oddballs for each instrument. Please close your eyes, and try not to move during this period. Count the attended instrument\'s oddballs.\n\nYou will be asked how many oddballs you heard. You can then take a break.\n\nIf you have any questions at all please ask the experimenters.',
     font='Open Sans',
     pos=(0, 0.15), height=0.05, wrapWidth=1.8, ori=0.0, 
     color='white', colorSpace='rgb', opacity=None, 
@@ -494,9 +495,10 @@ routineTimer.reset()
 # set up handler to look after randomisation of conditions etc
 block0 = data.TrialHandler(nReps=1.0, method='random', 
     extraInfo=expInfo, originPath=-1,
-    trialList=data.importConditions('practiceOddballStimuli.xlsx', selection='0:1'),
+    trialList=data.importConditions(participantPath + '\practiceOddballStimuliList.xlsx', selection='0:1'),
     seed=None, name='block0')
 thisBlock0 = block0.trialList[0]  # so we can initialise stimuli with some values
+
 # abbreviate parameter names if possible (e.g. rgb = thisBlock0.rgb)
 if thisBlock0 != None:
     for paramName in thisBlock0:
@@ -536,6 +538,7 @@ for thisBlock0 in block0:
     
     # -------Run Routine "practiceTrial"-------
     while continueRoutine:
+        print("starting practice trial")
         # get current time
         t = trialClock.getTime()
         tThisFlip = win.getFutureFlipTime(clock=trialClock)
@@ -543,10 +546,10 @@ for thisBlock0 in block0:
         frameN = frameN + 1  # number of completed frames (so 0 is the first frame)
         # update/draw components on each frame
         
-        attendedInstrument = f'{attendedInstrument}' #Setting the attended instrument, from the column in oddballStimuliList.xlsx
+        attendedInst = f'{attendedInst}' #Setting the attended instrument, from the column in oddballStimuliList.xlsx
         
         # *attendVibraphoneNote* updates
-        if attendedInstrument == 'vibraphone' and attendVibraphoneNote.status == NOT_STARTED:
+        if attendedInst == 'Vibr' and attendVibraphoneNote.status == NOT_STARTED:
             # keep track of start time/frame for later
             attendVibraphoneNote.frameNStart = frameN  # exact frame index
             attendVibraphoneNote.tStart = t  # local t and not account for scr refresh
@@ -563,7 +566,7 @@ for thisBlock0 in block0:
                 attendVibraphoneNote.setAutoDraw(False)
         
         # *attendHarmonicaNote* updates
-        if attendedInstrument == 'harmonica' and attendHarmonicaNote.status == NOT_STARTED:
+        if attendedInst == 'Harm' and attendHarmonicaNote.status == NOT_STARTED:
             # keep track of start time/frame for later
             attendHarmonicaNote.frameNStart = frameN  # exact frame index
             attendHarmonicaNote.tStart = t  # local t and not account for scr refresh
@@ -580,7 +583,7 @@ for thisBlock0 in block0:
                 attendHarmonicaNote.setAutoDraw(False)
         
                 # *attendKeyboardNote* updates
-        if attendedInstrument == 'keyboard' and attendKeyboardNote.status == NOT_STARTED:
+        if attendedInst == 'Keyb' and attendKeyboardNote.status == NOT_STARTED:
             # keep track of start time/frame for later
             attendKeyboardNote.frameNStart = frameN  # exact frame index
             attendKeyboardNote.tStart = t  # local t and not account for scr refresh
@@ -597,7 +600,7 @@ for thisBlock0 in block0:
                 attendKeyboardNote.setAutoDraw(False)
         
         if stimuliStarted == False and (attendVibraphoneNote.status == FINISHED or attendHarmonicaNote.status == FINISHED or attendKeyboardNote.status == FINISHED):
-        
+
             # stimuli channels
             trial['stimulies'] = []
             for i in range(0, PART_2_OUT_CHANNELS-1):
@@ -618,7 +621,7 @@ for thisBlock0 in block0:
                 mm.setAmp(i, output_idx[i], spk_volume[i])
             mm.out()
             stimuliStarted = True
-     
+            
         # check for quit (typically the Esc key)
         if endExpNow or defaultKeyboard.getKeys(keyList=["escape"]):
             core.quit()
@@ -645,14 +648,14 @@ for thisBlock0 in block0:
         if hasattr(thisComponent, "setAutoDraw"):
             thisComponent.setAutoDraw(False)
     
-    if attendedInstrument == 'vibraphone':
-        block0.addData('attendedInstrument', 'Vibraphone')
+    if attendedInst == 'Vibr':
+        block0.addData('attendedInst', 'Vibr')
         print("Vibraphone is to be attended.")
-    elif attendedInstrument == 'harmonica':
-        block0.addData('attendedInstrument', 'Harmonica')
+    elif attendedInst == 'Harm':
+        block0.addData('attendedInst', 'Harm')
         print("Harmonica is to be attended.")
-    elif attendedInstrument == 'keyboard':
-        block0.addData('attendedInstrument', 'Keyboard')
+    elif attendedInst == 'Keyb':
+        block0.addData('attendedInst', 'Keyb')
         print("Keyboard is to be attended.")
     # the Routine "trial" was not non-slip safe, so reset the non-slip timer
     routineTimer.reset()
@@ -781,9 +784,6 @@ for thisBlock0 in block0:
     oddballsMinusResp = float(f'{attendedOddballs}') - float(oddballsResp.text)
     # the Routine "QuestionBreakPause" was not non-slip safe, so reset the non-slip timer
     routineTimer.reset()
-    
-    print(f'{attendedOddballs}')
-    print(oddballsMinusResp)    
     
     ##FEEDBACK:
     if oddballsMinusResp == 0:
@@ -1041,10 +1041,11 @@ routineTimer.reset()
 # set up handler to look after randomisation of conditions etc
 block1 = data.TrialHandler(nReps=1.0, method='random', 
     extraInfo=expInfo, originPath=-1,
-    trialList=data.importConditions('oddballStimuliList.xlsx', selection='0:15'),
+    trialList=data.importConditions(participantPath + '\oddballStimuliList.xlsx', selection='0:15'),
     seed=None, name='block1')
 thisExp.addLoop(block1)  # add the loop to the experiment
 thisBlock1 = block1.trialList[0]  # so we can initialise stimuli with some values
+print(thisBlock1)
 # abbreviate parameter names if possible (e.g. rgb = thisBlock1.rgb)
 if thisBlock1 != None:
     for paramName in thisBlock1:
@@ -1092,10 +1093,10 @@ for thisBlock1 in block1:
         frameN = frameN + 1  # number of completed frames (so 0 is the first frame)
         # update/draw components on each frame
         
-        attendedInstrument = f'{attendedInstrument}' #Setting the attended instrument, from the column in oddballStimuliList.xlsx
+        attendedInst = f'{attendedInst}' #Setting the attended instrument, from the column in oddballStimuliList.xlsx
         
         # *attendVibraphoneNote* updates
-        if attendedInstrument == 'vibraphone' and attendVibraphoneNote.status == NOT_STARTED:
+        if attendedInst == 'Vibr' and attendVibraphoneNote.status == NOT_STARTED:
             # keep track of start time/frame for later
             attendVibraphoneNote.frameNStart = frameN  # exact frame index
             attendVibraphoneNote.tStart = t  # local t and not account for scr refresh
@@ -1112,7 +1113,7 @@ for thisBlock1 in block1:
                 attendVibraphoneNote.setAutoDraw(False)
         
         # *attendHarmonicaNote* updates
-        if attendedInstrument == 'harmonica' and attendHarmonicaNote.status == NOT_STARTED:
+        if attendedInst == 'Harm' and attendHarmonicaNote.status == NOT_STARTED:
             # keep track of start time/frame for later
             attendHarmonicaNote.frameNStart = frameN  # exact frame index
             attendHarmonicaNote.tStart = t  # local t and not account for scr refresh
@@ -1129,7 +1130,7 @@ for thisBlock1 in block1:
                 attendHarmonicaNote.setAutoDraw(False)
         
                 # *attendKeyboardNote* updates
-        if attendedInstrument == 'keyboard' and attendKeyboardNote.status == NOT_STARTED:
+        if attendedInst == 'Keyb' and attendKeyboardNote.status == NOT_STARTED:
             # keep track of start time/frame for later
             attendKeyboardNote.frameNStart = frameN  # exact frame index
             attendKeyboardNote.tStart = t  # local t and not account for scr refresh
@@ -1340,9 +1341,6 @@ for thisBlock1 in block1:
     thisExp.nextEntry() #Next row on the record.
     # the Routine "QuestionBreakPause" was not non-slip safe, so reset the non-slip timer
     routineTimer.reset()
-    
-    print(f'{attendedOddballs}')
-    print(oddballsMinusResp)
     
     ##FEEDBACK:
     if oddballsMinusResp == 0:
