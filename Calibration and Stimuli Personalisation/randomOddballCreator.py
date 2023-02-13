@@ -39,13 +39,13 @@ def createOddball(signalCopy, start):
         secondPart = librosa.effects.pitch_shift(secondPart, sr, -1, bins_per_octave=12)
         
         thirdPart = signalCopy[start+fifthSec:start+3*tenthSec]
-        thirdPart = librosa.effects.pitch_shift(thirdPart, sr, -1, bins_per_octave=12)
+        thirdPart = librosa.effects.pitch_shift(thirdPart, sr, 1, bins_per_octave=12)
         
         fourthPart = signalCopy[start+3*tenthSec:start+2*fifthSec]
         fourthPart = librosa.effects.pitch_shift(fourthPart, sr, -1, bins_per_octave=12)
         
         fifthPart = signalCopy[start+2*fifthSec:start+5*tenthSec]
-        fifthPart = librosa.effects.pitch_shift(fifthPart, sr, -1, bins_per_octave=12)
+        fifthPart = librosa.effects.pitch_shift(fifthPart, sr, 1, bins_per_octave=12)
         
         sixthPart = signalCopy[start+5*tenthSec:start+3*fifthSec]
         sixthPart = librosa.effects.pitch_shift(sixthPart, sr, -1, bins_per_octave=12)
