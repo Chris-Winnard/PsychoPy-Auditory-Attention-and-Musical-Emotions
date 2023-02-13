@@ -23,6 +23,11 @@ participantPath = max(glob.glob(os.path.join(dataPath, '*/')), key=os.path.getmt
 
 #Also, change to the participant path so that this .xlsx list is saved there:
 os.chdir(participantPath)
+
+#When we write the stimuli filenames, we will also need to include the location relative to the PsychoPy
+#paradigm scripts. This does NOT apply for trigger files, which are in a single general folder.
+participantName = os.path.split(os.getcwd())[1]
+stimLoc = 'Data/' + participantName + '/'
  
 worksheet.write('A1', 'stimuli_0')
 i = 2 #Index for row in sheet.
@@ -30,8 +35,9 @@ i = 2 #Index for row in sheet.
 for file in os.scandir(participantPath):
     stimCell = "A" + str(i)
     if "Set2" not in file.name: #Set 2 ones are used for practice, so these are excluded.
-        if ".wav" in file.name and "oddball" not in file.name: #Only audio, and no oddball files.      
-            worksheet.write(stimCell, str(file.name))
+        if ".wav" in file.name and "oddball" not in file.name: #Only audio, and no oddball files. 
+            stimPath = stimLoc + str(file.name)
+            worksheet.write(stimCell, stimPath)
             i+=1
 
 #Second column- names of trigger files:
@@ -75,8 +81,9 @@ i = 2 #Index for row in sheet.
 for file in os.scandir(participantPath):
     stimCell = "A" + str(i)
     if "Set2" in file.name: #Set 2 ones are used for practice, so excluded. #Set 2 ones ONLY
-        if ".wav" in file.name and "oddball" not in file.name: #Only audio, and no oddball files.      
-            worksheet.write(stimCell, str(file.name))
+        if ".wav" in file.name and "oddball" not in file.name: #Only audio, and no oddball files. 
+            stimPath = stimLoc + str(file.name)
+            worksheet.write(stimCell, stimPath)
             i+=1
 
 #Second column- names of trigger files:
@@ -129,7 +136,8 @@ for file in os.scandir(participantPath):
                 attendedInst = "Vibr"
             else:
                 attendedInst = "Harm"
-            worksheet.write(stimCell, str(file.name))
+            stimPath = stimLoc + str(file.name)
+            worksheet.write(stimCell, stimPath)
             worksheet.write(attCell, str(attendedInst))
             for line in lines:
                 if file.name[:3] in line and line.count(attendedInst) ==2: #E.g "Set3 Vibr stream for Vibr attended"...
@@ -179,7 +187,8 @@ for file in os.scandir(participantPath):
                 attendedInst = "Vibr"
             else:
                 attendedInst = "Harm"
-            worksheet.write(stimCell, str(file.name))
+            stimPath = stimLoc + str(file.name)
+            worksheet.write(stimCell, stimPath)
             worksheet.write(attCell, str(attendedInst))
             for line in lines:
                 if "Set2" in line and line.count(attendedInst) ==2: #E.g "Set2 Vibr stream for Vibr attended"...
@@ -201,7 +210,5 @@ for file in os.scandir(triggerPath):
 
 workbook.close()
 
-##NEED TO TEST PARTS 3 AND 4- ODDBALL NUMBERS MUST BE CORRECT!!!
-
-#For parts 3 and 4 will need to keep eye on how trigger filenames dealt with... might not be an issue if we
+#For parts 3 and 4 need to keep eye on how trigger filenames dealt with... not an issue if we
 #run generate_trig.py before doing ANY of this, for some generic versions of the files/mixes.
