@@ -77,7 +77,7 @@ def mixer(attendedInst):
         for i in range(1, 8):
             if file.name[3] == str(i) and attendedInst in file.name: #Only oddball versions. This will also ignore triggers etc.
                 signal, sr = librosa.load(file)
-                signal = signal[0:661500] #Remove any excess points
+                signal = signal[0:1433250] #Remove any excess points - should be 1 min 5s exactly.
                 
                 if file.name[5:9] == "Vibr":
                    VibrSignal = signal*msVibrGain
