@@ -92,7 +92,7 @@ def oddballFileWriter(signal, attendedInst):
         augmentedSignalCopy, startTimes = addOddballs(signal)
 
         #Create and write oddball file:
-        oddballStimulusFull = np.concatenate((signal, pause, augmentedSignalCopy))
+        oddballStimulusFull = np.concatenate((originalSignalCopy, pause, augmentedSignalCopy))
         sf.write(participantPath + "/" + str(file.name)[:-4] + " oddball test-" + attendedInst + " attended.wav", oddballStimulusFull, sr)
         
         #Record when oddballs start:   
@@ -115,6 +115,8 @@ for file in os.scandir(stimuliPath):
         #doesn't start at the last half-second or anything like that:
         signalEnd = len(signal)
         adaptedSignalEnd = signalEnd - oddballLength
+        
+        originalSignalCopy = np.copy(signal) #Put this here- needed to add in non-oddball demos of files at start.
         
         #Have multiple versions, all with random oddballs. This means that e.g for Set1 mix with Vibr attended
         #there will be different vibraphone oddballs to Set1 mix with Keyb attended
