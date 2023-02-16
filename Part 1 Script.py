@@ -543,23 +543,34 @@ for thisBlock0 in block0:
     continueRoutine = True
 
     # stimuli channels
-    trial['stimulies'] = []
-    for i in range(0, PART_1_OUT_CHANNELS-1):
-        spk_name = "stimuli_{}".format(i)
-        print(f'{spk_name}: {globals()[spk_name]}')
-        trial['stimulies'].append(os.path.abspath(globals()[spk_name]))
-        chns[i] = SfPlayer(globals()[spk_name])
-        mm.delInput(i+1)
-        mm.addInput(i+1,chns[i])
+    trial['stimuli'] = []
+    # create an empty list to store the players
+    players = []
     
-    for i in range(PART_1_OUT_CHANNELS):
-        for j in range(PART_1_OUT_CHANNELS):
-            mm.setAmp(i,j,0)
-    # set volume for output
-    output_idx = [0] + list(range(1,PART_1_OUT_CHANNELS))
-    input_idx = [0] + list(range(1,PART_1_OUT_CHANNELS))
-    for i in input_idx:
-        mm.setAmp(i, output_idx[i], spk_volume[i])
+    # create the first player for stimuli_0
+    spk_name = "stimuli_0"
+    trial['stimuli'].append(os.path.abspath(globals()[spk_name]))
+    player = sound.Sound(globals()[spk_name])
+    player.setVolume(1)  # set the volume to 1
+    players.append(player)
+    
+    # create the rest of the players for stimuli_0
+    for i in range(1, PART_2_OUT_CHANNELS):
+        spk_name = f"stimuli_0"
+        trial['stimuli'].append(os.path.abspath(globals()[spk_name]))
+        if i < len(spk_volume):  # check if spk_volume has the correct number of elements
+            player = sound.Sound(globals()[spk_name])
+            player.setVolume(spk_volume[i])  # set the volume for the current speaker
+        else:
+            player = sound.Sound(globals()[spk_name])
+            print(f"Warning: no volume specified for speaker {i}")
+        players.append(player)
+    
+    # play the sounds and wait for them to finish
+    for player in players:
+        player.play()
+ #   while any([player.status == PLAYING for player in players]):
+  #      continue
     clickForEmotionInfo.reset()    
     valenceResp.reset()
     arousalResp.reset()
@@ -1046,25 +1057,35 @@ for thisBlock1 in block1:
     mm.delInput(0)
     mm.addInput(0, trigger_chn)
     # stimuli channels
-    trial['stimulies'] = []
-    for i in range(0, PART_1_OUT_CHANNELS-1):
-        spk_name = "stimuli_{}".format(i)
-        print(f'{spk_name}: {globals()[spk_name]}')
-        trial['stimulies'].append(os.path.abspath(globals()[spk_name]))
-        chns[i] = SfPlayer(globals()[spk_name])
-        mm.delInput(i+1)
-        mm.addInput(i+1,chns[i])
-
-    jsondata['trials'].append(trial) 
+    trial['stimuli'] = []
+    # create an empty list to store the players
+    players = []
     
-    for i in range(PART_1_OUT_CHANNELS):
-        for j in range(PART_1_OUT_CHANNELS):
-            mm.setAmp(i,j,0)
-    # set volume for output
-    output_idx = [0] + list(range(1,PART_1_OUT_CHANNELS))
-    input_idx = [0] + list(range(1,PART_1_OUT_CHANNELS))
-    for i in input_idx:
-        mm.setAmp(i, output_idx[i], spk_volume[i])
+    # create the first player for stimuli_0
+    spk_name = "stimuli_0"
+    trial['stimuli'].append(os.path.abspath(globals()[spk_name]))
+    player = sound.Sound(globals()[spk_name])
+    player.setVolume(1)  # set the volume to 1
+    players.append(player)
+    
+    # create the rest of the players for stimuli_0
+    for i in range(1, PART_2_OUT_CHANNELS):
+        spk_name = f"stimuli_0"
+        trial['stimuli'].append(os.path.abspath(globals()[spk_name]))
+        if i < len(spk_volume):  # check if spk_volume has the correct number of elements
+            player = sound.Sound(globals()[spk_name])
+            player.setVolume(spk_volume[i])  # set the volume for the current speaker
+        else:
+            player = sound.Sound(globals()[spk_name])
+            print(f"Warning: no volume specified for speaker {i}")
+        players.append(player)
+    
+    # play the sounds and wait for them to finish
+    for player in players:
+        player.play()
+ #   while any([player.status == PLAYING for player in players]):
+  #      continue
+        
     clickForEmotionInfo.reset()    
     valenceResp.reset()
     arousalResp.reset()
