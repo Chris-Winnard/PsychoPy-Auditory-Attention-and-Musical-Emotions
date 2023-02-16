@@ -625,8 +625,8 @@ for thisBlock0 in block0:
             # play the sounds and wait for them to finish
             for player in players:
                 player.play()
-        #    while any([player.status == PLAYING for player in players]):
-       #         continue
+            while any([player.status == PLAYING for player in players]):
+                continue
         
             stimuliStarted = True
             
