@@ -122,9 +122,7 @@ for file in os.scandir(stimuliPath):
         #there will be different vibraphone oddballs to Set1 mix with Keyb attended
         attendedInst = "Vibr"
         oddballFileWriter(signal, attendedInst)
+        attendedInst = "Harm"
+        oddballFileWriter(signal, attendedInst)
         attendedInst = "Keyb"
         oddballFileWriter(signal, attendedInst)
-        
-        if int(file.name[3]) > 4: #For sets with harmonica pieces.
-            attendedInst = "Harm"
-            oddballFileWriter(signal, attendedInst)

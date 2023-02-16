@@ -1,45 +1,28 @@
-#Calibration software, created with help from ChatGPT. At the end we run 'Random Oddball Creator.py' to add
-#oddballs to MS stimuli. Then we run 'GainApplier.py' to implement gains/do mixing.
+#Created with help from ChatGPT (a lot of the code written by it, then edited)
 
+#PART 1: MULTI-STREAM GAINS:
 
-#NOTE: TRIGGER FILES MUST BE GENERATED BEFOREHAND (FOR RANDOM SET OF STIMULI + ODDBALL MIXES- DOESN'T MATTER
-#AS NAMES THE SAME).
-
-#PART 1: MULTI-STREAM GAINS: 
-    
-    #DO 3 STREAMS SIMULTANEOUSLY? OR SET IT UP SO THEY CAN HAVE E.G HARMONICA AND KEYBOARD,
-    #HARMONICA AND VIBRAPHONE, ...
-
-import pathlib
 from psychopy import core, gui
-import os
 from pyo import Server, SfPlayer, Pan
 import time
 import ctypes  #For dialogue boxes without option to cancel.
 
 expName = 'Loudness Calibration'  # from the Builder filename that created this script
 expInfo = {'Participant': ''}
+print(str(expInfo['Participant']))
 dlg = gui.DlgFromDict(dictionary=expInfo, sortKeys=False, title=expName)
 if dlg.OK == False:
     core.quit()  # user pressed cancel
-
-#Navigate into Data folder, and create a subfolder for the participant:
-currentFolderPath = pathlib.Path(__file__).parent.resolve()
-upperFolderPath = currentFolderPath.parent.resolve()
-participantFolderPath = str(upperFolderPath) + "/Data/" + expInfo['Participant']
-os.mkdir(participantFolderPath)
 
 # Create a server and start it
 s = Server().boot()
 
 # Load the audio files
-vibraphone = SfPlayer("Set2-Vibr.wav", loop=True, mul=0.5)
-harmonica = SfPlayer("Set2-Harm.wav", loop=True, mul=0.5)
-piano = SfPlayer("Set2-Keyb.wav", loop=True, mul=0.5)
+vibraphone = SfPlayer("Set1-Vibr.wav", loop=True, mul=0.5)
+piano = SfPlayer("Set1-Keyb.wav", loop=True, mul=0.5)
 
 # Create panner for each sound
-vibraphone_pan = Pan(vibraphone, outs=2, pan=0)
-harmonica_pan = Pan(harmonica, outs=2, pan=0.5)
+vibraphone_pan = Pan(vibraphone, outs=2, pan=-1)
 piano_pan = Pan(piano, outs=2, pan=1)
 
 start_time = time.time()
@@ -50,24 +33,20 @@ while True:
     dlg.addText("Please adjust the loudness of the instruments, so that you can hear them and pay "
                  + "attention to them both comfortably. The gains do not need to add up to 1.")
     dlg.addField("Vibraphone Loudness:", initial=vibraphone.mul)
-    dlg.addField("Harmonica Loudness:", initial=vibraphone.mul)
     dlg.addField("Piano Loudness:", initial=piano.mul)
     dlg.show()
     if dlg.OK:
         vibraphone_loudness = dlg.data[0]
-        harmonica_loudness = dlg.data[1]
-        piano_loudness = dlg.data[2]
+        piano_loudness = dlg.data[1]
     else:
         core.quit()
 
     # Update the loudness of each audio stream
     vibraphone.mul = vibraphone_loudness
-    harmonica.mul = harmonica_loudness
     piano.mul = piano_loudness
 
     # Connect the panners to the server
     vibraphone_pan.out()
-    harmonica_pan.out()
     piano_pan.out()
 
     # Start the server
@@ -81,15 +60,15 @@ while True:
 
     # Ask user if they are happy with the loudness gains:
     dlg = gui.Dlg(title="Loudness Adjustment")
-    dlg.addField("Are you happy with the gains?", choices=["No", "Yes"]) #No by default- acquiescence control.
+    dlg.addField("Are you happy with the gains?", choices=["Yes", "No"])
     dlg.show()
     
     if dlg.OK and dlg.data[0] == "Yes":
        
         #Save the results:        
-        gains = ["Vibraphone: ", vibraphone_loudness, "Harmonica: ", harmonica_loudness, " Piano: ", piano_loudness]        
+        gains = ["Vibraphone: ", vibraphone_loudness, "\nPiano: ", piano_loudness]        
         #Create a new file in the appropriate location. If there's already a file there of the same name, it's wiped:
-        File = (participantFolderPath + "\Multi-stream Gains.txt")
+        File = ("Multi-stream gains for " + str(expInfo['Participant']) + ".txt")
         #Open, write to file, and close.
         with open(File, 'w') as f:
             for x in gains:
@@ -114,20 +93,17 @@ s = Server().boot()
 #values which are actually used to control loudness. E.g, piano_loudness might be 1, but the
 #piano output will be 0 whilst the vibraphone plays.
 vibraphone_loudness = 0.5
-harmonica_loudness = 0.5
 piano_loudness = 0.5
 
 # Reload the audio files, this time without panning
-vibraphone = SfPlayer("Set2-Vibr.wav", loop=True, mul=vibraphone_loudness)
-harmonica = SfPlayer("Set2-Harm.wav", loop=True, mul=harmonica_loudness)
-piano = SfPlayer("Set2-Keyb.wav", loop=True, mul=piano_loudness)
+vibraphone = SfPlayer("Set1-Vibr.wav", loop=True, mul=vibraphone_loudness)
+piano = SfPlayer("Set1-Keyb.wav", loop=True, mul=piano_loudness)
 
 while continue_adjusting:
     # Create a GUI to get the instrument selection from the user
     dlg = gui.Dlg(title="Single Instrument Calibration")
-    dlg.addField("You will now need to adjust the instruments whilst they play one-at-a-time. You can\nswitch between"
-                 + " them as you do this. Which instrument would you like to listen to first?",
-                 choices=["Vibraphone", "Harmonica", "Piano"])
+    dlg.addField("You will now need to adjust the instruments whilst they play one-at-a-time. "
+                 + "Which instrument would you like to listen to first?", choices=["Vibraphone", "Piano"])
     dlg.show()
     if dlg.OK:
         selected_instrument = dlg.data[0]
@@ -137,16 +113,10 @@ while continue_adjusting:
     # Mute the unselected instrument
     if selected_instrument == "Vibraphone":
         vibraphone.out()
-        harmonica.mul = 0
         piano.mul= 0
-    elif selected_instrument == "Harmonica":
-        vibraphone.mul = 0
-        harmonica.out()
-        piano.mul = 0
     else:
-        vibraphone.mul = 0
-        harmonica.mul = 0
         piano.out()
+        vibraphone.mul = 0
 
     s.start()
     start_time = time.time()
@@ -155,9 +125,9 @@ while continue_adjusting:
         # Create a GUI to get loudness values from the user
         dlg = gui.Dlg(title="Loudness Adjustment")
         dlg.addText("Now, please adjust the settings so that you can follow it comfortably and easily.")
-        dlg.addField("Loudness:", initial=vibraphone_loudness if selected_instrument == "Vibraphone" else (harmonica_loudness if selected_instrument == "Harmonica" else piano_loudness))
-        dlg.addField("Play next:", choices=["Vibraphone", "Harmonica", "Piano"])
-        dlg.addField("Do you want to continue adjusting?", choices=["Yes", "No"]) #Yes by default- acquiescence control.
+        dlg.addField("Loudness:", initial=vibraphone_loudness if selected_instrument == "Vibraphone" else piano_loudness)
+        dlg.addField("Play next:", choices=["Vibraphone", "Piano"])
+        dlg.addField("Do you want to continue adjusting?", choices=["Yes", "No"])
         dlg.show()
         if dlg.OK:
             loudness = dlg.data[0]
@@ -170,35 +140,27 @@ while continue_adjusting:
         # Update the loudness of the selected instrument
         if selected_instrument == "Vibraphone":
             vibraphone_loudness = loudness
-        elif selected_instrument == "Harmonica":
-            harmonica_loudness = loudness
+            print("Vibraphone loudness has been updated to " + str(vibraphone_loudness))
         else:
             piano_loudness = loudness
+            print("Piano loudness has been updated to " + str(piano_loudness))
        
         # Check what instrument the user has selected now. Make sure that it is not muted, and the other one is
         if new_selected_instrument == "Vibraphone":
             vibraphone.mul = vibraphone_loudness
             vibraphone.out()
-            harmonica.mul = 0
-            piano.mul = 0
-        elif new_selected_instrument == "Harmonica":
-            vibraphone.mul = 0
-            harmonica.mul = harmonica_loudness
-            harmonica.out()
             piano.mul = 0
         else:
-            vibraphone.mul = 0
-            harmonica.mul = 0
             piano.mul = piano_loudness
             piano.out()
+            vibraphone.mul = 0
         selected_instrument = new_selected_instrument
         
         if continue_adjusting == 0:           
             #Save the results:        
-            gains = ["Vibraphone: ", vibraphone_loudness, " Harmonica: ", harmonica_loudness,
-                     " Piano: ", piano_loudness]        
+            gains = ["Vibraphone: ", vibraphone_loudness, "\nPiano: ", piano_loudness]        
             #Create a new file in the appropriate location. If there's already a file there of the same name, it's wiped:
-            File = (participantFolderPath + "\Single-stream Gains.txt")
+            File = ("Single-stream Gains for " + str(expInfo['Participant']) + ".txt")
             #Open, write to file, and close.
             with open(File, 'w') as f:
                 for x in gains:
@@ -210,17 +172,3 @@ s.stop()
 s.shutdown()
 
 ctypes.windll.user32.MessageBoxW(0, "Your settings have been saved.", "Success!")
-
-##############################################################################################################
-exec(open('randomOddballCreator.py').read()) #Create versions of the stimuli with oddballs in
-exec(open('personalisedStimuliMixer.py').read()) #Create stimuli with gains applied: both single-stream, and
-#mixes of the oddball stimuli.
-
-#Additional note: trigger files have already been created. By the nature of gainApplier and randomOddballCreator,
-#all pieces have the exact same lengths enforced, so can just use one start/end trigger pair for the Set1-Harm files
-#(i.e not different versions of the triggers for different participants), etc.
-
-#Also note that for the trigger files: for oddball tests the start is at the v start of the audio file.
-
-exec(open('listMaker.py').read()) #Create lists of the stimuli and the trigger files that can be used in the scripts
-#with minimal extra work.

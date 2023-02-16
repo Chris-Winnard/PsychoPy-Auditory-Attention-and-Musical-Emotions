@@ -8,8 +8,8 @@ import numpy as np
 """Note: to ensure pieces are exactly 30s each, we remove any excess data points."""
 
 #Find the stimuli path:
-calibrationStimPrepPath = pathlib.Path(__file__).parent.resolve() #Where this file is located
-upperFolderPath = calibrationStimPrepPath.parent.resolve() #Path for next level up
+currentFolderPath = pathlib.Path(__file__).parent.resolve()
+upperFolderPath = currentFolderPath.parent.resolve()
 stimuliPath = str(upperFolderPath) + "/Stimuli"
 
 #Find correct path for the gain files, and for outputs:
@@ -67,48 +67,30 @@ msGains = msGainsData.split(" ")
 msGainsFile.close()
 
 msVibrGain = float(msGains[1])
-msHarmGain = float(msGains[3])
-msKeybGain = float(msGains[5])
+msKeybGain = float(msGains[3])
+#msKeybGain = float(msGains[5]) #Later adapt all of this to include harmonica.
 
-def mixer(attendedInst):
-    VibrDone = False
-    HarmDone = False #Hippocrates approves. 
-    KeybDone = False
-    for file in os.scandir(participantPath):  
-        for i in range(1, 8):
-            if file.name[3] == str(i) and attendedInst in file.name: #Only oddball versions. This will also ignore triggers etc.
+#To confirm if each stream has had the gain applied:
+vibrDone = False
+keybDone = False
+
+for file in os.scandir(participantPath):
+
+    for i in range(1, 8):
+        if file.name[3] == str(i) and file.name[-16:-4] == "oddball test": #Only oddball versions. This will also ignore triggers etc.
                 signal, sr = librosa.load(file)
-                signal = signal[0:1433250] #Remove any excess points - should be 1 min 5s exactly.
+                signal = signal[0:661500] #Remove any excess points
                 
                 if file.name[5:9] == "Vibr":
-                   VibrSignal = signal*msVibrGain
-                   VibrDone = True
-                   os.remove(file) #Delete single streams when they're no longer needed.
-                   
-                elif file.name[5:9] == "Harm":
-                   HarmSignal = signal*msHarmGain
-                   HarmDone = True
-                   os.remove(file) #Delete single streams when they're no longer needed.
+                   vibrSignal = signal*msVibrGain
+                   vibrDone = True
                     
                 elif file.name[5:9] == "Keyb":
-                    KeybSignal = signal*msKeybGain
-                    KeybDone = True
-                    os.remove(file) #Delete single streams when they're no longer needed.
+                    keybSignal = signal*msKeybGain
+                    keybDone = True
                             
-                if KeybDone == True and HarmDone == True and VibrDone == True:
-                    oddballStimMix = np.column_stack((VibrSignal, HarmSignal, KeybSignal))
-                    sf.write(participantPath + "/Set" + str(i) + "-oddball test mix - " + attendedInst + ".wav", oddballStimMix, sr)
-
-attendedInst = "Vibr attended"
-mixer(attendedInst)
-
-attendedInst = "Harm attended"
-mixer(attendedInst)
-
-attendedInst = "Keyb attended"
-mixer(attendedInst)
-
-
-
-#Change back to the original path. This prevents confusion when later scripts are run.
-os.chdir(calibrationStimPrepPath)
+                if keybDone == True and vibrDone == True: #If both signals are ready for mixing
+                    oddballStimMix = np.column_stack((vibrSignal, keybSignal)) #Mixing
+                    f = sf.write(participantPath + "/" + str(file.name)[:-21] + "mixed for oddball test.wav", oddballStimMix, sr)
+                    vibrDone = False #To prevent confusion regarding the next set.
+                    keybDone = False
