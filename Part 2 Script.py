@@ -494,7 +494,7 @@ routineTimer.reset()
 # set up handler to look after randomisation of conditions etc
 block0 = data.TrialHandler(nReps=1.0, method='random', 
     extraInfo=expInfo, originPath=-1,
-    trialList=data.importConditions(participantPath + '\practiceOddballStimuliList.xlsx', selection='0:1'),
+    trialList=data.importConditions(participantPath + '\practiceOddballStimuliList.xlsx', selection='0:3'),
     seed=None, name='block0')
 thisBlock0 = block0.trialList[0]  # so we can initialise stimuli with some values
 
@@ -1049,7 +1049,7 @@ routineTimer.reset()
 # set up handler to look after randomisation of conditions etc
 block1 = data.TrialHandler(nReps=1.0, method='random', 
     extraInfo=expInfo, originPath=-1,
-    trialList=data.importConditions(participantPath + '\oddballStimuliList.xlsx', selection='0:15'),
+    trialList=data.importConditions(participantPath + '\oddballStimuliList.xlsx', selection='0:18'),
     seed=None, name='block1')
 thisExp.addLoop(block1)  # add the loop to the experiment
 thisBlock1 = block1.trialList[0]  # so we can initialise stimuli with some values
@@ -1353,7 +1353,7 @@ for thisBlock1 in block1:
                 gotValidClick = True
                 mouse_4.clicked_name.append(obj.name)
     
-    oddballsMinusResp = float(f'{attendedOddballs}') - float(oddballsResp.text)           
+    oddballsMinusResp = float(f'{attendedOddballs}') - float(oddballsResp.text) #Ignores things like spaces after the number, or new lines after it.           
     block1.addData('oddballsMinusResp', oddballsMinusResp)
     
     thisExp.nextEntry() #Next row on the record.
