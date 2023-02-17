@@ -4,6 +4,7 @@ import os
 import soundfile as sf
 import librosa
 import numpy as np
+from pydub import AudioSegment
 
 """Note: to ensure pieces are exactly 30s each, we remove any excess data points."""
 
@@ -77,27 +78,29 @@ def mixer(attendedInst):
     for file in os.scandir(participantPath):  
         for i in range(1, 8):
             if file.name[3] == str(i) and attendedInst in file.name: #Only oddball versions. This will also ignore triggers etc.
-                signal, sr = librosa.load(file)
+                signal = AudioSegment.from_wav(file)
                 signal = signal[0:1433250] #Remove any excess points - should be 1 min 5s exactly.
                 
                 if file.name[5:9] == "Vibr":
-                   VibrSignal = signal*msVibrGain
+                   VibrSignal = signal.pan(-1).apply_gain(msVibrGain) #Pan and apply gain.
+                 #  VibrSignal = signal*msVibrGain
                    VibrDone = True
                    os.remove(file) #Delete single streams when they're no longer needed.
                    
                 elif file.name[5:9] == "Harm":
-                   HarmSignal = signal*msHarmGain
+                   HarmSignal = signal.pan(0).apply_gain(msHarmGain)
                    HarmDone = True
                    os.remove(file) #Delete single streams when they're no longer needed.
                     
                 elif file.name[5:9] == "Keyb":
-                    KeybSignal = signal*msKeybGain
+                    KeybSignal = signal.pan(1).apply_gain(msKeybGain)
                     KeybDone = True
                     os.remove(file) #Delete single streams when they're no longer needed.
                             
                 if KeybDone == True and HarmDone == True and VibrDone == True:
-                    oddballStimMix = np.column_stack((VibrSignal, HarmSignal, KeybSignal))
-                    sf.write(participantPath + "/Set" + str(i) + "-oddball test mix - " + attendedInst + ".wav", oddballStimMix, sr)
+                    outputPathPlusName = participantPath + "/Set" + str(i) + "-oddball test mix - " + attendedInst + ".wav"
+                    oddballStimMix = VibrSignal.overlay(HarmSignal).overlay(KeybSignal) #All 3 overlaid together (panned in above steps)
+                    oddballStimMix.export(outputPathPlusName, format="wav")
 
 attendedInst = "Vibr attended"
 mixer(attendedInst)
@@ -107,7 +110,6 @@ mixer(attendedInst)
 
 attendedInst = "Keyb attended"
 mixer(attendedInst)
-
 
 
 #Change back to the original path. This prevents confusion when later scripts are run.
