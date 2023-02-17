@@ -87,7 +87,7 @@ while True:
     if dlg.OK and dlg.data[0] == "Yes":
        
         #Save the results:        
-        gains = ["Vibraphone: ", vibraphone_loudness, "Harmonica: ", harmonica_loudness, " Piano: ", piano_loudness]        
+        gains = ["Vibraphone: ", vibraphone_loudness, " Harmonica: ", harmonica_loudness, " Piano: ", piano_loudness]        
         #Create a new file in the appropriate location. If there's already a file there of the same name, it's wiped:
         File = (participantFolderPath + "\Multi-stream Gains.txt")
         #Open, write to file, and close.
