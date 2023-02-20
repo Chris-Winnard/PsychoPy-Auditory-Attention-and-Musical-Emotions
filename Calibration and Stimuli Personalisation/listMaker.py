@@ -35,7 +35,7 @@ i = 2 #Index for row in sheet.
 for file in os.scandir(participantPath):
     stimCell = "A" + str(i)
     if "Set2" not in file.name: #Set 2 ones are used for practice, so these are excluded.
-        if ".wav" in file.name and "oddball" not in file.name: #Only audio, and no oddball files. 
+        if ".wav" in file.name and "Oddball" not in file.name: #Only audio, and no oddball files. 
             stimPath = stimLoc + str(file.name)
             worksheet.write(stimCell, stimPath)
             i+=1
@@ -53,7 +53,7 @@ j = 2
 for file in os.scandir(triggerPath):
     trigCell = "B" + str(j)
     if "Set2" not in file.name: #Set 2 ones are used for practice, so these are excluded.
-        if ".wav" in file.name and "oddball" not in file.name:
+        if ".wav" in file.name and "Oddball" not in file.name:
             folderPlusFileName = "Trigger Files/" + str(file.name) #Here we need to specify the folder
 #from main folder where the scripts are)               
             worksheet.write(trigCell, folderPlusFileName)
@@ -81,7 +81,7 @@ i = 2 #Index for row in sheet.
 for file in os.scandir(participantPath):
     stimCell = "A" + str(i)
     if "Set2" in file.name: #Set 2 ones are used for practice, so excluded. #Set 2 ones ONLY
-        if ".wav" in file.name and "oddball" not in file.name: #Only audio, and no oddball files. 
+        if ".wav" in file.name and "Oddball" not in file.name: #Only audio, and no oddball files. 
             stimPath = stimLoc + str(file.name)
             worksheet.write(stimCell, stimPath)
             i+=1
@@ -93,7 +93,7 @@ j = 2
 for file in os.scandir(triggerPath):
     trigCell = "B" + str(j)
     if "Set2"  in file.name: #Set 2 ones ONLY
-        if ".wav" in file.name and "oddball" not in file.name:
+        if ".wav" in file.name and "Oddball" not in file.name:
             folderPlusFileName = "Trigger Files/" + str(file.name)
             worksheet.write(trigCell, folderPlusFileName)
             j+=1
@@ -129,10 +129,10 @@ for file in os.scandir(participantPath):
     attCell = "B" + str(i)
     oddCell = "D" + str(i)
     if "Set2" not in file.name: #Set 2 ones are used for practice, so excluded.
-        if ".wav" in file.name and "oddball test mix" in file.name: #Only audio, only oddball files.
-            if "Keyb attended" in file.name:
+        if ".wav" in file.name and "Oddball Test Mix" in file.name: #Only audio, only oddball files.
+            if "Keyb Attended" in file.name:
                 attendedInst = "Keyb"
-            elif "Vibr attended" in file.name:
+            elif "Vibr Attended" in file.name:
                 attendedInst = "Vibr"
             else:
                 attendedInst = "Harm"
@@ -140,7 +140,7 @@ for file in os.scandir(participantPath):
             worksheet.write(stimCell, stimPath)
             worksheet.write(attCell, str(attendedInst))
             for line in lines:
-                if file.name[:3] in line and line.count(attendedInst) ==2: #E.g "Set3 Vibr stream for Vibr attended"...
+                if file.name[:3] in line and line.count(attendedInst) ==2: #E.g "Set3 Vibr stream for Vibr Attended"...
                     oddballStartTimes = re.findall("\d+\.\d+", line) 
                     numOddballs = len(oddballStartTimes)
                     worksheet.write(oddCell, str(numOddballs))
@@ -152,7 +152,7 @@ j = 2
 for file in os.scandir(triggerPath):
     trigCell = "C" + str(j)
     if "Set2" not in file.name: #Set 2 ones are used for practice, so excluded.
-        if ".wav" in file.name and "oddball test mix" in file.name:
+        if ".wav" in file.name and "Oddball Test Mix" in file.name:
             folderPlusFileName = "Trigger Files/" + str(file.name)
             worksheet.write(trigCell, folderPlusFileName)
             j+=1
@@ -180,10 +180,10 @@ for file in os.scandir(participantPath):
     attCell = "B" + str(i)
     oddCell = "D" + str(i)
     if "Set2" in file.name:  #Set 2 ones ONLY
-        if ".wav" in file.name and "oddball test mix" in file.name: #Only audio, only oddball files.
-            if "Keyb attended" in file.name:
+        if ".wav" in file.name and "Oddball Test Mix" in file.name: #Only audio, only oddball files.
+            if "Keyb Attended" in file.name:
                 attendedInst = "Keyb"
-            elif "Vibr attended" in file.name:
+            elif "Vibr Attended" in file.name:
                 attendedInst = "Vibr"
             else:
                 attendedInst = "Harm"
@@ -191,7 +191,7 @@ for file in os.scandir(participantPath):
             worksheet.write(stimCell, stimPath)
             worksheet.write(attCell, str(attendedInst))
             for line in lines:
-                if "Set2" in line and line.count(attendedInst) ==2: #E.g "Set2 Vibr stream for Vibr attended"...
+                if "Set2" in line and line.count(attendedInst) ==2: #E.g "Set2 Vibr stream for Vibr Attended"...
                     oddballStartTimes = re.findall("\d+\.\d+", line)
                     numOddballs = len(oddballStartTimes)
                     worksheet.write(oddCell, str(numOddballs))
@@ -203,7 +203,7 @@ j = 2
 for file in os.scandir(triggerPath):
     trigCell = "C" + str(j)
     if "Set2" in file.name: #Set 2 ones ONLY
-        if ".wav" in file.name and "oddball test mix" in file.name:
+        if ".wav" in file.name and "Oddball Test Mix" in file.name:
             folderPlusFileName = "Trigger Files/" + str(file.name)
             worksheet.write(trigCell, folderPlusFileName)
             j+=1

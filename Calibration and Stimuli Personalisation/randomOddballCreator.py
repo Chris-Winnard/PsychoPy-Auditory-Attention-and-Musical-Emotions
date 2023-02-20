@@ -93,7 +93,7 @@ def oddballFileWriter(signal, attendedInst):
 
         #Create and write oddball file:
         oddballStimulusFull = np.concatenate((originalSignalCopy, pause, augmentedSignalCopy))
-        sf.write(participantPath + "/" + str(file.name)[:-4] + " oddball test-" + attendedInst + " attended.wav", oddballStimulusFull, sr)
+        sf.write(participantPath + "/" + str(file.name)[:-4] + " Oddball Test-" + attendedInst + " Attended.wav", oddballStimulusFull, sr)
         
         #Record when oddballs start:   
             
@@ -101,7 +101,7 @@ def oddballFileWriter(signal, attendedInst):
         startTimes += 35 #Accounts for first playing and the 5s pause
         startTimes = str(startTimes)
         with open(File, 'a') as f:
-            f.write("Oddball start times for \"" + str(file.name)[:-4] + " oddball test-" + attendedInst + " attended.wav\": ")
+            f.write("Oddball Start Times for \"" + str(file.name)[:-4] + " Oddball Test-" + attendedInst + " Attended.wav\": ")
             f.write(startTimes)
             f.write("\n")
             f.close

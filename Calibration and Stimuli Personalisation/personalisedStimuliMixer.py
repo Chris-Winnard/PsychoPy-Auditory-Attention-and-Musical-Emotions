@@ -98,7 +98,7 @@ def mixer(attendedInst):
                     os.remove(file) #Delete single streams when they're no longer needed.
                             
                 if KeybDone == True and HarmDone == True and VibrDone == True:
-                    outputPathPlusName = participantPath + "/Set" + str(i) + "-oddball test mix - " + attendedInst + ".wav"
+                    outputPathPlusName = participantPath + "/Set" + str(i) + "-Oddball Test Mix - " + attendedInst + ".wav"
                     oddballStimMix = VibrSignal.overlay(HarmSignal).overlay(KeybSignal) #All 3 overlaid together (panned in above steps)
                     oddballStimMix.export(outputPathPlusName, format="wav")
 
