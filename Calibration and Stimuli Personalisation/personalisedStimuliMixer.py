@@ -46,17 +46,17 @@ for file in os.scandir(stimuliPath):
         if file.name[5:9] == "Vibr":
            signal = signal*ssVibrGain
            
-           sf.write(str(file.name)[:-4] + " with gain applied.wav", signal, sr)
+           sf.write(str(file.name)[:-4] + " with Gain Applied.wav", signal, sr)
            #make sure writing to their folder..
            
         elif file.name[5:9] == "Harm":
             signal = signal*ssHarmGain
         
-            sf.write(str(file.name)[:-4] + " with gain applied.wav", signal, sr)
+            sf.write(str(file.name)[:-4] + " with Gain Applied.wav", signal, sr)
             
         elif file.name[5:9] == "Keyb":
             signal = signal*ssKeybGain
-            sf.write(str(file.name)[:-4] + " with gain applied.wav", signal, sr)
+            sf.write(str(file.name)[:-4] + " with Gain Applied.wav", signal, sr)
 
 ###################################################################################################
 #Multi-stream: Use oddball versions!
@@ -102,13 +102,13 @@ def mixer(attendedInst):
                     oddballStimMix = VibrSignal.overlay(HarmSignal).overlay(KeybSignal) #All 3 overlaid together (panned in above steps)
                     oddballStimMix.export(outputPathPlusName, format="wav")
 
-attendedInst = "Vibr attended"
+attendedInst = "Vibr Attended"
 mixer(attendedInst)
 
-attendedInst = "Harm attended"
+attendedInst = "Harm Attended"
 mixer(attendedInst)
 
-attendedInst = "Keyb attended"
+attendedInst = "Keyb Attended"
 mixer(attendedInst)
 
 
