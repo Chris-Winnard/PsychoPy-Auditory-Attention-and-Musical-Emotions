@@ -113,7 +113,7 @@ defaultKeyboard = keyboard.Keyboard(backend='iohub')
 # Initialize components for Routine "instructions"
 instructionsClock = core.Clock()
 top_instr_txt = visual.TextStim(win=win, name='top_instr_txt',
-    text='You will hear two/three music pieces at once from different directions. You will be told to focus on one before they play twice.\n\nThe first time will remind you what they sound like. There will be a pause before the second playing, which will feature 1-3 oddballs for each instrument. Please close your eyes, and try not to move during this period. Count the attended instrument\'s oddballs.\n\nYou will be asked how many oddballs you heard. You can then take a break.\n\nIf you have any questions at all please ask the experimenters.',
+    text='You will hear three instruments playing together, from different directions. You will be asked to focus on one.\n\nThey will play to remind you what they sound like. After a pause they will repeat, this time with 1-3 oddballs per instrument - close your eyes and try not to move during this. Count the attended instrument\'s oddballs. You will be asked how many you heard, before a break.\n\nIf you have any questions at all please ask the experimenters.',
     font='Open Sans',
     pos=(0, 0.15), height=0.05, wrapWidth=1.8, ori=0.0, 
     color='white', colorSpace='rgb', opacity=None, 
