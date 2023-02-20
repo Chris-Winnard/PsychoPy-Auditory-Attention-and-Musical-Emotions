@@ -8,7 +8,7 @@ from pydub import AudioSegment
 
 """Note: to ensure pieces are exactly 30s each, we remove any excess data points."""
 
-#Find the stimuli path:
+#Find the stimuli/demo stimuli paths:
 calibrationStimPrepPath = pathlib.Path(__file__).parent.resolve() #Where this file is located
 upperFolderPath = calibrationStimPrepPath.parent.resolve() #Path for next level up
 stimuliPath = str(upperFolderPath) + "/Stimuli"
@@ -19,6 +19,9 @@ dataPath = str(upperFolderPath) + "/Data"
 participantPath = max(glob.glob(os.path.join(dataPath, '*/')), key=os.path.getmtime) #Last updated
 #subfolder in Data folder. Because we run this and randomOddballCreator IMMEDIATELY after participant's
 #folder is created, this will be the output path for them.
+
+oddballDemosOutputPath = str(participantPath) + "/Oddball Demos" 
+os.mkdir(oddballDemosOutputPath)
 
 #Change to the participant path, to access gain files and output the adjusted stimuli:
 os.chdir(participantPath)
@@ -102,18 +105,12 @@ def mixer(attendedInst):
                     oddballStimMix = VibrSignal.overlay(HarmSignal).overlay(KeybSignal) #All 3 overlaid together (panned in above steps)
                     oddballStimMix.export(outputPathPlusName, format="wav")
 
-attendedInst = "Vibr Attended"
-mixer(attendedInst)
-
-attendedInst = "Harm Attended"
-mixer(attendedInst)
-
-attendedInst = "Keyb Attended"
-mixer(attendedInst)
-
 #Oddball demos- these will use the MS weightings and even come from the same directions, but only one instrument will be heard at a time:
 
 def demoMixer(attendedInst):
+    VibrDone = False
+    HarmDone = False
+    KeybDone = False
     for file in os.scandir(oddballDemosPath): 
             signal = AudioSegment.from_wav(file)
             
@@ -130,8 +127,21 @@ def demoMixer(attendedInst):
                 KeybDone = True
                         
             if KeybDone == True or HarmDone == True or VibrDone == True: #Only want ONE.
-                outputPathPlusName = participantPath + "/Set 2 - Oddball Demo for " + attendedInst[5:] + ".wav"
+                outputPathPlusName = oddballDemosOutputPath + "/Set2 - Oddball Demo for " + attendedInst[:5] + ".wav"
                 oddballDemo.export(outputPathPlusName, format="wav")
+
+#Run both functions, for all attended conditions:
+attendedInst = "Vibr Attended"
+mixer(attendedInst)
+demoMixer(attendedInst)
+
+attendedInst = "Harm Attended"
+mixer(attendedInst)
+demoMixer(attendedInst)
+
+attendedInst = "Keyb Attended"
+mixer(attendedInst)
+demoMixer(attendedInst)
 
 #Change back to the original path. This prevents confusion when later scripts are run.
 os.chdir(calibrationStimPrepPath)
