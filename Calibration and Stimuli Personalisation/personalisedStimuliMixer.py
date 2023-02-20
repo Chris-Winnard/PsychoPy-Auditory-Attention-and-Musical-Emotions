@@ -12,6 +12,7 @@ from pydub import AudioSegment
 calibrationStimPrepPath = pathlib.Path(__file__).parent.resolve() #Where this file is located
 upperFolderPath = calibrationStimPrepPath.parent.resolve() #Path for next level up
 stimuliPath = str(upperFolderPath) + "/Stimuli"
+oddballDemosPath = str(upperFolderPath) + "/Oddball Demos"
 
 #Find correct path for the gain files, and for outputs:
 dataPath = str(upperFolderPath) + "/Data"
@@ -83,7 +84,6 @@ def mixer(attendedInst):
                 
                 if file.name[5:9] == "Vibr":
                    VibrSignal = signal.pan(-1).apply_gain(msVibrGain) #Pan and apply gain.
-                 #  VibrSignal = signal*msVibrGain
                    VibrDone = True
                    os.remove(file) #Delete single streams when they're no longer needed.
                    
@@ -111,6 +111,27 @@ mixer(attendedInst)
 attendedInst = "Keyb Attended"
 mixer(attendedInst)
 
+#Oddball demos- these will use the MS weightings and even come from the same directions, but only one instrument will be heard at a time:
+
+def demoMixer(attendedInst):
+    for file in os.scandir(oddballDemosPath): 
+            signal = AudioSegment.from_wav(file)
+            
+            if attendedInst == "Vibr Attended":
+               oddballDemo = signal.pan(-1).apply_gain(msVibrGain) #Pan and apply gain.               
+               VibrDone = True
+               
+            elif attendedInst == "Harm Attended":
+               oddballDemo = signal.pan(0).apply_gain(msHarmGain)
+               HarmDone = True
+                
+            elif attendedInst == "Keyb Attended":
+                oddballDemo = signal.pan(1).apply_gain(msKeybGain)
+                KeybDone = True
+                        
+            if KeybDone == True or HarmDone == True or VibrDone == True: #Only want ONE.
+                outputPathPlusName = participantPath + "/Set 2 - Oddball Demo for " + attendedInst[5:] + ".wav"
+                oddballDemo.export(outputPathPlusName, format="wav")
 
 #Change back to the original path. This prevents confusion when later scripts are run.
 os.chdir(calibrationStimPrepPath)
