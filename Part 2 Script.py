@@ -30,6 +30,7 @@ from psychopy.hardware import keyboard
 from pyo import *
 import json
 
+
 sys.path.append('.')
 from constants import *
 
@@ -492,9 +493,10 @@ routineTimer.reset()
 
 #Practice trial:
 # set up handler to look after randomisation of conditions etc
-block0 = data.TrialHandler(nReps=1.0, method='random', 
+randomNum = np.random.randint(1, 3) #Only want ONE piece to be picked for practice trial. Using TrialHandler randomisation would mean all 3 picked.
+block0 = data.TrialHandler(nReps=1.0, method='sequential', 
     extraInfo=expInfo, originPath=-1,
-    trialList=data.importConditions(participantPath + '\practiceOddballStimuliList.xlsx', selection='0:3'),
+    trialList=data.importConditions(participantPath + '\practiceOddballStimuliList.xlsx', selection=str(randomNum)),
     seed=None, name='block0')
 thisBlock0 = block0.trialList[0]  # so we can initialise stimuli with some values
 
@@ -658,13 +660,13 @@ for thisBlock0 in block0:
     
     if attendedInst == 'Vibr':
         block0.addData('attendedInst', 'Vibr')
-        print("Vibraphone is to be attended.")
+        print("Vibraphone was attended.")
     elif attendedInst == 'Harm':
         block0.addData('attendedInst', 'Harm')
-        print("Harmonica is to be attended.")
+        print("Harmonica was attended.")
     elif attendedInst == 'Keyb':
         block0.addData('attendedInst', 'Keyb')
-        print("Keyboard is to be attended.")
+        print("Keyboard was attended.")
     # the Routine "trial" was not non-slip safe, so reset the non-slip timer
     routineTimer.reset()
     
@@ -790,9 +792,10 @@ for thisBlock0 in block0:
                 mouse_4.clicked_name.append(obj.name)
                 
     oddballsMinusResp = float(f'{attendedOddballs}') - float(oddballsResp.text)
+    oddballsResp.reset()
     # the Routine "QuestionBreakPause" was not non-slip safe, so reset the non-slip timer
     routineTimer.reset()
-    
+
     ##FEEDBACK:
     if oddballsMinusResp == 0:
     
@@ -1053,7 +1056,7 @@ block1 = data.TrialHandler(nReps=1.0, method='random',
     seed=None, name='block1')
 thisExp.addLoop(block1)  # add the loop to the experiment
 thisBlock1 = block1.trialList[0]  # so we can initialise stimuli with some values
-print(thisBlock1)
+
 # abbreviate parameter names if possible (e.g. rgb = thisBlock1.rgb)
 if thisBlock1 != None:
     for paramName in thisBlock1:
@@ -1354,8 +1357,8 @@ for thisBlock1 in block1:
                 mouse_4.clicked_name.append(obj.name)
     
     oddballsMinusResp = float(f'{attendedOddballs}') - float(oddballsResp.text) #Ignores things like spaces after the number, or new lines after it.           
+    oddballsResp.reset()
     block1.addData('oddballsMinusResp', oddballsMinusResp)
-    
     thisExp.nextEntry() #Next row on the record.
     # the Routine "QuestionBreakPause" was not non-slip safe, so reset the non-slip timer
     routineTimer.reset()
