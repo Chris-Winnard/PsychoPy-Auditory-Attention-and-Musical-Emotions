@@ -520,9 +520,10 @@ routineTimer.reset()
 
 #block0 contains the practice trial. Additional practice trials can be added in.
 # set up handler to look after randomisation of conditions etc
-block0 = data.TrialHandler(nReps=1.0, method='random', 
+randomNum = np.random.randint(1, 3) #Only want ONE piece to be picked for practice trial. Using TrialHandler randomisation would mean all 3 picked.
+block0 = data.TrialHandler(nReps=1.0, method='sequential', 
     extraInfo=expInfo, originPath=-1,
-    trialList=data.importConditions(participantPath + '\practiceStimuliList.xlsx', selection='0:1'),
+    trialList=data.importConditions(participantPath + '\practiceStimuliList.xlsx', selection=str(randomNum)),
     seed=None, name='block0')
 thisBlock0 = block0.trialList[0]  # so we can initialise stimuli with some values
 # abbreviate parameter names if possible (e.g. rgb = thisBlock1.rgb)
