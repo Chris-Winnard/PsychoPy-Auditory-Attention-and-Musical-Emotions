@@ -1,14 +1,11 @@
 #Calibration software, created with help from ChatGPT. At the end we run 'Random Oddball Creator.py' to add
-#oddballs to MS stimuli. Then we run 'GainApplier.py' to implement gains/do mixing.
+#oddballs to MS stimuli. Then we run 'personalisedStimuliMixer.py' to implement gains/do mixing.
 
 
 #NOTE: TRIGGER FILES MUST BE GENERATED BEFOREHAND (FOR RANDOM SET OF STIMULI + ODDBALL MIXES- DOESN'T MATTER
-#AS NAMES THE SAME).
+#AS FILENAMES THE SAME REGARDLESS OF PARTICIPANT).
 
 #PART 1: MULTI-STREAM GAINS: 
-    
-    #DO 3 STREAMS SIMULTANEOUSLY? OR SET IT UP SO THEY CAN HAVE E.G HARMONICA AND KEYBOARD,
-    #HARMONICA AND VIBRAPHONE, ...
 
 import pathlib
 from psychopy import core, gui
@@ -48,7 +45,7 @@ while True:
     # Create a GUI to get loudness values from the user for each audio stream
     dlg = gui.Dlg(title="Loudness Adjustment")
     dlg.addText("Please adjust the loudness of the instruments, so that you can hear them and pay "
-                 + "attention to them both comfortably. The gains do not need to add up to 1.")
+                 + "attention to all three comfortably. The gains do not need to add up to 1.")
     dlg.addField("Vibraphone Loudness:", initial=vibraphone.mul)
     dlg.addField("Harmonica Loudness:", initial=vibraphone.mul)
     dlg.addField("Piano Loudness:", initial=piano.mul)
