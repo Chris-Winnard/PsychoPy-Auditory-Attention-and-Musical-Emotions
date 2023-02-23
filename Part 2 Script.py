@@ -1159,7 +1159,6 @@ for thisBlock1 in block1:
         
         if stimuliStarted == False and (attendVibraphoneNote.status == FINISHED or attendHarmonicaNote.status == FINISHED or attendKeyboardNote.status == FINISHED):
             print(f'trigger: {trigger}')
-        
             trigger_filename, trigger_ext = os.path.splitext(trigger)
             trigger_logfile = os.path.abspath(trigger_filename + '.txt')
             trial['trigger'] = os.path.abspath(trigger)
@@ -1197,8 +1196,8 @@ for thisBlock1 in block1:
             # play the sounds and wait for them to finish
             for player in players:
                 player.play()
-          #  while any([player.status == PLAYING for player in players]):
-           #     continue
+            while any([player.status == PLAYING for player in players]):
+                continue
                 
             stimuliStarted = True
      
@@ -1255,7 +1254,7 @@ for thisBlock1 in block1:
     _timeToFirstFrame = win.getFutureFlipTime(clock="now")
     QuestionBreakPauseClock.reset(-_timeToFirstFrame)  # t0 is time of first possible flip
     frameN = -1
-
+    
     # -------Run Routine "QuestionBreakPause"-------
     while continueRoutine:
         # get current time
@@ -1272,7 +1271,7 @@ for thisBlock1 in block1:
             oddballsQuestion.tStart = t  # local t and not account for scr refresh
             oddballsQuestion.tStartRefresh = tThisFlipGlobal  # on global time
             win.timeOnFlip(oddballsQuestion, 'tStartRefresh')  # time at next scr refresh
-            oddballsQuestion.setAutoDraw(True)        
+            oddballsQuestion.setAutoDraw(True) 
         # *oddballsResp* updates
         if oddballsResp.status == NOT_STARTED and tThisFlip >= 0.0-frameTolerance:
             # keep track of start time/frame for later
