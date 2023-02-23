@@ -107,7 +107,7 @@ gender = visual.TextStim(win=win, name='gender',
     depth=-1.0);
 genderResp = visual.Slider(win=win, name='genderResp',
     startValue=None, size=(1.1, 0.02), pos=(0.0, 0.27), units=None,
-    labels=("Male", "Female", "Transgender male", "Transgender female", "Other (please specify)"), ticks=(1, 2, 3, 4, 5), granularity=1.0,
+    labels=("Male", "Female", "Transgender male", "Transgender female", "Other (please specify)"), ticks=(0, 1, 2, 3, 4), granularity=1.0,
     style='radio', styleTweaks=(), opacity=None,
     labelColor='LightGray', markerColor='Red', lineColor='White', colorSpace='rgb',
     font='Open Sans', labelHeight=0.025,
@@ -398,7 +398,7 @@ Q10 = visual.TextStim(win=win, name='Q10',
     depth=-1.0);
 Q10Resp = visual.Slider(win=win, name='Q10Resp',
     startValue=None, size=(0.15, 0.01), pos=(0.7, 0.35), units=None,
-    labels=("Agree", "Disagree"), ticks=(1, 2), granularity=1.0,
+    labels=("Agree", "Disagree"), ticks=(1, 0), granularity=1.0,
     style='radio', styleTweaks=(), opacity=None,
     labelColor='LightGray', markerColor='Red', lineColor='White', colorSpace='rgb',
     font='Open Sans', labelHeight=0.025,
@@ -412,7 +412,7 @@ Q11 = visual.TextStim(win=win, name='Q11',
     depth=-3.0);
 Q11Resp = visual.Slider(win=win, name='Q11Resp',
     startValue=None, size=(0.15, 0.01), pos=(0.7, 0.27), units=None,
-    labels=("Agree", "Disagree"), ticks=(1, 2), granularity=1.0,
+    labels=("Agree", "Disagree"), ticks=(1, 0), granularity=1.0,
     style='radio', styleTweaks=(), opacity=None,
     labelColor='LightGray', markerColor='Red', lineColor='White', colorSpace='rgb',
     font='Open Sans', labelHeight=0.025,
@@ -426,7 +426,7 @@ Q12 = visual.TextStim(win=win, name='Q12',
     depth=-5.0);
 Q12Resp = visual.Slider(win=win, name='Q12Resp',
     startValue=None, size=(0.15, 0.01), pos=(0.7, 0.19), units=None,
-    labels=("Agree", "Disagree"), ticks=(1, 2), granularity=1.0,
+    labels=("Agree", "Disagree"), ticks=(1, 0), granularity=1.0,
     style='radio', styleTweaks=(), opacity=None,
     labelColor='LightGray', markerColor='Red', lineColor='White', colorSpace='rgb',
     font='Open Sans', labelHeight=0.025,
@@ -440,7 +440,7 @@ Q13 = visual.TextStim(win=win, name='Q13',
     depth=-7.0);
 Q13Resp = visual.Slider(win=win, name='Q13Resp',
     startValue=None, size=(0.15, 0.01), pos=(0.7, 0.11), units=None,
-    labels=("Agree", "Disagree"), ticks=(1, 2), granularity=1.0,
+    labels=("Agree", "Disagree"), ticks=(1, 0), granularity=1.0,
     style='radio', styleTweaks=(), opacity=None,
     labelColor='LightGray', markerColor='Red', lineColor='White', colorSpace='rgb',
     font='Open Sans', labelHeight=0.025,
@@ -454,7 +454,7 @@ Q14 = visual.TextStim(win=win, name='Q14',
     depth=-9.0);
 Q14Resp = visual.Slider(win=win, name='Q14Resp',
     startValue=None, size=(0.15, 0.01), pos=(0.7, 0.03), units=None,
-    labels=("Agree", "Disagree"), ticks=(1, 2), granularity=1.0,
+    labels=("Agree", "Disagree"), ticks=(1, 0), granularity=1.0,
     style='radio', styleTweaks=(), opacity=None,
     labelColor='LightGray', markerColor='Red', lineColor='White', colorSpace='rgb',
     font='Open Sans', labelHeight=0.025,
@@ -468,7 +468,7 @@ Q15 = visual.TextStim(win=win, name='Q15',
     depth=-11.0);
 Q15Resp = visual.Slider(win=win, name='Q15Resp',
     startValue=None, size=(0.15, 0.01), pos=(0.7, -0.05), units=None,
-    labels=("Agree", "Disagree"), ticks=(1, 2), granularity=1.0,
+    labels=("Agree", "Disagree"), ticks=(1, 0), granularity=1.0,
     style='radio', styleTweaks=(), opacity=None,
     labelColor='LightGray', markerColor='Red', lineColor='White', colorSpace='rgb',
     font='Open Sans', labelHeight=0.025,
@@ -482,7 +482,7 @@ Q16 = visual.TextStim(win=win, name='Q16',
     depth=-13.0);
 Q16Resp = visual.Slider(win=win, name='Q16Resp',
     startValue=None, size=(0.15, 0.01), pos=(0.7, -0.13), units=None,
-    labels=("Agree", "Disagree"), ticks=(1, 2), granularity=1.0,
+    labels=("Agree", "Disagree"), ticks=(1, 0), granularity=1.0,
     style='radio', styleTweaks=(), opacity=None,
     labelColor='LightGray', markerColor='Red', lineColor='White', colorSpace='rgb',
     font='Open Sans', labelHeight=0.025,
@@ -496,7 +496,7 @@ Q17 = visual.TextStim(win=win, name='Q17',
     depth=-15.0);
 Q17Resp = visual.Slider(win=win, name='Q17Resp',
     startValue=None, size=(0.15, 0.01), pos=(0.7, -0.21), units=None,
-    labels=("Agree", "Disagree"), ticks=(1, 2), granularity=1.0,
+    labels=("Agree", "Disagree"), ticks=(1, 0), granularity=1.0,
     style='radio', styleTweaks=(), opacity=None,
     labelColor='LightGray', markerColor='Red', lineColor='White', colorSpace='rgb',
     font='Open Sans', labelHeight=0.025,
@@ -510,7 +510,7 @@ Q18 = visual.TextStim(win=win, name='Q18',
     depth=-17.0);
 Q18Resp = visual.Slider(win=win, name='Q18Resp',
     startValue=None, size=(0.15, 0.01), pos=(0.7, -0.29), units=None,
-    labels=("Agree", "Disagree"), ticks=(1, 2), granularity=1.0,
+    labels=("Agree", "Disagree"), ticks=(1, 0), granularity=1.0,
     style='radio', styleTweaks=(), opacity=None,
     labelColor='LightGray', markerColor='Red', lineColor='White', colorSpace='rgb',
     font='Open Sans', labelHeight=0.025,
@@ -545,7 +545,7 @@ Q19 = visual.TextStim(win=win, name='Q19',
     depth=-1.0);
 Q19Resp = visual.Slider(win=win, name='Q19Resp',
     startValue=None, size=(0.15, 0.01), pos=(0.7, 0.35), units=None,
-    labels=("Agree", "Disagree"), ticks=(1, 2), granularity=1.0,
+    labels=("Agree", "Disagree"), ticks=(1, 0), granularity=1.0,
     style='radio', styleTweaks=(), opacity=None,
     labelColor='LightGray', markerColor='Red', lineColor='White', colorSpace='rgb',
     font='Open Sans', labelHeight=0.025,
@@ -559,7 +559,7 @@ Q20 = visual.TextStim(win=win, name='Q20',
     depth=-3.0);
 Q20Resp = visual.Slider(win=win, name='Q20Resp',
     startValue=None, size=(0.15, 0.01), pos=(0.7, 0.27), units=None,
-    labels=("Agree", "Disagree"), ticks=(1, 2), granularity=1.0,
+    labels=("Agree", "Disagree"), ticks=(1, 0), granularity=1.0,
     style='radio', styleTweaks=(), opacity=None,
     labelColor='LightGray', markerColor='Red', lineColor='White', colorSpace='rgb',
     font='Open Sans', labelHeight=0.025,
@@ -573,7 +573,7 @@ Q21 = visual.TextStim(win=win, name='Q21',
     depth=-5.0);
 Q21Resp = visual.Slider(win=win, name='Q21Resp',
     startValue=None, size=(0.15, 0.01), pos=(0.7, 0.19), units=None,
-    labels=("Agree", "Disagree"), ticks=(1, 2), granularity=1.0,
+    labels=("Agree", "Disagree"), ticks=(1, 0), granularity=1.0,
     style='radio', styleTweaks=(), opacity=None,
     labelColor='LightGray', markerColor='Red', lineColor='White', colorSpace='rgb',
     font='Open Sans', labelHeight=0.025,
@@ -587,7 +587,7 @@ Q22 = visual.TextStim(win=win, name='Q22',
     depth=-7.0);
 Q22Resp = visual.Slider(win=win, name='Q22Resp',
     startValue=None, size=(0.15, 0.01), pos=(0.7, 0.11), units=None,
-    labels=("Agree", "Disagree"), ticks=(1, 2), granularity=1.0,
+    labels=("Agree", "Disagree"), ticks=(1, 0), granularity=1.0,
     style='radio', styleTweaks=(), opacity=None,
     labelColor='LightGray', markerColor='Red', lineColor='White', colorSpace='rgb',
     font='Open Sans', labelHeight=0.025,
@@ -601,7 +601,7 @@ Q23 = visual.TextStim(win=win, name='Q23',
     depth=-9.0);
 Q23Resp = visual.Slider(win=win, name='Q23Resp',
     startValue=None, size=(0.15, 0.01), pos=(0.7, 0.03), units=None,
-    labels=("Agree", "Disagree"), ticks=(1, 2), granularity=1.0,
+    labels=("Agree", "Disagree"), ticks=(1, 0), granularity=1.0,
     style='radio', styleTweaks=(), opacity=None,
     labelColor='LightGray', markerColor='Red', lineColor='White', colorSpace='rgb',
     font='Open Sans', labelHeight=0.025,
@@ -615,7 +615,7 @@ Q24 = visual.TextStim(win=win, name='Q24',
     depth=-11.0);
 Q24Resp = visual.Slider(win=win, name='Q24Resp',
     startValue=None, size=(0.15, 0.01), pos=(0.7, -0.05), units=None,
-    labels=("Agree", "Disagree"), ticks=(1, 2), granularity=1.0,
+    labels=("Agree", "Disagree"), ticks=(1, 0), granularity=1.0,
     style='radio', styleTweaks=(), opacity=None,
     labelColor='LightGray', markerColor='Red', lineColor='White', colorSpace='rgb',
     font='Open Sans', labelHeight=0.025,
@@ -819,8 +819,12 @@ while continueRoutine:
 for thisComponent in DemographicsComponents:
     if hasattr(thisComponent, "setAutoDraw"):
         thisComponent.setAutoDraw(False)
-thisExp.addData('genderResp.response', genderResp.getRating())
+#Convert gender to a string and record that:
+genderCategories = ["Male", "Female", "Transgender male", "Transgender female", "Other"]
+genderIndex = int(genderResp.getRating())
+thisExp.addData('genderResp.response', genderCategories[genderIndex])
 thisExp.addData('genderRespOther.text',genderRespOther.text)
+
 thisExp.addData('ageResp.text',ageResp.text)
 thisExp.addData('nationalityResp.text',nationalityResp.text)
 thisExp.addData('originCountryResp.text',originCountryResp.text)
@@ -1597,6 +1601,7 @@ while continueRoutine:
 for thisComponent in Personal_Responses_to_Music__PerceptionComponents:
     if hasattr(thisComponent, "setAutoDraw"):
         thisComponent.setAutoDraw(False)
+        
 thisExp.addData('Q10Resp.response', Q10Resp.getRating())
 thisExp.addData('Q11Resp.response', Q11Resp.getRating())
 thisExp.addData('Q12Resp.response', Q12Resp.getRating())
