@@ -107,41 +107,43 @@ def mixer(attendedInst):
 
 #Oddball demos- these will use the MS weightings and even come from the same directions, but only one instrument will be heard at a time:
 
-def demoMixer(attendedInst):
+def demoMixer():
     VibrDone = False
     HarmDone = False
     KeybDone = False
     for file in os.scandir(oddballDemosPath): 
             signal = AudioSegment.from_wav(file)
             
-            if attendedInst == "Vibr Attended":
-               oddballDemo = signal.pan(-1).apply_gain(msVibrGain) #Pan and apply gain.               
+            if "Vibr" in file.name:
+               oddballDemo = signal.pan(-1).apply_gain(msVibrGain) #Pan and apply gain. 
+               attendedInst = "Vibr Attended"
                VibrDone = True
                
-            elif attendedInst == "Harm Attended":
+            elif "Harm" in file.name:
                oddballDemo = signal.pan(0).apply_gain(msHarmGain)
+               attendedInst = "Harm Attended"
                HarmDone = True
                 
-            elif attendedInst == "Keyb Attended":
+            elif "Keyb" in file.name:
                 oddballDemo = signal.pan(1).apply_gain(msKeybGain)
+                attendedInst = "Keyb Attended"
                 KeybDone = True
                         
             if KeybDone == True or HarmDone == True or VibrDone == True: #Only want ONE.
                 outputPathPlusName = oddballDemosOutputPath + "/Set2 - Oddball Demo for " + attendedInst[:5] + ".wav"
                 oddballDemo.export(outputPathPlusName, format="wav")
+                #break #Break once it's completed for the given attendedInst, and it will need to be run again for the next attended inst.
 
 #Run both functions, for all attended conditions:
+demoMixer()
 attendedInst = "Vibr Attended"
 mixer(attendedInst)
-demoMixer(attendedInst)
 
 attendedInst = "Harm Attended"
 mixer(attendedInst)
-demoMixer(attendedInst)
 
 attendedInst = "Keyb Attended"
 mixer(attendedInst)
-demoMixer(attendedInst)
 
 #Change back to the original path. This prevents confusion when later scripts are run.
 os.chdir(calibrationStimPrepPath)
