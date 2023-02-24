@@ -132,7 +132,6 @@ def demoMixer():
             if KeybDone == True or HarmDone == True or VibrDone == True: #Only want ONE.
                 outputPathPlusName = oddballDemosOutputPath + "/Set2 - Oddball Demo for " + attendedInst[:5] + ".wav"
                 oddballDemo.export(outputPathPlusName, format="wav")
-                #break #Break once it's completed for the given attendedInst, and it will need to be run again for the next attended inst.
 
 #Run both functions, for all attended conditions:
 demoMixer()
