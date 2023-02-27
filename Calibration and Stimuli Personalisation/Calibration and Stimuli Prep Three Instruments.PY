@@ -47,7 +47,7 @@ while True:
     dlg.addText("Please adjust the loudness of the instruments, so that you can hear them and pay "
                  + "attention to all three comfortably. The gains do not need to add up to 1.")
     dlg.addField("Vibraphone Loudness:", initial=vibraphone.mul)
-    dlg.addField("Harmonica Loudness:", initial=vibraphone.mul)
+    dlg.addField("Harmonica Loudness:", initial=harmonica.mul)
     dlg.addField("Piano Loudness:", initial=piano.mul)
     dlg.show()
     if dlg.OK:
