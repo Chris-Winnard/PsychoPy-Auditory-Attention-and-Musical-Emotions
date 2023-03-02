@@ -439,7 +439,7 @@ Q13 = visual.TextStim(win=win, name='Q13',
     depth=-7.0);
 Q13Resp = visual.Slider(win=win, name='Q13Resp',
     startValue=None, size=(0.6, 0.02), pos=(0.495, -0.105), units=None,
-    labels=("Completely\ndisagree", "Completely \nagree"), ticks=(1, 2, 3, 4, 5, 6, 7), granularity=1.0,
+    labels=("Completely\ndisagree", "Neutral", "Completely\nagree"), ticks=(1, 2, 3, 4, 5, 6, 7), granularity=1.0,
     style='rating', styleTweaks=(), opacity=None,
     labelColor='LightGray', markerColor='Red', lineColor='White', colorSpace='rgb',
     font='Open Sans', labelHeight=0.025,
@@ -488,7 +488,7 @@ Q15 = visual.TextStim(win=win, name='Q15',
     depth=-11.0);
 Q15Resp = visual.Slider(win=win, name='Q15Resp',
     startValue=None, size=(0.6, 0.02), pos=(0.495, 0.33), units=None,
-    labels=("Completely\ndisagree", "Completely \nagree"), ticks=(1, 2, 3, 4, 5, 6, 7), granularity=1.0,
+    labels=("Completely\ndisagree", "Neutral", "Completely\nagree"), ticks=(1, 2, 3, 4, 5, 6, 7), granularity=1.0,
     style='rating', styleTweaks=(), opacity=None,
     labelColor='LightGray', markerColor='Red', lineColor='White', colorSpace='rgb',
     font='Open Sans', labelHeight=0.025,
@@ -2149,4 +2149,6 @@ if eyetracker:
     eyetracker.setConnectionState(False)
 thisExp.abort()  # or data files will save again on exit
 win.close()
+
+exec(open('Questionnaire GSMI Score Calculator.py').read())
 core.quit()
