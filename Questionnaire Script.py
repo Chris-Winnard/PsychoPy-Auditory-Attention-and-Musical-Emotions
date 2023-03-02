@@ -2150,5 +2150,5 @@ if eyetracker:
 thisExp.abort()  # or data files will save again on exit
 win.close()
 
-exec(open('Questionnaire GSMI Score Calculator.py').read())
+exec(open('Questionnaire GSMI Score Calculator.py').read()) #Calculates scores and adds them to the csv file of responses
 core.quit()
