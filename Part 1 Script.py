@@ -90,7 +90,7 @@ frameTolerance = 0.001  # how close to onset before 'same' frame
 win = visual.Window(
     size=[1920, 1080], fullscr=False, screen=0, 
     winType='pyglet', allowGUI=False, allowStencil=False,
-    monitor='otherExternalMonitor', color=[-0.4510, 0.0196, 0.4118], colorSpace='rgb',
+    monitor='AIM Laptop', color=[-0.4510, 0.0196, 0.4118], colorSpace='rgb',
     blendMode='avg', useFBO=True, 
     units='height')
 # Setup ioHub
@@ -230,7 +230,7 @@ Emotions_Mapping_Figure = visual.ImageStim(
     win=win,
     name='Emotions_Mapping_Figure', 
     image='V-A-D to Ekman model mapping.png', mask=None, anchor='center',
-    ori=0.0, pos=(0, 0.06), size=(1.07117, 0.8),
+    ori=0.0, pos=(0, 0.13), size=(0.9104945, 0.68),
     color=[1,1,1], colorSpace='rgb', opacity=None,
     flipHoriz=False, flipVert=False,
     texRes=128.0, interpolate=True, depth=0.0)
@@ -245,6 +245,13 @@ nextButton_3 = visual.ImageStim(
 mouse_3 = event.Mouse(win=win)
 x, y = [None, None]
 mouse_3.mouseClock = core.Clock()
+text_4 = visual.TextStim(win=win, name='text_4',
+    text='Arousal example: a sleepy person feels passive, whereas an excited person feels active. Dominance example: although fear and anger are both active and negative, a scared person feels submissive, whereas an angry person feels dominant.',
+    font='Open Sans',
+    pos=(0, -0.284), height=0.04, wrapWidth=1.7, ori=0.0, 
+    color='white', colorSpace='rgb', opacity=None, 
+    languageStyle='LTR',
+    depth=-3.0);
 text_3 = visual.TextStim(win=win, name='text_3',
     text='Image taken from Buechel and Hahn, 2016. Used under the terms of the Creative Commons Attribution Non-Commercial License 4.0.\n',
     font='Open Sans',
@@ -759,7 +766,7 @@ for thisBlock0 in block0:
             mouse_3.clicked_name = []
             gotValidClick = False  # until a click is received
             # keep track of which components have finished
-            Categorical_Emotions_to_VAD_MappingComponents = [Emotions_Mapping_Figure, nextButton_3, mouse_3, text_3]
+            Categorical_Emotions_to_VAD_MappingComponents = [Emotions_Mapping_Figure, nextButton_3, mouse_3, text_4, text_3]
             for thisComponent in Categorical_Emotions_to_VAD_MappingComponents:
                 thisComponent.tStart = None
                 thisComponent.tStop = None
@@ -837,6 +844,15 @@ for thisBlock0 in block0:
                     text_3.tStartRefresh = tThisFlipGlobal  # on global time
                     win.timeOnFlip(text_3, 'tStartRefresh')  # time at next scr refresh
                     text_3.setAutoDraw(True)
+                
+                # *text_4* updates
+                if text_4.status == NOT_STARTED and tThisFlip >= 0.0-frameTolerance:
+                    # keep track of start time/frame for later
+                    text_4.frameNStart = frameN  # exact frame index
+                    text_4.tStart = t  # local t and not account for scr refresh
+                    text_4.tStartRefresh = tThisFlipGlobal  # on global time
+                    win.timeOnFlip(text_4, 'tStartRefresh')  # time at next scr refresh
+                    text_4.setAutoDraw(True)
                 
                 # check for quit (typically the Esc key)
                 if endExpNow or defaultKeyboard.getKeys(keyList=["escape"]):
@@ -1308,7 +1324,7 @@ for thisBlock1 in block1:
             mouse_3.clicked_name = []
             gotValidClick = False  # until a click is received
             # keep track of which components have finished
-            Categorical_Emotions_to_VAD_MappingComponents = [Emotions_Mapping_Figure, nextButton_3, mouse_3, text_3]
+            Categorical_Emotions_to_VAD_MappingComponents = [Emotions_Mapping_Figure, nextButton_3, mouse_3, text_4, text_3]
             for thisComponent in Categorical_Emotions_to_VAD_MappingComponents:
                 thisComponent.tStart = None
                 thisComponent.tStop = None
@@ -1386,6 +1402,15 @@ for thisBlock1 in block1:
                     text_3.tStartRefresh = tThisFlipGlobal  # on global time
                     win.timeOnFlip(text_3, 'tStartRefresh')  # time at next scr refresh
                     text_3.setAutoDraw(True)
+                
+                # *text_4* updates
+                if text_4.status == NOT_STARTED and tThisFlip >= 0.0-frameTolerance:
+                    # keep track of start time/frame for later
+                    text_4.frameNStart = frameN  # exact frame index
+                    text_4.tStart = t  # local t and not account for scr refresh
+                    text_4.tStartRefresh = tThisFlipGlobal  # on global time
+                    win.timeOnFlip(text_4, 'tStartRefresh')  # time at next scr refresh
+                    text_4.setAutoDraw(True)
                 
                 # check for quit (typically the Esc key)
                 if endExpNow or defaultKeyboard.getKeys(keyList=["escape"]):
