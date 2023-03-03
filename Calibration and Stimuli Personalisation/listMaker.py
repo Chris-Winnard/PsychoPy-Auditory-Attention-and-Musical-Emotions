@@ -140,7 +140,7 @@ for file in os.scandir(participantPath):
             worksheet.write(stimCell, stimPath)
             worksheet.write(attCell, str(attendedInst))
             for line in lines:
-                if file.name[:3] in line and line.count(attendedInst) ==2: #E.g "Set3 Vibr stream for Vibr Attended"...
+                if file.name[:4] in line and line.count(attendedInst) ==2: #E.g "Set3 Vibr stream for Vibr Attended"...
                     oddballStartTimes = re.findall("\d+\.\d+", line) 
                     numOddballs = len(oddballStartTimes)
                     worksheet.write(oddCell, str(numOddballs))
