@@ -1,15 +1,5 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-"""
-This experiment was created using PsychoPy3 Experiment Builder (v2022.1.3),
-    on July 07, 2022, at 13:10
-If you publish work using this script the most relevant publication is:
-
-    Peirce J, Gray JR, Simpson S, MacAskill M, Höchenberger R, Sogo H, Kastman E, Lindeløv JK. (2019) 
-        PsychoPy2: Experiments in behavior made easy Behav Res 51: 195. 
-        https://doi.org/10.3758/s13428-018-01193-y
-
-"""
 
 from psychopy import locale_setup
 from psychopy import prefs
@@ -2140,10 +2130,11 @@ routineTimer.reset()
 # and win.timeOnFlip() tasks get executed before quitting
 win.flip()
 
-# these shouldn't be strictly necessary (should auto-save)
+#Save csv of data:
 thisExp.saveAsWideText(filename+'.csv', delim='auto')
 thisExp.saveAsPickle(filename)
 logging.flush()
+
 # make sure everything is closed down
 if eyetracker:
     eyetracker.setConnectionState(False)
