@@ -6,6 +6,7 @@ import soundfile as sf
 import numpy as np
 import os
 import glob
+import re
 
 #Find the stimuli path:
 currentFolderPath = pathlib.Path(__file__).parent.resolve()
@@ -19,8 +20,10 @@ participantPath = max(glob.glob(os.path.join(dataPath, '*/')), key=os.path.getmt
 #folder is created, this will be the output path for them.
 
 
-#Create a new file to record the oddball start times:
+#Path/filename for file to record the oddball start times:
 File = (participantPath + "\Oddball Start Times.txt")
+with open(File, 'a') as f: #Create the file now to prevent any confusion later, because oddballsForbidden needs to read from it.
+    f.close
 
 """Timings: one data point = 4.5e-05 (the same for all pieces to the 20th decimal). So, we don't need to
 normalise w.r.t piece length. Use 2205 = 0.1s. To ensure pieces are exactly 30s each, we remove any excess data
@@ -55,31 +58,31 @@ def createOddball(signalCopy, start):
         return oddball
 
 #Function to add random oddballs:
-def addOddballs(signalCopy):
+def addOddballs(signalCopy, forbiddenOddballPeriods):
     numberOddballs = random.randint(1, 3) #From uniform dist.
     startTimes = np.zeros(numberOddballs)
     
     for i in range(numberOddballs):
         
-    #NOTE: We use a grace period of +/- one oddball length either side. So you can't have two simultaneously, or even one straight after
-    #another.
-        
+    #NOTE: We use a grace period at start, and accounting for time oddball might play at end. Also a grace period of +/- one oddball length either side - so you can't have two
+    #simultaneously, or even one straight after another. forbiddenOddballPeriods added in to implement this between streams.
+    
         if i == 0:
-            start1 = random.randint(0, adaptedSignalEnd) #Accounting for time oddball might play at end
+            start1 = random.choice([j for j in range(adaptedSignalStart, adaptedSignalEnd) if j not in forbiddenOddballPeriods])
             startTimes[i] = start1
             
             oddball1 = createOddball(signalCopy, start1)
             signalCopy[start1:start1+oddballLength] = oddball1 #Insert the oddball.
 
         if i == 1:            
-            start2 = random.choice([j for j in range(0, adaptedSignalEnd) if j not in range(start1-oddballLength, start1+2*oddballLength)])
+            start2 = random.choice([j for j in range(adaptedSignalStart, adaptedSignalEnd) if j not in forbiddenOddballPeriods or range(start1-oddballLength, start1+2*oddballLength)])
             startTimes[i] = start2
             
             oddball2 = createOddball(signalCopy, start2)
             signalCopy[start2:start2+oddballLength] = oddball2
             
         if i == 2:
-            start3 = choice([j for j in range(0, adaptedSignalEnd) if j not in range(start1-oddballLength, start1+2*oddballLength) or range(start2-oddballLength, start2+2*oddballLength)])
+            start3 = choice([j for j in range(adaptedSignalStart, adaptedSignalEnd) if j not in forbiddenOddballPeriods or range(start1-oddballLength, start1+2*oddballLength) or range(start2-oddballLength, start2+2*oddballLength)])
             startTimes[i] = start3
             
             oddball3 = createOddball(signalCopy, start3)
@@ -87,13 +90,14 @@ def addOddballs(signalCopy):
  
     return signalCopy, startTimes
 
-def oddballFileWriter(signal, attendedInst):
+def oddballFileWriter(currentFilename, signal, attendedInst):
         pause = np.zeros(110250)
-        augmentedSignalCopy, startTimes = addOddballs(signal)
+        forbiddenOddballPeriods = oddballsForbidden(currentFilename) #Prevents overlapping/consecutive oddballs BETWEEN STREAMS to avoid participant confusion.
+        augmentedSignalCopy, startTimes = addOddballs(signal, forbiddenOddballPeriods)
 
         #Create and write oddball file:
         oddballStimulusFull = np.concatenate((originalSignalCopy, pause, augmentedSignalCopy))
-        sf.write(participantPath + "/" + str(file.name)[:-4] + " Oddball Test-" + attendedInst + " Attended.wav", oddballStimulusFull, sr)
+        sf.write(participantPath + "/" + str(currentFilename)[:-4] + " Oddball Test-" + attendedInst + " Attended.wav", oddballStimulusFull, sr)
         
         #Record when oddballs start:   
             
@@ -101,16 +105,41 @@ def oddballFileWriter(signal, attendedInst):
         startTimes += 35 #Accounts for first playing and the 5s pause
         startTimes = str(startTimes)
         with open(File, 'a') as f:
-            f.write("Oddball Start Times for \"" + str(file.name)[:-4] + " Oddball Test-" + attendedInst + " Attended.wav\": ")
+            f.write("Oddball Start Times for \"" + str(currentFilename)[:-4] + " Oddball Test-" + attendedInst + " Attended.wav\": ")
             f.write(startTimes)
             f.write("\n")
             f.close
 
 
+def oddballsForbidden(currentFilename):
+    "Prevents overlapping/consecutive oddballs BETWEEN STREAMS, to avoid participant confusion."
+    
+    setNumber = currentFilename[3]
+    forbiddenOddballPeriods = np.array([])
+    forbiddenOddballPeriods_Starts = np.array([])
+    
+    with open(File, 'r') as f:
+        lines = f.readlines(-8) #Read last 8 lines in the file.
+        for line in lines:
+            if "Set" + setNumber in line and attendedInst + " Attended" in line: #E.g Set4 Harm attended- should be up to two lines already written.
+                forbiddenOddballPeriods_StartsOneInstrument = np.array([re.findall("\d+\.\d+", line)]) #E.g, start times for vibraphone oddballs
+                forbiddenOddballPeriods_Starts = np.append(forbiddenOddballPeriods_Starts, forbiddenOddballPeriods_StartsOneInstrument) #For all other instruments in the set.
+        f.close
+        
+    forbiddenOddballPeriods = np.zeros((forbiddenOddballPeriods_Starts.shape[0], 2*oddballLength))
+        
+    for i in range(len(forbiddenOddballPeriods_Starts)):
+        forbiddenOddballPeriods[i,:] = np.arange(float(forbiddenOddballPeriods_Starts[i]), float(forbiddenOddballPeriods_Starts[i])+2*oddballLength)
+    return forbiddenOddballPeriods
+
 for file in os.scandir(stimuliPath):
-    if file.name[:3] == "Set": #Because of naming convention used, this will ignore trigs etc.
+    currentFilename = file.name #Easiest to keep it s a string variable
+    if currentFilename[:3] == "Set": #Because of naming convention used, this will ignore trigs etc.
         signal, sr = librosa.load(file)
         signal = signal[0:661500] #Removing any excess points, so pieces are EXACTLY 30s long.
+            
+        adaptedSignalStart = oddballLength #Grace period at the start, length of one oddball. No oddballs in this grace period.
+        
         #Calculate when the signal ends, and also calculate the "adapted end"- so that an oddball
         #doesn't start at the last half-second or anything like that:
         signalEnd = len(signal)
@@ -121,8 +150,8 @@ for file in os.scandir(stimuliPath):
         #Have multiple versions, all with random oddballs. This means that e.g for Set1 mix with Vibr attended
         #there will be different vibraphone oddballs to Set1 mix with Keyb attended
         attendedInst = "Vibr"
-        oddballFileWriter(signal, attendedInst)
+        oddballFileWriter(currentFilename, signal, attendedInst)
         attendedInst = "Harm"
-        oddballFileWriter(signal, attendedInst)
+        oddballFileWriter(currentFilename, signal, attendedInst)
         attendedInst = "Keyb"
-        oddballFileWriter(signal, attendedInst)
+        oddballFileWriter(currentFilename, signal, attendedInst)
