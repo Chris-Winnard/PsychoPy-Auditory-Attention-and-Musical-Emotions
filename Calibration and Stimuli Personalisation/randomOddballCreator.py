@@ -30,30 +30,21 @@ normalise w.r.t piece length. Use 2205 = 0.1s. To ensure pieces are exactly 30s 
 points."""
 
 tenthSec = 2205
-fifthSec = 2*tenthSec
-oddballLength = 3*fifthSec
+oddballSegmentLength = 3*tenthSec
+oddballLength = 3*oddballSegmentLength
 
 #Function to create an oddball for given signal, starting at a given point in that signal:
 def createOddball(signalCopy, start):        
-        firstPart = signalCopy[start:start+tenthSec]
-        firstPart = librosa.effects.pitch_shift(firstPart, sr, 1, bins_per_octave=12)
+        firstPart = signalCopy[start:start+oddballSegmentLength]
+        firstPart = librosa.effects.pitch_shift(firstPart, sr, 0.9, bins_per_octave=12)
         
-        secondPart = signalCopy[start+tenthSec:start+fifthSec]
-        secondPart = librosa.effects.pitch_shift(secondPart, sr, -1, bins_per_octave=12)
+        secondPart = signalCopy[start+oddballSegmentLength:start+2*oddballSegmentLength]
+        secondPart = librosa.effects.pitch_shift(secondPart, sr, -0.9, bins_per_octave=12)
         
-        thirdPart = signalCopy[start+fifthSec:start+3*tenthSec]
-        thirdPart = librosa.effects.pitch_shift(thirdPart, sr, 1, bins_per_octave=12)
+        thirdPart = signalCopy[start+2*oddballSegmentLength:start+3*oddballSegmentLength]
+        thirdPart = librosa.effects.pitch_shift(thirdPart, sr, 0.9, bins_per_octave=12)
         
-        fourthPart = signalCopy[start+3*tenthSec:start+2*fifthSec]
-        fourthPart = librosa.effects.pitch_shift(fourthPart, sr, -1, bins_per_octave=12)
-        
-        fifthPart = signalCopy[start+2*fifthSec:start+5*tenthSec]
-        fifthPart = librosa.effects.pitch_shift(fifthPart, sr, 1, bins_per_octave=12)
-        
-        sixthPart = signalCopy[start+5*tenthSec:start+3*fifthSec]
-        sixthPart = librosa.effects.pitch_shift(sixthPart, sr, -1, bins_per_octave=12)
-        
-        oddball = np.concatenate((firstPart, secondPart, thirdPart, fourthPart, fifthPart, sixthPart))      
+        oddball = np.concatenate((firstPart, secondPart, thirdPart))      
         
         return oddball
 
@@ -133,7 +124,7 @@ def oddballsForbidden(currentFilename):
     return forbiddenOddballPeriods
 
 for file in os.scandir(stimuliPath):
-    currentFilename = file.name #Easiest to keep it s a string variable
+    currentFilename = file.name #Easiest to keep it as a string variable
     if currentFilename[:3] == "Set": #Because of naming convention used, this will ignore trigs etc.
         signal, sr = librosa.load(file)
         signal = signal[0:661500] #Removing any excess points, so pieces are EXACTLY 30s long.
