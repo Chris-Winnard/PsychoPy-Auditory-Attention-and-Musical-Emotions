@@ -316,7 +316,7 @@ moodArousalResp = visual.Slider(win=win, name='moodArousalResp',
     font='Arial', labelHeight=0.03,
     flip=False, ori=0.0, depth=-6, readOnly=False)
 moodDominance = visual.TextStim(win=win, name='moodDominance',
-    text='Q9: How dominant/submissive is your current emotion? For example, although fear and anger are both active and negative, a scared person feels submissive, whereas an angry person feels dominant.',
+    text='Q9: How dominant/submissive is your current emotion? Fear is negative/active/submissive, but anger is negative/active/dominant. Positive emotions are not always dominant. For example, when a person fulfils an assignment for a boss, they may feel positive/active/submissive.',
     font='Open Sans',
     pos=(0.0, -0.21), height=0.03, wrapWidth=1.7, ori=0.0, 
     color='white', colorSpace='rgb', opacity=None, 
@@ -363,7 +363,7 @@ mouse_3 = event.Mouse(win=win)
 x, y = [None, None]
 mouse_3.mouseClock = core.Clock()
 text_3 = visual.TextStim(win=win, name='text_3',
-    text='Image taken from Buechel and Hahn, 2016. Used under the terms of the Creative Commons Attribution Non-Commercial License 4.0.\n',
+    text='Image adapted from Buechel and Hahn, 2016. Used under the terms of the Creative Commons Attribution Non-Commercial License 4.0.\n',
     font='Open Sans',
     pos=(0, -0.47), height=0.02, wrapWidth=1.7, ori=0.0, 
     color='white', colorSpace='rgb', opacity=None, 

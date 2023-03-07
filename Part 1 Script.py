@@ -154,7 +154,7 @@ nextButton_R1B = visual.ImageStim(
 #These will also be used for practiceTrial
 trialClock = core.Clock()
 clickForEmotionInfo = visual.TextBox2(
-     win, text='Click here for more information on how the scales relate to particular emotions.', font='Open Sans',
+     win, text='Click here for information on how the scales relate to particular emotions.', font='Open Sans',
      pos=(0, 0.4),     letterHeight=0.04,
      size=(1.7, 0.04625), borderWidth=2.0,
      color=[0.5961, -0.7333, -0.7333], colorSpace='rgb',
@@ -230,7 +230,7 @@ Emotions_Mapping_Figure = visual.ImageStim(
     win=win,
     name='Emotions_Mapping_Figure', 
     image='V-A-D to Ekman model mapping.png', mask=None, anchor='center',
-    ori=0.0, pos=(0, 0.13), size=(0.9104945, 0.68),
+    ori=0.0, pos=(0.43, 0.05), size=(0.81944505, 0.612),
     color=[1,1,1], colorSpace='rgb', opacity=None,
     flipHoriz=False, flipVert=False,
     texRes=128.0, interpolate=True, depth=0.0)
@@ -246,14 +246,14 @@ mouse_3 = event.Mouse(win=win)
 x, y = [None, None]
 mouse_3.mouseClock = core.Clock()
 text_4 = visual.TextStim(win=win, name='text_4',
-    text='Arousal example: a sleepy person feels passive, whereas an excited person feels active. Dominance example: although fear and anger are both active and negative, a scared person feels submissive, whereas an angry person feels dominant.',
+    text='Arousal examples: a sleepy person feels passive, whereas an excited person feels active.\n\nDominance examples: fear is negative/active/submissive, but anger is negative/active/dominant.\n\n Positive emotions are not always dominant. For example, when a person fulfils an assignment for a boss, they may feel positive/active/submissive.',
     font='Open Sans',
-    pos=(0, -0.284), height=0.04, wrapWidth=1.7, ori=0.0, 
+    pos=(-0.43, 0.05), height=0.04, wrapWidth=0.8, ori=0.0, 
     color='white', colorSpace='rgb', opacity=None, 
     languageStyle='LTR',
     depth=-3.0);
 text_3 = visual.TextStim(win=win, name='text_3',
-    text='Image taken from Buechel and Hahn, 2016. Used under the terms of the Creative Commons Attribution Non-Commercial License 4.0.\n',
+    text='Image adapted from Buechel and Hahn, 2016. Used under the terms of the Creative Commons Attribution Non-Commercial License 4.0.\n',
     font='Open Sans',
     pos=(0, -0.47), height=0.02, wrapWidth=1.7, ori=0.0, 
     color='white', colorSpace='rgb', opacity=None, 
