@@ -59,25 +59,39 @@ def addOddballs(signalCopy, forbiddenOddballPeriods):
     #simultaneously, or even one straight after another. forbiddenOddballPeriods added in to implement this between streams.
     
         if i == 0:
-            start1 = random.choice([j for j in range(adaptedSignalStart, adaptedSignalEnd) if j not in forbiddenOddballPeriods])
+            start1 = choice([j for j in range(adaptedSignalStart, adaptedSignalEnd) if j not in forbiddenOddballPeriods])
             startTimes[i] = start1
             
             oddball1 = createOddball(signalCopy, start1)
             signalCopy[start1:start1+oddballLength] = oddball1 #Insert the oddball.
+            
+            if start1 in forbiddenOddballPeriods:
+                print("start 1 in forbidden oddball periods")
 
         if i == 1:            
-            start2 = random.choice([j for j in range(adaptedSignalStart, adaptedSignalEnd) if j not in forbiddenOddballPeriods or range(start1-oddballLength, start1+2*oddballLength)])
+            start2 = choice([j for j in range(adaptedSignalStart, adaptedSignalEnd) if (j not in forbiddenOddballPeriods) & j not in range(start1-2*oddballLength, start1+2*oddballLength)])
             startTimes[i] = start2
-            
             oddball2 = createOddball(signalCopy, start2)
             signalCopy[start2:start2+oddballLength] = oddball2
             
-        if i == 2:
-            start3 = choice([j for j in range(adaptedSignalStart, adaptedSignalEnd) if j not in forbiddenOddballPeriods or range(start1-oddballLength, start1+2*oddballLength) or range(start2-oddballLength, start2+2*oddballLength)])
-            startTimes[i] = start3
+            if start2 in forbiddenOddballPeriods:
+                print("start 2 in forbidden oddball periods")
+            if start2 in range(start1-2*oddballLength, start1+2*oddballLength):
+                print("start 2 in start 1 period")
             
+        if i == 2:
+            start3 = choice([j for j in range(adaptedSignalStart, adaptedSignalEnd) if (j not in forbiddenOddballPeriods) & (j not in range(start1-2*oddballLength, start1+2*oddballLength)) & (j not in range(start2-2*oddballLength, start2+2*oddballLength))])
+            startTimes[i] = start3
             oddball3 = createOddball(signalCopy, start3)
             signalCopy[start3:start3+oddballLength] = oddball3
+            
+            if start3 in forbiddenOddballPeriods:
+                print("start 3 in forbidden oddball periods")
+            if start3 in range(start1-2*oddballLength, start1+2*oddballLength):
+                print("start 3 in start 1 period")
+            if start3 in range(start2-2*oddballLength, start2+2*oddballLength):
+                print("start 3 in start 2 period")
+ 
  
     return signalCopy, startTimes
 
@@ -117,13 +131,20 @@ def oddballsForbidden(currentFilename):
                 forbiddenOddballPeriods_Starts = np.append(forbiddenOddballPeriods_Starts, forbiddenOddballPeriods_StartsOneInstrument) #For all other instruments in the set.
         f.close
         
-    forbiddenOddballPeriods = np.zeros((forbiddenOddballPeriods_Starts.shape[0], 2*oddballLength))
-        
+    forbiddenOddballPeriods_Starts = forbiddenOddballPeriods_Starts.astype(np.float) #From strings to floats.
+    
+    #Convert start times back FROM seconds:
+    forbiddenOddballPeriods_Starts -= 35 #Minus 35s
+    forbiddenOddballPeriods_Starts = forbiddenOddballPeriods_Starts*661500/30
+    
+    forbiddenOddballPeriods = np.zeros((forbiddenOddballPeriods_Starts.shape[0], 4*oddballLength))
+    
     for i in range(len(forbiddenOddballPeriods_Starts)):
-        forbiddenOddballPeriods[i,:] = np.arange(float(forbiddenOddballPeriods_Starts[i]), float(forbiddenOddballPeriods_Starts[i])+2*oddballLength)
+        forbiddenOddballPeriods[i,:] = np.arange(forbiddenOddballPeriods_Starts[i]-2*oddballLength, forbiddenOddballPeriods_Starts[i]+2*oddballLength)
+        
     return forbiddenOddballPeriods
 
-for i in range(6, 7): #16): #N.b- takes about 30-55 min per folder (very roughly)
+for i in range(8, 9): #16): #N.b- takes about 30-55 min per folder (very roughly)
     participantPath = dataPath + str(i)
     os.mkdir(participantPath)
 
