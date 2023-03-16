@@ -524,8 +524,6 @@ for thisBlock0 in block0:
     _timeToFirstFrame = win.getFutureFlipTime(clock="now")
     trialClock.reset(-_timeToFirstFrame)  # t0 is time of first possible flip
     frameN = -1
-    #Reset window minimisation parameter
-    windowMinimised = False
     
     # -------Run Routine "practiceTrial"-------
     while continueRoutine:
@@ -1082,8 +1080,6 @@ for thisBlock1 in block1:
     _timeToFirstFrame = win.getFutureFlipTime(clock="now")
     trialClock.reset(-_timeToFirstFrame)  # t0 is time of first possible flip
     frameN = -1
-    #Reset window minimisation parameter
-    windowMinimised = False
     
     # -------Run Routine "trial"-------
     while continueRoutine:

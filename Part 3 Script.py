@@ -104,7 +104,7 @@ defaultKeyboard = keyboard.Keyboard(backend='iohub')
 # Initialize components for Routine "instructions"
 instructionsClock = core.Clock()
 top_instr_txt = visual.TextStim(win=win, name='top_instr_txt',
-    text='You will be told to either attend or NOT attend to some music, before it plays. Please close your eyes, and try not to move whilst it plays. After this, you can take a break here before the next trial.\n\nIf you have any questions at all please ask the experimenters.',
+    text='You will be told to either attend or NOT attend to some music (let your mind wander), before it plays. Please close your eyes, and try not to move whilst it plays. After this, you will be asked about what you were attending to and you can take a break.\n\nIf you have any questions at all please ask the experimenters.',
     font='Open Sans',
     pos=(0, 0.15), height=0.05, wrapWidth=1.8, ori=0.0, 
     color='white', colorSpace='rgb', opacity=None, 
@@ -164,7 +164,7 @@ dontAttendNote = visual.TextStim(win=win, name='dontAttendNote',
 # Initialize components for Routine "QuestionBreakPause"
 QuestionBreakPauseClock = core.Clock()
 top_instr_txt_4 = visual.TextStim(win=win, name='top_instr_txt_4',
-    text='The experimenter will now ask you about the stimulus you were focusing on, and you can take a break. When you are ready for the next trial, click "NEXT".',
+    text='The experimenter will now ask you about the music or your thoughts, and you can take a break. When you are ready for the next trial, click "NEXT".',
     font='Open Sans',
     pos=(0, 0.15), height=0.05, wrapWidth=1.8, ori=0.0, 
     color='white', colorSpace='rgb', opacity=None, 
@@ -457,8 +457,6 @@ for thisBlock0 in block0:
     _timeToFirstFrame = win.getFutureFlipTime(clock="now")
     trialClock.reset(-_timeToFirstFrame)  # t0 is time of first possible flip
     frameN = -1
-    #Reset window minimisation parameter
-    windowMinimised = False
     
     #Set random attend condition:
     attend = bool(random.getrandbits(1))
@@ -471,18 +469,6 @@ for thisBlock0 in block0:
         tThisFlipGlobal = win.getFutureFlipTime(clock=None)
         frameN = frameN + 1  # number of completed frames (so 0 is the first frame)
         # update/draw components on each frame
-        
-        #Minimise window when music starts:
-        if tThisFlip >= 5 and windowMinimised == False:
-            win.winHandle.minimize() # minimise the PsychoPy window
-            #win.flip() # redraw the (minimised) window
-            windowMinimised=True
-        
-        #Maximise window when music ends:
-        if  tThisFlip >= PART_1_STIMULI_LEN-frameTolerance+5 and windowMinimised == True:
-            win.winHandle.maximize()
-            win.winHandle.activate()
-            windowMinimised = False
             
         # *attendNote* updates
         if attend==True and attendNote.status == NOT_STARTED:
@@ -760,8 +746,6 @@ for thisBlock1 in block1:
     _timeToFirstFrame = win.getFutureFlipTime(clock="now")
     trialClock.reset(-_timeToFirstFrame)  # t0 is time of first possible flip
     frameN = -1
-    #Reset window minimisation parameter
-    windowMinimised = False
     
     #Set random attend condition:
     attend = bool(random.getrandbits(1))
@@ -774,18 +758,6 @@ for thisBlock1 in block1:
         tThisFlipGlobal = win.getFutureFlipTime(clock=None)
         frameN = frameN + 1  # number of completed frames (so 0 is the first frame)
         # update/draw components on each frame
-        
-        #Minimise window when music starts:
-        if tThisFlip >= 5 and windowMinimised == False:
-            win.winHandle.minimize() # minimise the PsychoPy window
-            #win.flip() # redraw the (minimised) window
-            windowMinimised=True
-        
-        #Maximise window when music ends:
-        if  tThisFlip >= PART_1_STIMULI_LEN-frameTolerance+5 and windowMinimised == True:
-            win.winHandle.maximize()
-            win.winHandle.activate()
-            windowMinimised = False
             
         # *attendNote* updates
         if attend==True and attendNote.status == NOT_STARTED:

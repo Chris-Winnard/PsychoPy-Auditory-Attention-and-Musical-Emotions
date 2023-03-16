@@ -590,9 +590,6 @@ for thisBlock0 in block0:
     _timeToFirstFrame = win.getFutureFlipTime(clock="now")
     trialClock.reset(-_timeToFirstFrame)  # t0 is time of first possible flip
     frameN = -1    
-    #Reset window minimisation parameter
-    windowMinimised = False
-    
     moveToPause = False #Needed so we can open an information page without skipping ahead to the next section of questions.
     goToQuestions = False
     
@@ -607,11 +604,6 @@ for thisBlock0 in block0:
             # update/draw components on each frame
             mm.out()
             
-            #Minimise window when music starts:
-            if tThisFlip <= PART_1_STIMULI_LEN-frameTolerance and windowMinimised == False:
-                win.winHandle.minimize() # minimise the PsychoPy window
-                #win.flip() # redraw the (minimised) window
-                windowMinimised=True
                     
             # *clickForEmotionInfo* updates
             if (clickForEmotionInfo.status == NOT_STARTED and tThisFlip >= 0.0-frameTolerance) or goToQuestions == True:
@@ -621,12 +613,6 @@ for thisBlock0 in block0:
                 clickForEmotionInfo.tStartRefresh = tThisFlipGlobal  # on global time
                 win.timeOnFlip(clickForEmotionInfo, 'tStartRefresh')  # time at next scr refresh
                 clickForEmotionInfo.setAutoDraw(True)
-            
-            #Maximise window when music ends:
-            if  tThisFlip >= PART_1_STIMULI_LEN-frameTolerance and windowMinimised == True:
-                win.winHandle.maximize()
-                win.winHandle.activate()
-                windowMinimised = False
             
             # *valence* updates
             if (valence.status == NOT_STARTED and tThisFlip >= PART_1_STIMULI_LEN-frameTolerance) or goToQuestions == True:
@@ -1114,9 +1100,7 @@ for thisBlock1 in block1:
     _timeToFirstFrame = win.getFutureFlipTime(clock="now")
     trialClock.reset(-_timeToFirstFrame)  # t0 is time of first possible flip
     frameN = -1    
-    #Reset window minimisation parameter
-    windowMinimised = False
-    
+
     moveToPause = False #Needed so we can open an information page without skipping ahead to the next section of questions.
     goToQuestions = False
     
@@ -1131,12 +1115,6 @@ for thisBlock1 in block1:
             # update/draw components on each frame
             mm.out()
             
-            #Minimise window when music starts:
-            if tThisFlip <= PART_1_STIMULI_LEN-frameTolerance and windowMinimised == False:
-                win.winHandle.minimize() # minimise the PsychoPy window
-                #win.flip() # redraw the (minimised) window
-                windowMinimised=True
-                    
             # *clickForEmotionInfo* updates
             if (clickForEmotionInfo.status == NOT_STARTED and tThisFlip >= 0.0-frameTolerance) or goToQuestions == True:
                 # keep track of start time/frame for later
@@ -1145,12 +1123,6 @@ for thisBlock1 in block1:
                 clickForEmotionInfo.tStartRefresh = tThisFlipGlobal  # on global time
                 win.timeOnFlip(clickForEmotionInfo, 'tStartRefresh')  # time at next scr refresh
                 clickForEmotionInfo.setAutoDraw(True)
-            
-            #Maximise window when music ends:
-            if  tThisFlip >= PART_1_STIMULI_LEN-frameTolerance and windowMinimised == True:
-                win.winHandle.maximize()
-                win.winHandle.activate()
-                windowMinimised = False
             
             # *valence* updates
             if (valence.status == NOT_STARTED and tThisFlip >= PART_1_STIMULI_LEN-frameTolerance) or goToQuestions == True:
