@@ -24,7 +24,6 @@ if dlg.OK == False:
 currentFolderPath = pathlib.Path(__file__).parent.resolve()
 upperFolderPath = currentFolderPath.parent.resolve()
 participantFolderPath = str(upperFolderPath) + "/Data/" + expInfo['Participant']
-os.mkdir(participantFolderPath)
 
 # Create a server and start it
 s = Server().boot()
@@ -209,7 +208,6 @@ s.shutdown()
 ctypes.windll.user32.MessageBoxW(0, "Your settings have been saved.", "Success!")
 
 ##############################################################################################################
-exec(open('randomOddballCreator.py').read()) #Create versions of the stimuli with oddballs in
 exec(open('personalisedStimuliMixer.py').read()) #Create stimuli with gains applied: both single-stream, and
 #mixes of the oddball stimuli.
 
