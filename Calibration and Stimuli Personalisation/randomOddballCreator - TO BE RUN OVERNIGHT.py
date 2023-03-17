@@ -69,7 +69,7 @@ def addOddballs(signalCopy, forbiddenOddballPeriods):
                 print("start 1 in forbidden oddball periods")
 
         if i == 1:            
-            start2 = choice([j for j in range(adaptedSignalStart, adaptedSignalEnd) if (j not in forbiddenOddballPeriods) & j not in range(start1-2*oddballLength, start1+2*oddballLength)])
+            start2 = choice([j for j in range(adaptedSignalStart, adaptedSignalEnd) if (j not in forbiddenOddballPeriods) & (j not in range(start1-2*oddballLength, start1+2*oddballLength))])
             startTimes[i] = start2
             oddball2 = createOddball(signalCopy, start2)
             signalCopy[start2:start2+oddballLength] = oddball2
@@ -78,6 +78,8 @@ def addOddballs(signalCopy, forbiddenOddballPeriods):
                 print("start 2 in forbidden oddball periods")
             if start2 in range(start1-2*oddballLength, start1+2*oddballLength):
                 print("start 2 in start 1 period")
+                print(str(start1*30/661500 + 35))
+                print(str(start2*30/661500 + 35))
             
         if i == 2:
             start3 = choice([j for j in range(adaptedSignalStart, adaptedSignalEnd) if (j not in forbiddenOddballPeriods) & (j not in range(start1-2*oddballLength, start1+2*oddballLength)) & (j not in range(start2-2*oddballLength, start2+2*oddballLength))])
@@ -144,7 +146,7 @@ def oddballsForbidden(currentFilename):
         
     return forbiddenOddballPeriods
 
-for i in range(8, 9): #16): #N.b- takes about 30-55 min per folder (very roughly)
+for i in range(10, 11): #16): #N.b- takes about 30-55 min per folder (very roughly)
     participantPath = dataPath + str(i)
     os.mkdir(participantPath)
 

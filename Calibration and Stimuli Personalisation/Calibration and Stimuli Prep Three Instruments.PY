@@ -153,7 +153,7 @@ while continue_adjusting:
         dlg.addText("Now, please adjust the settings so that you can follow it comfortably and easily.")
         dlg.addField("Loudness:", initial=vibraphone_loudness if selected_instrument == "Vibraphone" else (harmonica_loudness if selected_instrument == "Harmonica" else piano_loudness))
         dlg.addField("Play next:", choices=["Vibraphone", "Harmonica", "Piano"])
-        dlg.addField("Do you want to continue adjusting?", choices=["Yes", "No"]) #Yes by default- acquiescence control.
+        dlg.addField("Do you want to continue adjusting the instruments?", choices=["Yes", "No"]) #Yes by default- acquiescence control.
         dlg.show()
         if dlg.OK:
             loudness = dlg.data[0]
