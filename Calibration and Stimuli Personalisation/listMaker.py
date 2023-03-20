@@ -3,7 +3,22 @@ import os
 import glob
 import xlsxwriter
 import re
+import numpy as np
+from numpy.random import default_rng
 
+##############################################################################################################
+##############################################################################################################
+#EXCLUSION- EXCLUDE SET2, THE PRACTICE SET, AND A RANDOMLY CHOSEN SET, FROM THE MAIN TRIALS:
+    
+mainTrialStimuliPossibleSets = np.array([1, 3, 4, 5, 6, 7])
+rng = default_rng()
+setsExcludedFromMain = rng.choice(mainTrialStimuliPossibleSets, size=1, replace=False)
+setsExcludedFromMain = np.append(setsExcludedFromMain, 2)
+setsExcludedFromMain = setsExcludedFromMain.astype(np.str)
+
+for i in range(0, len(setsExcludedFromMain)):
+    setsExcludedFromMain[i] = "Set" + setsExcludedFromMain[i]
+    
 ##############################################################################################################
 ##############################################################################################################
 #PART 1: CREATING LIST OF STIMULI AND TRIGGER FILES. EXCLUDE PRACTICE TRIAL MATERIALS AND ODDBALL TEST
@@ -34,7 +49,7 @@ i = 2 #Index for row in sheet.
 
 for file in os.scandir(participantPath):
     stimCell = "A" + str(i)
-    if "Set2" not in file.name: #Set 2 ones are used for practice, so these are excluded.
+    if all(string not in file.name for string in setsExcludedFromMain): #Exclude Set2 (practice set), and other sets.
         if ".wav" in file.name and "Oddball" not in file.name: #Only audio, and no oddball files. 
             stimPath = stimLoc + str(file.name)
             worksheet.write(stimCell, stimPath)
@@ -52,7 +67,7 @@ worksheet.write('B1', 'trigger')
 j = 2
 for file in os.scandir(triggerPath):
     trigCell = "B" + str(j)
-    if "Set2" not in file.name: #Set 2 ones are used for practice, so these are excluded.
+    if all(string not in file.name for string in setsExcludedFromMain): #Exclude Set2 (practice set), and other sets.
         if ".wav" in file.name and "Oddball" not in file.name:
             folderPlusFileName = "Trigger Files/" + str(file.name) #Here we need to specify the folder
 #from main folder where the scripts are)               
@@ -80,7 +95,7 @@ i = 2 #Index for row in sheet.
 
 for file in os.scandir(participantPath):
     stimCell = "A" + str(i)
-    if "Set2" in file.name: #Set 2 ones are used for practice, so excluded. #Set 2 ones ONLY
+    if "Set2" in file.name: #Set 2 ones ONLY
         if ".wav" in file.name and "Oddball" not in file.name: #Only audio, and no oddball files. 
             stimPath = stimLoc + str(file.name)
             worksheet.write(stimCell, stimPath)
@@ -92,7 +107,7 @@ worksheet.write('B1', 'trigger')
 j = 2
 for file in os.scandir(triggerPath):
     trigCell = "B" + str(j)
-    if "Set2"  in file.name: #Set 2 ones ONLY
+    if "Set2" in file.name: #Set 2 ones ONLY
         if ".wav" in file.name and "Oddball" not in file.name:
             folderPlusFileName = "Trigger Files/" + str(file.name)
             worksheet.write(trigCell, folderPlusFileName)
@@ -128,7 +143,7 @@ for file in os.scandir(participantPath):
     stimCell = "A" + str(i)
     attCell = "B" + str(i)
     oddCell = "D" + str(i)
-    if "Set2" not in file.name: #Set 2 ones are used for practice, so excluded.
+    if all(string not in file.name for string in setsExcludedFromMain): #Exclude Set2 (practice set), and other sets.
         if ".wav" in file.name and "Oddball Test Mix" in file.name: #Only audio, only oddball files.
             if "Keyb Attended" in file.name:
                 attendedInst = "Keyb"
@@ -151,7 +166,7 @@ worksheet.write('C1', 'trigger')
 j = 2
 for file in os.scandir(triggerPath):
     trigCell = "C" + str(j)
-    if "Set2" not in file.name: #Set 2 ones are used for practice, so excluded.
+    if all(string not in file.name for string in setsExcludedFromMain): #Exclude Set2 (practice set), and other sets.
         if ".wav" in file.name and "Oddball Test Mix" in file.name:
             folderPlusFileName = "Trigger Files/" + str(file.name)
             worksheet.write(trigCell, folderPlusFileName)

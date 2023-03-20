@@ -1,4 +1,4 @@
-#Calibration software, created with help from ChatGPT. At the end we run 'Random Oddball Creator.py' to add
+#Calibration software, created with help from ChatGPT. At the end we run 'randomOddballCreator.py' to add
 #oddballs to MS stimuli. Then we run 'personalisedStimuliMixer.py' to implement gains/do mixing.
 
 
@@ -24,6 +24,7 @@ if dlg.OK == False:
 currentFolderPath = pathlib.Path(__file__).parent.resolve()
 upperFolderPath = currentFolderPath.parent.resolve()
 participantFolderPath = str(upperFolderPath) + "/Data/" + expInfo['Participant']
+os.mkdir(participantFolderPath)
 
 # Create a server and start it
 s = Server().boot()
@@ -208,6 +209,7 @@ s.shutdown()
 ctypes.windll.user32.MessageBoxW(0, "Your settings have been saved.", "Success!")
 
 ##############################################################################################################
+exec(open('randomOddballCreator.py').read()) #Create versions of the stimuli with oddballs in
 exec(open('personalisedStimuliMixer.py').read()) #Create stimuli with gains applied: both single-stream, and
 #mixes of the oddball stimuli.
 
@@ -215,7 +217,7 @@ exec(open('personalisedStimuliMixer.py').read()) #Create stimuli with gains appl
 #all pieces have the exact same lengths enforced, so can just use one start/end trigger pair for the Set1-Harm files
 #(i.e not different versions of the triggers for different participants), etc.
 
-#Also note that for the trigger files: for oddball tests the start is at the v start of the audio file.
+#Also note that for the trigger files: for oddball tests the start trigger is at the v start of the audio file.
 
 exec(open('listMaker.py').read()) #Create lists of the stimuli and the trigger files that can be used in the scripts
 #with minimal extra work.
