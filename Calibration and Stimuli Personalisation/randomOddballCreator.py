@@ -7,6 +7,7 @@ import numpy as np
 import os
 import re
 import glob
+from itertools import chain
 
 #Find the stimuli path:
 currentFolderPath = pathlib.Path(__file__).parent.resolve()
@@ -61,51 +62,56 @@ def addOddballs(signalCopy, forbiddenOddballPeriods_Starts):
     numberOddballs = random.randint(1, 3) #From uniform dist.
     startTimes = np.zeros(numberOddballs)
     
-    x1 = []
+    excludedStartTimes = []
     x2 = []
     x3 = []
     x4 = []
     x5 = []
     x6 = []
     
+    #Create chain for excluded ranges. NOTE: can't save a chain to use a second time. Hence, have to keep "re-chaining" x2 etc.
     if len(forbiddenOddballPeriods_Starts) >= 1:
-        x1 = range(forbiddenOddballPeriods_Starts[0] - 2*oddballLength, forbiddenOddballPeriods_Starts[0] + 2*oddballLength)
+        excludedStartTimes = range(forbiddenOddballPeriods_Starts[0] - 2*oddballLength, forbiddenOddballPeriods_Starts[0] + 2*oddballLength)
         
         if len(forbiddenOddballPeriods_Starts) >= 2:
             x2 = range(forbiddenOddballPeriods_Starts[1] - 2*oddballLength, forbiddenOddballPeriods_Starts[1] + 2*oddballLength)
-        
+            excludedStartTimes = chain(excludedStartTimes, x2)
+            
             if len(forbiddenOddballPeriods_Starts) >= 3:
                 x3 = range(forbiddenOddballPeriods_Starts[2] - 2*oddballLength, forbiddenOddballPeriods_Starts[2] + 2*oddballLength)
+                excludedStartTimes = chain(excludedStartTimes, x2, x3)
                 
                 if len(forbiddenOddballPeriods_Starts) >= 4:
                     x4 = range(forbiddenOddballPeriods_Starts[3] - 2*oddballLength, forbiddenOddballPeriods_Starts[3] + 2*oddballLength)
+                    excludedStartTimes = chain(excludedStartTimes, x2, x3, x4)
                     
                     if len(forbiddenOddballPeriods_Starts) >= 5:
                         x5 = range(forbiddenOddballPeriods_Starts[4] - 2*oddballLength, forbiddenOddballPeriods_Starts[4] + 2*oddballLength)
+                        excludedStartTimes = chain(excludedStartTimes, x2, x3, x4, x5)
                         
                         if len(forbiddenOddballPeriods_Starts) == 6:
                             x6 = range(forbiddenOddballPeriods_Starts[5] - 2*oddballLength, forbiddenOddballPeriods_Starts[5] + 2*oddballLength)
-                            
+                            excludedStartTimes = chain(excludedStartTimes, x2, x3, x4, x5, x6)
+
     for i in range(numberOddballs):
         
     #NOTE: We use a grace period at start, and accounting for time oddball might play at end. Also a grace period of +/- one oddball length either side - so you can't have two
     #simultaneously, or even one straight after another. forbiddenOddballPeriods_Starts added in to implement this between streams.
 
         if i == 0:
-            start1 = choice([j for j in possibleStartTimes if j not in x1 and j not in x2 and j not in x3 and j not in x4 and j not in x5 and j not in x6])
+            start1 = choice([j for j in possibleStartTimes if j not in excludedStartTimes])
             startTimes[i] = start1
             oddball1 = createOddball(signalCopy, start1)
             signalCopy[start1:start1+oddballLength] = oddball1 #Insert the oddball.
 
-
         if i == 1:            
-            start2 = choice([j for j in possibleStartTimes if j not in x1 and j not in x2 and j not in x3 and j not in x4 and j not in x5 and j not in x6])
+            start2 = choice([j for j in possibleStartTimes if j not in excludedStartTimes])
             startTimes[i] = start2
             oddball2 = createOddball(signalCopy, start2)
             signalCopy[start2:start2+oddballLength] = oddball2
             
         if i == 2:
-            start3 = choice([j for j in possibleStartTimes if j not in x1 and j not in x2 and j not in x3 and j not in x4 and j not in x5 and j not in x6])
+            start3 = choice([j for j in possibleStartTimes if j not in excludedStartTimes])
             startTimes[i] = start3
             oddball3 = createOddball(signalCopy, start3)
             signalCopy[start3:start3+oddballLength] = oddball3
