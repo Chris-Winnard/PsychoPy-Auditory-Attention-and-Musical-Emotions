@@ -63,35 +63,30 @@ def addOddballs(signalCopy, forbiddenOddballPeriods_Starts):
     startTimes = np.zeros(numberOddballs)
     
     excludedStartTimes = []
-    x2 = []
-    x3 = []
-    x4 = []
-    x5 = []
-    x6 = []
     
     #Create chain for excluded ranges. NOTE: can't save a chain to use a second time. Hence, have to keep "re-chaining" x2 etc.
     if len(forbiddenOddballPeriods_Starts) >= 1:
-        excludedStartTimes = range(forbiddenOddballPeriods_Starts[0] - 2*oddballLength, forbiddenOddballPeriods_Starts[0] + 2*oddballLength)
+        x1 = range(forbiddenOddballPeriods_Starts[0] - 2*oddballLength, forbiddenOddballPeriods_Starts[0] + 2*oddballLength)
         
         if len(forbiddenOddballPeriods_Starts) >= 2:
             x2 = range(forbiddenOddballPeriods_Starts[1] - 2*oddballLength, forbiddenOddballPeriods_Starts[1] + 2*oddballLength)
-            excludedStartTimes = chain(excludedStartTimes, x2)
+            excludedStartTimes = chain(x1, x2)
             
             if len(forbiddenOddballPeriods_Starts) >= 3:
                 x3 = range(forbiddenOddballPeriods_Starts[2] - 2*oddballLength, forbiddenOddballPeriods_Starts[2] + 2*oddballLength)
-                excludedStartTimes = chain(excludedStartTimes, x2, x3)
+                excludedStartTimes = chain(x1, x2, x3)
                 
                 if len(forbiddenOddballPeriods_Starts) >= 4:
                     x4 = range(forbiddenOddballPeriods_Starts[3] - 2*oddballLength, forbiddenOddballPeriods_Starts[3] + 2*oddballLength)
-                    excludedStartTimes = chain(excludedStartTimes, x2, x3, x4)
+                    excludedStartTimes = chain(x1, x2, x3, x4)
                     
                     if len(forbiddenOddballPeriods_Starts) >= 5:
                         x5 = range(forbiddenOddballPeriods_Starts[4] - 2*oddballLength, forbiddenOddballPeriods_Starts[4] + 2*oddballLength)
-                        excludedStartTimes = chain(excludedStartTimes, x2, x3, x4, x5)
+                        excludedStartTimes = chain(x1, x2, x3, x4, x5)
                         
                         if len(forbiddenOddballPeriods_Starts) == 6:
                             x6 = range(forbiddenOddballPeriods_Starts[5] - 2*oddballLength, forbiddenOddballPeriods_Starts[5] + 2*oddballLength)
-                            excludedStartTimes = chain(excludedStartTimes, x2, x3, x4, x5, x6)
+                            excludedStartTimes = chain(x1, x2, x3, x4, x5, x6)
 
     for i in range(numberOddballs):
         
