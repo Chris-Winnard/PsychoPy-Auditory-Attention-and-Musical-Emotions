@@ -28,36 +28,36 @@ normalise w.r.t piece length. Use 2205 = 0.1s. To ensure pieces are exactly 30s 
 points."""
 
 tenthSec = 2205
-oddballSegmentLength = 3308
+oddballSegmentLength = 1808
 oddballLength = 6*oddballSegmentLength
 
 #Function to create an oddball for given signal, starting at a given point in that signal:
 def createOddball(signalCopy, start):    
-        firstPart = signalCopy[start:start+oddballSegmentLength]
-        firstPart = librosa.effects.pitch_shift(firstPart, sr, 0.75, bins_per_octave=12)
-        
-        secondPart = signalCopy[start+oddballSegmentLength:start+2*oddballSegmentLength]
-        secondPart = librosa.effects.pitch_shift(secondPart, sr, -0.75, bins_per_octave=12)
-        
-        thirdPart = signalCopy[start+2*oddballSegmentLength:start+3*oddballSegmentLength]
-        thirdPart = librosa.effects.pitch_shift(thirdPart, sr, 0.75, bins_per_octave=12)
-        
-        fourthPart = signalCopy[start+3*oddballSegmentLength:start+4*oddballSegmentLength]
-        fourthPart = librosa.effects.pitch_shift(fourthPart, sr, -0.75, bins_per_octave=12)
-        
-        fifthPart = signalCopy[start+4*oddballSegmentLength:start+5*oddballSegmentLength]
-        fifthPart = librosa.effects.pitch_shift(fifthPart, sr, 0.75, bins_per_octave=12)
-        
-        sixthPart = signalCopy[start+5*oddballSegmentLength:start+6*oddballSegmentLength]
-        sixthPart = librosa.effects.pitch_shift(sixthPart, sr, -0.75, bins_per_octave=12)
-        
-        oddball = np.concatenate((firstPart, secondPart, thirdPart, fourthPart, fifthPart, sixthPart))    
-        
-        return oddball
+    
+    firstPart = signalCopy[start:start+oddballSegmentLength]
+    firstPart = librosa.effects.pitch_shift(firstPart, sr, 0.95, bins_per_octave=12)
+    
+    secondPart = signalCopy[start+oddballSegmentLength:start+2*oddballSegmentLength]
+    secondPart = librosa.effects.pitch_shift(secondPart, sr, -0.95, bins_per_octave=12)
+    
+    thirdPart = signalCopy[start+2*oddballSegmentLength:start+3*oddballSegmentLength]
+    thirdPart = librosa.effects.pitch_shift(thirdPart, sr, 0.95, bins_per_octave=12)
+    
+    fourthPart = signalCopy[start+3*oddballSegmentLength:start+4*oddballSegmentLength]
+    fourthPart = librosa.effects.pitch_shift(fourthPart, sr, -0.95, bins_per_octave=12)
+    
+    fifthPart = signalCopy[start+4*oddballSegmentLength:start+5*oddballSegmentLength]
+    fifthPart = librosa.effects.pitch_shift(fifthPart, sr, 0.95, bins_per_octave=12)
+    
+    sixthPart = signalCopy[start+5*oddballSegmentLength:start+6*oddballSegmentLength]
+    sixthPart = librosa.effects.pitch_shift(sixthPart, sr, -0.95, bins_per_octave=12)
+    
+    oddball = np.concatenate((firstPart, secondPart, thirdPart, fourthPart, fifthPart, sixthPart))    
+    
+    return oddball
 
 #Function to add random oddballs:
 def addOddballs(signalCopy, forbiddenOddballPeriods_Starts):
-    
     numberOddballs = random.randint(1, 3) #From uniform dist.
     startTimes = np.zeros(numberOddballs)
     
@@ -85,27 +85,27 @@ def addOddballs(signalCopy, forbiddenOddballPeriods_Starts):
                         
                         if len(forbiddenOddballPeriods_Starts) == 6:
                             x6 = range(forbiddenOddballPeriods_Starts[5] - 2*oddballLength, forbiddenOddballPeriods_Starts[5] + 2*oddballLength)
-        
+                            
     for i in range(numberOddballs):
         
     #NOTE: We use a grace period at start, and accounting for time oddball might play at end. Also a grace period of +/- one oddball length either side - so you can't have two
     #simultaneously, or even one straight after another. forbiddenOddballPeriods_Starts added in to implement this between streams.
 
         if i == 0:
-            start1 = choice([j for j in range(adaptedSignalStart, adaptedSignalEnd) if j not in x1 and j not in x2 and j not in x3 and j not in x4 and j not in x5 and j not in x6])
+            start1 = choice([j for j in possibleStartTimes if j not in x1 and j not in x2 and j not in x3 and j not in x4 and j not in x5 and j not in x6])
             startTimes[i] = start1
             oddball1 = createOddball(signalCopy, start1)
             signalCopy[start1:start1+oddballLength] = oddball1 #Insert the oddball.
 
 
         if i == 1:            
-            start2 = choice([j for j in range(adaptedSignalStart, adaptedSignalEnd) if j not in x1 and j not in x2 and j not in x3 and j not in x4 and j not in x5 and j not in x6 and (j not in range(start1-2*oddballLength, start1+2*oddballLength))])
+            start2 = choice([j for j in possibleStartTimes if j not in x1 and j not in x2 and j not in x3 and j not in x4 and j not in x5 and j not in x6])
             startTimes[i] = start2
             oddball2 = createOddball(signalCopy, start2)
             signalCopy[start2:start2+oddballLength] = oddball2
             
         if i == 2:
-            start3 = choice([j for j in range(adaptedSignalStart, adaptedSignalEnd) if j not in x1 and j not in x2 and j not in x3 and j not in x4 and j not in x5 and j not in x6 and (j not in range(start1-2*oddballLength, start1+2*oddballLength)) & (j not in range(start2-2*oddballLength, start2+2*oddballLength))])
+            start3 = choice([j for j in possibleStartTimes if j not in x1 and j not in x2 and j not in x3 and j not in x4 and j not in x5 and j not in x6])
             startTimes[i] = start3
             oddball3 = createOddball(signalCopy, start3)
             signalCopy[start3:start3+oddballLength] = oddball3
@@ -114,7 +114,7 @@ def addOddballs(signalCopy, forbiddenOddballPeriods_Starts):
 
 def oddballFileWriter(currentFilename, signal, attendedInst):
         pause = np.zeros(110250)
-        forbiddenOddballPeriods_Starts = oddballsForbidden(currentFilename) #Prevents overlapping/consecutive oddballs BETWEEN STREAMS to avoid participant confusion.
+        forbiddenOddballPeriods_Starts = oddballsForbidden(currentFilename) #Prevents overlapping/consecutive oddballs BETWEEN STREAMS to avoid participant confusion.                
         augmentedSignalCopy, startTimes = addOddballs(signal, forbiddenOddballPeriods_Starts)
 
         #Create and write oddball file:
@@ -161,12 +161,23 @@ for file in os.scandir(stimuliPath):
         signal, sr = librosa.load(file)
         signal = signal[0:661500] #Removing any excess points, so pieces are EXACTLY 30s long.
             
+        #Fastest to consider grace periods here.
+        
         adaptedSignalStart = oddballLength #Grace period at the start, length of one oddball. No oddballs in this grace period.
         
         #Calculate when the signal ends, and also calculate the "adapted end"- so that an oddball
         #doesn't start at the last half-second or anything like that:
         signalEnd = len(signal)
         adaptedSignalEnd = signalEnd - oddballLength
+        
+        #Only want start times at zero crossings:
+        crossingsBoolean = librosa.zero_crossings(signal) #Threshold OK?
+        possibleStartTimes = np.array([])
+        
+        for i in range(adaptedSignalStart, adaptedSignalEnd): #Only in acceptable range...
+            if crossingsBoolean[i] == True: #...and only zero-crossings
+                possibleStartTimes = np.append(possibleStartTimes, i)
+        possibleStartTimes = np.asarray(possibleStartTimes, 'int')
         
         originalSignalCopy = np.copy(signal) #Put this here- needed to add in non-oddball demos of files at start.
         
