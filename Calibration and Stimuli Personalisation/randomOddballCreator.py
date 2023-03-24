@@ -64,29 +64,31 @@ def addOddballs(signalCopy, forbiddenOddballPeriods_Starts):
     
     excludedStartTimes = []
     
-    #Create chain for excluded ranges. NOTE: can't save a chain to use a second time. Hence, have to keep "re-chaining" x2 etc.
+    #We set it up so that oddballs can't overlap (+/- 1 oddball length buffer period around existing start times). Also include a 1s grace period either side. This applies both WITHIN streams, and between them.
+    
+    #Create chain for excluded ranges. Turn chains into tuples so they can be reused.
     if len(forbiddenOddballPeriods_Starts) >= 1:
-        x1 = range(forbiddenOddballPeriods_Starts[0] - 2*oddballLength, forbiddenOddballPeriods_Starts[0] + 2*oddballLength)
+        excludedStartTimes = range(forbiddenOddballPeriods_Starts[0] -oddballLength-10*tenthSec, forbiddenOddballPeriods_Starts[0] + oddballLength+10*tenthSec)
         
         if len(forbiddenOddballPeriods_Starts) >= 2:
-            x2 = range(forbiddenOddballPeriods_Starts[1] - 2*oddballLength, forbiddenOddballPeriods_Starts[1] + 2*oddballLength)
-            excludedStartTimes = chain(x1, x2)
+            x2 = range(forbiddenOddballPeriods_Starts[1] -oddballLength-10*tenthSec, forbiddenOddballPeriods_Starts[1] + oddballLength+10*tenthSec)
+            excludedStartTimes = tuple(chain(excludedStartTimes, x2))
             
             if len(forbiddenOddballPeriods_Starts) >= 3:
-                x3 = range(forbiddenOddballPeriods_Starts[2] - 2*oddballLength, forbiddenOddballPeriods_Starts[2] + 2*oddballLength)
-                excludedStartTimes = chain(x1, x2, x3)
+                x3 = range(forbiddenOddballPeriods_Starts[2] - oddballLength-10*tenthSec, forbiddenOddballPeriods_Starts[2] + oddballLength+10*tenthSec)
+                excludedStartTimes = tuple(chain(excludedStartTimes, x3))
                 
                 if len(forbiddenOddballPeriods_Starts) >= 4:
-                    x4 = range(forbiddenOddballPeriods_Starts[3] - 2*oddballLength, forbiddenOddballPeriods_Starts[3] + 2*oddballLength)
-                    excludedStartTimes = chain(x1, x2, x3, x4)
+                    x4 = range(forbiddenOddballPeriods_Starts[3] - oddballLength-10*tenthSec, forbiddenOddballPeriods_Starts[3] + oddballLength+10*tenthSec)
+                    excludedStartTimes = tuple(chain(excludedStartTimes, x4))
                     
                     if len(forbiddenOddballPeriods_Starts) >= 5:
-                        x5 = range(forbiddenOddballPeriods_Starts[4] - 2*oddballLength, forbiddenOddballPeriods_Starts[4] + 2*oddballLength)
-                        excludedStartTimes = chain(x1, x2, x3, x4, x5)
+                        x5 = range(forbiddenOddballPeriods_Starts[4] - oddballLength-10*tenthSec, forbiddenOddballPeriods_Starts[4] + oddballLength+10*tenthSec)
+                        excludedStartTimes = tuple(chain(excludedStartTimes, x5))
                         
                         if len(forbiddenOddballPeriods_Starts) == 6:
-                            x6 = range(forbiddenOddballPeriods_Starts[5] - 2*oddballLength, forbiddenOddballPeriods_Starts[5] + 2*oddballLength)
-                            excludedStartTimes = chain(x1, x2, x3, x4, x5, x6)
+                            x6 = range(forbiddenOddballPeriods_Starts[5] - oddballLength-10*tenthSec, forbiddenOddballPeriods_Starts[5] + oddballLength+10*tenthSec)
+                            excludedStartTimes = tuple(chain(excludedStartTimes, x6))
 
     for i in range(numberOddballs):
         
@@ -94,21 +96,46 @@ def addOddballs(signalCopy, forbiddenOddballPeriods_Starts):
     #simultaneously, or even one straight after another. forbiddenOddballPeriods_Starts added in to implement this between streams.
 
         if i == 0:
-            start1 = choice([j for j in possibleStartTimes if j not in excludedStartTimes])
+            validOddball = False #We only want oddballs with a reasonable (mean) amplitude. Oddballs covering quiet periods may be too difficult to hear.
+            
+            while validOddball == False:
+                start1 = choice([j for j in possibleStartTimes if j not in excludedStartTimes])
+                oddball1 = createOddball(signalCopy, start1)
+                if np.mean(abs(oddball1)) >= 7.5e-3:
+                    validOddball = True
+            
             startTimes[i] = start1
-            oddball1 = createOddball(signalCopy, start1)
             signalCopy[start1:start1+oddballLength] = oddball1 #Insert the oddball.
+            
+            #Add oddball and the surrounding period to excludedStartTimes:
+            x7 = range(start1-oddballLength-10*tenthSec, start1+oddballLength+10*tenthSec)
+            excludedStartTimes = tuple(chain(excludedStartTimes, x7))
 
-        if i == 1:            
-            start2 = choice([j for j in possibleStartTimes if j not in excludedStartTimes])
+        if i == 1:      
+            validOddball = False
+            
+            while validOddball == False:
+                start2 = choice([j for j in possibleStartTimes if j not in excludedStartTimes])
+                oddball2 = createOddball(signalCopy, start2)
+                if np.mean(abs(oddball2)) >= 7.5e-3:
+                    validOddball = True
+            
             startTimes[i] = start2
-            oddball2 = createOddball(signalCopy, start2)
             signalCopy[start2:start2+oddballLength] = oddball2
             
+            x8 = range(start2-oddballLength-10*tenthSec, start2+oddballLength+10*tenthSec)
+            excludedStartTimes = tuple(chain(excludedStartTimes, x8))
+            
         if i == 2:
-            start3 = choice([j for j in possibleStartTimes if j not in excludedStartTimes])
+            validOddball = False
+            
+            while validOddball == False:
+                start3 = choice([j for j in possibleStartTimes if j not in excludedStartTimes])
+                oddball3 = createOddball(signalCopy, start3)
+                if np.mean(abs(oddball3)) >= 7.5e-3:
+                    validOddball = True
+            
             startTimes[i] = start3
-            oddball3 = createOddball(signalCopy, start3)
             signalCopy[start3:start3+oddballLength] = oddball3
             
     return signalCopy, startTimes
