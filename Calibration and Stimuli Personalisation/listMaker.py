@@ -10,7 +10,7 @@ from numpy.random import default_rng
 ##############################################################################################################
 #EXCLUSION- EXCLUDE SET2, THE PRACTICE SET, AND A RANDOMLY CHOSEN SET, FROM THE MAIN TRIALS:
     
-mainTrialStimuliPossibleSets = np.array([1, 3, 4, 5, 6, 7])
+mainTrialStimuliPossibleSets = np.array([1, 3, 4, 5, 6]) #Excluding 7, at least for now
 rng = default_rng()
 setsExcludedFromMain = rng.choice(mainTrialStimuliPossibleSets, size=1, replace=False)
 setsExcludedFromMain = np.append(setsExcludedFromMain, 2)
