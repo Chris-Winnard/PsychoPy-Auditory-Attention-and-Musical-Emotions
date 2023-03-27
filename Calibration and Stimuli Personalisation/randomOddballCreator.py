@@ -29,28 +29,31 @@ normalise w.r.t piece length. Use 2205 = 0.1s. To ensure pieces are exactly 30s 
 points."""
 
 tenthSec = 2205
-oddballSegmentLength = 1808
-oddballLength = 6*oddballSegmentLength
+idealOB_segmentLength = 1808
+idealOB_length = 6*idealOB_segmentLength
+OB_lengthTolerance = 0.05 #E.g, 0.05 is 5% tolerance
 
 #Function to create an oddball for given signal, starting at a given point in that signal:
-def createOddball(signalCopy, start):    
+def createOddball(signalCopy, start, actualOB_length):    
     
-    firstPart = signalCopy[start:start+oddballSegmentLength]
+    actualOB_segmentLength = round(actualOB_length/6)
+    
+    firstPart = signalCopy[start:start+actualOB_segmentLength]
     firstPart = librosa.effects.pitch_shift(firstPart, sr, 0.95, bins_per_octave=12)
     
-    secondPart = signalCopy[start+oddballSegmentLength:start+2*oddballSegmentLength]
+    secondPart = signalCopy[start+actualOB_segmentLength:start+2*actualOB_segmentLength]
     secondPart = librosa.effects.pitch_shift(secondPart, sr, -0.95, bins_per_octave=12)
     
-    thirdPart = signalCopy[start+2*oddballSegmentLength:start+3*oddballSegmentLength]
+    thirdPart = signalCopy[start+2*actualOB_segmentLength:start+3*actualOB_segmentLength]
     thirdPart = librosa.effects.pitch_shift(thirdPart, sr, 0.95, bins_per_octave=12)
     
-    fourthPart = signalCopy[start+3*oddballSegmentLength:start+4*oddballSegmentLength]
+    fourthPart = signalCopy[start+3*actualOB_segmentLength:start+4*actualOB_segmentLength]
     fourthPart = librosa.effects.pitch_shift(fourthPart, sr, -0.95, bins_per_octave=12)
     
-    fifthPart = signalCopy[start+4*oddballSegmentLength:start+5*oddballSegmentLength]
+    fifthPart = signalCopy[start+4*actualOB_segmentLength:start+5*actualOB_segmentLength]
     fifthPart = librosa.effects.pitch_shift(fifthPart, sr, 0.95, bins_per_octave=12)
     
-    sixthPart = signalCopy[start+5*oddballSegmentLength:start+6*oddballSegmentLength]
+    sixthPart = signalCopy[start+5*actualOB_segmentLength:start+actualOB_length] #Notice we don't use "6*actualOB_segmentLength"- avoid rounding problems
     sixthPart = librosa.effects.pitch_shift(sixthPart, sr, -0.95, bins_per_octave=12)
     
     oddball = np.concatenate((firstPart, secondPart, thirdPart, fourthPart, fifthPart, sixthPart))    
@@ -68,26 +71,26 @@ def addOddballs(signalCopy, forbiddenOddballPeriods_Starts):
     
     #Create chain for excluded ranges. Turn chains into tuples so they can be reused.
     if len(forbiddenOddballPeriods_Starts) >= 1:
-        excludedStartTimes = range(forbiddenOddballPeriods_Starts[0] -oddballLength-10*tenthSec, forbiddenOddballPeriods_Starts[0] + oddballLength+10*tenthSec)
+        excludedStartTimes = range(forbiddenOddballPeriods_Starts[0] -idealOB_length-10*tenthSec, forbiddenOddballPeriods_Starts[0] + idealOB_length+10*tenthSec)
         
         if len(forbiddenOddballPeriods_Starts) >= 2:
-            x2 = range(forbiddenOddballPeriods_Starts[1] -oddballLength-10*tenthSec, forbiddenOddballPeriods_Starts[1] + oddballLength+10*tenthSec)
+            x2 = range(forbiddenOddballPeriods_Starts[1] -idealOB_length-10*tenthSec, forbiddenOddballPeriods_Starts[1] + idealOB_length+10*tenthSec)
             excludedStartTimes = tuple(chain(excludedStartTimes, x2))
             
             if len(forbiddenOddballPeriods_Starts) >= 3:
-                x3 = range(forbiddenOddballPeriods_Starts[2] - oddballLength-10*tenthSec, forbiddenOddballPeriods_Starts[2] + oddballLength+10*tenthSec)
+                x3 = range(forbiddenOddballPeriods_Starts[2] - idealOB_length-10*tenthSec, forbiddenOddballPeriods_Starts[2] + idealOB_length+10*tenthSec)
                 excludedStartTimes = tuple(chain(excludedStartTimes, x3))
                 
                 if len(forbiddenOddballPeriods_Starts) >= 4:
-                    x4 = range(forbiddenOddballPeriods_Starts[3] - oddballLength-10*tenthSec, forbiddenOddballPeriods_Starts[3] + oddballLength+10*tenthSec)
+                    x4 = range(forbiddenOddballPeriods_Starts[3] - idealOB_length-10*tenthSec, forbiddenOddballPeriods_Starts[3] + idealOB_length+10*tenthSec)
                     excludedStartTimes = tuple(chain(excludedStartTimes, x4))
                     
                     if len(forbiddenOddballPeriods_Starts) >= 5:
-                        x5 = range(forbiddenOddballPeriods_Starts[4] - oddballLength-10*tenthSec, forbiddenOddballPeriods_Starts[4] + oddballLength+10*tenthSec)
+                        x5 = range(forbiddenOddballPeriods_Starts[4] - idealOB_length-10*tenthSec, forbiddenOddballPeriods_Starts[4] + idealOB_length+10*tenthSec)
                         excludedStartTimes = tuple(chain(excludedStartTimes, x5))
                         
                         if len(forbiddenOddballPeriods_Starts) == 6:
-                            x6 = range(forbiddenOddballPeriods_Starts[5] - oddballLength-10*tenthSec, forbiddenOddballPeriods_Starts[5] + oddballLength+10*tenthSec)
+                            x6 = range(forbiddenOddballPeriods_Starts[5] - idealOB_length-10*tenthSec, forbiddenOddballPeriods_Starts[5] + idealOB_length+10*tenthSec)
                             excludedStartTimes = tuple(chain(excludedStartTimes, x6))
 
     for i in range(numberOddballs):
@@ -97,18 +100,30 @@ def addOddballs(signalCopy, forbiddenOddballPeriods_Starts):
 
         if i == 0:
             validOddball = False #We only want oddballs with a reasonable (mean) amplitude. Oddballs covering quiet periods may be too difficult to hear.
+            #Also, oddball lengths must fall within certain tolerances
             
             while validOddball == False:
                 start1 = choice([j for j in possibleStartTimes if j not in excludedStartTimes])
-                oddball1 = createOddball(signalCopy, start1)
-                if np.mean(abs(oddball1)) >= 7.5e-3:
-                    validOddball = True
+                
+                #Find the zero crossing closest to start1 + an idealised oddball length:
+                shiftedPossStartTimes = possibleStartTimes - start1
+                end1Index = (np.abs(shiftedPossStartTimes - idealOB_length)).argmin()
+                end1 = possibleStartTimes[end1Index]
+                actualOB_length1 = round(end1 - start1)
+                
+                if np.abs(actualOB_length1 - idealOB_length) <= OB_lengthTolerance*idealOB_length: #Length tolerance
+                    oddball1 = createOddball(signalCopy, start1, actualOB_length1)
+                
+                    if np.mean(abs(oddball1)) >= 7.5e-3: #Mean amplitude tolerance
+                        validOddball = True
             
             startTimes[i] = start1
-            signalCopy[start1:start1+oddballLength] = oddball1 #Insert the oddball.
+            print(np.abs(actualOB_length1 - idealOB_length)/idealOB_length)
+            print(actualOB_length1)
+            signalCopy[start1:start1+actualOB_length1] = oddball1 #Insert the oddball.
             
             #Add oddball and the surrounding period to excludedStartTimes:
-            x7 = range(start1-oddballLength-10*tenthSec, start1+oddballLength+10*tenthSec)
+            x7 = range(start1-actualOB_length1-10*tenthSec, start1+actualOB_length1+10*tenthSec)
             excludedStartTimes = tuple(chain(excludedStartTimes, x7))
 
         if i == 1:      
@@ -116,14 +131,22 @@ def addOddballs(signalCopy, forbiddenOddballPeriods_Starts):
             
             while validOddball == False:
                 start2 = choice([j for j in possibleStartTimes if j not in excludedStartTimes])
-                oddball2 = createOddball(signalCopy, start2)
-                if np.mean(abs(oddball2)) >= 7.5e-3:
-                    validOddball = True
+                
+                shiftedPossStartTimes = possibleStartTimes - start2
+                end2Index = (np.abs(shiftedPossStartTimes - idealOB_length)).argmin()
+                end2 = possibleStartTimes[end2Index]
+                actualOB_length2 = round(end2 - start2)
+                
+                if np.abs(actualOB_length2 - idealOB_length) <= OB_lengthTolerance*idealOB_length:
+                    oddball2 = createOddball(signalCopy, start2, actualOB_length2)
+                
+                    if np.mean(abs(oddball2)) >= 7.5e-3: #Mean amplitude tolerance
+                        validOddball = True
             
             startTimes[i] = start2
-            signalCopy[start2:start2+oddballLength] = oddball2
+            signalCopy[start2:start2+actualOB_length2] = oddball2
             
-            x8 = range(start2-oddballLength-10*tenthSec, start2+oddballLength+10*tenthSec)
+            x8 = range(start2-actualOB_length2-10*tenthSec, start2+actualOB_length2+10*tenthSec)
             excludedStartTimes = tuple(chain(excludedStartTimes, x8))
             
         if i == 2:
@@ -131,12 +154,20 @@ def addOddballs(signalCopy, forbiddenOddballPeriods_Starts):
             
             while validOddball == False:
                 start3 = choice([j for j in possibleStartTimes if j not in excludedStartTimes])
-                oddball3 = createOddball(signalCopy, start3)
-                if np.mean(abs(oddball3)) >= 7.5e-3:
-                    validOddball = True
+                
+                shiftedPossStartTimes = possibleStartTimes - start3
+                end3Index = (np.abs(shiftedPossStartTimes - idealOB_length)).argmin()
+                end3 = possibleStartTimes[end3Index]
+                actualOB_length3 = round(end3 - start3)
+                
+                if np.abs(actualOB_length3 - idealOB_length) <= OB_lengthTolerance*idealOB_length:
+                    oddball3 = createOddball(signalCopy, start3, actualOB_length3)
+                
+                    if np.mean(abs(oddball3)) >= 7.5e-3: #Mean amplitude tolerance
+                        validOddball = True
             
             startTimes[i] = start3
-            signalCopy[start3:start3+oddballLength] = oddball3
+            signalCopy[start3:start3+actualOB_length3] = oddball3
             
     return signalCopy, startTimes
 
@@ -191,12 +222,12 @@ for file in os.scandir(stimuliPath):
             
         #Fastest to consider grace periods here.
         
-        adaptedSignalStart = oddballLength #Grace period at the start, length of one oddball. No oddballs in this grace period.
+        adaptedSignalStart = 6*tenthSec + idealOB_length #Grace period at the start. Length of fade-in (0.6s) + ideal oddball.
         
         #Calculate when the signal ends, and also calculate the "adapted end"- so that an oddball
-        #doesn't start at the last half-second or anything like that:
+        #must finish before the fade-out (must end before final 0.6s)
         signalEnd = len(signal)
-        adaptedSignalEnd = signalEnd - oddballLength
+        adaptedSignalEnd = signalEnd - 6*tenthSec - idealOB_length
         
         #Only want start times at zero crossings:
         crossingsBoolean = librosa.zero_crossings(signal) #Threshold OK?
