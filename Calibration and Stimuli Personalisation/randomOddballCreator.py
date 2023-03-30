@@ -14,12 +14,10 @@ currentFolderPath = pathlib.Path(__file__).parent.resolve()
 upperFolderPath = currentFolderPath.parent.resolve()
 stimuliPath = str(upperFolderPath) + "/Stimuli"
 
-#Find correct output path:
+#Create output path:
 dataPath = str(upperFolderPath) + "/Data/"
-participantPath = max(glob.glob(os.path.join(dataPath, '*/')), key=os.path.getmtime) #Last updated
-#subfolder in Data folder. Because we run randomOddballCreator IMMEDIATELY after participant's
-#folder is created, this will be the output path for them.
-
+participantPath = str(upperFolderPath) + "/Data/" + "/Participant 2" #Participant 1 is Chris Winnard
+os.mkdir(participantPath)
 File = (participantPath + "\Oddball Start Times.txt")
 with open(File, 'a') as f: #Create the file now to prevent any confusion later, because oddballsForbidden needs to read from it.
     f.close
@@ -31,7 +29,7 @@ points."""
 tenthSec = 2205
 idealOB_segmentLength = 1808
 idealOB_length = 6*idealOB_segmentLength
-OB_lengthTolerance = 0.05 #E.g, 0.05 is 5% tolerance
+OB_lengthTolerance = 0.001 #E.g, 0.05 is 5% tolerance
 
 #Function to create an oddball for given signal, starting at a given point in that signal:
 def createOddball(signalCopy, start, actualOB_length):    
@@ -118,8 +116,6 @@ def addOddballs(signalCopy, forbiddenOddballPeriods_Starts):
                         validOddball = True
             
             startTimes[i] = start1
-            print(np.abs(actualOB_length1 - idealOB_length)/idealOB_length)
-            print(actualOB_length1)
             signalCopy[start1:start1+actualOB_length1] = oddball1 #Insert the oddball.
             
             #Add oddball and the surrounding period to excludedStartTimes:

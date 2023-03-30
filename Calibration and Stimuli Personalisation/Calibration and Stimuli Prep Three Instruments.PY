@@ -20,11 +20,10 @@ dlg = gui.DlgFromDict(dictionary=expInfo, sortKeys=False, title=expName)
 if dlg.OK == False:
     core.quit()  # user pressed cancel
 
-#Navigate into Data folder, and create a subfolder for the participant:
+#Navigate into Data folder, and find the subfolder for the participant:
 currentFolderPath = pathlib.Path(__file__).parent.resolve()
 upperFolderPath = currentFolderPath.parent.resolve()
-participantFolderPath = str(upperFolderPath) + "/Data/" + expInfo['Participant']
-os.mkdir(participantFolderPath)
+participantFolderPath = str(upperFolderPath) + "/Data/" + expInfo['Participant'] #Needs to be an existing folder with oddball files prepped
 
 # Create a server and start it
 s = Server().boot()
@@ -209,7 +208,6 @@ s.shutdown()
 ctypes.windll.user32.MessageBoxW(0, "Your settings have been saved.", "Success!")
 
 ##############################################################################################################
-exec(open('randomOddballCreator.py').read()) #Create versions of the stimuli with oddballs in
 exec(open('personalisedStimuliMixer.py').read()) #Create stimuli with gains applied: both single-stream, and
 #mixes of the oddball stimuli.
 
