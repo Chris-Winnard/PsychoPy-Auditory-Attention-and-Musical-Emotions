@@ -553,7 +553,7 @@ for thisBlock0 in block0:
     players.append(player)
     
     # create the rest of the players for stimuli_0
-    for i in range(1, PART_2_OUT_CHANNELS):
+    for i in range(1, PART_1_OUT_CHANNELS):
         spk_name = f"stimuli_0"
         trial['stimuli'].append(os.path.abspath(globals()[spk_name]))
         if i < len(spk_volume):  # check if spk_volume has the correct number of elements
@@ -1062,7 +1062,7 @@ for thisBlock1 in block1:
     players.append(player)
     
     # create the rest of the players for stimuli_0
-    for i in range(1, PART_2_OUT_CHANNELS):
+    for i in range(1, PART_1_OUT_CHANNELS):
         spk_name = f"stimuli_0"
         trial['stimuli'].append(os.path.abspath(globals()[spk_name]))
         if i < len(spk_volume):  # check if spk_volume has the correct number of elements
