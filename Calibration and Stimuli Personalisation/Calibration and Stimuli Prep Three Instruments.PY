@@ -9,10 +9,29 @@
 
 import pathlib
 from psychopy import core, gui
-import os
 from pyo import Server, SfPlayer, Pan
 import time
 import ctypes  #For dialogue boxes without option to cancel.
+
+from constants import *
+
+SOUNDCARD_DEVICE_NAME = 'DAC8PRO'
+
+volume_level = 0.05
+volume_ratio = [1, 1]
+spk_volume = [x * volume_level for x in volume_ratio]
+pa_list_devices()
+s = Server(nchnls=CALIBRATION_OUT_CHANNELS, duplex=0)
+devices = pa_get_output_devices()
+indx = []
+#for name in devices[0]:
+for i in range(len(devices[0])):
+    name = devices[0][i]
+    if SOUNDCARD_DEVICE_NAME in name:
+        soundcard_idx = devices[1][devices[0].index(name)]
+        s.setOutputDevice(soundcard_idx)
+        indx.append(devices[1][i])
+        break
 
 expName = 'Loudness Calibration'  # from the Builder filename that created this script
 expInfo = {'Participant': ''}
@@ -25,8 +44,9 @@ currentFolderPath = pathlib.Path(__file__).parent.resolve()
 upperFolderPath = currentFolderPath.parent.resolve()
 participantFolderPath = str(upperFolderPath) + "/Data/" + expInfo['Participant'] #Needs to be an existing folder with oddball files prepped
 
-# Create a server and start it
-s = Server().boot()
+
+# Start server
+s.boot()
 
 # Load the audio files
 vibraphone = SfPlayer("Set2-Vibr.wav", loop=True, mul=0.5)
