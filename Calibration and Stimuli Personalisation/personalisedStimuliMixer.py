@@ -3,7 +3,6 @@ import glob
 import os
 import soundfile as sf
 import librosa
-import numpy as np
 from pydub import AudioSegment
 
 
