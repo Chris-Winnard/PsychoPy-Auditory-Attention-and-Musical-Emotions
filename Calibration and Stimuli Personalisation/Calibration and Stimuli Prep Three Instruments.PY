@@ -9,29 +9,45 @@
 
 import pathlib
 from psychopy import core, gui
-from pyo import Server, SfPlayer, Pan
+from pyo import *
 import time
 import ctypes  #For dialogue boxes without option to cancel.
 
-from constants import *
+#from constants import *
+
 
 SOUNDCARD_DEVICE_NAME = 'DAC8PRO'
 
+OUT_CHANNELS = 2
+
 volume_level = 0.05
+
 volume_ratio = [1, 1]
+
 spk_volume = [x * volume_level for x in volume_ratio]
-pa_list_devices()
-s = Server(nchnls=CALIBRATION_OUT_CHANNELS, duplex=0)
+ 
+
+s = Server(nchnls=OUT_CHANNELS, duplex=0)
+
 devices = pa_get_output_devices()
-indx = []
-#for name in devices[0]:
-for i in range(len(devices[0])):
-    name = devices[0][i]
+
+for name in devices[0]:
+
     if SOUNDCARD_DEVICE_NAME in name:
+
         soundcard_idx = devices[1][devices[0].index(name)]
+
+        print('sound card: ', name)
+
         s.setOutputDevice(soundcard_idx)
-        indx.append(devices[1][i])
+
         break
+
+ 
+
+s = s.boot()
+
+#s.start()
 
 expName = 'Loudness Calibration'  # from the Builder filename that created this script
 expInfo = {'Participant': ''}
