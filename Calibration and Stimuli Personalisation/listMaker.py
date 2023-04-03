@@ -8,26 +8,7 @@ from numpy.random import default_rng
 
 ##############################################################################################################
 ##############################################################################################################
-#EXCLUSION- EXCLUDE SET2, THE PRACTICE SET, AND A RANDOMLY CHOSEN SET, FROM THE MAIN TRIALS:
-    
-mainTrialStimuliPossibleSets = np.array([1, 3, 4, 5, 6]) #Excluding 7, at least for now
-rng = default_rng()
-setsExcludedFromMain = rng.choice(mainTrialStimuliPossibleSets, size=1, replace=False)
-setsExcludedFromMain = np.append(setsExcludedFromMain, 2)
-setsExcludedFromMain = setsExcludedFromMain.astype(np.str)
-
-for i in range(0, len(setsExcludedFromMain)):
-    setsExcludedFromMain[i] = "Set" + setsExcludedFromMain[i]
-    
-##############################################################################################################
-##############################################################################################################
-#PART 1: CREATING LIST OF STIMULI AND TRIGGER FILES. EXCLUDE PRACTICE TRIAL MATERIALS AND ODDBALL TEST
-#MATERIALS
-
-workbook = xlsxwriter.Workbook('stimuliList.xlsx')
-worksheet = workbook.add_worksheet()
-
-#First column- names of stimuli files:
+#Navigating the files, and also specifying which set is the practice set.
     
 #Find the personalised stimuli path:
 currentFolderPath = pathlib.Path(__file__).parent.resolve() #Current folder path
@@ -42,14 +23,41 @@ os.chdir(participantPath)
 #When we write the stimuli filenames, we will also need to include the location relative to the PsychoPy
 #paradigm scripts. This does NOT apply for trigger files, which are in a single general folder.
 participantName = os.path.split(os.getcwd())[1]
+stimLoc = 'Data/' + participantName + '/'    
+    
+#Find which stimuli are assigned to this participant:
+megasetAssignmentFile = dataPath + "/Megaset Assignment.txt"
+
+participantName = os.path.split(os.getcwd())[1]
 stimLoc = 'Data/' + participantName + '/'
+
+with open(megasetAssignmentFile, 'r') as f:
+    lines = f.readlines()
+    for line in lines:
+        if "Megaset A" in line and participantName in line:
+            practiceSet = "Set4"
+        elif "Megaset B" in line and participantName in line:
+            practiceSet = "Set1"
+        else:
+            print("Error assigning megaset to participant. Check their participant number.")
+    f.close
+    
+##############################################################################################################
+##############################################################################################################
+#PART 1: CREATING LIST OF STIMULI AND TRIGGER FILES. EXCLUDE PRACTICE TRIAL MATERIALS AND ODDBALL TEST
+#MATERIALS
+
+workbook = xlsxwriter.Workbook('stimuliList.xlsx')
+worksheet = workbook.add_worksheet()
+
+#First column- names of stimuli files:
  
 worksheet.write('A1', 'stimuli_0')
 i = 2 #Index for row in sheet.
 
 for file in os.scandir(participantPath):
     stimCell = "A" + str(i)
-    if all(string not in file.name for string in setsExcludedFromMain): #Exclude Set2 (practice set), and other sets.
+    if practiceSet not in file.name:
         if ".wav" in file.name and "Oddball" not in file.name: #Only audio, and no oddball files. 
             stimPath = stimLoc + str(file.name)
             worksheet.write(stimCell, stimPath)
@@ -67,7 +75,7 @@ worksheet.write('B1', 'trigger')
 j = 2
 for file in os.scandir(triggerPath):
     trigCell = "B" + str(j)
-    if all(string not in file.name for string in setsExcludedFromMain): #Exclude Set2 (practice set), and other sets.
+    if practiceSet not in file.name:
         if ".wav" in file.name and "Oddball" not in file.name:
             folderPlusFileName = "Trigger Files/" + str(file.name) #Here we need to specify the folder
 #from main folder where the scripts are)               
@@ -83,7 +91,7 @@ workbook.close()
 ##############################################################################################################
 #PART 2: CREATING LIST OF STIMULI AND TRIGGER FILES FOR PRACTICE TRIALS. EXCLUDE MATERIALS FOR MAIN TRIALS AND
 #ODDBALL TEST MATERIALS. This is EXACTLY the same as above, just the list has a different name, and we ONLY
-#input Set2 data to the lists. Since we're done with the above, here we can reuse i, j variables.
+#input practiceSet data to the lists. Since we're done with the above, here we can reuse i, j variables.
 
 workbook = xlsxwriter.Workbook('practiceStimuliList.xlsx')
 worksheet = workbook.add_worksheet()
@@ -95,7 +103,7 @@ i = 2 #Index for row in sheet.
 
 for file in os.scandir(participantPath):
     stimCell = "A" + str(i)
-    if "Set2" in file.name: #Set 2 ones ONLY
+    if practiceSet in file.name:
         if ".wav" in file.name and "Oddball" not in file.name: #Only audio, and no oddball files. 
             stimPath = stimLoc + str(file.name)
             worksheet.write(stimCell, stimPath)
@@ -107,7 +115,7 @@ worksheet.write('B1', 'trigger')
 j = 2
 for file in os.scandir(triggerPath):
     trigCell = "B" + str(j)
-    if "Set2" in file.name: #Set 2 ones ONLY
+    if practiceSet in file.name:
         if ".wav" in file.name and "Oddball" not in file.name:
             folderPlusFileName = "Trigger Files/" + str(file.name)
             worksheet.write(trigCell, folderPlusFileName)
@@ -143,7 +151,7 @@ for file in os.scandir(participantPath):
     stimCell = "A" + str(i)
     attCell = "B" + str(i)
     oddCell = "D" + str(i)
-    if all(string not in file.name for string in setsExcludedFromMain): #Exclude Set2 (practice set), and other sets.
+    if practiceSet not in file.name:
         if ".wav" in file.name and "Oddball Test Mix" in file.name: #Only audio, only oddball files.
             if "Keyb Attended" in file.name:
                 attendedInst = "Keyb"
@@ -166,7 +174,7 @@ worksheet.write('C1', 'trigger')
 j = 2
 for file in os.scandir(triggerPath):
     trigCell = "C" + str(j)
-    if all(string not in file.name for string in setsExcludedFromMain): #Exclude Set2 (practice set), and other sets.
+    if practiceSet not in file.name:
         if ".wav" in file.name and "Oddball Test Mix" in file.name:
             folderPlusFileName = "Trigger Files/" + str(file.name)
             worksheet.write(trigCell, folderPlusFileName)
@@ -194,7 +202,7 @@ for file in os.scandir(participantPath):
     stimCell = "A" + str(i)
     attCell = "B" + str(i)
     oddCell = "D" + str(i)
-    if "Set2" in file.name:  #Set 2 ones ONLY
+    if practiceSet in file.name:
         if ".wav" in file.name and "Oddball Test Mix" in file.name: #Only audio, only oddball files.
             if "Keyb Attended" in file.name:
                 attendedInst = "Keyb"
@@ -206,7 +214,7 @@ for file in os.scandir(participantPath):
             worksheet.write(stimCell, stimPath)
             worksheet.write(attCell, str(attendedInst))
             for line in lines:
-                if "Set2" in line and line.count(attendedInst) ==2: #E.g "Set2 Vibr stream for Vibr Attended"...
+                if practiceSet in line and line.count(attendedInst) ==2:
                     oddballStartTimes = re.findall("\d+\.\d+", line)
                     numOddballs = len(oddballStartTimes)
                     worksheet.write(oddCell, str(numOddballs))
@@ -217,7 +225,7 @@ worksheet.write('C1', 'trigger')
 j = 2
 for file in os.scandir(triggerPath):
     trigCell = "C" + str(j)
-    if "Set2" in file.name: #Set 2 ones ONLY
+    if practiceSet in file.name:
         if ".wav" in file.name and "Oddball Test Mix" in file.name:
             folderPlusFileName = "Trigger Files/" + str(file.name)
             worksheet.write(trigCell, folderPlusFileName)

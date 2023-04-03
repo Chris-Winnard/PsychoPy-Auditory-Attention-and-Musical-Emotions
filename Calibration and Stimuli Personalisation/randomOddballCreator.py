@@ -6,7 +6,6 @@ import soundfile as sf
 import numpy as np
 import os
 import re
-import glob
 from itertools import chain
 
 #Find the stimuli path:
@@ -16,11 +15,31 @@ stimuliPath = str(upperFolderPath) + "/Stimuli"
 
 #Create output path:
 dataPath = str(upperFolderPath) + "/Data/"
-participantPath = str(upperFolderPath) + "/Data/" + "/Participant 2" #Participant 1 is Chris Winnard
+participantPath = str(upperFolderPath) + "/Data/" + "/5" #5- assigned to megaset A
 os.mkdir(participantPath)
 File = (participantPath + "\Oddball Start Times.txt")
 with open(File, 'a') as f: #Create the file now to prevent any confusion later, because oddballsForbidden needs to read from it.
     f.close
+
+
+#Find which stimuli are assigned to this participant:
+
+megasetAssignmentFile = dataPath + "/Megaset Assignment.txt"
+
+participantName = os.path.split(participantPath)[1]
+print(participantName)
+
+with open(megasetAssignmentFile, 'r') as f:
+    lines = f.readlines()
+    for line in lines:
+        if "megaset A" in line and participantName in line:
+            thisParticipantStimuliPath = stimuliPath + "\Megaset A"
+        elif "megaset B" in line and participantName in line:
+            thisParticipantStimuliPath = stimuliPath + "\Megaset B"
+        else:
+            print("Error assigning megaset to participant. Check their participant number.")
+    f.close
+    
 
 """Timings: one data point = 4.5e-05 (the same for all pieces to the 20th decimal). So, we don't need to
 normalise w.r.t piece length. Use 2205 = 0.1s. To ensure pieces are exactly 30s each, we remove any excess data
@@ -210,7 +229,7 @@ def oddballsForbidden(currentFilename):
     forbiddenOddballPeriods_Starts = forbiddenOddballPeriods_Starts.astype(np.int) #Should already be integers (or very close with rounding errors), this just affirms the data type.
     return forbiddenOddballPeriods_Starts
 
-for file in os.scandir(stimuliPath):
+for file in os.scandir(thisParticipantStimuliPath):
     currentFilename = file.name #Easiest to keep it as a string variable
     if currentFilename[:3] == "Set": #Because of naming convention used, this will ignore trigs etc.
         signal, sr = librosa.load(file)

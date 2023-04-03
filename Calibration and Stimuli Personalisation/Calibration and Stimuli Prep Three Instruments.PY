@@ -47,6 +47,8 @@ for name in devices[0]:
 
 s = s.boot()
 
+#s.start()
+
 expName = 'Loudness Calibration'  # from the Builder filename that created this script
 expInfo = {'Participant': ''}
 dlg = gui.DlgFromDict(dictionary=expInfo, sortKeys=False, title=expName)

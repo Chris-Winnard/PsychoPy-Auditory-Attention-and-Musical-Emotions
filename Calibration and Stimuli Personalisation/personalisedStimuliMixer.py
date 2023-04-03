@@ -3,6 +3,7 @@ import glob
 import os
 import soundfile as sf
 import librosa
+import numpy as np
 from pydub import AudioSegment
 
 
@@ -26,6 +27,30 @@ os.mkdir(oddballDemosOutputPath)
 #Change to the participant path, to access gain files and output the adjusted stimuli:
 os.chdir(participantPath)
 
+currentFolderPath = pathlib.Path(__file__).parent.resolve() #Current folder path
+upperFolderPath = currentFolderPath.parent.resolve() #Path for next level up.
+dataPath = str(upperFolderPath) + "/Data" 
+
+##############################################################################################################
+##############################################################################################################
+#Find which stimuli are assigned to this participant:
+
+megasetAssignmentFile = dataPath + "/Megaset Assignment.txt"
+
+participantName = os.path.split(os.getcwd())[1]
+stimLoc = 'Data/' + participantName + '/'
+
+with open(megasetAssignmentFile, 'r') as f:
+    lines = f.readlines()
+    for line in lines:
+        if "Megaset A" in line and participantName in line:
+            thisParticipantStimuliPath = stimuliPath + "\Megaset A"
+        elif "Megaset B" in line and participantName in line:
+            thisParticipantStimuliPath = stimuliPath + "\Megaset B"
+        else:
+            print("Error assigning megaset to participant. Check their participant number.")
+    f.close
+    
 ########################################################################################################################################################
 #Single stream:
     
@@ -41,7 +66,7 @@ ssKeybGain = float(ssGains[5])
 
 
 #Single stimuli:
-for file in os.scandir(stimuliPath):
+for file in os.scandir(thisParticipantStimuliPath):
     if file.name[:3] == "Set": #Because of naming convention used, this will ignore trigs etc.
         signal, sr = librosa.load(file)
         signal = signal[0:661500]
