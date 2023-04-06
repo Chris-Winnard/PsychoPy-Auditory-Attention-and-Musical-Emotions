@@ -1,2 +1,2 @@
-Participants assigned megaset A: [ 2  8  7  6  1 11 12 10]
-Participants assigned megaset B: [ 3  4  5  9 13 14 15 16]
+Participants assigned Megaset A: [ 2  8  7  6  1 11 12 10]
+Participants assigned Megaset B: [ 3  4  5  9 13 14 15 16]
