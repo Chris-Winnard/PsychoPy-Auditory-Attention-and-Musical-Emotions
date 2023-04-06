@@ -15,7 +15,7 @@ stimuliPath = str(upperFolderPath) + "/Stimuli"
 
 #Create output path:
 dataPath = str(upperFolderPath) + "/Data/"
-participantPath = str(upperFolderPath) + "/Data/" + "/6" #6- assigned to megaset A
+participantPath = str(upperFolderPath) + "/Data/" + "/7" #- assigned to megaset A
 os.mkdir(participantPath)
 File = (participantPath + "\Oddball Start Times.txt")
 with open(File, 'a') as f: #Create the file now to prevent any confusion later, because oddballsForbidden needs to read from it.
@@ -27,14 +27,13 @@ with open(File, 'a') as f: #Create the file now to prevent any confusion later, 
 megasetAssignmentFile = dataPath + "/Megaset Assignment.txt"
 
 participantName = os.path.split(participantPath)[1]
-print(participantName)
 
 with open(megasetAssignmentFile, 'r') as f:
     lines = f.readlines()
     for line in lines:
-        if "megaset A" in line and participantName in line:
+        if "Megaset A" in line and participantName in line:
             thisParticipantStimuliPath = stimuliPath + "\Megaset A"
-        elif "megaset B" in line and participantName in line:
+        elif "Megaset B" in line and participantName in line:
             thisParticipantStimuliPath = stimuliPath + "\Megaset B"
         else:
             print("Error assigning megaset to participant. Check their participant number.")

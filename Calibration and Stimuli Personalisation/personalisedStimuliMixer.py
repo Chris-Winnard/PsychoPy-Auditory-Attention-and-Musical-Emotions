@@ -47,8 +47,6 @@ with open(megasetAssignmentFile, 'r') as f:
             thisParticipantStimuliPath = stimuliPath + "\Megaset A"
         elif "Megaset B" in line and participantName in line:
             thisParticipantStimuliPath = stimuliPath + "\Megaset B"
-        else:
-            print("Error assigning megaset to participant. Check their participant number.")
     f.close
     
 ########################################################################################################################################################
@@ -72,18 +70,18 @@ for file in os.scandir(thisParticipantStimuliPath):
         signal = signal[0:661500]
         signalCopy = signal
         
-        if file.name[5:9] == "Vibr":
+        if file.name[5:9] or file.name[6:10] == "Vibr":
            signal = signal*ssVibrGain
            
            sf.write(str(file.name)[:-4] + " with Gain Applied.wav", signal, sr)
            #make sure writing to their folder..
            
-        elif file.name[5:9] == "Harm":
+        elif file.name[5:9] or file.name[6:10] == "Harm":
             signal = signal*ssHarmGain
         
             sf.write(str(file.name)[:-4] + " with Gain Applied.wav", signal, sr)
             
-        elif file.name[5:9] == "Keyb":
+        elif file.name[5:9] or file.name[6:10] == "Keyb":
             signal = signal*ssKeybGain
             sf.write(str(file.name)[:-4] + " with Gain Applied.wav", signal, sr)
 
@@ -105,22 +103,23 @@ def mixer(attendedInst):
     HarmDone = False #Hippocrates approves. 
     KeybDone = False
     for file in os.scandir(participantPath):  
-        for i in range(1, 8):
-            if file.name[3] == str(i) and attendedInst in file.name: #Only oddball versions. This will also ignore triggers etc.
+        for i in range(1, 13):
+            adaptedNum = str(i) + "-" #Differentiate "Set1-Vibr" from "Set12-"Vibr"
+            if "Set" + adaptedNum in file.name and attendedInst in file.name: #Only oddball versions. This will also ignore triggers etc.
                 signal = AudioSegment.from_wav(file)
                 signal = signal[0:1433250] #Remove any excess points - should be 1 min 5s exactly.
                 
-                if file.name[5:9] == "Vibr":
+                if file.name[5:9] == "Vibr" or file.name[6:10] == "Vibr":
                    VibrSignal = signal.pan(-1).apply_gain(msVibrGain) #Pan and apply gain.
                    VibrDone = True
                    os.remove(file) #Delete single streams when they're no longer needed.
                    
-                elif file.name[5:9] == "Harm":
+                elif file.name[5:9] == "Harm"  or file.name[6:10] == "Harm":
                    HarmSignal = signal.pan(0).apply_gain(msHarmGain)
                    HarmDone = True
                    os.remove(file) #Delete single streams when they're no longer needed.
                     
-                elif file.name[5:9] == "Keyb":
+                elif file.name[5:9] == "Keyb"  or file.name[6:10] == "Keyb":
                     KeybSignal = signal.pan(1).apply_gain(msKeybGain)
                     KeybDone = True
                     os.remove(file) #Delete single streams when they're no longer needed.
@@ -136,7 +135,14 @@ def demoMixer():
     VibrDone = False
     HarmDone = False
     KeybDone = False
+    
+    if "Megaset A" in thisParticipantStimuliPath:
+        demoSet = "Set4"
+    else:
+        demoSet = "Set1"
+        
     for file in os.scandir(oddballDemosPath): 
+        if demoSet in file.name:
             signal = AudioSegment.from_wav(file)
             
             if "Vibr" in file.name:
@@ -155,7 +161,7 @@ def demoMixer():
                 KeybDone = True
                         
             if KeybDone == True or HarmDone == True or VibrDone == True: #Only want ONE.
-                outputPathPlusName = oddballDemosOutputPath + "/Set2 - Oddball Demo for " + attendedInst[:5] + ".wav"
+                outputPathPlusName = oddballDemosOutputPath + "/" + demoSet + "-Oddball Demo for " + attendedInst[:5] + ".wav"
                 oddballDemo.export(outputPathPlusName, format="wav")
 
 #Run both functions, for all attended conditions:

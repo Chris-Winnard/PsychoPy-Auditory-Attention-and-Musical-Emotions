@@ -37,9 +37,7 @@ with open(megasetAssignmentFile, 'r') as f:
         if "Megaset A" in line and participantName in line:
             practiceSet = "Set4"
         elif "Megaset B" in line and participantName in line:
-            practiceSet = "Set1"
-        else:
-            print("Error assigning megaset to participant. Check their participant number.")
+            practiceSet = "Set1-" #Hypen included here to avoid confusion between Set1 vs Set12 etc
     f.close
     
 ##############################################################################################################

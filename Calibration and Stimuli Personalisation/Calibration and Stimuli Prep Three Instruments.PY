@@ -58,16 +58,34 @@ if dlg.OK == False:
 #Navigate into Data folder, and find the subfolder for the participant:
 currentFolderPath = pathlib.Path(__file__).parent.resolve()
 upperFolderPath = currentFolderPath.parent.resolve()
-participantFolderPath = str(upperFolderPath) + "/Data/" + expInfo['Participant'] #Needs to be an existing folder with oddball files prepped
+dataPath = str(upperFolderPath) + "/Data/"
+participantFolderPath = dataPath + expInfo['Participant'] #Needs to be an existing folder with oddball files prepped
 
+#Find which stimuli are assigned to this participant. Use the practice stimuli for this.
 
+megasetAssignmentFile = dataPath + "Megaset Assignment.txt"
+
+with open(megasetAssignmentFile, 'r') as f:
+    lines = f.readlines()
+    for line in lines:
+        if "Megaset A" in line and expInfo['Participant'] in line:
+            vibrPiece = "Set4-Vibr.wav"
+            harmPiece = "Set4-Harm.wav"
+            keybPiece = "Set4-Keyb.wav"
+        elif "Megaset B" in line and expInfo['Participant'] in line:
+            vibrPiece = "Set1-Vibr.wav"
+            harmPiece = "Set1-Harm.wav"
+            keybPiece = "Set1-Keyb.wav"
+    f.close
+    
+    
 # Start server
 s.boot()
 
 # Load the audio files
-vibraphone = SfPlayer("Set2-Vibr.wav", loop=True, mul=0.5)
-harmonica = SfPlayer("Set2-Harm.wav", loop=True, mul=0.5)
-piano = SfPlayer("Set2-Keyb.wav", loop=True, mul=0.5)
+vibraphone = SfPlayer(vibrPiece, loop=True, mul=0.5)
+harmonica = SfPlayer(harmPiece, loop=True, mul=0.5)
+piano = SfPlayer(keybPiece, loop=True, mul=0.5)
 
 # Create panner for each sound
 vibraphone_pan = Pan(vibraphone, outs=2, pan=0)
@@ -150,9 +168,9 @@ harmonica_loudness = 0.5
 piano_loudness = 0.5
 
 # Reload the audio files, this time without panning
-vibraphone = SfPlayer("Set2-Vibr.wav", loop=True, mul=vibraphone_loudness)
-harmonica = SfPlayer("Set2-Harm.wav", loop=True, mul=harmonica_loudness)
-piano = SfPlayer("Set2-Keyb.wav", loop=True, mul=piano_loudness)
+vibraphone = SfPlayer(vibrPiece, loop=True, mul=vibraphone_loudness)
+harmonica = SfPlayer(harmPiece, loop=True, mul=harmonica_loudness)
+piano = SfPlayer(keybPiece, loop=True, mul=piano_loudness)
 
 while continue_adjusting:
     # Create a GUI to get the instrument selection from the user

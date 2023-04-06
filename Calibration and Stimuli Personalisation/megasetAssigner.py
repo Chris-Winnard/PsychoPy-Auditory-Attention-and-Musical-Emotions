@@ -45,7 +45,7 @@ if os.path.getsize(File) != 0:
         print(maxAlreadyAssigned)
         
         for line in lines:
-            if "megaset A" in line:
+            if "Megaset A" in line:
                 words = line.rstrip("]\n")
                 words = words.split(" ")
                 megaset_A_participantsAlreadyAssigned = [int(x) for x in words if x.isnumeric()==1]
@@ -53,7 +53,7 @@ if os.path.getsize(File) != 0:
                 megasetA_participants = np.concatenate([megaset_A_participantsAlreadyAssigned, new_megasetA_participants])
                 print(megasetA_participants)
                 
-            elif "megaset B" in line:
+            elif "Megaset B" in line:
                 words = line.rstrip("]\n")
                 words = words.split(" ")
                 megaset_B_participantsAlreadyAssigned = [int(x) for x in words if x.isnumeric()==1]
@@ -62,10 +62,10 @@ if os.path.getsize(File) != 0:
 
 #Finally, write to file:
 with open(File, 'w') as f:
-        f.write("Participants assigned megaset A: ")
+        f.write("Participants assigned Megaset A: ")
         f.write(str(megasetA_participants))
         f.write("\n")
-        f.write("Participants assigned megaset B: ")
+        f.write("Participants assigned Megaset B: ")
         f.write(str(megasetB_participants))
         f.close
         
