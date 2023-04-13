@@ -2,8 +2,6 @@
 # -*- coding: utf-8 -*-
 
 from psychopy import locale_setup
-from psychopy import prefs
-#prefs.hardware['audioLib'] = ['PTB'] -  causes sound.Sound to crash
 from psychopy import sound, gui, visual, core, data, event, logging, clock, colors
 from psychopy.constants import (NOT_STARTED, STARTED, PLAYING, PAUSED,
                                 STOPPED, FINISHED, PRESSED, RELEASED, FOREVER)
@@ -607,7 +605,7 @@ for thisBlock0 in block0:
             
                     
             # *clickForEmotionInfo* updates
-            if (clickForEmotionInfo.status == NOT_STARTED and tThisFlip >= 0.0-frameTolerance) or goToQuestions == True:
+            if (clickForEmotionInfo.status == NOT_STARTED and tThisFlip >= PART_1_STIMULI_LEN-frameTolerance) or goToQuestions == True:
                 # keep track of start time/frame for later
                 clickForEmotionInfo.frameNStart = frameN  # exact frame index
                 clickForEmotionInfo.tStart = t  # local t and not account for scr refresh
@@ -1117,7 +1115,7 @@ for thisBlock1 in block1:
             mm.out()
             
             # *clickForEmotionInfo* updates
-            if (clickForEmotionInfo.status == NOT_STARTED and tThisFlip >= 0.0-frameTolerance) or goToQuestions == True:
+            if (clickForEmotionInfo.status == NOT_STARTED and tThisFlip >= PART_1_STIMULI_LEN-frameTolerance) or goToQuestions == True:
                 # keep track of start time/frame for later
                 clickForEmotionInfo.frameNStart = frameN  # exact frame index
                 clickForEmotionInfo.tStart = t  # local t and not account for scr refresh
