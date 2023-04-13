@@ -3,7 +3,7 @@
 
 from psychopy import locale_setup
 from psychopy import prefs
-prefs.hardware['audioLib'] = ['PTB']
+#prefs.hardware['audioLib'] = ['PTB'] -  causes sound.Sound to crash
 from psychopy import sound, gui, visual, core, data, event, logging, clock, colors
 from psychopy.constants import (NOT_STARTED, STARTED, PLAYING, PAUSED,
                                 STOPPED, FINISHED, PRESSED, RELEASED, FOREVER)
@@ -29,6 +29,7 @@ SOUNDCARD_DEVICE_NAME = 'DAC8PRO'
 volume_level = 0.05
 volume_ratio = [1, 1]
 spk_volume = [x * volume_level for x in volume_ratio]
+pa_list_devices()
 pa_list_devices()
 s = Server(nchnls=PART_1_OUT_CHANNELS, duplex=0)
 devices = pa_get_output_devices()
@@ -553,7 +554,7 @@ for thisBlock0 in block0:
     players.append(player)
     
     # create the rest of the players for stimuli_0
-    for i in range(1, PART_1_OUT_CHANNELS):
+    for i in range(1, PART_2_OUT_CHANNELS):
         spk_name = f"stimuli_0"
         trial['stimuli'].append(os.path.abspath(globals()[spk_name]))
         if i < len(spk_volume):  # check if spk_volume has the correct number of elements
@@ -1062,7 +1063,7 @@ for thisBlock1 in block1:
     players.append(player)
     
     # create the rest of the players for stimuli_0
-    for i in range(1, PART_1_OUT_CHANNELS):
+    for i in range(1, PART_2_OUT_CHANNELS):
         spk_name = f"stimuli_0"
         trial['stimuli'].append(os.path.abspath(globals()[spk_name]))
         if i < len(spk_volume):  # check if spk_volume has the correct number of elements
