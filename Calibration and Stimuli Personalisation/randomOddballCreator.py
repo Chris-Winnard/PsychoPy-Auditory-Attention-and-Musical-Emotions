@@ -35,8 +35,6 @@ with open(megasetAssignmentFile, 'r') as f:
             thisParticipantStimuliPath = stimuliPath + "\Megaset A"
         elif "Megaset B" in line and participantName in line:
             thisParticipantStimuliPath = stimuliPath + "\Megaset B"
-        else:
-            print("Error assigning megaset to participant. Check their participant number.")
     f.close
     
 
@@ -258,7 +256,14 @@ for file in os.scandir(thisParticipantStimuliPath):
         #there will be different vibraphone oddballs to Set1 mix with Keyb attended
         attendedInst = "Vibr"
         oddballFileWriter(currentFilename, signal, attendedInst)
+        
+        signal, sr = librosa.load(file)
+        signal = signal[0:661500] #Removing any excess points, so pieces are EXACTLY 30s long.
+        
         attendedInst = "Harm"
         oddballFileWriter(currentFilename, signal, attendedInst)
+        
+        signal, sr = librosa.load(file)
+        signal = signal[0:661500] #Removing any excess points, so pieces are EXACTLY 30s long.
         attendedInst = "Keyb"
         oddballFileWriter(currentFilename, signal, attendedInst)
