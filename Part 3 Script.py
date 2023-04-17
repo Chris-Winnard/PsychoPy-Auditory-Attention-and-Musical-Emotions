@@ -23,11 +23,14 @@ sys.path.append('.')
 from constants import *
 
 SOUNDCARD_DEVICE_NAME = 'DAC8PRO'
-volume_level = 0.05
-volume_ratio = [1, 1]
+volume_level = 0.025
+volume_ratio = [1, 1, 10]
 spk_volume = [x * volume_level for x in volume_ratio]
+PART_3_OUT_CHANNELS = 3
+TRIGGER_CHN = 2
+print(f'PART_3_OUT_CHANNELS: {PART_3_OUT_CHANNELS}')
 
-s = Server(nchnls=PART_1_OUT_CHANNELS, duplex=0)
+s = Server(nchnls=PART_3_OUT_CHANNELS, duplex=0)
 devices = pa_get_output_devices()
 for name in devices[0]:
     if SOUNDCARD_DEVICE_NAME in name:
@@ -39,8 +42,8 @@ for name in devices[0]:
 s = s.boot()
 s.start()
 
-chns = [None]*(PART_1_OUT_CHANNELS-1)
-mm = Mixer(outs=PART_1_OUT_CHANNELS)
+chns = [None]*(PART_3_OUT_CHANNELS-1)
+mm = Mixer(outs=PART_3_OUT_CHANNELS)
 
 # Ensure that relative paths start from the same directory as this script
 _thisDir = os.path.dirname(os.path.abspath(__file__))
@@ -502,7 +505,7 @@ for thisBlock0 in block0:
                 win.timeOnFlip(dontAttendNote, 'tStopRefresh')  # time at next scr refresh
                 dontAttendNote.setAutoDraw(False)
         
-        if stimuliStarted == False and (attendNote.status == FINISHED or dontAttendNote.status == FINISHED):
+        if stimuliStarted == False and (attendNote.status == FINISHED or dontAttendNote.status == FINISHED):     
         
             # stimuli channels
             trial['stimuli'] = []
@@ -686,15 +689,17 @@ for thisBlock0 in block0:
         
 
 # playing part starting trig
+print(f'Playing start trigger')
 continueRoutine = True
 routineTimer.add(1)
 startExpTrigger = SfPlayer('start_trigger.wav')
-for i in range(PART_1_OUT_CHANNELS):
+for i in range(PART_2_OUT_CHANNELS):
     mm.delInput(i)
 mm.addInput(0, startExpTrigger)
-for i in range(PART_1_OUT_CHANNELS):
-    mm.setAmp(0,i,0)
-mm.setAmp(0,0,spk_volume[0])
+#mm.setAmp(0,i,0)
+#for i in range(PART_2_OUT_CHANNELS):
+#    mm.setAmp(0,i,0)
+mm.setAmp(0,TRIGGER_CHN,spk_volume[TRIGGER_CHN])
 while continueRoutine and routineTimer.getTime() > 0:
     mm.out()
 mm.stop()
@@ -795,7 +800,17 @@ for thisBlock1 in block1:
             print(f'trigger: {trigger}')
                     
             if stimuliStarted == False and (attendNote.status == FINISHED or dontAttendNote.status == FINISHED):
-        
+                print(f'trigger: {trigger}')
+                trigger_filename, trigger_ext = os.path.splitext(trigger)
+                trigger_logfile = os.path.abspath(trigger_filename + '.txt')
+                trial['trigger'] = os.path.abspath(trigger)
+                trial['trigger_log'] = os.path.abspath(trigger_logfile)
+            
+                # trigger channel
+                trigger_chn = SfPlayer(trigger)
+                mm.delInput(0)
+                mm.addInput(0, trigger_chn)
+                mm.setAmp(0,TRIGGER_CHN,spk_volume[TRIGGER_CHN])           
                 # stimuli channels
                 trial['stimuli'] = []
                 # create an empty list to store the players
@@ -991,16 +1006,17 @@ routineTimer.add(1)
 stopExpTrigger = SfPlayer('stop_trigger.wav')
 mm.delInput(0)
 mm.addInput(0, stopExpTrigger)
-for i in range(PART_1_OUT_CHANNELS):
-    mm.setAmp(0,i,0)
-mm.setAmp(0,0,spk_volume[0])
+
+#for i in range(PART_3_OUT_CHANNELS):
+#    mm.setAmp(0,i,0)
+#mm.setAmp(0,0,spk_volume[0])
+mm.setAmp(0,TRIGGER_CHN,spk_volume[TRIGGER_CHN])
 while continueRoutine and routineTimer.getTime() > 0:
     mm.out()
 mm.stop()
 routineTimer.reset()
 thisExp.nextEntry()
 # End of playing part stop trig
-
 # Flip one final time so any remaining win.callOnFlip() 
 # and win.timeOnFlip() tasks get executed before quitting
 win.flip()

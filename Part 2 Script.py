@@ -24,9 +24,12 @@ sys.path.append('.')
 from constants import *
 
 SOUNDCARD_DEVICE_NAME = 'DAC8PRO'
-volume_level = 0.05
-volume_ratio = [1, 1]
+volume_level = 0.025
+volume_ratio = [1, 1, 10]
 spk_volume = [x * volume_level for x in volume_ratio]
+PART_2_OUT_CHANNELS = 3
+TRIGGER_CHN = 2
+print(f'PART_2_OUT_CHANNELS: {PART_2_OUT_CHANNELS}')
 
 s = Server(nchnls=PART_2_OUT_CHANNELS, duplex=0)
 devices = pa_get_output_devices()
@@ -1020,15 +1023,17 @@ for thisBlock0 in block0:
 # completed 1.0 repeats of 'block0'
 
 # playing part starting trig
+print(f'Playing start trigger')
 continueRoutine = True
 routineTimer.add(1)
 startExpTrigger = SfPlayer('start_trigger.wav')
 for i in range(PART_2_OUT_CHANNELS):
     mm.delInput(i)
 mm.addInput(0, startExpTrigger)
-for i in range(PART_2_OUT_CHANNELS):
-    mm.setAmp(0,i,0)
-mm.setAmp(0,0,spk_volume[0])
+#mm.setAmp(0,i,0)
+#for i in range(PART_2_OUT_CHANNELS):
+#    mm.setAmp(0,i,0)
+mm.setAmp(0,TRIGGER_CHN,spk_volume[TRIGGER_CHN])
 while continueRoutine and routineTimer.getTime() > 0:
     mm.out()
 mm.stop()
@@ -1153,6 +1158,7 @@ for thisBlock1 in block1:
             trigger_chn = SfPlayer(trigger)
             mm.delInput(0)
             mm.addInput(0, trigger_chn)
+            mm.setAmp(0,TRIGGER_CHN,spk_volume[TRIGGER_CHN])
             
             # stimuli channels
             trial['stimuli'] = []
@@ -1186,6 +1192,8 @@ for thisBlock1 in block1:
                 
             stimuliStarted = True
      
+        mm.out()
+        
         # check for quit (typically the Esc key)
         if endExpNow or defaultKeyboard.getKeys(keyList=["escape"]):
             core.quit()
@@ -1590,9 +1598,11 @@ routineTimer.add(1)
 stopExpTrigger = SfPlayer('stop_trigger.wav')
 mm.delInput(0)
 mm.addInput(0, stopExpTrigger)
-for i in range(PART_2_OUT_CHANNELS):
-    mm.setAmp(0,i,0)
-mm.setAmp(0,0,spk_volume[0])
+
+#for i in range(PART_2_OUT_CHANNELS):
+#    mm.setAmp(0,i,0)
+#mm.setAmp(0,0,spk_volume[0])
+mm.setAmp(0,TRIGGER_CHN,spk_volume[TRIGGER_CHN])
 while continueRoutine and routineTimer.getTime() > 0:
     mm.out()
 mm.stop()

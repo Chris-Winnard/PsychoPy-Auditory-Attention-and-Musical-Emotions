@@ -2,6 +2,8 @@
 # -*- coding: utf-8 -*-
 
 from psychopy import locale_setup
+from psychopy import prefs
+#prefs.hardware['audioLib'] = ['PTB'] -  causes sound.Sound to crash
 from psychopy import sound, gui, visual, core, data, event, logging, clock, colors
 from psychopy.constants import (NOT_STARTED, STARTED, PLAYING, PAUSED,
                                 STOPPED, FINISHED, PRESSED, RELEASED, FOREVER)
@@ -24,9 +26,13 @@ from constants import *
 
 SOUNDCARD_DEVICE_NAME = 'DAC8PRO'
 
-volume_level = 0.05
-volume_ratio = [1, 1]
+volume_level = 0.025
+volume_ratio = [1, 1, 10]
 spk_volume = [x * volume_level for x in volume_ratio]
+PART_1_OUT_CHANNELS = 3
+TRIGGER_CHN = 2
+print(f'PART_1_OUT_CHANNELS: {PART_1_OUT_CHANNELS}')
+
 pa_list_devices()
 pa_list_devices()
 s = Server(nchnls=PART_1_OUT_CHANNELS, duplex=0)
@@ -605,7 +611,7 @@ for thisBlock0 in block0:
             
                     
             # *clickForEmotionInfo* updates
-            if (clickForEmotionInfo.status == NOT_STARTED and tThisFlip >= PART_1_STIMULI_LEN-frameTolerance) or goToQuestions == True:
+            if (clickForEmotionInfo.status == NOT_STARTED and tThisFlip >= 0.0-frameTolerance) or goToQuestions == True:
                 # keep track of start time/frame for later
                 clickForEmotionInfo.frameNStart = frameN  # exact frame index
                 clickForEmotionInfo.tStart = t  # local t and not account for scr refresh
@@ -995,15 +1001,17 @@ for thisBlock0 in block0:
 
 
 # playing part starting trig
+print(f'Playing start trigger')
 continueRoutine = True
 routineTimer.add(1)
 startExpTrigger = SfPlayer('start_trigger.wav')
-for i in range(PART_1_OUT_CHANNELS):
+for i in range(PART_2_OUT_CHANNELS):
     mm.delInput(i)
 mm.addInput(0, startExpTrigger)
-for i in range(PART_1_OUT_CHANNELS):
-    mm.setAmp(0,i,0)
-mm.setAmp(0,0,spk_volume[0])
+#mm.setAmp(0,i,0)
+#for i in range(PART_2_OUT_CHANNELS):
+#    mm.setAmp(0,i,0)
+mm.setAmp(0,TRIGGER_CHN,spk_volume[TRIGGER_CHN])
 while continueRoutine and routineTimer.getTime() > 0:
     mm.out()
 mm.stop()
@@ -1048,6 +1056,7 @@ for thisBlock1 in block1:
     trigger_chn = SfPlayer(trigger)
     mm.delInput(0)
     mm.addInput(0, trigger_chn)
+    mm.setAmp(0,TRIGGER_CHN,spk_volume[TRIGGER_CHN])
     # stimuli channels
     trial['stimuli'] = []
     # create an empty list to store the players
@@ -1115,7 +1124,7 @@ for thisBlock1 in block1:
             mm.out()
             
             # *clickForEmotionInfo* updates
-            if (clickForEmotionInfo.status == NOT_STARTED and tThisFlip >= PART_1_STIMULI_LEN-frameTolerance) or goToQuestions == True:
+            if (clickForEmotionInfo.status == NOT_STARTED and tThisFlip >= 0.0-frameTolerance) or goToQuestions == True:
                 # keep track of start time/frame for later
                 clickForEmotionInfo.frameNStart = frameN  # exact frame index
                 clickForEmotionInfo.tStart = t  # local t and not account for scr refresh
@@ -1542,9 +1551,11 @@ routineTimer.add(1)
 stopExpTrigger = SfPlayer('stop_trigger.wav')
 mm.delInput(0)
 mm.addInput(0, stopExpTrigger)
-for i in range(PART_1_OUT_CHANNELS):
-    mm.setAmp(0,i,0)
-mm.setAmp(0,0,spk_volume[0])
+
+#for i in range(PART_2_OUT_CHANNELS):
+#    mm.setAmp(0,i,0)
+#mm.setAmp(0,0,spk_volume[0])
+mm.setAmp(0,TRIGGER_CHN,spk_volume[TRIGGER_CHN])
 while continueRoutine and routineTimer.getTime() > 0:
     mm.out()
 mm.stop()
