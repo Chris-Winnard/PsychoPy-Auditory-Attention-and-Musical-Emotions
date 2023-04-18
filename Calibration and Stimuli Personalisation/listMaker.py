@@ -48,37 +48,25 @@ with open(megasetAssignmentFile, 'r') as f:
 workbook = xlsxwriter.Workbook('stimuliList.xlsx')
 worksheet = workbook.add_worksheet()
 
-#First column- names of stimuli files:
+#First column- names of stimuli files, and second column- names of trigger files:
  
 worksheet.write('A1', 'stimuli_0')
+worksheet.write('B1', 'trigger')
 i = 2 #Index for row in sheet.
 
 for file in os.scandir(participantPath):
     stimCell = "A" + str(i)
+    trigCell = "B" + str(i)
     if practiceSet not in file.name:
         if ".wav" in file.name and "Oddball" not in file.name: #Only audio, and no oddball files. 
             stimPath = stimLoc + str(file.name)
             worksheet.write(stimCell, stimPath)
+            
+            trigFilename = "trigger_" + str(file.name)
+            trigFolderPlusFilename = "Trigger Files/" + trigFilename #Here we need to specify the folder
+#from main folder where the scripts are)   
+            worksheet.write(trigCell, trigFolderPlusFilename)
             i+=1
-
-#Second column- names of trigger files:
-    
-#Find the trigger file path:
-currentFolderPath = pathlib.Path(__file__).parent.resolve() #Current folder path
-upperFolderPath = currentFolderPath.parent.resolve() #Path for next level up.
-triggerPath = str(upperFolderPath) + "/Trigger Files" 
-
-#Change to the participant path, to find all the personalised stimuli:
-worksheet.write('B1', 'trigger')
-j = 2
-for file in os.scandir(triggerPath):
-    trigCell = "B" + str(j)
-    if practiceSet not in file.name:
-        if ".wav" in file.name and "Oddball" not in file.name:
-            folderPlusFileName = "Trigger Files/" + str(file.name) #Here we need to specify the folder
-#from main folder where the scripts are)               
-            worksheet.write(trigCell, folderPlusFileName)
-            j+=1
 
 # Close the xlsx file
 workbook.close()
@@ -94,30 +82,24 @@ workbook.close()
 workbook = xlsxwriter.Workbook('practiceStimuliList.xlsx')
 worksheet = workbook.add_worksheet()
 
-#First column- names of stimuli files:
+#First column- names of stimuli files, and second column- names of trigger files:
  
 worksheet.write('A1', 'stimuli_0')
+worksheet.write('B1', 'trigger')
 i = 2 #Index for row in sheet.
 
 for file in os.scandir(participantPath):
     stimCell = "A" + str(i)
+    trigCell = "B" + str(i)
     if practiceSet in file.name:
         if ".wav" in file.name and "Oddball" not in file.name: #Only audio, and no oddball files. 
             stimPath = stimLoc + str(file.name)
             worksheet.write(stimCell, stimPath)
+            
+            trigFilename = "trigger_" + str(file.name)
+            trigFolderPlusFilename = "Trigger Files/" + trigFilename
+            worksheet.write(trigCell, trigFolderPlusFilename)
             i+=1
-
-#Second column- names of trigger files:
-
-worksheet.write('B1', 'trigger')
-j = 2
-for file in os.scandir(triggerPath):
-    trigCell = "B" + str(j)
-    if practiceSet in file.name:
-        if ".wav" in file.name and "Oddball" not in file.name:
-            folderPlusFileName = "Trigger Files/" + str(file.name)
-            worksheet.write(trigCell, folderPlusFileName)
-            j+=1
 
 # Close the xlsx file
 workbook.close()
@@ -138,16 +120,17 @@ startTimesData.close()
 workbook = xlsxwriter.Workbook('oddballStimuliList.xlsx')
 worksheet = workbook.add_worksheet()
 
-#First two columns: names of stimuli files and attended instruments. Also add 4th- attended oddballs:
  
 worksheet.write('A1', 'stimuli_0')
 worksheet.write('B1', 'attendedInst')
+worksheet.write('C1', 'trigger')
 worksheet.write('D1', 'attendedOddballs')
 i = 2 #Index for row in sheet.
 
 for file in os.scandir(participantPath):
     stimCell = "A" + str(i)
     attCell = "B" + str(i)
+    trigCell = "C" + str(i)
     oddCell = "D" + str(i)
     if practiceSet not in file.name:
         if ".wav" in file.name and "Oddball Test Mix" in file.name: #Only audio, only oddball files.
@@ -157,26 +140,21 @@ for file in os.scandir(participantPath):
                 attendedInst = "Vibr"
             else:
                 attendedInst = "Harm"
+                
             stimPath = stimLoc + str(file.name)
             worksheet.write(stimCell, stimPath)
             worksheet.write(attCell, str(attendedInst))
+            
+            trigFilename = "trigger_" + str(file.name)
+            trigFolderPlusFilename = "Trigger Files/" + trigFilename
+            worksheet.write(trigCell, trigFolderPlusFilename)
+    
             for line in lines:
                 if file.name[:4] in line and line.count(attendedInst) ==2: #E.g "Set3 Vibr stream for Vibr Attended"...
                     oddballStartTimes = re.findall("\d+\.\d+", line) 
                     numOddballs = len(oddballStartTimes)
                     worksheet.write(oddCell, str(numOddballs))
             i+=1
-
-#3rd column- triggers:
-worksheet.write('C1', 'trigger')
-j = 2
-for file in os.scandir(triggerPath):
-    trigCell = "C" + str(j)
-    if practiceSet not in file.name:
-        if ".wav" in file.name and "Oddball Test Mix" in file.name:
-            folderPlusFileName = "Trigger Files/" + str(file.name)
-            worksheet.write(trigCell, folderPlusFileName)
-            j+=1
 
 workbook.close()
 
@@ -192,6 +170,7 @@ worksheet = workbook.add_worksheet()
  
 worksheet.write('A1', 'stimuli_0')
 worksheet.write('B1', 'attendedInst')
+worksheet.write('C1', 'trigger')
 worksheet.write('D1', 'attendedOddballs')
 i = 2 #Index for row in sheet.
 
@@ -199,6 +178,7 @@ i = 2 #Index for row in sheet.
 for file in os.scandir(participantPath):
     stimCell = "A" + str(i)
     attCell = "B" + str(i)
+    trigCell = "C" + str(i)
     oddCell = "D" + str(i)
     if practiceSet in file.name:
         if ".wav" in file.name and "Oddball Test Mix" in file.name: #Only audio, only oddball files.
@@ -208,9 +188,15 @@ for file in os.scandir(participantPath):
                 attendedInst = "Vibr"
             else:
                 attendedInst = "Harm"
+                
             stimPath = stimLoc + str(file.name)
             worksheet.write(stimCell, stimPath)
             worksheet.write(attCell, str(attendedInst))
+            
+            trigFilename = "trigger_" + str(file.name)
+            trigFolderPlusFilename = "Trigger Files/" + trigFilename
+            worksheet.write(trigCell, trigFolderPlusFilename)
+            
             for line in lines:
                 if practiceSet in line and line.count(attendedInst) ==2:
                     oddballStartTimes = re.findall("\d+\.\d+", line)
@@ -218,16 +204,6 @@ for file in os.scandir(participantPath):
                     worksheet.write(oddCell, str(numOddballs))
             i+=1
 
-#3rd column- triggers:
-worksheet.write('C1', 'trigger')
-j = 2
-for file in os.scandir(triggerPath):
-    trigCell = "C" + str(j)
-    if practiceSet in file.name:
-        if ".wav" in file.name and "Oddball Test Mix" in file.name:
-            folderPlusFileName = "Trigger Files/" + str(file.name)
-            worksheet.write(trigCell, folderPlusFileName)
-            j+=1
 
 workbook.close()
 
