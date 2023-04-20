@@ -3,7 +3,7 @@
 
 from psychopy import locale_setup
 from psychopy import prefs
-from psychopy import sound, gui, visual, core, data, event, logging, clock, colors, layout
+from psychopy import sound, gui, visual, core, data, event, logging, clock, colors, layout, soundtools
 from psychopy.constants import (NOT_STARTED, STARTED, PLAYING, PAUSED,
                                 STOPPED, FINISHED, PRESSED, RELEASED, FOREVER)
 
@@ -248,6 +248,16 @@ nextButton_R1B = visual.ImageStim(
     flipHoriz=False, flipVert=False,
     texRes=128.0, interpolate=True, depth=-2.0)
 
+# Initialize components for Routine "thisPartComplete"
+thisPartCompleteClock = core.Clock()
+thisPartCompleteText = visual.TextStim(win=win, name='thisPartCompleteText',
+    text='Part 2 completed.',
+    font='Open Sans',
+    pos=(0, 0), height=0.05, wrapWidth=None, ori=0.0, 
+    color='white', colorSpace='rgb', opacity=None, 
+    languageStyle='LTR',
+    depth=0.0);
+    
 # Create some handy timers
 globalClock = core.Clock()  # to track the time since experiment started
 routineTimer = core.CountdownTimer()  # to track time remaining of each (non-slip) routine 
@@ -599,7 +609,7 @@ for thisBlock0 in block0:
             spk_name = "stimuli_0"
             trial['stimuli'].append(os.path.abspath(globals()[spk_name]))
             player = sound.Sound(globals()[spk_name])
-            player.setVolume(1)  # set the volume to 1
+            player.setVolume(0.397)  # set the volume to 1
             players.append(player)
             
             # create the rest of the players for stimuli_0
@@ -608,7 +618,7 @@ for thisBlock0 in block0:
                 trial['stimuli'].append(os.path.abspath(globals()[spk_name]))
                 if i < len(spk_volume):  # check if spk_volume has the correct number of elements
                     player = sound.Sound(globals()[spk_name])
-                    player.setVolume(spk_volume[i])  # set the volume for the current speaker
+                    player.setVolume(0.397)  # set the volume for the current speaker
                 else:
                     player = sound.Sound(globals()[spk_name])
                     print(f"Warning: no volume specified for speaker {i}")
@@ -618,6 +628,15 @@ for thisBlock0 in block0:
             for player in players:
                 player.play()
             while any([player.status == PLAYING for player in players]):
+                    # get the sound buffer
+               
+                rms = soundtools.rms(my_sound.samples)
+            
+                # calculate the RMS value
+             #   rms = np.sqrt(np.mean(buffer ** 2))
+            
+                # print the RMS value
+                print(rms)
                 continue
         
             stimuliStarted = True
@@ -1169,7 +1188,7 @@ for thisBlock1 in block1:
             spk_name = "stimuli_0"
             trial['stimuli'].append(os.path.abspath(globals()[spk_name]))
             player = sound.Sound(globals()[spk_name])
-            player.setVolume(1)  # set the volume to 1
+            player.setVolume(0.397)#1)  # set the volume to 1
             players.append(player)
             
             # create the rest of the players for stimuli_0
@@ -1178,7 +1197,7 @@ for thisBlock1 in block1:
                 trial['stimuli'].append(os.path.abspath(globals()[spk_name]))
                 if i < len(spk_volume):  # check if spk_volume has the correct number of elements
                     player = sound.Sound(globals()[spk_name])
-                    player.setVolume(spk_volume[i])  # set the volume for the current speaker
+                    player.setVolume(0.397)#spk_volume[i])  # set the volume for the current speaker
                 else:
                     player = sound.Sound(globals()[spk_name])
                     print(f"Warning: no volume specified for speaker {i}")
@@ -1609,6 +1628,67 @@ mm.stop()
 routineTimer.reset()
 thisExp.nextEntry()
 # End of playing part stop trig
+
+# ------Prepare to start Routine "thisPartComplete"-------
+# update component parameters for each repeat
+# keep track of which components have finished
+continueRoutine = True
+
+thisPartCompleteComponents = [thisPartCompleteText]
+for thisComponent in thisPartCompleteComponents:
+    thisComponent.tStart = None
+    thisComponent.tStop = None
+    thisComponent.tStartRefresh = None
+    thisComponent.tStopRefresh = None
+    if hasattr(thisComponent, 'status'):
+        thisComponent.status = NOT_STARTED
+# reset timers
+t = 0
+_timeToFirstFrame = win.getFutureFlipTime(clock="now")
+thisPartCompleteClock.reset(-_timeToFirstFrame)  # t0 is time of first possible flip
+frameN = -1
+    
+# -------Run Routine "thisPartComplete"-------
+while continueRoutine:
+    # get current time
+    t = thisPartCompleteClock.getTime()
+    tThisFlip = win.getFutureFlipTime(clock=thisPartCompleteClock)
+    tThisFlipGlobal = win.getFutureFlipTime(clock=None)
+    frameN = frameN + 1  # number of completed frames (so 0 is the first frame)
+    # update/draw components on each frame
+    
+    if thisPartCompleteText.status == NOT_STARTED and tThisFlip >= 0.0-frameTolerance:
+        # keep track of start time/frame for later
+        thisPartCompleteText.frameNStart = frameN  # exact frame index
+        thisPartCompleteText.tStart = t  # local t and not account for scr refresh
+        thisPartCompleteText.tStartRefresh = tThisFlipGlobal  # on global time
+        win.timeOnFlip(thisPartCompleteText, 'tStartRefresh')  # time at next scr refresh
+        thisPartCompleteText.setAutoDraw(True) 
+        
+    # check for quit (typically the Esc key)
+    if endExpNow or defaultKeyboard.getKeys(keyList=["escape"]):
+        core.quit()
+    
+    if thisPartCompleteClock.getTime() > 6:
+        thisPartCompleteText.status = FINISHED
+        
+    # check if all components have finished
+    if not continueRoutine:  # a component has requested a forced-end of Routine
+        break
+    continueRoutine = False  # will revert to True if at least one component still running
+    for thisComponent in thisPartCompleteComponents:
+        if hasattr(thisComponent, "status") and thisComponent.status != FINISHED:
+            continueRoutine = True
+            break  # at least one component has not yet finished
+    
+    # refresh the screen
+    if continueRoutine:  # don't flip if this routine is over or we'll get a blank screen
+        win.flip()
+    
+# -------Ending Routine "thisPartComplete"-------
+for thisComponent in thisPartCompleteComponents:
+    if hasattr(thisComponent, "setAutoDraw"):
+        thisComponent.setAutoDraw(False)
 
 # Flip one final time so any remaining win.callOnFlip() 
 # and win.timeOnFlip() tasks get executed before quitting

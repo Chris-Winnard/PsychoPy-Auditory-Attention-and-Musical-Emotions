@@ -53,7 +53,7 @@ frameTolerance = 0.001  # how close to onset before 'same' frame
 
 # Setup the Window
 win = visual.Window(
-    size=[1980, 1080], fullscr=True, screen=0, 
+    size=[1920, 1080], fullscr=True, screen=0, 
     winType='pyglet', allowGUI=False, allowStencil=False,
     monitor='AIM Laptop', color=[-0.4510, 0.0196, 0.4118], colorSpace='rgb', #Aarhus setup: size=[1536, 864], monitor='testMonitor'
     blendMode='avg', useFBO=True, 
@@ -662,6 +662,17 @@ nextButton_4 = visual.ImageStim(
 mouse_4 = event.Mouse(win=win)
 x, y = [None, None]
 mouse_4.mouseClock = core.Clock()
+
+# Initialize components for Routine "thisPartComplete"
+thisPartCompleteClock = core.Clock()
+thisPartCompleteText = visual.TextStim(win=win, name='thisPartCompleteText',
+    text='Questionnaire completed.',
+    font='Open Sans',
+    pos=(0, 0), height=0.05, wrapWidth=None, ori=0.0, 
+    color='white', colorSpace='rgb', opacity=None, 
+    languageStyle='LTR',
+    depth=0.0);
+
 
 # Create some handy timers
 globalClock = core.Clock()  # to track the time since experiment started
@@ -2104,7 +2115,7 @@ while continueRoutine:
         win.flip()
 
 # -------Ending Routine "Personal_Responses_to_Music__Emotion_pg2"-------
-for thisComponent in Personal_Responses_to_Music__Emotion_pg1Components:
+for thisComponent in Personal_Responses_to_Music__Emotion_pg2Components:
     if hasattr(thisComponent, "setAutoDraw"):
         thisComponent.setAutoDraw(False)
 thisExp.addData('Q24Resp.response', Q24Resp.getRating())
@@ -2123,8 +2134,69 @@ if sum(buttons):
         if obj.contains(mouse_4):
             gotValidClick = True
             mouse_4.clicked_name.append(obj.name)
-# the Routine "Personal_Responses_to_Music__Emotion_pg1" was not non-slip safe, so reset the non-slip timer
+# the Routine "Personal_Responses_to_Music__Emotion_pg2" was not non-slip safe, so reset the non-slip timer
 routineTimer.reset()
+
+# ------Prepare to start Routine "thisPartComplete"-------
+# update component parameters for each repeat
+# keep track of which components have finished
+continueRoutine = True
+
+thisPartCompleteComponents = [thisPartCompleteText]
+for thisComponent in thisPartCompleteComponents:
+    thisComponent.tStart = None
+    thisComponent.tStop = None
+    thisComponent.tStartRefresh = None
+    thisComponent.tStopRefresh = None
+    if hasattr(thisComponent, 'status'):
+        thisComponent.status = NOT_STARTED
+# reset timers
+t = 0
+_timeToFirstFrame = win.getFutureFlipTime(clock="now")
+thisPartCompleteClock.reset(-_timeToFirstFrame)  # t0 is time of first possible flip
+frameN = -1
+    
+# -------Run Routine "thisPartComplete"-------
+while continueRoutine:
+    # get current time
+    t = thisPartCompleteClock.getTime()
+    tThisFlip = win.getFutureFlipTime(clock=thisPartCompleteClock)
+    tThisFlipGlobal = win.getFutureFlipTime(clock=None)
+    frameN = frameN + 1  # number of completed frames (so 0 is the first frame)
+    # update/draw components on each frame
+    
+    if thisPartCompleteText.status == NOT_STARTED and tThisFlip >= 0.0-frameTolerance:
+        # keep track of start time/frame for later
+        thisPartCompleteText.frameNStart = frameN  # exact frame index
+        thisPartCompleteText.tStart = t  # local t and not account for scr refresh
+        thisPartCompleteText.tStartRefresh = tThisFlipGlobal  # on global time
+        win.timeOnFlip(thisPartCompleteText, 'tStartRefresh')  # time at next scr refresh
+        thisPartCompleteText.setAutoDraw(True) 
+        
+    # check for quit (typically the Esc key)
+    if endExpNow or defaultKeyboard.getKeys(keyList=["escape"]):
+        core.quit()
+    
+    if thisPartCompleteClock.getTime() > 6:
+        thisPartCompleteText.status = FINISHED
+        
+    # check if all components have finished
+    if not continueRoutine:  # a component has requested a forced-end of Routine
+        break
+    continueRoutine = False  # will revert to True if at least one component still running
+    for thisComponent in thisPartCompleteComponents:
+        if hasattr(thisComponent, "status") and thisComponent.status != FINISHED:
+            continueRoutine = True
+            break  # at least one component has not yet finished
+    
+    # refresh the screen
+    if continueRoutine:  # don't flip if this routine is over or we'll get a blank screen
+        win.flip()
+    
+# -------Ending Routine "thisPartComplete"-------
+for thisComponent in thisPartCompleteComponents:
+    if hasattr(thisComponent, "setAutoDraw"):
+        thisComponent.setAutoDraw(False)
 
 # Flip one final time so any remaining win.callOnFlip() 
 # and win.timeOnFlip() tasks get executed before quitting
