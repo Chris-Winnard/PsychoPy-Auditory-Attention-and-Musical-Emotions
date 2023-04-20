@@ -19,9 +19,9 @@ SOUNDCARD_DEVICE_NAME = 'DAC8PRO'
 
 OUT_CHANNELS = 2
 
-volume_level = 0.025
+volume_level = 0.05
 
-volume_ratio = [1, 1, 10]
+volume_ratio = [1, 1, 5]
 
 spk_volume = [x * volume_level for x in volume_ratio]
  
@@ -87,9 +87,9 @@ harmonica = harmonica.pan(0)
 piano = piano.pan(1)
 
 #Set up loudness parameter, apply gain:
-vibraphone_loudness = 1.5
-harmonica_loudness = 1.5
-piano_loudness = 1.5
+vibraphone_loudness = 0.4
+harmonica_loudness = 0.4
+piano_loudness = 0.4
 
 while True:
     # Create a GUI to get loudness values from the user for each audio stream
@@ -185,9 +185,9 @@ s = s.boot()
 #Set default gains. To avoid confusion, these are not necessarily the same as the .mul
 #values which are actually used to control loudness. E.g, piano_loudness might be 1, but the
 #piano output will be 0 whilst the vibraphone plays.
-vibraphone_loudness = 1.5
-harmonica_loudness = 1.5
-piano_loudness = 1.5
+vibraphone_loudness = 0.4
+harmonica_loudness = 0.4
+piano_loudness = 0.4
 
 # Reload the audio files, this time without panning
 vibraphone = AudioSegment.from_wav(vibrPiece)
