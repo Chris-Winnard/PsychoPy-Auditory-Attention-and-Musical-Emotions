@@ -15,7 +15,7 @@ stimuliPath = str(upperFolderPath) + "/Stimuli"
 
 #Create output path:
 dataPath = str(upperFolderPath) + "/Data/"
-participantPath = str(upperFolderPath) + "/Data/" + "/7" #- assigned to megaset A
+participantPath = str(upperFolderPath) + "/Data/" + "/4" #- assigned to megaset B
 os.mkdir(participantPath)
 File = (participantPath + "\Oddball Start Times.txt")
 with open(File, 'a') as f: #Create the file now to prevent any confusion later, because oddballsForbidden needs to read from it.

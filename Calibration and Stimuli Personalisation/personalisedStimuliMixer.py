@@ -58,32 +58,37 @@ ssGainsData = ssGainsFile.read()
 ssGains = ssGainsData.split(" ")
 ssGainsFile.close()
 
-ssVibrGain = float(ssGains[1])
-ssHarmGain = float(ssGains[3])
-ssKeybGain = float(ssGains[5])
+ssVibrGainLinear = float(ssGains[1])
+ssVibrGain = 20*log10(ssVibrGainLinear)
+
+ssHarmGainLinear = float(ssGains[3])
+ssHarmGain = 20*log10(ssHarmGainLinear)
+
+ssKeybGainLinear = float(ssGains[5])
+ssKeybGain = 20*log10(ssKeybGainLinear)
 
 
 #Single stimuli:
 for file in os.scandir(thisParticipantStimuliPath):
     if file.name[:3] == "Set": #Because of naming convention used, this will ignore trigs etc.
-        signal, sr = librosa.load(file)
+        signal = AudioSegment.from_wav(file)
         signal = signal[0:661500]
         signalCopy = signal
         
         if file.name[5:9] or file.name[6:10] == "Vibr":
-           signal = signal*ssVibrGain
-           
-           sf.write(str(file.name)[:-4] + " with Gain Applied.wav", signal, sr)
-           #make sure writing to their folder..
+           signal = signal.apply_gain(ssVibrGain)
+           outputPathPlusName = participantPath + "/" + str(file.name)[:-4] + " with Gain Applied.wav"
+           signal.export(outputPathPlusName, format="wav")
            
         elif file.name[5:9] or file.name[6:10] == "Harm":
-            signal = signal*ssHarmGain
-        
-            sf.write(str(file.name)[:-4] + " with Gain Applied.wav", signal, sr)
+            signal = signal.apply_gain(ssHarmGain)
+            outputPathPlusName = participantPath + "/" + str(file.name)[:-4] + " with Gain Applied.wav"
+            signal.export(outputPathPlusName, format="wav")
             
         elif file.name[5:9] or file.name[6:10] == "Keyb":
-            signal = signal*ssKeybGain
-            sf.write(str(file.name)[:-4] + " with Gain Applied.wav", signal, sr)
+            signal = signal.apply_gain(ssKeybGain)
+            outputPathPlusName = participantPath + "/" + str(file.name)[:-4] + " with Gain Applied.wav"
+            signal.export(outputPathPlusName, format="wav")
 
 ###################################################################################################
 #Multi-stream: Use oddball versions!
@@ -94,9 +99,14 @@ msGainsData = msGainsFile.read()
 msGains = msGainsData.split(" ")
 msGainsFile.close()
 
-msVibrGain = float(msGains[1])
-msHarmGain = float(msGains[3])
-msKeybGain = float(msGains[5])
+msVibrGainLinear = float(msGains[1])
+msVibrGain = 20*log10(msVibrGainLinear)
+
+msHarmGainLinear = float(msGains[3])
+msHarmGain = 20*log10(msHarmGainLinear)
+
+msKeybGainLinear = float(msGains[5])
+msKeybGain = 20*log10(msKeybGainLinear)
 
 def mixer(attendedInst):
     VibrDone = False
