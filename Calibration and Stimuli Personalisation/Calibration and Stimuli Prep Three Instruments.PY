@@ -87,9 +87,9 @@ harmonica = harmonica.pan(0)
 piano = piano.pan(1)
 
 #Set up loudness parameter, apply gain:
-vibraphone_loudness = 0.4
-harmonica_loudness = 0.4
-piano_loudness = 0.4
+vibraphone_loudness = 0.45
+harmonica_loudness = 0.45
+piano_loudness = 0.45
 
 while True:
     # Create a GUI to get loudness values from the user for each audio stream
@@ -185,9 +185,9 @@ s = s.boot()
 #Set default gains. To avoid confusion, these are not necessarily the same as the .mul
 #values which are actually used to control loudness. E.g, piano_loudness might be 1, but the
 #piano output will be 0 whilst the vibraphone plays.
-vibraphone_loudness = 0.4
-harmonica_loudness = 0.4
-piano_loudness = 0.4
+vibraphone_loudness = 0.5
+harmonica_loudness = 0.5
+piano_loudness = 0.5
 
 # Reload the audio files, this time without panning
 vibraphone = AudioSegment.from_wav(vibrPiece)
@@ -208,7 +208,8 @@ while True:
     # Create a GUI to get loudness values from the user
     dlg = gui.Dlg(title="Loudness Adjustment")
     dlg.addText("Now, please adjust the settings so that you can follow it comfortably and easily.")
-    dlg.addField("Loudness:", initial=vibraphone_loudness if selected_instrument == "Vibraphone" else (harmonica_loudness if selected_instrument == "Harmonica" else piano_loudness))
+    dlg.addText("The current instrumnt is the " + selected_instrument.lower() + ".")
+    dlg.addField("Current instrument loudness:", initial=vibraphone_loudness if selected_instrument == "Vibraphone" else (harmonica_loudness if selected_instrument == "Harmonica" else piano_loudness))
     dlg.addField("Play next:", choices=["Vibraphone", "Harmonica", "Piano"])
     dlg.addField("Do you want to continue adjusting the instruments?", choices=["Yes", "No"]) #Yes by default- acquiescence control.
     dlg.show()
