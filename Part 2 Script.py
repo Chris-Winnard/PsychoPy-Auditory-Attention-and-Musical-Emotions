@@ -3,7 +3,7 @@
 
 from psychopy import locale_setup
 from psychopy import prefs
-from psychopy import sound, gui, visual, core, data, event, logging, clock, colors, layout, soundtools
+from psychopy import sound, gui, visual, core, data, event, logging, clock, colors, layout
 from psychopy.constants import (NOT_STARTED, STARTED, PLAYING, PAUSED,
                                 STOPPED, FINISHED, PRESSED, RELEASED, FOREVER)
 
@@ -24,8 +24,8 @@ sys.path.append('.')
 from constants import *
 
 SOUNDCARD_DEVICE_NAME = 'DAC8PRO'
-volume_level = 0.025
-volume_ratio = [1, 1, 10]
+volume_level = 0.009
+volume_ratio = [1, 1, 27.5]
 spk_volume = [x * volume_level for x in volume_ratio]
 PART_2_OUT_CHANNELS = 3
 TRIGGER_CHN = 2
@@ -606,11 +606,11 @@ for thisBlock0 in block0:
             players = []
             
             # create the first player for stimuli_0
-            spk_name = "stimuli_0"
-            trial['stimuli'].append(os.path.abspath(globals()[spk_name]))
-            player = sound.Sound(globals()[spk_name])
-            player.setVolume(0.397)  # set the volume to 1
-            players.append(player)
+        #        spk_name = "stimuli_0"
+        #    trial['stimuli'].append(os.path.abspath(globals()[spk_name]))
+         #   player = sound.Sound(globals()[spk_name])
+          #  player.setVolume(0.05)  # set the volume to 1
+           # players.append(player)
             
             # create the rest of the players for stimuli_0
             for i in range(1, PART_2_OUT_CHANNELS):
@@ -618,7 +618,7 @@ for thisBlock0 in block0:
                 trial['stimuli'].append(os.path.abspath(globals()[spk_name]))
                 if i < len(spk_volume):  # check if spk_volume has the correct number of elements
                     player = sound.Sound(globals()[spk_name])
-                    player.setVolume(0.397)  # set the volume for the current speaker
+                    player.setVolume(spk_volume[i])  # set the volume for the current speaker
                 else:
                     player = sound.Sound(globals()[spk_name])
                     print(f"Warning: no volume specified for speaker {i}")
@@ -627,17 +627,6 @@ for thisBlock0 in block0:
             # play the sounds and wait for them to finish
             for player in players:
                 player.play()
-            while any([player.status == PLAYING for player in players]):
-                    # get the sound buffer
-               
-                rms = soundtools.rms(my_sound.samples)
-            
-                # calculate the RMS value
-             #   rms = np.sqrt(np.mean(buffer ** 2))
-            
-                # print the RMS value
-                print(rms)
-                continue
         
             stimuliStarted = True
             
@@ -1185,11 +1174,11 @@ for thisBlock1 in block1:
             players = []
             
             # create the first player for stimuli_0
-            spk_name = "stimuli_0"
-            trial['stimuli'].append(os.path.abspath(globals()[spk_name]))
-            player = sound.Sound(globals()[spk_name])
-            player.setVolume(0.397)#1)  # set the volume to 1
-            players.append(player)
+         #   spk_name = "stimuli_0"
+          #  trial['stimuli'].append(os.path.abspath(globals()[spk_name]))
+           # player = sound.Sound(globals()[spk_name])
+            #player.setVolume(0.05)  # set the volume to 1
+            #players.append(player)
             
             # create the rest of the players for stimuli_0
             for i in range(1, PART_2_OUT_CHANNELS):
@@ -1197,7 +1186,7 @@ for thisBlock1 in block1:
                 trial['stimuli'].append(os.path.abspath(globals()[spk_name]))
                 if i < len(spk_volume):  # check if spk_volume has the correct number of elements
                     player = sound.Sound(globals()[spk_name])
-                    player.setVolume(0.397)#spk_volume[i])  # set the volume for the current speaker
+                    player.setVolume(spk_volume[i])  # set the volume for the current speaker
                 else:
                     player = sound.Sound(globals()[spk_name])
                     print(f"Warning: no volume specified for speaker {i}")

@@ -23,8 +23,8 @@ sys.path.append('.')
 from constants import *
 
 SOUNDCARD_DEVICE_NAME = 'DAC8PRO'
-volume_level = 0.025
-volume_ratio = [1, 1, 10]
+volume_level = 0.05
+volume_ratio = [1, 1, 5]
 spk_volume = [x * volume_level for x in volume_ratio]
 PART_3_OUT_CHANNELS = 3
 TRIGGER_CHN = 2
@@ -523,11 +523,11 @@ for thisBlock0 in block0:
             players = []
             
             # create the first player for stimuli_0
-            spk_name = "stimuli_0"
-            trial['stimuli'].append(os.path.abspath(globals()[spk_name]))
-            player = sound.Sound(globals()[spk_name])
-            player.setVolume(1)  # set the volume to 1
-            players.append(player)
+           # spk_name = "stimuli_0"
+            #trial['stimuli'].append(os.path.abspath(globals()[spk_name]))
+           # player = sound.Sound(globals()[spk_name])
+           # player.setVolume(1)  # set the volume to 1
+           # players.append(player)
             
             # create the rest of the players for stimuli_0
             for i in range(1, PART_2_OUT_CHANNELS):
@@ -827,11 +827,11 @@ for thisBlock1 in block1:
                 players = []
                 
                 # create the first player for stimuli_0
-                spk_name = "stimuli_0"
-                trial['stimuli'].append(os.path.abspath(globals()[spk_name]))
-                player = sound.Sound(globals()[spk_name])
-                player.setVolume(1)  # set the volume to 1
-                players.append(player)
+              #  spk_name = "stimuli_0"
+               # trial['stimuli'].append(os.path.abspath(globals()[spk_name]))
+               # player = sound.Sound(globals()[spk_name])
+                #player.setVolume(1)  # set the volume to 1
+                #players.append(player)
                 
                 # create the rest of the players for stimuli_0
                 for i in range(1, PART_2_OUT_CHANNELS):
