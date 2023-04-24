@@ -12,6 +12,11 @@ rng = default_rng()
 import os
 
 allParticipants = np.arange(1, 17) #16 participants
+for i in range(1, 10):
+    x = "0" + str(i)
+    print(x)
+    allParticipants[i] = x
+    print(allParticipants)
 
 halfParticipants = round(len(allParticipants)/2)
 
@@ -66,6 +71,9 @@ with open(File, 'w') as f:
         f.write(str(megasetA_participants))
         f.write("\n")
         f.write("Participants assigned Megaset B: ")
-        f.write(str(megasetB_participants))
+        f.write(str(megasetB_participants))   
+        f.write("\n")
+        f.write("Remember to add in leading zeros for single-digit numbers.")
         f.close
-        
+    
+print("Remember to add in leading zeros for single-digit numbers.")

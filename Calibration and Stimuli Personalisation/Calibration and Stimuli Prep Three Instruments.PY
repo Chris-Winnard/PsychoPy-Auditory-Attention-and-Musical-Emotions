@@ -113,13 +113,13 @@ while True:
     pianoOutput = piano.apply_gain(20*np.log10(piano_loudness))
     
     mix = vibrOutput.overlay(harmOutput).overlay(pianoOutput)
-    mix.export("Temp.wav", format="wav")    
+    mix.export("TempMix.wav", format="wav")    
     
     #Create players for new mix:
     players = []
     for i in range(1, OUT_CHANNELS):
         if i < len(spk_volume):  # check if spk_volume has the correct number of elements
-            player = sound.Sound("Temp.wav")
+            player = sound.Sound("TempMix.wav")
             player.setVolume(spk_volume[i])  # set the volume for the current speaker
         players.append(player)
 
@@ -278,6 +278,7 @@ while True:
 s.stop()
 s.shutdown()
 
+os.remove("TempMix.wav")
 os.remove("Temp.wav") #Not strictly needed, keeps things terse.
 
 ctypes.windll.user32.MessageBoxW(0, "Your settings have been saved.", "Success!")

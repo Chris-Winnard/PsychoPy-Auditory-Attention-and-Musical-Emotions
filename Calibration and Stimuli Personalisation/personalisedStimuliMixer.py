@@ -59,13 +59,13 @@ ssGains = ssGainsData.split(" ")
 ssGainsFile.close()
 
 ssVibrGainLinear = float(ssGains[1])
-ssVibrGain = 20*log10(ssVibrGainLinear)
+ssVibrGain = 20*np.log10(ssVibrGainLinear)
 
 ssHarmGainLinear = float(ssGains[3])
-ssHarmGain = 20*log10(ssHarmGainLinear)
+ssHarmGain = 20*np.log10(ssHarmGainLinear)
 
 ssKeybGainLinear = float(ssGains[5])
-ssKeybGain = 20*log10(ssKeybGainLinear)
+ssKeybGain = 20*np.log10(ssKeybGainLinear)
 
 
 #Single stimuli:
@@ -100,13 +100,11 @@ msGains = msGainsData.split(" ")
 msGainsFile.close()
 
 msVibrGainLinear = float(msGains[1])
-msVibrGain = 20*log10(msVibrGainLinear)
-
+msVibrGain = 20*np.log10(msVibrGainLinear)
 msHarmGainLinear = float(msGains[3])
-msHarmGain = 20*log10(msHarmGainLinear)
-
+msHarmGain = 20*np.log10(msHarmGainLinear)
 msKeybGainLinear = float(msGains[5])
-msKeybGain = 20*log10(msKeybGainLinear)
+msKeybGain = 20*np.log10(msKeybGainLinear)
 
 def mixer(attendedInst):
     VibrDone = False
@@ -114,8 +112,7 @@ def mixer(attendedInst):
     KeybDone = False
     for file in os.scandir(participantPath):  
         for i in range(1, 13):
-            adaptedNum = str(i) + "-" #Differentiate "Set1-Vibr" from "Set12-"Vibr"
-            if "Set" + adaptedNum in file.name and attendedInst in file.name: #Only oddball versions. This will also ignore triggers etc.
+            if "Set" + str(i) in file.name and attendedInst in file.name: #Only oddball versions. This will also ignore triggers etc.
                 signal = AudioSegment.from_wav(file)
                 signal = signal[0:1433250] #Remove any excess points - should be 1 min 5s exactly.
                 
