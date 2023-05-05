@@ -18,6 +18,7 @@ oddballDemosPath = str(upperFolderPath) + "/Oddball Demos"
 #Find correct path for the gain files, and for outputs:
 dataPath = str(upperFolderPath) + "/Data"
 participantPath = max(glob.glob(os.path.join(dataPath, '*/')), key=os.path.getmtime) #Last updated
+print(participantPath)
 #subfolder in Data folder. Because we run this and randomOddballCreator IMMEDIATELY after participant's
 #folder is created, this will be the output path for them.
 
@@ -106,13 +107,14 @@ msHarmGain = 20*np.log10(msHarmGainLinear)
 msKeybGainLinear = float(msGains[5])
 msKeybGain = 20*np.log10(msKeybGainLinear)
 
-def mixer(attendedInst):
+def mixer(attendedInst): 
     VibrDone = False
     HarmDone = False #Hippocrates approves. 
     KeybDone = False
     for file in os.scandir(participantPath):  
         for i in range(1, 13):
-            if "Set" + str(i) in file.name and attendedInst in file.name: #Only oddball versions. This will also ignore triggers etc.
+
+            if "Set" + str(i) in file.name and attendedInst in file.name[-17:-13]: #Only oddball versions. This will also ignore triggers etc.
                 signal = AudioSegment.from_wav(file)
                 signal = signal[0:1433250] #Remove any excess points - should be 1 min 5s exactly.
                 
@@ -133,6 +135,7 @@ def mixer(attendedInst):
                             
                 if KeybDone == True and HarmDone == True and VibrDone == True:
                     outputPathPlusName = participantPath + "/Set" + str(i) + "-Oddball Test Mix - " + attendedInst + ".wav"
+                    print(outputPathPlusName)
                     oddballStimMix = VibrSignal.overlay(HarmSignal).overlay(KeybSignal) #All 3 overlaid together (panned in above steps)
                     oddballStimMix.export(outputPathPlusName, format="wav")
 
