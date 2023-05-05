@@ -199,10 +199,10 @@ mouse = event.Mouse(win=win)
 x, y = [None, None]
 mouse.mouseClock = core.Clock()
 
-# Initialize components for Routine "Current_Mental_Property_pg1"
-Current_Mental_Property_pg1Clock = core.Clock()
+# Initialize components for Routine "Current_Mental_State_pg1"
+Current_Mental_State_pg1Clock = core.Clock()
 cmpHeading = visual.TextStim(win=win, name='cmpHeading',
-    text='Current Mental Property',
+    text='Current Mental State',
     font='Open Sans',
     pos=(-0.4, 0.4), height=0.05, wrapWidth=None, ori=0.0, 
     color='white', colorSpace='rgb', opacity=None, 
@@ -255,10 +255,10 @@ mouse2 = event.Mouse(win=win)
 x, y = [None, None]
 mouse2.mouseClock = core.Clock()
 
-# Initialize components for Routine "Current_Mental_Property_pg2"
-Current_Mental_Property_pg2Clock = core.Clock()
+# Initialize components for Routine "Current_Mental_State_pg2"
+Current_Mental_State_pg2Clock = core.Clock()
 cmpHeading_2 = visual.TextStim(win=win, name='cmpHeading_2',
-    text='Current Mental Property: Emotions',
+    text='Current Mental State: Emotions',
     font='Open Sans',
     pos=(-0.4, 0.4), height=0.05, wrapWidth=None, ori=0.0, 
     color='white', colorSpace='rgb', opacity=None, 
@@ -267,20 +267,18 @@ cmpHeading_2 = visual.TextStim(win=win, name='cmpHeading_2',
 text_2 = visual.TextStim(win=win, name='text_2',
     text='Please remember to ask for clarification if you are unsure of any questions.',
     font='Open Sans',
-    pos=(0, 0.34), height=0.03, wrapWidth=1.7, ori=0.0, 
-    color='white', colorSpace='rgb', opacity=None, 
+    pos=(-0.345, 0.34), height=0.03, wrapWidth=1.7, ori=0.0, 
+    color='white', colorSpace='rgb', opacity=None, anchorVert='top',
     languageStyle='LTR',
     depth=-1.0);
 clickForEmotionInfo = visual.TextBox2(
-     win, text='Click here for more information on how the scales relate to particular emotions.', font='Open Sans',
-     pos=(0, 0.295),     letterHeight=0.03,
-     size=(1.7, 0.035), borderWidth=2.0,
-     color=[0.5961, -0.7333, -0.7333], colorSpace='rgb',
+     win, 
+     text='                                                                                                                                  Click here for more information on how the\nscales relate to particular emotions.', font='Open Sans',
+     pos=(0, 0.3115), letterHeight=0.03, size=(2.6, 0.04625),
+     color=[-1, 1, -1], colorSpace='rgb',
      opacity=None,
-     bold=True, italic=False,
-     lineSpacing=1.0,
-     padding=0.0, alignment='center',
-     anchor='center',
+     bold=True, italic=False, lineSpacing=0.65,
+     padding=0.0, alignment='center', anchor='centre',
      fillColor=None, borderColor=None,
      flipHoriz=False, flipVert=False, languageStyle='LTR',
      editable=False,
@@ -704,6 +702,7 @@ _timeToFirstFrame = win.getFutureFlipTime(clock="now")
 DemographicsClock.reset(-_timeToFirstFrame)  # t0 is time of first possible flip
 frameN = -1
 
+gotValidGender = False
 # -------Run Routine "Demographics"-------
 while continueRoutine:
     # get current time
@@ -758,6 +757,9 @@ while continueRoutine:
         win.timeOnFlip(age, 'tStartRefresh')  # time at next scr refresh
         age.setAutoDraw(True)
     
+    if (genderResp.rating == 0.0) or (genderResp.rating == 1.0) or (genderResp.rating == 2.0) or (genderResp.rating == 3.0) or (genderResp.rating == 4.0 and genderRespOther.text):
+            gotValidGender = True
+            
     # *ageResp* updates
     if ageResp.status == NOT_STARTED and tThisFlip >= 0.0-frameTolerance:
         # keep track of start time/frame for later
@@ -803,14 +805,6 @@ while continueRoutine:
         win.timeOnFlip(originCountryResp, 'tStartRefresh')  # time at next scr refresh
         originCountryResp.setAutoDraw(True)
     
-    # *nextButton* updates
-    if nextButton.status == NOT_STARTED and tThisFlip >= 0.0-frameTolerance:
-        # keep track of start time/frame for later
-        nextButton.frameNStart = frameN  # exact frame index
-        nextButton.tStart = t  # local t and not account for scr refresh
-        nextButton.tStartRefresh = tThisFlipGlobal  # on global time
-        win.timeOnFlip(nextButton, 'tStartRefresh')  # time at next scr refresh
-        nextButton.setAutoDraw(True)
     # *mouse* updates
     if mouse.status == NOT_STARTED and t >= 0.0-frameTolerance:
         # keep track of start time/frame for later
@@ -828,17 +822,27 @@ while continueRoutine:
             if sum(buttons) > 0:  # state changed to a new click
                 # check if the mouse was inside our 'clickable' objects
                 gotValidClick = False
-                try:
-                    iter(nextButton)
-                    clickableList = nextButton
-                except:
-                    clickableList = [nextButton]
-                for obj in clickableList:
-                    if obj.contains(mouse):
-                        gotValidClick = True
-                        mouse.clicked_name.append(obj.name)
-                if gotValidClick:  
-                    continueRoutine = False  # abort routine on response
+                if (nextButton.status == STARTED and (genderResp.rating or genderResp.rating == 0.0) and ageResp.text and nationalityResp.text and originCountryResp.text):
+                    try:
+                        iter(nextButton)
+                        clickableList = nextButton
+                    except:
+                        clickableList = [nextButton]
+                    for obj in clickableList:
+                        if obj.contains(mouse):
+                            gotValidClick = True
+                            mouse.clicked_name.append(obj.name)
+                    if gotValidClick:  
+                        continueRoutine = False  # abort routine on response
+                        
+    # *nextButton* updates
+    if (nextButton.status == NOT_STARTED and gotValidGender and ageResp.text and nationalityResp.text and originCountryResp.text):
+        # keep track of start time/frame for later
+        nextButton.frameNStart = frameN  # exact frame index
+        nextButton.tStart = t  # local t and not account for scr refresh
+        nextButton.tStartRefresh = tThisFlipGlobal  # on global time
+        win.timeOnFlip(nextButton, 'tStartRefresh')  # time at next scr refresh
+        nextButton.setAutoDraw(True)
     
     # check for quit (typically the Esc key)
     if endExpNow or defaultKeyboard.getKeys(keyList=["escape"]):
@@ -872,23 +876,10 @@ thisExp.addData('nationalityResp.text',nationalityResp.text)
 thisExp.addData('originCountryResp.text',originCountryResp.text)
 # store data for thisExp (ExperimentHandler)
 x, y = mouse.getPos()
-buttons = mouse.getPressed()
-if sum(buttons):
-    # check if the mouse was inside our 'clickable' objects
-    gotValidClick = False
-    try:
-        iter(nextButton)
-        clickableList = nextButton
-    except:
-        clickableList = [nextButton]
-    for obj in clickableList:
-        if obj.contains(mouse):
-            gotValidClick = True
-            mouse.clicked_name.append(obj.name)
 # the Routine "Demographics" was not non-slip safe, so reset the non-slip timer
 routineTimer.reset()
 
-# ------Prepare to start Routine "Current_Mental_Property_pg1"-------
+# ------Prepare to start Routine "Current_Mental_State_pg1"-------
 continueRoutine = True
 # update component parameters for each repeat
 tiredResp.reset()
@@ -897,8 +888,8 @@ wiredResp.reset()
 mouse2.clicked_name = []
 gotValidClick = False  # until a click is received
 # keep track of which components have finished
-Current_Mental_Property_pg1Components = [cmpHeading, text, tired, tiredResp, wired, wiredResp, nextButton2, mouse2]
-for thisComponent in Current_Mental_Property_pg1Components:
+Current_Mental_State_pg1Components = [cmpHeading, text, tired, tiredResp, wired, wiredResp, nextButton2, mouse2]
+for thisComponent in Current_Mental_State_pg1Components:
     thisComponent.tStart = None
     thisComponent.tStop = None
     thisComponent.tStartRefresh = None
@@ -908,14 +899,14 @@ for thisComponent in Current_Mental_Property_pg1Components:
 # reset timers
 t = 0
 _timeToFirstFrame = win.getFutureFlipTime(clock="now")
-Current_Mental_Property_pg1Clock.reset(-_timeToFirstFrame)  # t0 is time of first possible flip
+Current_Mental_State_pg1Clock.reset(-_timeToFirstFrame)  # t0 is time of first possible flip
 frameN = -1
 
-# -------Run Routine "Current_Mental_Property_pg1"-------
+# -------Run Routine "Current_Mental_State_pg1"-------
 while continueRoutine:
     # get current time
-    t = Current_Mental_Property_pg1Clock.getTime()
-    tThisFlip = win.getFutureFlipTime(clock=Current_Mental_Property_pg1Clock)
+    t = Current_Mental_State_pg1Clock.getTime()
+    tThisFlip = win.getFutureFlipTime(clock=Current_Mental_State_pg1Clock)
     tThisFlipGlobal = win.getFutureFlipTime(clock=None)
     frameN = frameN + 1  # number of completed frames (so 0 is the first frame)
     # update/draw components on each frame
@@ -975,7 +966,7 @@ while continueRoutine:
         wiredResp.setAutoDraw(True)
     
     # *nextButton2* updates
-    if nextButton2.status == NOT_STARTED and tThisFlip >= 0.0-frameTolerance:
+    if (nextButton2.status == NOT_STARTED and tiredResp.rating and wiredResp.rating):
         # keep track of start time/frame for later
         nextButton2.frameNStart = frameN  # exact frame index
         nextButton2.tStart = t  # local t and not account for scr refresh
@@ -999,18 +990,19 @@ while continueRoutine:
             if sum(buttons) > 0:  # state changed to a new click
                 # check if the mouse was inside our 'clickable' objects
                 gotValidClick = False
-                try:
-                    iter(nextButton)
-                    clickableList = nextButton
-                except:
-                    clickableList = [nextButton]
-                for obj in clickableList:
-                    if obj.contains(mouse2):
-                        gotValidClick = True
-                        mouse2.clicked_name.append(obj.name)
-                if gotValidClick:  
-                    continueRoutine = False  # abort routine on response
-    
+                if (nextButton2.status == STARTED and wiredResp.rating and tiredResp.rating):
+                    try:
+                        iter(nextButton2)
+                        clickableList = nextButton2
+                    except:
+                        clickableList = [nextButton2]
+                    for obj in clickableList:
+                        if obj.contains(mouse2):
+                            gotValidClick = True
+                            mouse2.clicked_name.append(obj.name)
+                    if gotValidClick:  
+                        continueRoutine = False  # abort routine on response
+          
     # check for quit (typically the Esc key)
     if endExpNow or defaultKeyboard.getKeys(keyList=["escape"]):
         core.quit()
@@ -1019,7 +1011,7 @@ while continueRoutine:
     if not continueRoutine:  # a component has requested a forced-end of Routine
         break
     continueRoutine = False  # will revert to True if at least one component still running
-    for thisComponent in Current_Mental_Property_pg1Components:
+    for thisComponent in Current_Mental_State_pg1Components:
         if hasattr(thisComponent, "status") and thisComponent.status != FINISHED:
             continueRoutine = True
             break  # at least one component has not yet finished
@@ -1028,33 +1020,21 @@ while continueRoutine:
     if continueRoutine:  # don't flip if this routine is over or we'll get a blank screen
         win.flip()
 
-# -------Ending Routine "Current_Mental_Property_pg1"-------
-for thisComponent in Current_Mental_Property_pg1Components:
+# -------Ending Routine "Current_Mental_State_pg1"-------
+for thisComponent in Current_Mental_State_pg1Components:
     if hasattr(thisComponent, "setAutoDraw"):
         thisComponent.setAutoDraw(False)
 thisExp.addData('tiredResp.response', tiredResp.getRating())
 thisExp.addData('wiredResp.response', wiredResp.getRating())
 # store data for thisExp (ExperimentHandler)
 x, y = mouse2.getPos()
-buttons = mouse2.getPressed()
-if sum(buttons):
-    # check if the mouse was inside our 'clickable' objects
-    gotValidClick = False
-    try:
-        iter(nextButton)
-        clickableList = nextButton
-    except:
-        clickableList = [nextButton]
-    for obj in clickableList:
-        if obj.contains(mouse2):
-            gotValidClick = True
-            mouse2.clicked_name.append(obj.name)
-# the Routine "Current_Mental_Property_pg1" was not non-slip safe, so reset the non-slip timer
+
+# the Routine "Current_Mental_State_pg1" was not non-slip safe, so reset the non-slip timer
 routineTimer.reset()
 moveToPersonalResponses = False #So we can open an information page without skipping ahead to the next section of questions.
 
 while moveToPersonalResponses == False:
-    # ------Prepare to start Routine "Current_Mental_Property_pg2"-------
+    # ------Prepare to start Routine "Current_Mental_State_pg2"-------
     continueRoutine = True
     # update component parameters for each repeat
     clickForEmotionInfo.reset()
@@ -1065,8 +1045,8 @@ while moveToPersonalResponses == False:
     mouse2_2.clicked_name = []
     gotValidClick = False  # until a click is received
     # keep track of which components have finished
-    Current_Mental_Property_pg2Components = [cmpHeading_2, text_2, clickForEmotionInfo, moodValence, moodValenceResp, moodArousal, moodArousalResp, moodDominance, moodDominanceResp, nextButton2_2, mouse2_2]
-    for thisComponent in Current_Mental_Property_pg2Components:
+    Current_Mental_State_pg2Components = [cmpHeading_2, text_2, clickForEmotionInfo, moodValence, moodValenceResp, moodArousal, moodArousalResp, moodDominance, moodDominanceResp, nextButton2_2, mouse2_2]
+    for thisComponent in Current_Mental_State_pg2Components:
         thisComponent.tStart = None
         thisComponent.tStop = None
         thisComponent.tStartRefresh = None
@@ -1076,14 +1056,14 @@ while moveToPersonalResponses == False:
     # reset timers
     t = 0
     _timeToFirstFrame = win.getFutureFlipTime(clock="now")
-    Current_Mental_Property_pg2Clock.reset(-_timeToFirstFrame)  # t0 is time of first possible flip
+    Current_Mental_State_pg2Clock.reset(-_timeToFirstFrame)  # t0 is time of first possible flip
     frameN = -1
     
-    # -------Run Routine "Current_Mental_Property_pg2"-------
+    # -------Run Routine "Current_Mental_State_pg2"-------
     while continueRoutine:
         # get current time
-        t = Current_Mental_Property_pg2Clock.getTime()
-        tThisFlip = win.getFutureFlipTime(clock=Current_Mental_Property_pg2Clock)
+        t = Current_Mental_State_pg2Clock.getTime()
+        tThisFlip = win.getFutureFlipTime(clock=Current_Mental_State_pg2Clock)
         tThisFlipGlobal = win.getFutureFlipTime(clock=None)
         frameN = frameN + 1  # number of completed frames (so 0 is the first frame)
         # update/draw components on each frame
@@ -1169,15 +1149,7 @@ while moveToPersonalResponses == False:
             win.timeOnFlip(moodDominanceResp, 'tStartRefresh')  # time at next scr refresh
             moodDominanceResp.setAutoDraw(True)
         
-        # *nextButton2_2* updates
-        if nextButton2_2.status == NOT_STARTED and tThisFlip >= 0.0-frameTolerance:
-            # keep track of start time/frame for later
-            nextButton2_2.frameNStart = frameN  # exact frame index
-            nextButton2_2.tStart = t  # local t and not account for scr refresh
-            nextButton2_2.tStartRefresh = tThisFlipGlobal  # on global time
-            win.timeOnFlip(nextButton2_2, 'tStartRefresh')  # time at next scr refresh
-            nextButton2_2.setAutoDraw(True)
-        # *mouse2_2* updates
+        # *mouse* updates
         if mouse2_2.status == NOT_STARTED and t >= 0.0-frameTolerance:
             # keep track of start time/frame for later
             mouse2_2.frameNStart = frameN  # exact frame index
@@ -1194,20 +1166,41 @@ while moveToPersonalResponses == False:
                 if sum(buttons) > 0:  # state changed to a new click
                     # check if the mouse was inside our 'clickable' objects
                     gotValidClick = False
-                    try:
-                        iter([nextButton, clickForEmotionInfo])
-                        clickableList = [nextButton, clickForEmotionInfo]
-                    except:
-                        clickableList = [[nextButton, clickForEmotionInfo]]
-                    for obj in clickableList:
-                        if obj.contains(mouse2_2):
-                            gotValidClick = True
-                            mouse2_2.clicked_name.append(obj.name)
-                            if obj.name == 'nextButton':
-                                moveToPersonalResponses = True
+                    if (nextButton2_2.status == STARTED and moodValenceResp.rating and moodArousalResp.rating and moodDominanceResp.rating): #Only want the next button to be clickable if it's actually been activated!
+                        try:
+                            iter([nextButton2_2, clickForEmotionInfo])
+                            clickableList = [nextButton2_2, clickForEmotionInfo]
+                        except:
+                            clickableList = [[nextButton2_2, clickForEmotionInfo]]
+                        for obj in clickableList:
+                            if obj.contains(mouse2_2):
+                                gotValidClick = True
+                                mouse2_2.clicked_name.append(obj.name)
+                                if obj.name == 'nextButton2_2':
+                                        moveToPersonalResponses = True
+                    else:
+                        try:
+                            iter([clickForEmotionInfo])
+                            clickableList = [clickForEmotionInfo]
+                        except:
+                            clickableList = [[clickForEmotionInfo]]
+                        for obj in clickableList:
+                            if obj.contains(mouse2_2):
+                                gotValidClick = True
+                                mouse2_2.clicked_name.append(obj.name)
                     if gotValidClick:  
                         continueRoutine = False  # abort routine on response
         
+        # *nextButton* updates
+        if (nextButton2_2.status == NOT_STARTED and moodValenceResp.rating and moodArousalResp.rating and moodDominanceResp.rating):
+            print("done")
+            # keep track of start time/frame for later
+            nextButton2_2.frameNStart = frameN  # exact frame index
+            nextButton2_2.tStart = t  # local t and not account for scr refresh
+            nextButton2_2.tStartRefresh = tThisFlipGlobal  # on global time
+            win.timeOnFlip(nextButton2_2, 'tStartRefresh')  # time at next scr refresh
+            nextButton2_2.setAutoDraw(True)
+    
         # check for quit (typically the Esc key)
         if endExpNow or defaultKeyboard.getKeys(keyList=["escape"]):
             core.quit()
@@ -1216,7 +1209,7 @@ while moveToPersonalResponses == False:
         if not continueRoutine:  # a component has requested a forced-end of Routine
             break
         continueRoutine = False  # will revert to True if at least one component still running
-        for thisComponent in Current_Mental_Property_pg2Components:
+        for thisComponent in Current_Mental_State_pg2Components:
             if hasattr(thisComponent, "status") and thisComponent.status != FINISHED:
                 continueRoutine = True
                 break  # at least one component has not yet finished
@@ -1225,8 +1218,8 @@ while moveToPersonalResponses == False:
         if continueRoutine:  # don't flip if this routine is over or we'll get a blank screen
             win.flip()
     
-    # -------Ending Routine "Current_Mental_Property_pg2"-------
-    for thisComponent in Current_Mental_Property_pg2Components:
+    # -------Ending Routine "Current_Mental_State_pg2"-------
+    for thisComponent in Current_Mental_State_pg2Components:
         if hasattr(thisComponent, "setAutoDraw"):
             thisComponent.setAutoDraw(False)
     thisExp.addData('moodValenceResp.response', moodValenceResp.getRating())
@@ -1234,23 +1227,11 @@ while moveToPersonalResponses == False:
     thisExp.addData('moodDominanceResp.response', moodDominanceResp.getRating())
     # store data for thisExp (ExperimentHandler)
     x, y = mouse2_2.getPos()
-    buttons = mouse2_2.getPressed()
-    if sum(buttons):
-        # check if the mouse was inside our 'clickable' objects
-        gotValidClick = False
-        try:
-            iter([nextButton, clickForEmotionInfo])
-            clickableList = [nextButton, clickForEmotionInfo]
-        except:
-            clickableList = [[nextButton, clickForEmotionInfo]]
-        for obj in clickableList:
-            if obj.contains(mouse2_2):
-                gotValidClick = True
-                mouse2_2.clicked_name.append(obj.name)
-    # the Routine "Current_Mental_Property_pg2" was not non-slip safe, so reset the non-slip timer
+    
+    # the Routine "Current_Mental_State_pg2" was not non-slip safe, so reset the non-slip timer
     routineTimer.reset()
     
-    if moveToPersonalResponses == False: #Due to a bug, this needs to be here as well.
+    if moveToPersonalResponses == False: #This needs to be here as well.
         # ------Prepare to start Routine "Categorical_Emotions_to_VAD_Mapping"-------
         continueRoutine = True
         # update component parameters for each repeat
@@ -1359,19 +1340,6 @@ while moveToPersonalResponses == False:
                 thisComponent.setAutoDraw(False)
         # store data for thisExp (ExperimentHandler)
         x, y = mouse_3.getPos()
-        buttons = mouse_3.getPressed()
-        if sum(buttons):
-            # check if the mouse was inside our 'clickable' objects
-            gotValidClick = False
-            try:
-                iter(nextButton)
-                clickableList = nextButton
-            except:
-                clickableList = [nextButton]
-            for obj in clickableList:
-                if obj.contains(mouse_3):
-                    gotValidClick = True
-                    mouse_3.clicked_name.append(obj.name)
         # the Routine "Categorical_Emotions_to_VAD_Mapping" was not non-slip safe, so reset the non-slip timer
         routineTimer.reset()
 
@@ -1509,8 +1477,8 @@ while continueRoutine:
         win.timeOnFlip(Q14Resp, 'tStartRefresh')  # time at next scr refresh
         Q14Resp.setAutoDraw(True)
     
-    # *nextButton_2* updates
-    if nextButton_2.status == NOT_STARTED and tThisFlip >= 0.0-frameTolerance:
+        # *nextButton_2* updates
+    if (nextButton_2.status == NOT_STARTED and Q10Resp.rating and Q11Resp.rating and Q12Resp.rating and Q13Resp.rating and Q14Resp.rating):
         # keep track of start time/frame for later
         nextButton_2.frameNStart = frameN  # exact frame index
         nextButton_2.tStart = t  # local t and not account for scr refresh
@@ -1534,17 +1502,18 @@ while continueRoutine:
             if sum(buttons) > 0:  # state changed to a new click
                 # check if the mouse was inside our 'clickable' objects
                 gotValidClick = False
-                try:
-                    iter(nextButton)
-                    clickableList = nextButton
-                except:
-                    clickableList = [nextButton]
-                for obj in clickableList:
-                    if obj.contains(mouse_2):
-                        gotValidClick = True
-                        mouse_2.clicked_name.append(obj.name)
-                if gotValidClick:  
-                    continueRoutine = False  # abort routine on response
+                if (nextButton_2.status == STARTED and Q10Resp.rating and Q11Resp.rating and Q12Resp.rating and Q13Resp.rating and Q14Resp.rating):
+                    try:
+                        iter(nextButton_2)
+                        clickableList = nextButton_2
+                    except:
+                        clickableList = [nextButton_2]
+                    for obj in clickableList:
+                        if obj.contains(mouse_2):
+                            gotValidClick = True
+                            mouse_2.clicked_name.append(obj.name)
+                    if gotValidClick:  
+                        continueRoutine = False  # abort routine on response
     
     # check for quit (typically the Esc key)
     if endExpNow or defaultKeyboard.getKeys(keyList=["escape"]):
@@ -1575,19 +1544,6 @@ thisExp.addData('Q13Resp.response', Q13Resp.getRating())
 thisExp.addData('Q14Resp.response', Q14Resp.getRating())
 # store data for thisExp (ExperimentHandler)
 x, y = mouse_2.getPos()
-buttons = mouse_2.getPressed()
-if sum(buttons):
-    # check if the mouse was inside our 'clickable' objects
-    gotValidClick = False
-    try:
-        iter(nextButton)
-        clickableList = nextButton
-    except:
-        clickableList = [nextButton]
-    for obj in clickableList:
-        if obj.contains(mouse_2):
-            gotValidClick = True
-            mouse_2.clicked_name.append(obj.name)
 # the Routine "Personal_Responses_to_Music__Perception_pg1" was not non-slip safe, so reset the non-slip timer
 routineTimer.reset()
 
@@ -1706,8 +1662,8 @@ while continueRoutine:
         win.timeOnFlip(Q18Resp, 'tStartRefresh')  # time at next scr refresh
         Q18Resp.setAutoDraw(True)
     
-    # *nextButton_2* updates
-    if nextButton_2.status == NOT_STARTED and tThisFlip >= 0.0-frameTolerance:
+            # *nextButton_2* updates
+    if (nextButton_2.status == NOT_STARTED and Q15Resp.rating and Q16Resp.rating and Q17Resp.rating and Q18Resp.rating):
         # keep track of start time/frame for later
         nextButton_2.frameNStart = frameN  # exact frame index
         nextButton_2.tStart = t  # local t and not account for scr refresh
@@ -1731,17 +1687,18 @@ while continueRoutine:
             if sum(buttons) > 0:  # state changed to a new click
                 # check if the mouse was inside our 'clickable' objects
                 gotValidClick = False
-                try:
-                    iter(nextButton)
-                    clickableList = nextButton
-                except:
-                    clickableList = [nextButton]
-                for obj in clickableList:
-                    if obj.contains(mouse_2):
-                        gotValidClick = True
-                        mouse_2.clicked_name.append(obj.name)
-                if gotValidClick:  
-                    continueRoutine = False  # abort routine on response
+                if (nextButton_2.status == STARTED and Q15Resp.rating and Q16Resp.rating and Q17Resp.rating and Q18Resp.rating):
+                    try:
+                        iter(nextButton_2)
+                        clickableList = nextButton_2
+                    except:
+                        clickableList = [nextButton_2]
+                    for obj in clickableList:
+                        if obj.contains(mouse_2):
+                            gotValidClick = True
+                            mouse_2.clicked_name.append(obj.name)
+                    if gotValidClick:  
+                        continueRoutine = False  # abort routine on response
     
     # check for quit (typically the Esc key)
     if endExpNow or defaultKeyboard.getKeys(keyList=["escape"]):
@@ -1771,19 +1728,6 @@ thisExp.addData('Q17Resp.response', Q17Resp.getRating())
 thisExp.addData('Q18Resp.response', Q18Resp.getRating())
 # store data for thisExp (ExperimentHandler)
 x, y = mouse_2.getPos()
-buttons = mouse_2.getPressed()
-if sum(buttons):
-    # check if the mouse was inside our 'clickable' objects
-    gotValidClick = False
-    try:
-        iter(nextButton)
-        clickableList = nextButton
-    except:
-        clickableList = [nextButton]
-    for obj in clickableList:
-        if obj.contains(mouse_2):
-            gotValidClick = True
-            mouse_2.clicked_name.append(obj.name)
 # the Routine "Personal_Responses_to_Music__Perception_pg2" was not non-slip safe, so reset the non-slip timer
 routineTimer.reset()
 
@@ -1922,12 +1866,12 @@ while continueRoutine:
         Q23Resp.setAutoDraw(True)
     
     # *nextButton_4* updates
-    if nextButton_4.status == NOT_STARTED and tThisFlip >= 0.0-frameTolerance:
+    if (nextButton_4.status == NOT_STARTED and Q19Resp.rating and Q20Resp.rating and Q21Resp.rating and Q22Resp.rating and Q23Resp.rating):
         # keep track of start time/frame for later
         nextButton_4.frameNStart = frameN  # exact frame index
         nextButton_4.tStart = t  # local t and not account for scr refresh
         nextButton_4.tStartRefresh = tThisFlipGlobal  # on global time
-        win.timeOnFlip(nextButton_4, 'tStartRefresh')  # time at next scr refresh
+        win.timeOnFlip(nextButton_2, 'tStartRefresh')  # time at next scr refresh
         nextButton_4.setAutoDraw(True)
     # *mouse_4* updates
     if mouse_4.status == NOT_STARTED and t >= 0.0-frameTolerance:
@@ -1946,17 +1890,18 @@ while continueRoutine:
             if sum(buttons) > 0:  # state changed to a new click
                 # check if the mouse was inside our 'clickable' objects
                 gotValidClick = False
-                try:
-                    iter(nextButton)
-                    clickableList = nextButton
-                except:
-                    clickableList = [nextButton]
-                for obj in clickableList:
-                    if obj.contains(mouse_4):
-                        gotValidClick = True
-                        mouse_4.clicked_name.append(obj.name)
-                if gotValidClick:  
-                    continueRoutine = False  # abort routine on response
+                if (nextButton_4.status == STARTED and Q19Resp.rating and Q20Resp.rating and Q21Resp.rating and Q22Resp.rating and Q23Resp.rating):
+                    try:
+                        iter(nextButton_4)
+                        clickableList = nextButton_4
+                    except:
+                        clickableList = [nextButton_4]
+                    for obj in clickableList:
+                        if obj.contains(mouse_4):
+                            gotValidClick = True
+                            mouse_4.clicked_name.append(obj.name)
+                    if gotValidClick:  
+                        continueRoutine = False  # abort routine on response
     
     # check for quit (typically the Esc key)
     if endExpNow or defaultKeyboard.getKeys(keyList=["escape"]):
@@ -1984,21 +1929,7 @@ thisExp.addData('Q20Resp.response', Q20Resp.getRating())
 thisExp.addData('Q21Resp.response', Q21Resp.getRating())
 thisExp.addData('Q22Resp.response', Q22Resp.getRating())
 thisExp.addData('Q23Resp.response', Q23Resp.getRating())
-# store data for thisExp (ExperimentHandler)
-x, y = mouse_4.getPos()
-buttons = mouse_4.getPressed()
-if sum(buttons):
-    # check if the mouse was inside our 'clickable' objects
-    gotValidClick = False
-    try:
-        iter(nextButton)
-        clickableList = nextButton
-    except:
-        clickableList = [nextButton]
-    for obj in clickableList:
-        if obj.contains(mouse_4):
-            gotValidClick = True
-            mouse_4.clicked_name.append(obj.name)
+
 # the Routine "Personal_Responses_to_Music__Emotion_pg1" was not non-slip safe, so reset the non-slip timer
 routineTimer.reset()
 
@@ -2060,13 +1991,13 @@ while continueRoutine:
         win.timeOnFlip(Q24Resp, 'tStartRefresh')  # time at next scr refresh
         Q24Resp.setAutoDraw(True)
     
-    # *nextButton_4* updates
-    if nextButton_4.status == NOT_STARTED and tThisFlip >= 0.0-frameTolerance:
+# *nextButton_4* updates
+    if (nextButton_4.status == NOT_STARTED and Q24Resp.rating):
         # keep track of start time/frame for later
         nextButton_4.frameNStart = frameN  # exact frame index
         nextButton_4.tStart = t  # local t and not account for scr refresh
         nextButton_4.tStartRefresh = tThisFlipGlobal  # on global time
-        win.timeOnFlip(nextButton_4, 'tStartRefresh')  # time at next scr refresh
+        win.timeOnFlip(nextButton_2, 'tStartRefresh')  # time at next scr refresh
         nextButton_4.setAutoDraw(True)
     # *mouse_4* updates
     if mouse_4.status == NOT_STARTED and t >= 0.0-frameTolerance:
@@ -2085,17 +2016,18 @@ while continueRoutine:
             if sum(buttons) > 0:  # state changed to a new click
                 # check if the mouse was inside our 'clickable' objects
                 gotValidClick = False
-                try:
-                    iter(nextButton)
-                    clickableList = nextButton
-                except:
-                    clickableList = [nextButton]
-                for obj in clickableList:
-                    if obj.contains(mouse_4):
-                        gotValidClick = True
-                        mouse_4.clicked_name.append(obj.name)
-                if gotValidClick:  
-                    continueRoutine = False  # abort routine on response
+                if (nextButton_4.status == STARTED and Q24Resp.rating):
+                    try:
+                        iter(nextButton_4)
+                        clickableList = nextButton_4
+                    except:
+                        clickableList = [nextButton_4]
+                    for obj in clickableList:
+                        if obj.contains(mouse_4):
+                            gotValidClick = True
+                            mouse_4.clicked_name.append(obj.name)
+                    if gotValidClick:  
+                        continueRoutine = False  # abort routine on response
     
     # check for quit (typically the Esc key)
     if endExpNow or defaultKeyboard.getKeys(keyList=["escape"]):
@@ -2121,19 +2053,6 @@ for thisComponent in Personal_Responses_to_Music__Emotion_pg2Components:
 thisExp.addData('Q24Resp.response', Q24Resp.getRating())
 # store data for thisExp (ExperimentHandler)
 x, y = mouse_4.getPos()
-buttons = mouse_4.getPressed()
-if sum(buttons):
-    # check if the mouse was inside our 'clickable' objects
-    gotValidClick = False
-    try:
-        iter(nextButton)
-        clickableList = nextButton
-    except:
-        clickableList = [nextButton]
-    for obj in clickableList:
-        if obj.contains(mouse_4):
-            gotValidClick = True
-            mouse_4.clicked_name.append(obj.name)
 # the Routine "Personal_Responses_to_Music__Emotion_pg2" was not non-slip safe, so reset the non-slip timer
 routineTimer.reset()
 

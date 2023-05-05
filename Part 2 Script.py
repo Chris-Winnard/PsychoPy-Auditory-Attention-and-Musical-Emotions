@@ -444,7 +444,7 @@ while continueRoutine:
                         mouse_4.clicked_name.append(obj.name)
                 if gotValidClick:  
                     continueRoutine = False  # abort routine on response
-    
+                    
     # *nextButton_R1B* updates
     if nextButton_R1B.status == NOT_STARTED and tThisFlip >= 0.0-frameTolerance:
         # keep track of start time/frame for later
@@ -729,22 +729,23 @@ for thisBlock0 in block0:
             if buttons != prevButtonState:  # button state changed?
                 prevButtonState = buttons
                 if sum(buttons) > 0:  # state changed to a new click
-                    # check if the mouse was inside our 'clickable' objects
+                    # check if the mouse was inside our 'clickable' objects 
                     gotValidClick = False
-                    try:
-                        iter(nextButton_R1B)
-                        clickableList = nextButton_R1B
-                    except:
-                        clickableList = [nextButton_R1B]
-                    for obj in clickableList:
-                        if obj.contains(mouse_4):
-                            gotValidClick = True
-                            mouse_4.clicked_name.append(obj.name)
+                    if (nextButton_R1B.status == STARTED and oddballsResp.text): #Only want the next button to be clickable if it's actually been activated!
+                            try:
+                                iter([nextButton_R1B])
+                                clickableList = [nextButton_R1B]
+                            except:
+                                clickableList = [[nextButton_R1B]]   
+                            for obj in clickableList:
+                                if obj.contains(mouse_4):
+                                    gotValidClick = True
+                                    mouse_4.clicked_name.append(obj.name)
                     if gotValidClick:  
                         continueRoutine = False  # abort routine on response
         
         # *nextButton_R1B* updates
-        if nextButton_R1B.status == NOT_STARTED and tThisFlip >= 0.0-frameTolerance:
+        if nextButton_R1B.status == NOT_STARTED and oddballsResp.text and tThisFlip >= 0.0-frameTolerance:
             # keep track of start time/frame for later
             nextButton_R1B.frameNStart = frameN  # exact frame index
             nextButton_R1B.tStart = t  # local t and not account for scr refresh
@@ -776,24 +777,12 @@ for thisBlock0 in block0:
     # store data for thisExp (ExperimentHandler)
     x, y = mouse_4.getPos()
     buttons = mouse_4.getPressed()
-    if sum(buttons):
-        # check if the mouse was inside our 'clickable' objects
-        gotValidClick = False
-        try:
-            iter(nextButton_R1B)
-            clickableList = nextButton_R1B
-        except:
-            clickableList = [nextButton_R1B]
-        for obj in clickableList:
-            if obj.contains(mouse_4):
-                gotValidClick = True
-                mouse_4.clicked_name.append(obj.name)
                 
     oddballsMinusResp = float(f'{attendedOddballs}') - float(oddballsResp.text)
     oddballsResp.reset()
     # the Routine "QuestionBreakPause" was not non-slip safe, so reset the non-slip timer
     routineTimer.reset()
-
+    
     ##FEEDBACK:
     if oddballsMinusResp == 0:
     
@@ -1298,15 +1287,16 @@ for thisBlock1 in block1:
                 if sum(buttons) > 0:  # state changed to a new click
                     # check if the mouse was inside our 'clickable' objects
                     gotValidClick = False
-                    try:
-                        iter(nextButton_R1B)
-                        clickableList = nextButton_R1B
-                    except:
-                        clickableList = [nextButton_R1B]
-                    for obj in clickableList:
-                        if obj.contains(mouse_4):
-                            gotValidClick = True
-                            mouse_4.clicked_name.append(obj.name)
+                    if (nextButton_R1B.status == STARTED and oddballsResp.text): #Only want the next button to be clickable if it's actually been activated!
+                            try:
+                                iter([nextButton_R1B])
+                                clickableList = [nextButton_R1B]
+                            except:
+                                clickableList = [[nextButton_R1B]]   
+                            for obj in clickableList:
+                                if obj.contains(mouse_4):
+                                    gotValidClick = True
+                                    mouse_4.clicked_name.append(obj.name)
                     if gotValidClick:  
                         continueRoutine = False  # abort routine on response
         
@@ -1343,18 +1333,6 @@ for thisBlock1 in block1:
     # store data for thisExp (ExperimentHandler)
     x, y = mouse_4.getPos()
     buttons = mouse_4.getPressed()
-    if sum(buttons):
-        # check if the mouse was inside our 'clickable' objects
-        gotValidClick = False
-        try:
-            iter(nextButton_R1B)
-            clickableList = nextButton_R1B
-        except:
-            clickableList = [nextButton_R1B]
-        for obj in clickableList:
-            if obj.contains(mouse_4):
-                gotValidClick = True
-                mouse_4.clicked_name.append(obj.name)
     
     oddballsMinusResp = float(f'{attendedOddballs}') - float(oddballsResp.text) #Ignores things like spaces after the number, or new lines after it.           
     oddballsResp.reset()

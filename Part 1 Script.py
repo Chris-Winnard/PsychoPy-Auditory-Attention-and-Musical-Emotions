@@ -158,16 +158,21 @@ nextButton_R1B = visual.ImageStim(
 # Initialize components for Routine "trial"
 #These will also be used for practiceTrial
 trialClock = core.Clock()
+text_2 = visual.TextStim(win=win, name='text_2',
+    text='Please remember to ask for clarification if you are unsure of any questions.',
+    font='Open Sans',
+    pos=(-0.19, 0.43), height=0.04, wrapWidth=1.7, ori=0.0, 
+    color='white', colorSpace='rgb', opacity=None, anchorVert='top',
+    languageStyle='LTR',
+    depth=-1.0);
 clickForEmotionInfo = visual.TextBox2(
-     win, text='Click here for information on how the scales relate to particular emotions.', font='Open Sans',
-     pos=(0, 0.4),     letterHeight=0.04,
-     size=(1.7, 0.04625), borderWidth=2.0,
-     color=[0.5961, -0.7333, -0.7333], colorSpace='rgb',
+     win, 
+     text='                                                                                                                                  Click here for more\ninformation on how the scales relate to particular emotions.', font='Open Sans',
+     pos=(0, 0.392), letterHeight=0.04, size=(2.6, 0.04625),
+     color=[-1, 1, -1], colorSpace='rgb',
      opacity=None,
-     bold=True, italic=False,
-     lineSpacing=1.0,
-     padding=0.0, alignment='center',
-     anchor='center',
+     bold=True, italic=False, lineSpacing=0.65,
+     padding=0.0, alignment='center', anchor='centre',
      fillColor=None, borderColor=None,
      flipHoriz=False, flipVert=False, languageStyle='LTR',
      editable=False,
@@ -397,21 +402,6 @@ while continueRoutine:
 for thisComponent in instructionsComponents:
     if hasattr(thisComponent, "setAutoDraw"):
         thisComponent.setAutoDraw(False)
-# store data for thisExp (ExperimentHandler)
-x, y = mouse_2.getPos()
-buttons = mouse_2.getPressed()
-if sum(buttons):
-    # check if the mouse was inside our 'clickable' objects
-    gotValidClick = False
-    try:
-        iter(nextButton_instruct)
-        clickableList = nextButton_instruct
-    except:
-        clickableList = [nextButton_instruct]
-    for obj in clickableList:
-        if obj.contains(mouse_2):
-            gotValidClick = True
-            mouse_2.clicked_name.append(obj.name)
 # the Routine "instructions" was not non-slip safe, so reset the non-slip timer
 routineTimer.reset()
 
@@ -512,21 +502,6 @@ while continueRoutine:
 for thisComponent in practiceReadyComponents:
     if hasattr(thisComponent, "setAutoDraw"):
         thisComponent.setAutoDraw(False)
-# store data for thisExp (ExperimentHandler)
-x, y = mouse_4.getPos()
-buttons = mouse_4.getPressed()
-if sum(buttons):
-    # check if the mouse was inside our 'clickable' objects
-    gotValidClick = False
-    try:
-        iter(nextButton_R1B)
-        clickableList = nextButton_R1B
-    except:
-        clickableList = [nextButton_R1B]
-    for obj in clickableList:
-        if obj.contains(mouse_4):
-            gotValidClick = True
-            mouse_4.clicked_name.append(obj.name)
 # the Routine "practiceReady" was not non-slip safe, so reset the non-slip timer
 routineTimer.reset()
 
@@ -592,7 +567,7 @@ for thisBlock0 in block0:
     mouse.clicked_name = []
     gotValidClick = False  # until a click is received
     # keep track of which components have finished
-    trialComponents = [valence, valenceResp, arousal, arousalResp, dominance, dominanceResp, mouse, nextButton, clickForEmotionInfo]
+    trialComponents = [valence, valenceResp, arousal, arousalResp, dominance, dominanceResp, mouse, nextButton, text_2, clickForEmotionInfo]
     for thisComponent in trialComponents:
         thisComponent.tStart = None
         thisComponent.tStop = None
@@ -621,13 +596,22 @@ for thisBlock0 in block0:
             
                     
             # *clickForEmotionInfo* updates
-            if (clickForEmotionInfo.status == NOT_STARTED and tThisFlip >= 0.0-frameTolerance) or goToQuestions == True:
+            if (clickForEmotionInfo.status == NOT_STARTED and tThisFlip >= PART_1_STIMULI_LEN-frameTolerance) or goToQuestions == True:
                 # keep track of start time/frame for later
                 clickForEmotionInfo.frameNStart = frameN  # exact frame index
                 clickForEmotionInfo.tStart = t  # local t and not account for scr refresh
                 clickForEmotionInfo.tStartRefresh = tThisFlipGlobal  # on global time
                 win.timeOnFlip(clickForEmotionInfo, 'tStartRefresh')  # time at next scr refresh
                 clickForEmotionInfo.setAutoDraw(True)
+            
+            # *text_2* updates
+            if (text_2.status == NOT_STARTED and tThisFlip >= PART_1_STIMULI_LEN-frameTolerance) or goToQuestions == True:
+                # keep track of start time/frame for later
+                text_2.frameNStart = frameN  # exact frame index
+                text_2.tStart = t  # local t and not account for scr refresh
+                text_2.tStartRefresh = tThisFlipGlobal  # on global time
+                win.timeOnFlip(text_2, 'tStartRefresh')  # time at next scr refresh
+                text_2.setAutoDraw(True)
             
             # *valence* updates
             if (valence.status == NOT_STARTED and tThisFlip >= PART_1_STIMULI_LEN-frameTolerance) or goToQuestions == True:
@@ -682,6 +666,7 @@ for thisBlock0 in block0:
                 dominanceResp.tStartRefresh = tThisFlipGlobal  # on global time
                 win.timeOnFlip(dominanceResp, 'tStartRefresh')  # time at next scr refresh
                 dominanceResp.setAutoDraw(True)
+                
             # *mouse* updates
             if mouse.status == NOT_STARTED and t >= 0.0-frameTolerance:
                 # keep track of start time/frame for later
@@ -1096,7 +1081,7 @@ for thisBlock1 in block1:
         player.play()
  #   while any([player.status == PLAYING for player in players]):
   #      continue
-        
+    
     clickForEmotionInfo.reset()    
     valenceResp.reset()
     arousalResp.reset()
@@ -1105,7 +1090,7 @@ for thisBlock1 in block1:
     mouse.clicked_name = []
     gotValidClick = False  # until a click is received
     # keep track of which components have finished
-    trialComponents = [valence, valenceResp, arousal, arousalResp, dominance, dominanceResp, mouse, nextButton, clickForEmotionInfo]
+    trialComponents = [valence, valenceResp, arousal, arousalResp, dominance, dominanceResp, mouse, nextButton, text_2, clickForEmotionInfo]
     for thisComponent in trialComponents:
         thisComponent.tStart = None
         thisComponent.tStop = None
@@ -1134,13 +1119,22 @@ for thisBlock1 in block1:
             mm.out()
             
             # *clickForEmotionInfo* updates
-            if (clickForEmotionInfo.status == NOT_STARTED and tThisFlip >= 0.0-frameTolerance) or goToQuestions == True:
+            if (clickForEmotionInfo.status == NOT_STARTED and tThisFlip >= PART_1_STIMULI_LEN-frameTolerance) or goToQuestions == True:
                 # keep track of start time/frame for later
                 clickForEmotionInfo.frameNStart = frameN  # exact frame index
                 clickForEmotionInfo.tStart = t  # local t and not account for scr refresh
                 clickForEmotionInfo.tStartRefresh = tThisFlipGlobal  # on global time
                 win.timeOnFlip(clickForEmotionInfo, 'tStartRefresh')  # time at next scr refresh
                 clickForEmotionInfo.setAutoDraw(True)
+                
+            # *text_2* updates
+            if (text_2.status == NOT_STARTED and tThisFlip >= PART_1_STIMULI_LEN-frameTolerance) or goToQuestions == True:
+                # keep track of start time/frame for later
+                text_2.frameNStart = frameN  # exact frame index
+                text_2.tStart = t  # local t and not account for scr refresh
+                text_2.tStartRefresh = tThisFlipGlobal  # on global time
+                win.timeOnFlip(text_2, 'tStartRefresh')  # time at next scr refresh
+                text_2.setAutoDraw(True)
             
             # *valence* updates
             if (valence.status == NOT_STARTED and tThisFlip >= PART_1_STIMULI_LEN-frameTolerance) or goToQuestions == True:
@@ -1423,21 +1417,6 @@ for thisBlock1 in block1:
             for thisComponent in Categorical_Emotions_to_VAD_MappingComponents:
                 if hasattr(thisComponent, "setAutoDraw"):
                     thisComponent.setAutoDraw(False)
-            # store data for thisExp (ExperimentHandler)
-            x, y = mouse_3.getPos()
-            buttons = mouse_3.getPressed()
-            if sum(buttons):
-                # check if the mouse was inside our 'clickable' objects
-                gotValidClick = False
-                try:
-                    iter(nextButton)
-                    clickableList = nextButton
-                except:
-                    clickableList = [nextButton]
-                for obj in clickableList:
-                    if obj.contains(mouse_3):
-                        gotValidClick = True
-                        mouse_3.clicked_name.append(obj.name)
             # the Routine "Categorical_Emotions_to_VAD_Mapping" was not non-slip safe, so reset the non-slip timer
             routineTimer.reset()
             continueRoutine = True
@@ -1535,21 +1514,6 @@ for thisBlock1 in block1:
     for thisComponent in interTrialPauseComponents:
         if hasattr(thisComponent, "setAutoDraw"):
             thisComponent.setAutoDraw(False)
-    # store data for thisExp (ExperimentHandler)
-    x, y = mouse_4.getPos()
-    buttons = mouse_4.getPressed()
-    if sum(buttons):
-        # check if the mouse was inside our 'clickable' objects
-        gotValidClick = False
-        try:
-            iter(nextButton_R1B)
-            clickableList = nextButton_R1B
-        except:
-            clickableList = [nextButton_R1B]
-        for obj in clickableList:
-            if obj.contains(mouse_4):
-                gotValidClick = True
-                mouse_4.clicked_name.append(obj.name)
     # the Routine "interTrialPause" was not non-slip safe, so reset the non-slip timer
     routineTimer.reset()
         
