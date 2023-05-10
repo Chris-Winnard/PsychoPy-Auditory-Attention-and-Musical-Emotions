@@ -7,7 +7,7 @@ import numpy as np
 from pydub import AudioSegment
 
 
-"""Note: to ensure pieces are exactly 30s each, we remove any excess data points."""
+"""Note: to ensure pieces are exactly 30s, we remove any excess data points."""
 
 #Find the stimuli/demo stimuli paths:
 calibrationStimPrepPath = pathlib.Path(__file__).parent.resolve() #Where this file is located
@@ -27,9 +27,14 @@ os.mkdir(oddballDemosOutputPath)
 #Change to the participant path, to access gain files and output the adjusted stimuli:
 os.chdir(participantPath)
 
-currentFolderPath = pathlib.Path(__file__).parent.resolve() #Current folder path
-upperFolderPath = currentFolderPath.parent.resolve() #Path for next level up.
-dataPath = str(upperFolderPath) + "/Data" 
+spatialisationSettingsFile = open("Spatialisation Settings.txt")
+spatialisationSettingsData = spatialisationSettingsFile.read()
+spatialisationSettings = spatialisationSettingsData.split(" ")
+spatialisationSettingsFile.close()
+
+vibrPan = float(spatialisationSettings[1])
+harmPan = float(spatialisationSettings[3])
+keybPan = float(spatialisationSettings[5])
 
 ##############################################################################################################
 ##############################################################################################################
@@ -52,7 +57,6 @@ with open(megasetAssignmentFile, 'r') as f:
 ########################################################################################################################################################
 #Single stream:
     
-#Read single-stream gains:
 ssGainsFile = open("Single-stream Gains.txt")
 ssGainsData = ssGainsFile.read()
 ssGains = ssGainsData.split(" ")
@@ -77,23 +81,25 @@ for file in os.scandir(thisParticipantStimuliPath):
         
         if file.name[6:10] == "Vibr":
            signal = signal.apply_gain(ssVibrGain)
+           signal = signal.pan(vibrPan)
            outputPathPlusName = participantPath + "/" + str(file.name)[:-4] + " with Gain Applied.wav"
            signal.export(outputPathPlusName, format="wav")
            
         elif file.name[6:10] == "Harm":
             signal = signal.apply_gain(ssHarmGain)
+            signal = signal.pan(harmPan)
             outputPathPlusName = participantPath + "/" + str(file.name)[:-4] + " with Gain Applied.wav"
             signal.export(outputPathPlusName, format="wav")
             
         elif file.name[6:10] == "Keyb":
             signal = signal.apply_gain(ssKeybGain)
+            signal = signal.pan(keybPan)
             outputPathPlusName = participantPath + "/" + str(file.name)[:-4] + " with Gain Applied.wav"
             signal.export(outputPathPlusName, format="wav")
 
 ###################################################################################################
 #Multi-stream: Use oddball versions!
 
-#Read multi-stream gains:
 msGainsFile = open("Multi-stream Gains.txt")
 msGainsData = msGainsFile.read()
 msGains = msGainsData.split(" ")
@@ -112,7 +118,6 @@ def mixer(attendedInst):
     KeybDone = False
     for file in os.scandir(participantPath):  
         for i in range(1, 13):
-            print(file.name[3:5])
             
             if i < 10:
                 string_I = "0" + str(i)
@@ -125,23 +130,20 @@ def mixer(attendedInst):
                 if file.name[6:10] == "Vibr":
                    VibrSignal = signal.pan(-1).apply_gain(msVibrGain) #Pan and apply gain.
                    VibrDone = True
-                   print("VibrDone")
-                   os.remove(file) #Delete single streams when they're no longer needed.
+                   os.remove(file) #Delete single streams after use
                    
                 elif file.name[6:10] == "Harm":
-                   HarmSignal = signal.pan(0).apply_gain(msHarmGain)
+                   HarmSignal = signal.pan(harmPan).apply_gain(msHarmGain)
                    HarmDone = True
-                   print("HARMDone")
-                   os.remove(file) #Delete single streams when they're no longer needed.
+                   os.remove(file)
                     
                 elif file.name[6:10] == "Keyb":
                     KeybSignal = signal.pan(1).apply_gain(msKeybGain)
                     KeybDone = True
-                    print("KEYBDone")
-                    os.remove(file) #Delete single streams when they're no longer needed.
+                    os.remove(file)
                             
                 if KeybDone == True and HarmDone == True and VibrDone == True:
-                    outputPathPlusName = participantPath + "/Set" + str(i) + "-Oddball Test Mix - " + attendedInst + ".wav"
+                    outputPathPlusName = participantPath + "/Set" + string_I + "-Oddball Test Mix - " + attendedInst + ".wav"
                     oddballStimMix = VibrSignal.overlay(HarmSignal).overlay(KeybSignal) #All 3 overlaid together (panned in above steps)
                     oddballStimMix.export(outputPathPlusName, format="wav")
 
@@ -167,7 +169,7 @@ def demoMixer():
                VibrDone = True
                
             elif "Harm" in file.name:
-               oddballDemo = signal.pan(0).apply_gain(msHarmGain)
+               oddballDemo = signal.pan(harmPan).apply_gain(msHarmGain)
                attendedInst = "Harm Attended"
                HarmDone = True
                 
