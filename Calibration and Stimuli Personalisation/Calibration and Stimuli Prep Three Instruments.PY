@@ -6,14 +6,14 @@
 #AS FILENAMES THE SAME REGARDLESS OF PARTICIPANT).
 
 import pathlib
-from psychopy import core, gui, sound
+from psychopy import core, gui, sound, visual
 from pyo import *
 import time
 import ctypes  #For dialogue boxes without option to cancel.
 from pydub import AudioSegment
 import numpy as np
 import os
-
+import wx
 
 expName = 'Loudness Calibration'  # from the Builder filename that created this script
 expInfo = {'Participant': ''}
@@ -25,26 +25,35 @@ if dlg.OK == False:
 currentFolderPath = pathlib.Path(__file__).parent.resolve()
 upperFolderPath = currentFolderPath.parent.resolve()
 dataPath = str(upperFolderPath) + "/Data/"
-participantFolderPath = dataPath + expInfo['Participant'] #Needs to be an existing folder with oddball files prepped
 
-#Find which stimuli are assigned to this participant. Use the practice stimuli for this.
 
-megasetAssignmentFile = dataPath + "Megaset Assignment.txt"
-
-with open(megasetAssignmentFile, 'r') as f:
+groupAssignmentFile = dataPath + "Participant Groups.txt" #Needed for taking collecting stimuli, and saving to right place:
+with open(groupAssignmentFile, 'r') as f:
     lines = f.readlines()
     for line in lines:
-        if "Megaset A" in line and expInfo['Participant'] in line:
-            vibrPiece = "Set04-Vibr.wav"
-            harmPiece = "Set04-Harm.wav"
-            keybPiece = "Set04-Keyb.wav"
-        elif "Megaset B" in line and expInfo['Participant'] in line:
+        if "Group A1" in line and expInfo['Participant'] in line:
+            participantPath = dataPath + "Group A1/" + expInfo['Participant']
             vibrPiece = "Set01-Vibr.wav"
             harmPiece = "Set01-Harm.wav"
             keybPiece = "Set01-Keyb.wav"
-    f.close()
-
-
+        elif "Group A2" in line and expInfo['Participant'] in line:
+            participantPath = dataPath + "Group A2/" + expInfo['Participant']
+            vibrPiece = "Set01-Vibr.wav"
+            harmPiece = "Set01-Harm.wav"
+            keybPiece = "Set01-Keyb.wav"
+            
+        elif "Group B1" in line and expInfo['Participant'] in line:
+            participantPath = dataPath + "Group B1/" + expInfo['Participant']
+            vibrPiece = "Set04-Vibr.wav"
+            harmPiece = "Set04-Harm.wav"
+            keybPiece = "Set04-Keyb.wav"
+        elif "Group B2" in line and participantNo in line:
+            participantPath = dataPath + "Group B2/" + expInfo['Participant']
+            vibrPiece = "Set04-Vibr.wav"
+            harmPiece = "Set04-Harm.wav"
+            keybPiece = "Set04-Keyb.wav"
+    f.close
+    
 ##########################################################################################################################################
 
 #PART 1 - SPATIAL BALANCING:
@@ -86,13 +95,13 @@ piano = AudioSegment.from_wav(keybPiece)
 [vibrPan, harmPan, keybPan] = np.random.uniform(-1, 1, 3)
 
 #Set up loudness parameter, apply gain:
-vibraphone_loudness = 0.45
+vibraphone_loudness = 0.5
 vibraphone = vibraphone.apply_gain(20*np.log10(vibraphone_loudness))
 
-harmonica_loudness = 0.45
+harmonica_loudness = 0.5
 harmonica = harmonica.apply_gain(20*np.log10(harmonica_loudness))
 
-piano_loudness = 0.45
+piano_loudness = 0.5
 piano = piano.apply_gain(20*np.log10(piano_loudness))
 
 current_instrument = "Vibraphone"
@@ -101,32 +110,13 @@ currentPan = vibrPan
 # Create a GUI
 dlg = gui.Dlg(title="Spatialisation")
 dlg.addText("People can have slightly different perceptions of where the \"centre\" is when they hear music. We are going to run a test to tweak the audio settings to your ears.\n"
-            "Music is going to play from a completely random direction, and you will need to adjust the balance so that you hear it as coming from the centre. You can change the\n"
-            + "settings as often as needed. We will then repeat the test twice with other instruments.")
+            "A vibraphone will play from a random direction, and you will need to adjust the balance so that you hear it as coming from the centre- you can adjust\n"
+            + "as many times as needed. We will then repeat the test twice with other instruments.\n\nWhen you are ready to hear the music for the first time, press \"OK\".")
 dlg.show()
 if dlg.OK == False:
     core.quit()  # user pressed cancel
 
 while True:
-    # Create a GUI
-    dlg = gui.Dlg(title="Spatialisation")
-    dlg.addText("On a scale of -90 (90 degrees to the left) to +90 (90 degrees to the right), please indicate how much you would like to change the direction.")        
-    dlg.addField("Change: ")
-    dlg.show()
-    if dlg.OK:
-        currentPan += dlg.data[0]*(1/90)
-        
-        #If we get numbers out of the range (-1, 1), we loop back around from the other side:
-        if currentPan < -1:
-            diff = -1 - currentPan
-            currentPan = 1 - diff
-        elif currentPan > 1:
-            diff = currentPan - 1
-            currentPan = 1 - diff
-    else:
-        core.quit()
-    
-    #Update:
     if current_instrument == "Vibraphone":
         output = vibraphone.pan(currentPan)
     elif current_instrument == "Harmonica":
@@ -134,7 +124,7 @@ while True:
     else:
         output = piano.pan(currentPan)
 
-    output.export("Temp.wav", format="wav")     #Remove??
+    output.export("Temp.wav", format="wav")
     
     #Create players for new mix:
     players = []
@@ -154,25 +144,36 @@ while True:
     
     # Stop the server
     s.stop()
-
-
+    
     # Ask user if they are happy:
     dlg = gui.Dlg(title="Spatialisation")
-    dlg.addField("Would you like to continue adjusting this instrument?", choices=["No", "Yes"]) #No by default- acquiescence control.
+    dlg.addField("Would you like to continue adjusting this instrument?", choices=["Yes", "No"])
     dlg.show()
     
-    if dlg.OK and dlg.data[0] == "Yes" and current_instrument == "Vibraphone":
+    if dlg.OK and dlg.data[0] == "No" and current_instrument == "Vibraphone":
+        dlg = gui.Dlg(title="Spatialisation")
+        dlg.addText("We will now move on to the harmonica.")
+        dlg.show()
+        if dlg.OK == False:
+            core.quit()  # user pressed cancel
         current_instrument = "Harmonica"
         currentPan = harmPan
-    elif dlg.OK and dlg.data[0] == "Yes" and current_instrument == "Harmonica":
+        
+    elif dlg.OK and dlg.data[0] == "No" and current_instrument == "Harmonica":
+        dlg = gui.Dlg(title="Spatialisation")
+        dlg.addText("We will now move on to the piano.")
+        dlg.show()
+        if dlg.OK == False:
+            core.quit()  # user pressed cancel
         current_instrument = "Piano"
         currentPan = keybPan
-    elif dlg.OK and dlg.data[0] == "Yes" and current_instrument == "Piano":
+        
+    elif dlg.OK and dlg.data[0] == "No" and current_instrument == "Piano":
     
         #Save the results:        
         gains = ["Vibraphone: ", vibrPan, " Harmonica: ", harmPan, " Piano: ", keybPan]        
         #Create a new file in the appropriate location. If there's already a file there of the same name, it's wiped:
-        File = (participantFolderPath + "\Spatialisation Settings.txt")
+        File = (participantPath + "\Spatialisation Settings.txt")
         #Open, write to file, and close.
         with open(File, 'w') as f:
             for x in gains:
@@ -180,6 +181,25 @@ while True:
             f.close()
         ctypes.windll.user32.MessageBoxW(0, "Your settings have been saved.", "Success!")        
         break
+    
+    elif dlg.OK and dlg.data[0] == "Yes":
+        dlg = gui.Dlg(title="Spatialisation")
+        dlg.addText("On a scale of -90 (90 degrees to the left) to +90 (90 degrees to the right), please indicate how much you would like to change the direction.")        
+        dlg.addField("Change: ")
+        dlg.show()
+        if dlg.OK:
+            changeDegrees = float(dlg.data[0])
+            currentPan += changeDegrees*(1/90)
+            
+            #If we get numbers out of the range (-1, 1), we loop back around from the other side:
+            if currentPan < -1:
+                diff = - 1 - currentPan
+                currentPan = 1 - diff
+            elif currentPan > 1:
+                diff = currentPan - 1
+                currentPan = 1 - diff
+        else:
+            core.quit()
 
 # Stop the server
 s.stop()
@@ -285,7 +305,7 @@ while True:
         #Save the results:        
         gains = ["Vibraphone: ", vibraphone_loudness, " Harmonica: ", harmonica_loudness, " Piano: ", piano_loudness]        
         #Create a new file in the appropriate location. If there's already a file there of the same name, it's wiped:
-        File = (participantFolderPath + "\Multi-stream Gains.txt")
+        File = (participantPath + "\Multi-stream Gains.txt")
         #Open, write to file, and close.
         with open(File, 'w') as f:
             for x in gains:
@@ -381,7 +401,7 @@ while True:
         gains = ["Vibraphone: ", vibraphone_loudness, " Harmonica: ", harmonica_loudness,
                  " Piano: ", piano_loudness]        
         #Create a new file in the appropriate location. If there's already a file there of the same name, it's wiped:
-        File = (participantFolderPath + "\Single-stream Gains.txt")
+        File = (participantPath + "\Single-stream Gains.txt")
         #Open, write to file, and close.
         with open(File, 'w') as f:
             for x in gains:

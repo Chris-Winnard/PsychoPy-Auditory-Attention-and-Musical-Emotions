@@ -17,9 +17,10 @@ oddballDemosPath = str(upperFolderPath) + "/Oddball Demos"
 
 #Find correct path for the gain files, and for outputs:
 dataPath = str(upperFolderPath) + "/Data"
-participantPath = max(glob.glob(os.path.join(dataPath, '*/')), key=os.path.getmtime) #Last updated
+participantGroupFolder = max(glob.glob(os.path.join(dataPath, '*/')), key=os.path.getmtime) #Last updated
 #subfolder in Data folder. Because we run this and randomOddballCreator IMMEDIATELY after participant's
 #folder is created, this will be the output path for them.
+participantPath = max(glob.glob(os.path.join(participantGroupFolder, '*/')), key=os.path.getmtime)
 
 oddballDemosOutputPath = str(participantPath) + "/Oddball Demos" 
 os.mkdir(oddballDemosOutputPath)
@@ -40,19 +41,12 @@ keybPan = float(spatialisationSettings[5])
 ##############################################################################################################
 #Find which stimuli are assigned to this participant:
 
-megasetAssignmentFile = dataPath + "/Megaset Assignment.txt"
-
-participantName = os.path.split(os.getcwd())[1]
-stimLoc = 'Data/' + participantName + '/'
-
-with open(megasetAssignmentFile, 'r') as f:
-    lines = f.readlines()
-    for line in lines:
-        if "Megaset A" in line and participantName in line:
-            thisParticipantStimuliPath = stimuliPath + "\Megaset A"
-        elif "Megaset B" in line and participantName in line:
-            thisParticipantStimuliPath = stimuliPath + "\Megaset B"
-    f.close
+if "Group A1" in participantPath or "Group A2" in participantPath:
+    thisParticipantStimuliPath = stimuliPath + "\Megaset A"
+    demoSet = "Set04"
+elif "Group B1" in participantPath or "Group B2" in participantPath:
+    thisParticipantStimuliPath = stimuliPath + "\Megaset B"
+    demoSet = "Set01"
     
 ########################################################################################################################################################
 #Single stream:
@@ -153,11 +147,6 @@ def demoMixer():
     VibrDone = False
     HarmDone = False
     KeybDone = False
-    
-    if "Megaset A" in thisParticipantStimuliPath:
-        demoSet = "Set04"
-    else:
-        demoSet = "Set01"
         
     for file in os.scandir(oddballDemosPath): 
         if demoSet in file.name:

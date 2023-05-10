@@ -32,6 +32,9 @@ currentFolderPath = pathlib.Path(__file__).parent.resolve()
 upperFolderPath = currentFolderPath.parent.resolve()
 dataPath = str(upperFolderPath) + "/Data/"
 File = (dataPath + "\Megaset Assignment.txt")
+with open(File, 'w') as f:
+    f.write("")
+    f.close
 
 
 #Set it up so that we can assign new participants without rewriting:
@@ -54,7 +57,7 @@ if os.path.getsize(File) != 0:
                 words = line.rstrip("]\n")
                 words = words.split(" ")
                 megaset_A_participantsAlreadyAssigned = [int(x) for x in words if x.isnumeric()==1]
-                new_megasetA_participants = np.array([x for x in megasetB_participants if x > maxAlreadyAssigned], dtype=np.int)
+                new_megasetA_participants = np.array([x for x in megasetA_participants if x > maxAlreadyAssigned], dtype=np.int)
                 megasetA_participants = np.concatenate([megaset_A_participantsAlreadyAssigned, new_megasetA_participants])
                 print(megasetA_participants)
                 

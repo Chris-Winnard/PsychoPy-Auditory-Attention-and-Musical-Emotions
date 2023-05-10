@@ -15,28 +15,33 @@ stimuliPath = str(upperFolderPath) + "/Stimuli"
 
 #Create output path:
 dataPath = str(upperFolderPath) + "/Data/"
-participantPath = str(upperFolderPath) + "/Data/" + "/03" #- assigned to megaset B
-os.mkdir(participantPath)
-File = (participantPath + "\Oddball Start Times.txt")
-with open(File, 'a') as f: #Create the file now to prevent any confusion later, because oddballsForbidden needs to read from it.
-    f.close
+participantNo = ""
 
 
-#Find which stimuli are assigned to this participant:
-
-megasetAssignmentFile = dataPath + "/Megaset Assignment.txt"
-
-participantName = os.path.split(participantPath)[1]
-
-with open(megasetAssignmentFile, 'r') as f:
+groupAssignmentFile = dataPath + "/Participant Groups.txt" #Needed for taking collecting stimuli, and saving to right place:
+with open(groupAssignmentFile, 'r') as f:
     lines = f.readlines()
     for line in lines:
-        if "Megaset A" in line and participantName in line:
+        if "Group A1" in line and participantNo in line:
+            participantPath = str(upperFolderPath) + "/Data/Group A1" + participantNo + "/"
             thisParticipantStimuliPath = stimuliPath + "\Megaset A"
-        elif "Megaset B" in line and participantName in line:
+        elif "Group A2" in line and participantNo in line:
+            participantPath = str(upperFolderPath) + "/Data/Group A2" + participantNo + "/"
+            thisParticipantStimuliPath = stimuliPath + "\Megaset A"
+            
+        elif "Group B1" in line and participantNo in line:
+            participantPath = str(upperFolderPath) + "/Data/Group B1" + participantNo + "/"
+            thisParticipantStimuliPath = stimuliPath + "\Megaset B"
+        elif "Group B2" in line and participantNo in line:
+            participantPath = str(upperFolderPath) + "/Data/Group B2" + participantNo + "/"
             thisParticipantStimuliPath = stimuliPath + "\Megaset B"
     f.close
     
+os.mkdir(participantPath)
+startTimesFile = (participantPath + "\Oddball Start Times.txt")
+with open(startTimesFile, 'a') as f: #Create the file now to prevent any confusion later, because oddballsForbidden needs to read from it.
+    f.close
+
 
 """Timings: one data point = 4.5e-05 (the same for all pieces to the 20th decimal). So, we don't need to
 normalise w.r.t piece length. Use 2205 = 0.1s. To ensure pieces are exactly 30s each, we remove any excess data
@@ -45,7 +50,7 @@ points."""
 tenthSec = 2205
 idealOB_segmentLength = 1808
 idealOB_length = 6*idealOB_segmentLength
-OB_lengthTolerance = 0.001 #E.g, 0.05 is 5% tolerance
+OB_lengthTolerance = 0.001 #E.g, 0.05 is 5%
 
 #Function to create an oddball for given signal, starting at a given point in that signal:
 def createOddball(signalCopy, start, actualOB_length):    
@@ -197,7 +202,7 @@ def oddballFileWriter(currentFilename, signal, attendedInst):
         startTimes = startTimes*30/661500 #Convert to seconds
         startTimes += 35 #Accounts for first playing and the 5s pause
         startTimes = str(startTimes)
-        with open(File, 'a') as f:
+        with open(startTimesFile, 'a') as f:
             f.write("Oddball Start Times for \"" + str(currentFilename)[:-4] + " Oddball Test-" + attendedInst + " Attended.wav\": ")
             f.write(startTimes)
             f.write("\n")
@@ -210,7 +215,7 @@ def oddballsForbidden(currentFilename):
     setNumber = currentFilename[3]
     forbiddenOddballPeriods_Starts = np.array([])
     
-    with open(File, 'r') as f:
+    with open(startTimesFile, 'r') as f:
         lines = f.readlines(-8) #Read last 8 lines in the file.
         for line in lines:
             if "Set" + setNumber in line and attendedInst + " Attended" in line: #E.g Set4 Harm attended- should be up to two lines already written.
@@ -228,7 +233,7 @@ def oddballsForbidden(currentFilename):
 
 for file in os.scandir(thisParticipantStimuliPath):
     currentFilename = file.name #Easiest to keep it as a string variable
-    if currentFilename[:3] == "Set": #Because of naming convention used, this will ignore trigs etc.
+    if currentFilename[:3] == "Set" and "Attended" not in currentFilename: #Because of naming convention used, this will ignore trigs, other oddball files, etc.
         signal, sr = librosa.load(file)
         signal = signal[0:661500] #Removing any excess points, so pieces are EXACTLY 30s long.
             

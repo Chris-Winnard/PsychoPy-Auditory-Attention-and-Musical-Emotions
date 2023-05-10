@@ -88,16 +88,17 @@ if os.path.getsize(ParticipantGroupFile) != 0:
 
 #Finally, write to file:
 with open(ParticipantGroupFile, 'w') as f:
-        f.write("Participants assigned to Group A1: ")
+        f.write("Participant groups:\n")
+        f.write("Group A1: ")
         f.write(str(GroupA1_participants))
         f.write("\n")
-        f.write("Participants assigned to Group A2: ")
+        f.write("Group A2: ")
         f.write(str(GroupA2_participants))
         f.write("\n")
-        f.write("Participants assigned to Group B1: ")
+        f.write("Group B1: ")
         f.write(str(GroupB1_participants))
         f.write("\n")
-        f.write("Participants assigned Group B2: ")
+        f.write("Group B2: ")
         f.write(str(GroupB2_participants))   
         f.write("\n")
         f.write("Remember to add in leading zeros for single-digit numbers.")

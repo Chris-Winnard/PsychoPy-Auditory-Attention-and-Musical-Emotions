@@ -13,9 +13,12 @@ from numpy.random import default_rng
 #Find the personalised stimuli path:
 currentFolderPath = pathlib.Path(__file__).parent.resolve() #Current folder path
 upperFolderPath = currentFolderPath.parent.resolve() #Path for next level up.
-dataPath = str(upperFolderPath) + "/Data" 
-participantPath = max(glob.glob(os.path.join(dataPath, '*/')), key=os.path.getmtime) #Last updated
+dataPath = str(upperFolderPath) + "/Data"
+participantGroupFolder = max(glob.glob(os.path.join(dataPath, '*/')), key=os.path.getmtime) #Last updated
 #subfolder in Data folder.
+participantPath = max(glob.glob(os.path.join(participantGroupFolder, '*/')), key=os.path.getmtime)
+
+demimegasetFile = str(upperFolderPath) + "/Data/Demimegasets.txt"
 
 #Also, change to the participant path so that this .xlsx list is saved there:
 os.chdir(participantPath)
@@ -23,23 +26,22 @@ os.chdir(participantPath)
 #When we write the stimuli filenames, we will also need to include the location relative to the PsychoPy
 #paradigm scripts. This does NOT apply for trigger files, which are in a single general folder.
 participantName = os.path.split(os.getcwd())[1]
-stimLoc = 'Data/' + participantName + '/'    
-    
-#Find which stimuli are assigned to this participant:
-megasetAssignmentFile = dataPath + "/Megaset Assignment.txt"
 
-participantName = os.path.split(os.getcwd())[1]
-stimLoc = 'Data/' + participantName + '/'
+if "Group A1" in participantPath:
+    group = "Group A1"
+    practiceSet = "Set04"
+elif "Group A2" in participantPath:
+    group = "Group A2"
+    practiceSet = "Set04"
+elif "Group B1" in participantPath:
+    group = "Group B1"
+    practiceSet = "Set01"
+elif "Group B2" in participantPath:
+    group = "Group B2"
+    practiceSet = "Set01"
 
-with open(megasetAssignmentFile, 'r') as f:
-    lines = f.readlines()
-    for line in lines:
-        if "Megaset A" in line and participantName in line:
-            practiceSet = "Set04"
-        elif "Megaset B" in line and participantName in line:
-            practiceSet = "Set01-" #Hypen included here to avoid confusion between Set1 vs Set12 etc
-    f.close
-    
+stimLoc = 'Data/' + group + "/" + participantName + "/"  
+
 ##############################################################################################################
 ##############################################################################################################
 #PART 1: CREATING LIST OF STIMULI AND TRIGGER FILES. EXCLUDE PRACTICE TRIAL MATERIALS AND ODDBALL TEST
@@ -52,11 +54,40 @@ worksheet = workbook.add_worksheet()
  
 worksheet.write('A1', 'stimuli_0')
 worksheet.write('B1', 'trigger')
-i = 2 #Index for row in sheet.
+worksheet.write('C1', 'Attendance condition')
 
+#Need to get attendance data for part 3:
+with open(groupAssignmentFile, 'r') as f:
+    lines = f.readlines()
+    for line in lines:
+        if "Group A1" in line and expInfo['Participant'] in line:
+            participantPath = dataPath + "Group A1/" + expInfo['Participant']
+            vibrPiece = "Set01-Vibr.wav"
+            harmPiece = "Set01-Harm.wav"
+            keybPiece = "Set01-Keyb.wav"
+        elif "Group A2" in line and expInfo['Participant'] in line:
+            participantPath = dataPath + "Group A2/" + expInfo['Participant']
+            vibrPiece = "Set01-Vibr.wav"
+            harmPiece = "Set01-Harm.wav"
+            keybPiece = "Set01-Keyb.wav"
+            
+        elif "Group B1" in line and expInfo['Participant'] in line:
+            participantPath = dataPath + "Group B1/" + expInfo['Participant']
+            vibrPiece = "Set04-Vibr.wav"
+            harmPiece = "Set04-Harm.wav"
+            keybPiece = "Set04-Keyb.wav"
+        elif "Group B2" in line and participantNo in line:
+            participantPath = dataPath + "Group B2/" + expInfo['Participant']
+            vibrPiece = "Set04-Vibr.wav"
+            harmPiece = "Set04-Harm.wav"
+            keybPiece = "Set04-Keyb.wav"
+    f.close
+    
+i = 2 #Index for row in sheet. 
 for file in os.scandir(participantPath):
     stimCell = "A" + str(i)
     trigCell = "B" + str(i)
+    attdCell = "C" + str(i)
     if practiceSet not in file.name:
         if ".wav" in file.name and "Oddball" not in file.name: #Only audio, and no oddball files. 
             stimPath = stimLoc + str(file.name)
