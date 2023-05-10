@@ -18,7 +18,7 @@ participantGroupFolder = max(glob.glob(os.path.join(dataPath, '*/')), key=os.pat
 #subfolder in Data folder.
 participantPath = max(glob.glob(os.path.join(participantGroupFolder, '*/')), key=os.path.getmtime)
 
-demimegasetFile = str(upperFolderPath) + "/Data/Demimegasets.txt"
+semimegasetFile = str(upperFolderPath) + "/Data/Semimegasets.txt"
 
 #Also, change to the participant path so that this .xlsx list is saved there:
 os.chdir(participantPath)
@@ -54,33 +54,14 @@ worksheet = workbook.add_worksheet()
  
 worksheet.write('A1', 'stimuli_0')
 worksheet.write('B1', 'trigger')
-worksheet.write('C1', 'Attendance condition')
+worksheet.write('C1', 'music attended')
 
 #Need to get attendance data for part 3:
-with open(groupAssignmentFile, 'r') as f:
+with open(semimegasetFile, 'r') as f:
     lines = f.readlines()
     for line in lines:
-        if "Group A1" in line and expInfo['Participant'] in line:
-            participantPath = dataPath + "Group A1/" + expInfo['Participant']
-            vibrPiece = "Set01-Vibr.wav"
-            harmPiece = "Set01-Harm.wav"
-            keybPiece = "Set01-Keyb.wav"
-        elif "Group A2" in line and expInfo['Participant'] in line:
-            participantPath = dataPath + "Group A2/" + expInfo['Participant']
-            vibrPiece = "Set01-Vibr.wav"
-            harmPiece = "Set01-Harm.wav"
-            keybPiece = "Set01-Keyb.wav"
-            
-        elif "Group B1" in line and expInfo['Participant'] in line:
-            participantPath = dataPath + "Group B1/" + expInfo['Participant']
-            vibrPiece = "Set04-Vibr.wav"
-            harmPiece = "Set04-Harm.wav"
-            keybPiece = "Set04-Keyb.wav"
-        elif "Group B2" in line and participantNo in line:
-            participantPath = dataPath + "Group B2/" + expInfo['Participant']
-            vibrPiece = "Set04-Vibr.wav"
-            harmPiece = "Set04-Harm.wav"
-            keybPiece = "Set04-Keyb.wav"
+        if group in line:
+            attendedFiles = line
     f.close
     
 i = 2 #Index for row in sheet. 
@@ -97,6 +78,13 @@ for file in os.scandir(participantPath):
             trigFolderPlusFilename = "Trigger Files/" + trigFilename #Here we need to specify the folder
 #from main folder where the scripts are)   
             worksheet.write(trigCell, trigFolderPlusFilename)
+            
+            if file.name[3:10] in attendedFiles:
+                musicAttended = "Yes"
+            else:
+                musicAttended = "No"
+            
+            worksheet.write(attdCell, musicAttended)
             i+=1
 
 # Close the xlsx file
