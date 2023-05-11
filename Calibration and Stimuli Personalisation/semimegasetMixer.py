@@ -32,8 +32,6 @@ sameArtists4 = np.array(["01-Keyb", "01-Vibr", "02-Keyb", "02-Vibr", "03-Keyb","
 
 validSemiMegasets_A_exclPracticePieces = False
 validSemiMegasets_B_exclPracticePieces = False
-validSemiMegasets_A_inclPracticePieces = False
-validSemiMegasets_B_inclPracticePieces = False
 
 megasetA_exclPracticePieces = np.array(["02-Harm", "02-Keyb", "02-Vibr", "07-Harm", "07-Keyb", "07-Vibr", "09-Harm","09-Keyb","09-Vibr", "10-Harm","10-Keyb","10-Vibr", "11-Harm","11-Keyb","11-Vibr"])
 megasetB_exclPracticePieces = np.array(["03-Harm","03-Keyb","03-Vibr", "05-Harm","05-Keyb","05-Vibr", "06-Harm", "06-Keyb", "06-Vibr", "08-Harm","08-Keyb","08-Vibr", "12-Harm","12-Keyb","12-Vibr"])
@@ -47,23 +45,23 @@ def intersectionCounter(arr1, arr2):
 
 while validSemiMegasets_A_exclPracticePieces == False:
     semiMegasets_A = rng.choice(megasetA_exclPracticePieces, size=15, replace=False)
-    semiMegaset_A1 = semiMegasets_A[0:7]
-    semiMegaset_A2 = semiMegasets_A[7:15]
+    semiMegaset_A1 = semiMegasets_A[0:8]
+    semiMegaset_A2 = semiMegasets_A[8:15]
     
     #Enough +ve/-ve pieces for each (Change to account for neutral ones?):
-    if 8 >= intersectionCounter(positiveValenceSets, semiMegaset_A1) >= 7 and 8 >= intersectionCounter(negativeValenceSets, semiMegaset_A1) >= 7:
-    
-        if 8 >= intersectionCounter(positiveValenceSets, semiMegaset_A2) >= 7 and 8 >= intersectionCounter(negativeValenceSets, semiMegaset_A2) >= 7:
-    
+    if 5 >= intersectionCounter(positiveValenceSets, semiMegaset_A1) >= 3 and 5 >= intersectionCounter(negativeValenceSets, semiMegaset_A1) >= 3:
+        
+        if 4 >= intersectionCounter(positiveValenceSets, semiMegaset_A2) >= 3 and 4 >= intersectionCounter(negativeValenceSets, semiMegaset_A2) >= 3:
+
     #Enough active/passive pieces for each:
-            if (8 >= intersectionCounter(activeArousalSets, semiMegaset_A1) >= 7) and (8 >= intersectionCounter(passiveArousalSets, semiMegaset_A1) >= 7):
+            if (5 >= intersectionCounter(activeArousalSets, semiMegaset_A1) >= 3) and (5 >= intersectionCounter(passiveArousalSets, semiMegaset_A1) >= 3):
             
-                if 8 >= intersectionCounter(activeArousalSets, semiMegaset_A2) >= 7 and 8 >= intersectionCounter(passiveArousalSets, semiMegaset_A2) >= 7:
+                if 4 >= intersectionCounter(activeArousalSets, semiMegaset_A2) >= 3 and 4 >= intersectionCounter(passiveArousalSets, semiMegaset_A2) >= 3:
         
     #Enough dom/sub pieces for each (Change to account for neutral ones?):
-                    if (8 >= intersectionCounter(dominantDominanceSets, semiMegaset_A1) >= 7) and (8 >= intersectionCounter(submissiveDominanceSets, semiMegaset_A1) >= 7):
+                    if (5 >= intersectionCounter(dominantDominanceSets, semiMegaset_A1) >= 3) and (5 >= intersectionCounter(submissiveDominanceSets, semiMegaset_A1) >= 3):
                     
-                        if 8 >= intersectionCounter(dominantDominanceSets, semiMegaset_A2) >= 7 and 8 >= intersectionCounter(submissiveDominanceSets, semiMegaset_A2) >= 7:                    
+                        if 4 >= intersectionCounter(dominantDominanceSets, semiMegaset_A2) >= 3 and 4 >= intersectionCounter(submissiveDominanceSets, semiMegaset_A2) >= 3:                    
                        
     #To ensure as much "spread" as possible/reduce conflating emotions, try to forbid identical combinations:       
     #DOESN'T APPEAR TO BE POSSIBLE (OR AT LEAST, V HARD TO FIND ALLOWED COMBINATIONS)                          
@@ -80,38 +78,29 @@ while validSemiMegasets_A_exclPracticePieces == False:
                       #It does not appear possible to have maximum "spread" in the artists as well
                        #   if intersectionCounter(sameArtists1, semiMegaset_A1) == 1 and intersectionCounter(sameArtists2, semiMegaset_A1) >= 1 and intersectionCounter(sameArtists3, semiMegaset_A1) >= 1:
                       #        if intersectionCounter(sameArtists1, semiMegaset_A2) == 1 and intersectionCounter(sameArtists2, semiMegaset_A2) >= 1 and intersectionCounter(sameArtists3, semiMegaset_A1) >= 1:
-                                    print(semiMegaset_A1)
-                                    print(semiMegaset_A2)
                                     validSemiMegasets_A_exclPracticePieces = True
 
-while validSemiMegasets_A_inclPracticePieces == False:
-    semiMegasets_A_Practice = rng.choice(megasetA_PracticePieces, size=3, replace=False)
-    semiMegaset_A1_Practice = semiMegasets_A_Practice[0:2]
-    semiMegaset_A2_Practice = semiMegasets_A_Practice[2:3]
-    
-    semiMegaset_A1 = semiMegaset_A1.append(semiMegaset_A1_Practice)
-    semiMegaset_A2 = semiMegaset_A2.append(semiMegaset_A2_Practice)
-    validSemiMegasets_A_inclPracticePieces = True
+semiMegaset_A2 = np.append(semiMegaset_A2, megasetA_PracticePieces) #For the main trials, group A2 only has 7/15 attended. So, make the practice ones attended.
 
 while validSemiMegasets_B_exclPracticePieces == False:
     semiMegasets_B = rng.choice(megasetB_exclPracticePieces, size=15, replace=False)
-    semiMegaset_B1 = semiMegasets_B[0:7]
-    semiMegaset_B2 = semiMegasets_B[7:15]
+    semiMegaset_B1 = semiMegasets_B[0:8]
+    semiMegaset_B2 = semiMegasets_B[8:15]
     
     #Enough +ve/-ve pieces for each (Change to account for neutral ones?):
-    if 8 >= intersectionCounter(positiveValenceSets, semiMegaset_B1) >= 7 and 8 >= intersectionCounter(negativeValenceSets, semiMegaset_B1) >= 7:
-    
-        if 8 >= intersectionCounter(positiveValenceSets, semiMegaset_B2) >= 7 and 8 >= intersectionCounter(negativeValenceSets, semiMegaset_B2) >= 7:
+    if 5 >= intersectionCounter(positiveValenceSets, semiMegaset_B1) >= 3 and 5 >= intersectionCounter(negativeValenceSets, semiMegaset_B1) >= 3:
+        
+        if 4 >= intersectionCounter(positiveValenceSets, semiMegaset_B2) >= 3 and 4 >= intersectionCounter(negativeValenceSets, semiMegaset_B2) >= 3:
     
     #Enough active/passive pieces for each:
-            if (8 >= intersectionCounter(activeArousalSets, semiMegaset_B1) >= 7) and (8 >= intersectionCounter(passiveArousalSets, semiMegaset_B1) >= 7):
+            if (5 >= intersectionCounter(activeArousalSets, semiMegaset_B1) >= 3) and (5 >= intersectionCounter(passiveArousalSets, semiMegaset_B1) >= 3):
             
-                if 8 >= intersectionCounter(activeArousalSets, semiMegaset_B2) >= 7 and 8 >= intersectionCounter(passiveArousalSets, semiMegaset_B2) >= 7:
+                if 4 >= intersectionCounter(activeArousalSets, semiMegaset_B2) >= 3 and 4 >= intersectionCounter(passiveArousalSets, semiMegaset_B2) >= 3:
         
     #Enough dom/sub pieces for each (Change to account for neutral ones?):
-                    if (8>= intersectionCounter(dominantDominanceSets, semiMegaset_B1) >= 7) and (8 >= intersectionCounter(submissiveDominanceSets, semiMegaset_B1) >= 7):
+                    if (5>= intersectionCounter(dominantDominanceSets, semiMegaset_B1) >= 3) and (5 >= intersectionCounter(submissiveDominanceSets, semiMegaset_B1) >= 3):
                     
-                        if 8 >= intersectionCounter(dominantDominanceSets, semiMegaset_B2) >= 7 and 8 >= intersectionCounter(submissiveDominanceSets, semiMegaset_B2) >= 7:                    
+                        if 4 >= intersectionCounter(dominantDominanceSets, semiMegaset_B2) >= 3 and 4 >= intersectionCounter(submissiveDominanceSets, semiMegaset_B2) >= 3:                    
                        
     #To ensure as much "spread" as possible/reduce conflating emotions, try to forbid identical combinations:       
     #DOESN'T APPEAR TO BE POSSIBLE (OR AT LEAST, V HARD TO FIND ALLOWED COMBINATIONS)                          
@@ -128,18 +117,9 @@ while validSemiMegasets_B_exclPracticePieces == False:
                       #It does not appear possible to have maximum "spread" in the artists as well
                        #   if intersectionCounter(sameArtists1, semiMegaset_A1) == 1 and intersectionCounter(sameArtists2, semiMegaset_A1) >= 1 and intersectionCounter(sameArtists3, semiMegaset_A1) >= 1:
                       #        if intersectionCounter(sameArtists1, semiMegaset_A2) == 1 and intersectionCounter(sameArtists2, semiMegaset_A2) >= 1 and intersectionCounter(sameArtists3, semiMegaset_A1) >= 1:
-                                    print(semiMegaset_B1)
-                                    print(semiMegaset_B2)
                                     validSemiMegasets_B_exclPracticePieces = True
                                     
-while validSemiMegasets_B_inclPracticePieces == False:
-    semiMegasets_B_Practice = rng.choice(megasetB_PracticePieces, size=3, replace=False)
-    semiMegaset_B1_Practice = semiMegasets_B_Practice[0:2]
-    semiMegaset_B2_Practice = semiMegasets_B_Practice[2:3]
-    
-    semiMegaset_B1 = semiMegaset_A1.append(semiMegaset_B1_Practice)
-    semiMegaset_B2 = semiMegaset_A2.append(semiMegaset_B2_Practice)
-    validSemiMegasets_B_inclPracticePieces = True
+semiMegaset_B2 = np.append(semiMegaset_B2, megasetB_PracticePieces) #For the main trials, group B2 only has 7/15 attended. So, make the practice ones attended.
 
 #Find the data path:
 currentFolderPath = pathlib.Path(__file__).parent.resolve()

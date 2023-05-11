@@ -109,7 +109,8 @@ i = 2 #Index for row in sheet.
 
 for file in os.scandir(participantPath):
     stimCell = "A" + str(i)
-    trigCell = "B" + str(i)
+    trigCell = "B" + str(i)    
+    attdCell = "C" + str(i)
     if practiceSet in file.name:
         if ".wav" in file.name and "Oddball" not in file.name: #Only audio, and no oddball files. 
             stimPath = stimLoc + str(file.name)
@@ -118,6 +119,12 @@ for file in os.scandir(participantPath):
             trigFilename = "trigger_" + str(file.name)
             trigFolderPlusFilename = "Trigger Files/" + trigFilename
             worksheet.write(trigCell, trigFolderPlusFilename)
+            
+            if file.name[3:10] in attendedFiles:
+                musicAttended = "Yes"
+            else:
+                musicAttended = "No"
+            
             i+=1
 
 # Close the xlsx file
