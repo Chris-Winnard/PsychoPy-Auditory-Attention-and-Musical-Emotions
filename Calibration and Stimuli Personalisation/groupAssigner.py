@@ -11,9 +11,6 @@ dataPath = str(upperFolderPath) + "/Data/"
 MegasetFile = (dataPath + "\Megaset Assignment.txt")
 
 ParticipantGroupFile = (dataPath + "\Participant Groups.txt")
-with open(ParticipantGroupFile, 'w') as f:
-    f.write("")
-    f.close
 
 with open(MegasetFile, "r") as f:     
     

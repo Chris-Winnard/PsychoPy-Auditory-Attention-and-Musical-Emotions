@@ -16,7 +16,7 @@ import os
 import wx
 
 expName = 'Loudness Calibration'  # from the Builder filename that created this script
-expInfo = {'Participant': ''}
+expInfo = {'Participant ID': ''}
 dlg = gui.DlgFromDict(dictionary=expInfo, sortKeys=False, title=expName)
 if dlg.OK == False:
     core.quit()  # user pressed cancel
@@ -31,24 +31,24 @@ groupAssignmentFile = dataPath + "Participant Groups.txt" #Needed for taking col
 with open(groupAssignmentFile, 'r') as f:
     lines = f.readlines()
     for line in lines:
-        if "Group A1" in line and expInfo['Participant'] in line:
-            participantPath = dataPath + "Group A1/" + expInfo['Participant']
+        if "Group A1" in line and expInfo['Participant ID'] in line:
+            participantPath = dataPath + "Group A1/" + expInfo['Participant ID']
             vibrPiece = "Set01-Vibr.wav"
             harmPiece = "Set01-Harm.wav"
             keybPiece = "Set01-Keyb.wav"
-        elif "Group A2" in line and expInfo['Participant'] in line:
-            participantPath = dataPath + "Group A2/" + expInfo['Participant']
+        elif "Group A2" in line and expInfo['Participant ID'] in line:
+            participantPath = dataPath + "Group A2/" + expInfo['Participant ID']
             vibrPiece = "Set01-Vibr.wav"
             harmPiece = "Set01-Harm.wav"
             keybPiece = "Set01-Keyb.wav"
             
-        elif "Group B1" in line and expInfo['Participant'] in line:
-            participantPath = dataPath + "Group B1/" + expInfo['Participant']
+        elif "Group B1" in line and expInfo['Participant ID'] in line:
+            participantPath = dataPath + "Group B1/" + expInfo['Participant ID']
             vibrPiece = "Set04-Vibr.wav"
             harmPiece = "Set04-Harm.wav"
             keybPiece = "Set04-Keyb.wav"
-        elif "Group B2" in line and participantNo in line:
-            participantPath = dataPath + "Group B2/" + expInfo['Participant']
+        elif "Group B2" in line and expInfo['Participant ID'] in line:
+            participantPath = dataPath + "Group B2/" + expInfo['Participant ID']
             vibrPiece = "Set04-Vibr.wav"
             harmPiece = "Set04-Harm.wav"
             keybPiece = "Set04-Keyb.wav"

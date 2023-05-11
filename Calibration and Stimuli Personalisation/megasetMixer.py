@@ -39,6 +39,7 @@ while validMegasets == False:
     megasetA = megasets[0:5]
     megasetB = megasets[6:11]
     
+    
     #Enough +ve/-ve pieces for each (Change to account for neutral ones?):
     if 3 >= intersectionCounter(positiveValenceSets, megasetA) >= 2 and 3 >= intersectionCounter(negativeValenceSets, megasetA) >= 2:
     

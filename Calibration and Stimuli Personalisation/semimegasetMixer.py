@@ -141,5 +141,3 @@ with open(semiMegasetFile, 'w') as f:
     f.write("\n")
     f.write("Remember to add in leading zeros for single-digit numbers.")
     f.close
-        
-    print("Remember to add in leading zeros for single-digit numbers.")

@@ -15,7 +15,7 @@ stimuliPath = str(upperFolderPath) + "/Stimuli"
 
 #Create output path:
 dataPath = str(upperFolderPath) + "/Data/"
-participantNo = ""
+participantNo = "05"
 
 
 groupAssignmentFile = dataPath + "/Participant Groups.txt" #Needed for taking collecting stimuli, and saving to right place:
