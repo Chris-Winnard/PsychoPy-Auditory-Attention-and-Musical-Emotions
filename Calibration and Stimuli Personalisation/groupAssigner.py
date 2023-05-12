@@ -12,93 +12,112 @@ MegasetFile = (dataPath + "\Megaset Assignment.txt")
 
 ParticipantGroupFile = (dataPath + "\Participant Groups.txt")
 
+megasetA_participants = []
+megasetB_participants = []
+
 with open(MegasetFile, "r") as f:     
     
-    lines = f.readlines()
-    
+    lines = f.readlines() 
     for line in lines:
         
         if "Megaset A" in line:
             words = line.rstrip("]\n")
             words = words.split(" ")
-            megasetA_participants = [int(x) for x in words if x.isnumeric()==1]
+            for x in words:
+                if len(x)  == 3:
+                    if x[0] == "P":
+                        megasetA_participants.append(x)
             
         elif "Megaset B" in line:
             words = line.rstrip("]\n")
             words = words.split(" ")
-            megasetB_participants = [int(x) for x in words if x.isnumeric()==1]
-            
+            for x in words:
+                if len(x)  == 3:
+                    print(x)
+                    if x[0] == "P":
+                        megasetB_participants.append(x)
     f.close
 
 #Split participants listening to Megaset A into two groups, A1 and A2:
 half_megasetA_participants = round(len(megasetA_participants)/2)
-GroupA1_participants = rng.choice(megasetA_participants, size=half_megasetA_participants, replace=False)
-GroupA2_participants = np.setdiff1d(megasetA_participants, GroupA1_participants)
+A1_participants = rng.choice(megasetA_participants, size=half_megasetA_participants, replace=False)
+A2_participants = np.setdiff1d(megasetA_participants, A1_participants)
+A1_participants = A1_participants.tolist() #Convert to lists
+A2_participants = A2_participants.tolist()
 
 #Same for Megaset B:
 half_megasetB_participants = round(len(megasetB_participants)/2)
-GroupB1_participants = rng.choice(megasetB_participants, size=half_megasetB_participants, replace=False)
-GroupB2_participants = np.setdiff1d(megasetB_participants, GroupB1_participants)
+B1_participants = rng.choice(megasetB_participants, size=half_megasetB_participants, replace=False)
+B2_participants = np.setdiff1d(megasetB_participants, B1_participants)
+B1_participants = B1_participants.tolist() #Convert to lists
+B2_participants = B2_participants.tolist()
 
-#Set it up so that we can assign new participants without rewriting:
-if os.path.getsize(ParticipantGroupFile) != 0:
-    maxAlreadyAssigned = 0
+#Set it up so that we can assign new participants without contradicting what was already written:
+A1_alreadyAssigned = []
+A2_alreadyAssigned = []
+B1_alreadyAssigned = []
+B2_alreadyAssigned = []
+
+with open(ParticipantGroupFile,"r") as f:     
     
-    with open(ParticipantGroupFile, "r") as f:     
-        
-        lines = f.readlines()
-        for line in lines:
-            words = line.rstrip("]\n")
-            words = words.split(" ")
-            maxAlreadyAssigned_thisGroup = max(int(x) for x in words if x.isnumeric()==1)
-            if maxAlreadyAssigned_thisGroup > maxAlreadyAssigned:
-                maxAlreadyAssigned = maxAlreadyAssigned_thisGroup
-        
-        for line in lines:
-            if "Group A1" in line:
-                words = line.rstrip("]\n")
-                words = words.split(" ")
-                GroupA1_participantsAlreadyAssigned = [int(x) for x in words if x.isnumeric()==1]
-                new_GroupA1_participants = np.array([x for x in GroupA1_participants if x > maxAlreadyAssigned], dtype=np.int)
-                GroupA1_participants = np.concatenate([GroupA1_participantsAlreadyAssigned, GroupA1_participants])
-                
-            elif "Group A2" in line:
-                words = line.rstrip("]\n")
-                words = words.split(" ")
-                GroupA2_participantsAlreadyAssigned = [int(x) for x in words if x.isnumeric()==1]
-                new_GroupA2_participants = np.array([x for x in GroupA2_participants if x > maxAlreadyAssigned], dtype=np.int)
-                GroupA2_participants = np.concatenate([GroupA2_participantsAlreadyAssigned, new_GroupA2_participants])
-                
-            elif "Group B1" in line:
-                words = line.rstrip("]\n")
-                words = words.split(" ")
-                GroupB1_participantsAlreadyAssigned = [int(x) for x in words if x.isnumeric()==1]
-                new_GroupB1_participants = np.array([x for x in GroupB1_participants if x > maxAlreadyAssigned], dtype=np.int)
-                GroupB1_participants = np.concatenate([GroupB1_participantsAlreadyAssigned, GroupB1_participants])
+    lines = f.readlines()
+    for line in lines:
+        if "Group A1" in line:
+            A1_original = line.rstrip("\n")
             
-            elif "Group B2" in line:
-                words = line.rstrip("]\n")
-                words = words.split(" ")
-                GroupB2_participantsAlreadyAssigned = [int(x) for x in words if x.isnumeric()==1]
-                GroupB2_participants = np.array([x for x in GroupB2_participants if x > maxAlreadyAssigned], dtype=np.int)
-                GroupB2_participants = np.concatenate([GroupB2_participantsAlreadyAssigned, GroupB2_participants])
+        if "Group A2" in line:
+            A2_original = line.rstrip("\n")
+        
+        if "Group B1" in line:
+            B1_original = line.rstrip("\n")
+        
+        if "Group B2" in line:
+            B2_original = line
+            
+        words = line.rstrip("\n")
+        words = words.rsplit(" ")
+        
+        for word in A1_participants:
+            if word in words:
+                A1_alreadyAssigned.append(word)
+        
+        for word in A2_participants:
+            if word in words:
+                A2_alreadyAssigned.append(word)
+        
+        for word in B1_participants:
+            if word in words:
+                B1_alreadyAssigned.append(word)
+        
+        for word in B2_participants:
+            if word in words:
+                B2_alreadyAssigned.append(word)
+
+    A1_participants_new = set(A1_participants) - set(A1_alreadyAssigned)
+    A1_participants_new = " ".join(str(x) for x in A1_participants_new) #String format
+    A1_participants_updated = A1_original + " " + A1_participants_new
+    
+    A2_participants_new = set(A2_participants) - set(A2_alreadyAssigned)
+    A2_participants_new = " ".join(str(x) for x in A2_participants_new)
+    A2_participants_updated = A2_original + " " + A2_participants_new
+
+    B1_participants_new = set(B1_participants) - set(B1_alreadyAssigned)
+    B1_participants_new = " ".join(str(x) for x in B1_participants_new)
+    B1_participants_updated = B1_original + " " + B1_participants_new
+    
+    B2_participants_new = set(B2_participants) - set(B2_alreadyAssigned)
+    B2_participants_new = " ".join(str(x) for x in B2_participants_new)
+    B2_participants_updated = B2_original + " " + B2_participants_new
+    
+    f.close()
 
 #Finally, write to file:
-with open(ParticipantGroupFile, 'w') as f:
-        f.write("Participant groups:\n")
-        f.write("Group A1: ")
-        f.write(str(GroupA1_participants))
-        f.write("\n")
-        f.write("Group A2: ")
-        f.write(str(GroupA2_participants))
-        f.write("\n")
-        f.write("Group B1: ")
-        f.write(str(GroupB1_participants))
-        f.write("\n")
-        f.write("Group B2: ")
-        f.write(str(GroupB2_participants))   
-        f.write("\n")
-        f.write("Remember to add in leading zeros for single-digit numbers.")
-        f.close
-    
-print("Remember to add in leading zeros for single-digit numbers.")
+with open(ParticipantGroupFile, "w") as f:    
+    f.write(str(A1_participants_updated))
+    f.write("\n")
+    f.write(str(A2_participants_updated))  
+    f.write("\n")
+    f.write(str(B1_participants_updated))
+    f.write("\n")
+    f.write(str(B2_participants_updated))  
+    f.close

@@ -49,7 +49,7 @@ A_alreadyAssigned = []
 B_alreadyAssigned = []
 
 
-with open(File,"r+") as f:     
+with open(File,"r") as f:     
     
     lines = f.readlines()
     for line in lines:
