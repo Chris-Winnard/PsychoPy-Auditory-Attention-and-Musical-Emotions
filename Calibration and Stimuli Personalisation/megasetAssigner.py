@@ -11,7 +11,7 @@ from numpy.random import default_rng
 rng = default_rng() 
 import os
 
-allParticipants = np.arange(1, 17) #16 participants
+allParticipants = np.arange(1, 40) #16 participants
 
 halfParticipants = round(len(allParticipants)/2)
 
@@ -43,36 +43,46 @@ upperFolderPath = currentFolderPath.parent.resolve()
 dataPath = str(upperFolderPath) + "/Data/"
 File = (dataPath + "\Megaset Assignment.txt")
 
+
 #Set it up so that we can assign new participants without contradicting what was already written:
-    
-def intersection(lst1, lst2):
-    lst3 = [value for value in lst1 if value in lst2]
-    return lst3
+A_alreadyAssigned = []
+B_alreadyAssigned = []
+
 
 with open(File,"r+") as f:     
     
-    words = [line.split(' ') for line in f.readlines()]
-    for word in words:
-        word = word.rstrip("\"")
-    print(words)
-    print(megasetA_participants)
-    A_alreadyAssigned = intersection(words, megasetA_participants)
-    megasetA_participants = set(megasetA_participants) - set(A_alreadyAssigned)
-    megasetA_participants = str(megasetA_participants)
-    megasetA_participants = megasetA_participants.rstrip(",")
+    lines = f.readlines()
+    for line in lines:
+        if "Megaset A" in line:
+            megasetA_original = line.rstrip("\n")
         
-    B_alreadyAssigned = intersection(words, megasetB_participants)
-    megasetB_participants = set(megasetB_participants) - set(B_alreadyAssigned)
-    megasetB_participants = str(megasetB_participants)
-    megasetB_participants = megasetB_participants.rstrip(",")
-    f.close()
+        if "Megaset B" in line:
+            megasetB_original = line
+            
+        words = line.rstrip("\n")
+        words = words.rsplit(" ")
+        
+        for word in megasetA_participants:
+            if word in words:
+                A_alreadyAssigned.append(word)
+        
+        for word in megasetB_participants:
+            if word in words:
+                B_alreadyAssigned.append(word)
 
+    megasetA_participants_new = set(megasetA_participants) - set(A_alreadyAssigned)
+    megasetA_participants_new = " ".join(str(x) for x in megasetA_participants_new) #String format
+    megasetA_participants_updated = megasetA_original + " " + megasetA_participants_new
+    
+    megasetB_participants_new = set(megasetB_participants) - set(B_alreadyAssigned)
+    megasetB_participants_new = " ".join(str(x) for x in megasetB_participants_new)    
+    megasetB_participants_updated = megasetB_original + " " + megasetB_participants_new
+    
+    f.close()
+    
 #Finally, write to file:
-with open(File,"a") as f:    
-    f.write("Participants assigned Megaset A: ")
-    f.write(str(megasetA_participants))
+with open(File,"w") as f:    
+    f.write(str(megasetA_participants_updated))
     f.write("\n")
-    f.write("Participants assigned Megaset B: ")
-    f.write(str(megasetB_participants))   
-    f.write("\n")
+    f.write(str(megasetB_participants_updated))   
     f.close
