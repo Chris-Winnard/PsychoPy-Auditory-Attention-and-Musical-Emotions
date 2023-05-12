@@ -33,7 +33,6 @@ with open(MegasetFile, "r") as f:
             words = words.split(" ")
             for x in words:
                 if len(x)  == 3:
-                    print(x)
                     if x[0] == "P":
                         megasetB_participants.append(x)
     f.close
