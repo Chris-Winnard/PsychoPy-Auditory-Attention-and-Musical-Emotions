@@ -17,10 +17,15 @@ oddballDemosPath = str(upperFolderPath) + "/Oddball Demos"
 
 #Find correct path for the gain files, and for outputs:
 dataPath = str(upperFolderPath) + "/Data"
-participantGroupFolder = max(glob.glob(os.path.join(dataPath, '*/')), key=os.path.getmtime) #Last updated
-#subfolder in Data folder. Because we run this and randomOddballCreator IMMEDIATELY after participant's
-#folder is created, this will be the output path for them.
-participantPath = max(glob.glob(os.path.join(participantGroupFolder, '*/')), key=os.path.getmtime)
+
+sub_paths = list() # Collect all files in sub directories
+for root, dirs, files in os.walk(dataPath):
+    sub_paths += [os.path.join(root,i) for i in files]
+
+participantCalibrationFile = max(sub_paths,key=os.path.getmtime) #Participant single-stream calibration file- the most recently updated file
+#in "Data" folder
+participantPath = pathlib.Path(participantCalibrationFile).parent.resolve() #Subfolder where that file is located, i.e participant's folder
+participantPath = str(participantPath)
 
 oddballDemosOutputPath = str(participantPath) + "/Oddball Demos" 
 os.mkdir(oddballDemosOutputPath)

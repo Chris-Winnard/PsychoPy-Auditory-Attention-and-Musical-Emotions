@@ -15,7 +15,7 @@ stimuliPath = str(upperFolderPath) + "/Stimuli"
 
 #Create output path:
 dataPath = str(upperFolderPath) + "/Data/"
-participantNo = "05"
+participantNo = "P01"
 
 
 groupAssignmentFile = dataPath + "/Participant Groups.txt" #Needed for taking collecting stimuli, and saving to right place:
@@ -23,17 +23,17 @@ with open(groupAssignmentFile, 'r') as f:
     lines = f.readlines()
     for line in lines:
         if "Group A1" in line and participantNo in line:
-            participantPath = str(upperFolderPath) + "/Data/Group A1" + participantNo + "/"
+            participantPath = str(upperFolderPath) + "/Data/Group A1/" + participantNo + "/"
             thisParticipantStimuliPath = stimuliPath + "\Megaset A"
         elif "Group A2" in line and participantNo in line:
-            participantPath = str(upperFolderPath) + "/Data/Group A2" + participantNo + "/"
+            participantPath = str(upperFolderPath) + "/Data/Group A2/" + participantNo + "/"
             thisParticipantStimuliPath = stimuliPath + "\Megaset A"
             
         elif "Group B1" in line and participantNo in line:
-            participantPath = str(upperFolderPath) + "/Data/Group B1" + participantNo + "/"
+            participantPath = str(upperFolderPath) + "/Data/Group B1/" + participantNo + "/"
             thisParticipantStimuliPath = stimuliPath + "\Megaset B"
         elif "Group B2" in line and participantNo in line:
-            participantPath = str(upperFolderPath) + "/Data/Group B2" + participantNo + "/"
+            participantPath = str(upperFolderPath) + "/Data/Group B2/" + participantNo + "/"
             thisParticipantStimuliPath = stimuliPath + "\Megaset B"
     f.close
     
