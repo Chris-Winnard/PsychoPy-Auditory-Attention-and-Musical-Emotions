@@ -1,4 +1,0 @@
-Group A1: P12 P02 P08 P11 
-Group A2: P01 P06 P07 P10      
-Group B1: P04 P15 P16 P14    
-Group B2: P03 P05 P09 P13     

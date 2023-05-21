@@ -1,8 +1,0 @@
-Semimegaset A1 - the sets to be attended to in part 3 by group A1: ['02-Harm' '11-Harm' '02-Keyb' '11-Vibr' '07-Harm' '09-Harm' '10-Vibr'
- '09-Vibr']
-Semimegaset A2 - the sets to be attended to in part 3 by group A2: ['11-Keyb' '07-Keyb' '10-Harm' '07-Vibr' '10-Keyb' '09-Keyb' '02-Vibr'
- '04-Harm' '04-Keyb' '04-Vibr']
-Semimegaset B1 - the sets to be attended to in part 3 by group B1: ['03-Harm' '05-Harm' '03-Keyb' '12-Vibr' '12-Keyb' '08-Harm' '06-Vibr'
- '08-Keyb']
-Semimegaset B2 - the sets to be attended to in part 3 by group B2: ['05-Vibr' '05-Keyb' '08-Vibr' '06-Harm' '06-Keyb' '03-Vibr' '12-Harm'
- '01-Harm' '01-Keyb' '01-Vibr']
