@@ -51,7 +51,7 @@ os.chdir(_thisDir)
 # Store info about the experiment session
 psychopyVersion = '2022.1.3'
 expName = 'Part 3'  # from the Builder filename that created this script
-expInfo = {'participant': ''}
+expInfo = {'Participant ID': ''}
 dlg = gui.DlgFromDict(dictionary=expInfo, sortKeys=False, title=expName)
 if dlg.OK == False:
     core.quit()  # user pressed cancel
@@ -469,8 +469,8 @@ for thisBlock0 in block0:
     trialClock.reset(-_timeToFirstFrame)  # t0 is time of first possible flip
     frameN = -1
     
-    #Set random attend condition:
-    attend = bool(random.getrandbits(1))
+    #Get attendance condition:
+    attend = f"music attended"
     
     # -------Run Routine "practiceTrial"-------
     while continueRoutine:
@@ -482,7 +482,7 @@ for thisBlock0 in block0:
         # update/draw components on each frame
             
         # *attendNote* updates
-        if attend==True and attendNote.status == NOT_STARTED:
+        if attend=="Yes" and attendNote.status == NOT_STARTED:
             # keep track of start time/frame for later
             attendNote.frameNStart = frameN  # exact frame index
             attendNote.tStart = t  # local t and not account for scr refresh
@@ -499,7 +499,7 @@ for thisBlock0 in block0:
                 attendNote.setAutoDraw(False)
         
         # *dontAttendNote* updates
-        if attend==False and dontAttendNote.status == NOT_STARTED:
+        if attend=="No" and dontAttendNote.status == NOT_STARTED:
             # keep track of start time/frame for later
             dontAttendNote.frameNStart = frameN  # exact frame index
             dontAttendNote.tStart = t  # local t and not account for scr refresh
@@ -573,7 +573,7 @@ for thisBlock0 in block0:
         if hasattr(thisComponent, "setAutoDraw"):
             thisComponent.setAutoDraw(False)
     
-    if attend == True:
+    if attend == "Yes":
         print("attended")
     else:
         print("not attended")
@@ -703,7 +703,7 @@ print(f'Playing start trigger')
 continueRoutine = True
 routineTimer.add(1)
 startExpTrigger = SfPlayer('start_trigger.wav')
-for i in range(PART_2_OUT_CHANNELS):
+for i in range(PART_3_OUT_CHANNELS):
     mm.delInput(i)
 mm.addInput(0, startExpTrigger)
 #mm.setAmp(0,i,0)
@@ -761,7 +761,7 @@ for thisBlock1 in block1:
     frameN = -1
     
     #Set random attend condition:
-    attend = bool(random.getrandbits(1))
+    attend = f"music attended"
     
     # -------Run Routine "trial"-------
     while continueRoutine:
@@ -773,7 +773,7 @@ for thisBlock1 in block1:
         # update/draw components on each frame
             
         # *attendNote* updates
-        if attend==True and attendNote.status == NOT_STARTED:
+        if attend=="Yes" and attendNote.status == NOT_STARTED:
             # keep track of start time/frame for later
             attendNote.frameNStart = frameN  # exact frame index
             attendNote.tStart = t  # local t and not account for scr refresh
@@ -790,7 +790,7 @@ for thisBlock1 in block1:
                 attendNote.setAutoDraw(False)
         
         # *dontAttendNote* updates
-        if attend==False and dontAttendNote.status == NOT_STARTED:
+        if attend=="No" and dontAttendNote.status == NOT_STARTED:
             # keep track of start time/frame for later
             dontAttendNote.frameNStart = frameN  # exact frame index
             dontAttendNote.tStart = t  # local t and not account for scr refresh
@@ -808,49 +808,46 @@ for thisBlock1 in block1:
         
         if stimuliStarted == False and (attendNote.status == FINISHED or dontAttendNote.status == FINISHED):
             print(f'trigger: {trigger}')
-                    
-            if stimuliStarted == False and (attendNote.status == FINISHED or dontAttendNote.status == FINISHED):
-                print(f'trigger: {trigger}')
-                trigger_filename, trigger_ext = os.path.splitext(trigger)
-                trigger_logfile = os.path.abspath(trigger_filename + '.txt')
-                trial['trigger'] = os.path.abspath(trigger)
-                trial['trigger_log'] = os.path.abspath(trigger_logfile)
+            trigger_filename, trigger_ext = os.path.splitext(trigger)
+            trigger_logfile = os.path.abspath(trigger_filename + '.txt')
+            trial['trigger'] = os.path.abspath(trigger)
+            trial['trigger_log'] = os.path.abspath(trigger_logfile)
+        
+            # trigger channel
+            trigger_chn = SfPlayer(trigger)
+            mm.delInput(0)
+            mm.addInput(0, trigger_chn)
+            mm.setAmp(0,TRIGGER_CHN,spk_volume[TRIGGER_CHN])           
+            # stimuli channels
+            trial['stimuli'] = []
+            # create an empty list to store the players
+            players = []
             
-                # trigger channel
-                trigger_chn = SfPlayer(trigger)
-                mm.delInput(0)
-                mm.addInput(0, trigger_chn)
-                mm.setAmp(0,TRIGGER_CHN,spk_volume[TRIGGER_CHN])           
-                # stimuli channels
-                trial['stimuli'] = []
-                # create an empty list to store the players
-                players = []
-                
-                # create the first player for stimuli_0
-              #  spk_name = "stimuli_0"
-               # trial['stimuli'].append(os.path.abspath(globals()[spk_name]))
-               # player = sound.Sound(globals()[spk_name])
-                #player.setVolume(1)  # set the volume to 1
-                #players.append(player)
-                
-                # create the rest of the players for stimuli_0
-                for i in range(1, PART_2_OUT_CHANNELS):
-                    spk_name = f"stimuli_0"
-                    trial['stimuli'].append(os.path.abspath(globals()[spk_name]))
-                    if i < len(spk_volume):  # check if spk_volume has the correct number of elements
-                        player = sound.Sound(globals()[spk_name])
-                        player.setVolume(spk_volume[i])  # set the volume for the current speaker
-                    else:
-                        player = sound.Sound(globals()[spk_name])
-                        print(f"Warning: no volume specified for speaker {i}")
-                    players.append(player)
-                
-                # play the sounds and wait for them to finish
-                for player in players:
-                    player.play()
-                while any([player.status == PLAYING for player in players]):
-                    continue
-                stimuliStarted = True
+            # create the first player for stimuli_0
+          #  spk_name = "stimuli_0"
+           # trial['stimuli'].append(os.path.abspath(globals()[spk_name]))
+           # player = sound.Sound(globals()[spk_name])
+            #player.setVolume(1)  # set the volume to 1
+            #players.append(player)
+            
+            # create the rest of the players for stimuli_0
+            for i in range(1, PART_3_OUT_CHANNELS):
+                spk_name = f"stimuli_0"
+                trial['stimuli'].append(os.path.abspath(globals()[spk_name]))
+                if i < len(spk_volume):  # check if spk_volume has the correct number of elements
+                    player = sound.Sound(globals()[spk_name])
+                    player.setVolume(spk_volume[i])  # set the volume for the current speaker
+                else:
+                    player = sound.Sound(globals()[spk_name])
+                    print(f"Warning: no volume specified for speaker {i}")
+                players.append(player)
+            
+            # play the sounds and wait for them to finish
+            for player in players:
+                player.play()
+        #    while any([player.status == PLAYING for player in players]):
+         #       continue
+            stimuliStarted = True
      
      
         # check for quit (typically the Esc key)
@@ -883,7 +880,7 @@ for thisBlock1 in block1:
         if hasattr(thisComponent, "setAutoDraw"):
             thisComponent.setAutoDraw(False)
     
-    if attend == True:
+    if attend == "Yes":
         block1.addData('attendanceCondition','Attended to music')
         print("attended")
     else:
@@ -1068,7 +1065,7 @@ while continueRoutine:
     if endExpNow or defaultKeyboard.getKeys(keyList=["escape"]):
         core.quit()
     
-    if thisPartCompleteClock.getTime() > 6:
+    if thisPartCompleteClock.getTime() > 4:
         thisPartCompleteText.status = FINISHED
         
     # check if all components have finished

@@ -24,7 +24,7 @@ _thisDir = os.path.dirname(os.path.abspath(__file__))
 os.chdir(_thisDir)
 # Store info about the experiment session
 psychopyVersion = '2022.1.3'
-expName = 'First Attempt at Questionnaire Expt Script'  # from the Builder filename that created this script
+expName = 'Questionnaire'  # from the Builder filename that created this script
 expInfo = {'participant': ''}
 dlg = gui.DlgFromDict(dictionary=expInfo, sortKeys=False, title=expName)
 if dlg.OK == False:
@@ -274,10 +274,10 @@ text_2 = visual.TextStim(win=win, name='text_2',
 clickForEmotionInfo = visual.TextBox2(
      win, 
      text='                                                                                                                                  Click here for more information on how the\nscales relate to particular emotions.', font='Open Sans',
-     pos=(0, 0.3115), letterHeight=0.03, size=(2.6, 0.04625),
+     pos=(0, 0.3095), letterHeight=0.03, size=(2.6, 0.051),
      color=[-1, 1, -1], colorSpace='rgb',
      opacity=None,
-     bold=True, italic=False, lineSpacing=0.65,
+     bold=True, italic=False, lineSpacing=0.72,
      padding=0.0, alignment='center', anchor='centre',
      fillColor=None, borderColor=None,
      flipHoriz=False, flipVert=False, languageStyle='LTR',
@@ -1033,14 +1033,14 @@ x, y = mouse2.getPos()
 routineTimer.reset()
 moveToPersonalResponses = False #So we can open an information page without skipping ahead to the next section of questions.
 
+moodValenceResp.reset()
+moodArousalResp.reset()
+moodDominanceResp.reset()
 while moveToPersonalResponses == False:
     # ------Prepare to start Routine "Current_Mental_State_pg2"-------
     continueRoutine = True
     # update component parameters for each repeat
     clickForEmotionInfo.reset()
-    moodValenceResp.reset()
-    moodArousalResp.reset()
-    moodDominanceResp.reset()
     # setup some python lists for storing info about the mouse2_2
     mouse2_2.clicked_name = []
     gotValidClick = False  # until a click is received
@@ -2096,7 +2096,7 @@ while continueRoutine:
     if endExpNow or defaultKeyboard.getKeys(keyList=["escape"]):
         core.quit()
     
-    if thisPartCompleteClock.getTime() > 6:
+    if thisPartCompleteClock.getTime() > 4:
         thisPartCompleteText.status = FINISHED
         
     # check if all components have finished

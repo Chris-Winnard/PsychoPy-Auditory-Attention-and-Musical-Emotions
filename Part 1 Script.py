@@ -61,8 +61,8 @@ _thisDir = os.path.dirname(os.path.abspath(__file__))
 os.chdir(_thisDir)
 # Store info about the experiment session
 psychopyVersion = '2022.1.3'
-expName = 'Part1'  # from the Builder filename that created this script
-expInfo = {'participant': ''}
+expName = 'Part 1'  # from the Builder filename that created this script
+expInfo = {'Participant ID': ''}
 dlg = gui.DlgFromDict(dictionary=expInfo, sortKeys=False, title=expName)
 if dlg.OK == False:
     core.quit()  # user pressed cancel
@@ -70,7 +70,21 @@ expInfo['date'] = data.getDateStr()  # add a simple timestamp
 expInfo['expName'] = expName
 
 # Data file name stem = absolute path + name; later add .psyexp, .csv, .log, etc
-participantPath = _thisDir + '/Data/' + expInfo['participant'] #participantPath also used for locating stimuli lists for this particular participant.
+dataPath = thisDir + "/Data/"
+groupAssignmentFile = dataPath + "Participant Groups.txt" #Needed for taking collecting stimuli, and saving to right place:
+with open(groupAssignmentFile, 'r') as f:
+    lines = f.readlines()
+    for line in lines:
+        if "Group A1" in line and expInfo['Participant ID'] in line:
+            participantPath = dataPath + "Group A1/" + expInfo['Participant ID']
+        elif "Group A2" in line and expInfo['Participant ID'] in line:
+            participantPath = dataPath + "Group A2/" + expInfo['Participant ID']
+        elif "Group B1" in line and expInfo['Participant ID'] in line:
+            participantPath = dataPath + "Group B1/" + expInfo['Participant ID']
+        elif "Group B2" in line and expInfo['Participant ID'] in line:
+            participantPath = dataPath + "Group B2/" + expInfo['Participant ID']
+    f.close
+
 filename = participantPath + '/Part 1 Data'
 jsonfilename = filename + '_stimuli.json'
 jsondata = {}
@@ -168,7 +182,7 @@ text_2 = visual.TextStim(win=win, name='text_2',
 clickForEmotionInfo = visual.TextBox2(
      win, 
      text='                                                                                                                                  Click here for more\ninformation on how the scales relate to particular emotions.', font='Open Sans',
-     pos=(0, 0.392), letterHeight=0.04, size=(2.6, 0.04625),
+     pos=(0, 0.392), letterHeight=0.04, size=(2.6, 0.067),
      color=[-1, 1, -1], colorSpace='rgb',
      opacity=None,
      bold=True, italic=False, lineSpacing=0.65,
@@ -879,6 +893,7 @@ for thisBlock0 in block0:
             # the Routine "Categorical_Emotions_to_VAD_Mapping" was not non-slip safe, so reset the non-slip timer
             routineTimer.reset()
             continueRoutine = True
+            nextButton.status == NOT_STARTED
     
     
     # ------Prepare to start Routine "interTrialPause"-------
@@ -1065,7 +1080,7 @@ for thisBlock1 in block1:
     #players.append(player)
     
     # create the rest of the players for stimuli_0
-    for i in range(1, PART_2_OUT_CHANNELS):
+    for i in range(1, PART_1_OUT_CHANNELS):
         spk_name = f"stimuli_0"
         trial['stimuli'].append(os.path.abspath(globals()[spk_name]))
         if i < len(spk_volume):  # check if spk_volume has the correct number of elements
@@ -1217,6 +1232,11 @@ for thisBlock1 in block1:
                                     gotValidClick = True
                                     mouse.clicked_name.append(obj.name)
                                     if obj.name == 'nextButton':
+                                        block1.addData('valenceResp.response', valenceResp.getRating())
+                                        block1.addData('arousalResp.response', arousalResp.getRating())
+                                        block1.addData('dominanceResp.response', dominanceResp.getRating())
+                                        thisExp.nextEntry() #Next row on the record.
+                                        # store data for block1 (TrialHandler)
                                         moveToPause = True
                         else:
                             try:
@@ -1266,12 +1286,7 @@ for thisBlock1 in block1:
         for thisComponent in trialComponents:
             if hasattr(thisComponent, "setAutoDraw"):
                 thisComponent.setAutoDraw(False)
-        
-        block1.addData('valenceResp.response', valenceResp.getRating())
-        block1.addData('arousalResp.response', arousalResp.getRating())
-        block1.addData('dominanceResp.response', dominanceResp.getRating())
-        thisExp.nextEntry() #Next row on the record.
-        # store data for block1 (TrialHandler)
+                
         x, y = mouse.getPos()
         buttons = mouse.getPressed()
         if sum(buttons):
@@ -1420,7 +1435,7 @@ for thisBlock1 in block1:
             # the Routine "Categorical_Emotions_to_VAD_Mapping" was not non-slip safe, so reset the non-slip timer
             routineTimer.reset()
             continueRoutine = True
-            
+            nextButton.status == NOT_STARTED
             
     # ------Prepare to start Routine "interTrialPause"-------
     continueRoutine = True
@@ -1577,7 +1592,7 @@ while continueRoutine:
     if endExpNow or defaultKeyboard.getKeys(keyList=["escape"]):
         core.quit()
     
-    if thisPartCompleteClock.getTime() > 6:
+    if thisPartCompleteClock.getTime() > 4:
         thisPartCompleteText.status = FINISHED
         
     # check if all components have finished

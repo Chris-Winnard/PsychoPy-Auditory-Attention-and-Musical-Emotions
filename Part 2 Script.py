@@ -52,7 +52,7 @@ os.chdir(_thisDir)
 # Store info about the experiment session
 psychopyVersion = '2022.1.3'
 expName = 'Part 2'  # from the Builder filename that created this script
-expInfo = {'participant': ''}
+expInfo = {'Participant ID': ''}
 dlg = gui.DlgFromDict(dictionary=expInfo, sortKeys=False, title=expName)
 if dlg.OK == False:
     core.quit()  # user pressed cancel
@@ -60,7 +60,21 @@ expInfo['date'] = data.getDateStr()  # add a simple timestamp
 expInfo['expName'] = expName
 
 # Data file name stem = absolute path + name; later add .psyexp, .csv, .log, etc
-participantPath = _thisDir + '/Data/' + expInfo['participant'] #participantPath also used for locating stimuli lists for this particular participant.
+dataPath = thisDir + "/Data/"
+groupAssignmentFile = dataPath + "Participant Groups.txt" #Needed for taking collecting stimuli, and saving to right place:
+with open(groupAssignmentFile, 'r') as f:
+    lines = f.readlines()
+    for line in lines:
+        if "Group A1" in line and expInfo['Participant ID'] in line:
+            participantPath = dataPath + "Group A1/" + expInfo['Participant ID']
+        elif "Group A2" in line and expInfo['Participant ID'] in line:
+            participantPath = dataPath + "Group A2/" + expInfo['Participant ID']
+        elif "Group B1" in line and expInfo['Participant ID'] in line:
+            participantPath = dataPath + "Group B1/" + expInfo['Participant ID']
+        elif "Group B2" in line and expInfo['Participant ID'] in line:
+            participantPath = dataPath + "Group B2/" + expInfo['Participant ID']
+    f.close
+
 filename = participantPath + '/Part 2 Data'
 jsonfilename = filename + '_oddballStimuli.json'
 jsondata = {}
@@ -1636,7 +1650,7 @@ while continueRoutine:
     if endExpNow or defaultKeyboard.getKeys(keyList=["escape"]):
         core.quit()
     
-    if thisPartCompleteClock.getTime() > 6:
+    if thisPartCompleteClock.getTime() > 4:
         thisPartCompleteText.status = FINISHED
         
     # check if all components have finished
