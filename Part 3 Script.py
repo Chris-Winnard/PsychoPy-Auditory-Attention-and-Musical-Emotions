@@ -7,8 +7,6 @@ from psychopy.constants import (NOT_STARTED, STARTED, PLAYING, PAUSED,
                                 STOPPED, FINISHED, PRESSED, RELEASED, FOREVER)
 
 import numpy as np
-from numpy import (sin, cos, tan, log, log10, pi, average,
-                   sqrt, std, deg2rad, rad2deg, linspace, asarray)
 from numpy.random import random, randint, normal, shuffle, choice as randchoice
 import os  # handy system and path functions
 import sys  # to get file system encoding
@@ -58,8 +56,22 @@ if dlg.OK == False:
 expInfo['date'] = data.getDateStr()  # add a simple timestamp
 expInfo['expName'] = expName
 
-# Data file name stem = absolute path + name; later add .psyexp, .csv, .log, etc
-participantPath = _thisDir + '/Data/' + expInfo['participant'] #participantPath also used for locating stimuli lists for this particular participant.
+## Data file name stem = absolute path + name; later add .psyexp, .csv, .log, etc
+dataPath = _thisDir + "/Data/"
+groupAssignmentFile = dataPath + "Participant Groups.txt" #Needed for taking collecting stimuli, and saving to right place:
+with open(groupAssignmentFile, 'r') as f:
+    lines = f.readlines()
+    for line in lines:
+        if "Group A1" in line and expInfo['Participant ID'] in line:
+            participantPath = dataPath + "Group A1/" + expInfo['Participant ID']
+        elif "Group A2" in line and expInfo['Participant ID'] in line:
+            participantPath = dataPath + "Group A2/" + expInfo['Participant ID']
+        elif "Group B1" in line and expInfo['Participant ID'] in line:
+            participantPath = dataPath + "Group B1/" + expInfo['Participant ID']
+        elif "Group B2" in line and expInfo['Participant ID'] in line:
+            participantPath = dataPath + "Group B2/" + expInfo['Participant ID']
+    f.close
+
 filename = participantPath + '/Part 3 Data'
 jsonfilename = filename + '_stimuli.json'
 jsondata = {}
@@ -443,7 +455,6 @@ if thisBlock0 != None:
 for thisBlock0 in block0:
     trial = {}
 
-    currentLoop = block0
 # abbreviate parameter names if possible (e.g. rgb = thisBlock.rgb)
     if thisBlock0 != None:
         for paramName in thisBlock0:
@@ -470,7 +481,7 @@ for thisBlock0 in block0:
     frameN = -1
     
     #Get attendance condition:
-    attend = f"music attended"
+    attend = f"music_attended"
     
     # -------Run Routine "practiceTrial"-------
     while continueRoutine:
@@ -499,7 +510,7 @@ for thisBlock0 in block0:
                 attendNote.setAutoDraw(False)
         
         # *dontAttendNote* updates
-        if attend=="No" and dontAttendNote.status == NOT_STARTED:
+        if attend!="Yes" and dontAttendNote.status == NOT_STARTED:
             # keep track of start time/frame for later
             dontAttendNote.frameNStart = frameN  # exact frame index
             dontAttendNote.tStart = t  # local t and not account for scr refresh
@@ -575,8 +586,7 @@ for thisBlock0 in block0:
     
     if attend == "Yes":
         print("attended")
-    else:
-        print("not attended")
+    print(attend)
     # the Routine "practiceTrial" was not non-slip safe, so reset the non-slip timer
     routineTimer.reset()
     
@@ -734,7 +744,6 @@ for thisBlock1 in block1:
     trial = {}
     idx += 1
     print(f'Not counting the practice trial, this is trial {idx}')
-    currentLoop = block1
     # abbreviate parameter names if possible (e.g. rgb = thisBlock1.rgb)
     if thisBlock1 != None:
         for paramName in thisBlock1:
@@ -761,7 +770,7 @@ for thisBlock1 in block1:
     frameN = -1
     
     #Set random attend condition:
-    attend = f"music attended"
+    attend = f"music_attended"
     
     # -------Run Routine "trial"-------
     while continueRoutine:
@@ -790,7 +799,7 @@ for thisBlock1 in block1:
                 attendNote.setAutoDraw(False)
         
         # *dontAttendNote* updates
-        if attend=="No" and dontAttendNote.status == NOT_STARTED:
+        if attend!="Yes" and dontAttendNote.status == NOT_STARTED:
             # keep track of start time/frame for later
             dontAttendNote.frameNStart = frameN  # exact frame index
             dontAttendNote.tStart = t  # local t and not account for scr refresh

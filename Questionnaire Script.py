@@ -34,7 +34,25 @@ expInfo['expName'] = expName
 expInfo['psychopyVersion'] = psychopyVersion
 
 # Data file name stem = absolute path + name; later add .psyexp, .csv, .log, etc
-filename = _thisDir + '/Data/' + expInfo['participant'] + '/Questionnaire Answers'
+dataPath = _thisDir + "/Data/"
+groupAssignmentFile = dataPath + "Participant Groups.txt" #Needed for saving to right place:
+with open(groupAssignmentFile, 'r') as f:
+    lines = f.readlines()
+    for line in lines:
+        if "Group A1" in line and expInfo['Participant ID'] in line:
+            participantPath = dataPath + "Group A1/" + expInfo['Participant ID']
+        elif "Group A2" in line and expInfo['Participant ID'] in line:
+            participantPath = dataPath + "Group A2/" + expInfo['Participant ID']
+        elif "Group B1" in line and expInfo['Participant ID'] in line:
+            participantPath = dataPath + "Group B1/" + expInfo['Participant ID']
+        elif "Group B2" in line and expInfo['Participant ID'] in line:
+            participantPath = dataPath + "Group B2/" + expInfo['Participant ID']
+    f.close
+
+filename = participantPath + '/Questionnaire Data'
+jsonfilename = filename + '_stimuli.json'
+jsondata = {}
+jsondata['trials'] = []
 
 # An ExperimentHandler isn't essential but helps with data saving
 thisExp = data.ExperimentHandler(name=expName, version='',

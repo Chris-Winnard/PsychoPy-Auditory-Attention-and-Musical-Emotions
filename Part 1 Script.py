@@ -70,7 +70,7 @@ expInfo['date'] = data.getDateStr()  # add a simple timestamp
 expInfo['expName'] = expName
 
 # Data file name stem = absolute path + name; later add .psyexp, .csv, .log, etc
-dataPath = thisDir + "/Data/"
+dataPath = _thisDir + "/Data/"
 groupAssignmentFile = dataPath + "Participant Groups.txt" #Needed for taking collecting stimuli, and saving to right place:
 with open(groupAssignmentFile, 'r') as f:
     lines = f.readlines()
