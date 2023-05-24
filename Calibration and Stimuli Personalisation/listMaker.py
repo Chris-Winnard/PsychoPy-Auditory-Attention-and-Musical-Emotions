@@ -14,9 +14,15 @@ from numpy.random import default_rng
 currentFolderPath = pathlib.Path(__file__).parent.resolve() #Current folder path
 upperFolderPath = currentFolderPath.parent.resolve() #Path for next level up.
 dataPath = str(upperFolderPath) + "/Data"
-participantGroupFolder = max(glob.glob(os.path.join(dataPath, '*/')), key=os.path.getmtime) #Last updated
-#subfolder in Data folder.
-participantPath = max(glob.glob(os.path.join(participantGroupFolder, '*/')), key=os.path.getmtime)
+
+sub_paths = list() # Collect all files in sub directories
+for root, dirs, files in os.walk(dataPath):
+    sub_paths += [os.path.join(root,i) for i in files]
+
+participantLastStimFile = max(sub_paths,key=os.path.getmtime) #Participant stimuli file that was just created- the most recently updated file
+#in "Data" folder
+participantPath = pathlib.Path(participantLastStimFile).parent.resolve() #Subfolder where that file is located, i.e participant's folder
+participantPath = str(participantPath)
 
 semimegasetFile = str(upperFolderPath) + "/Data/Semimegasets.txt"
 
@@ -29,15 +35,19 @@ participantName = os.path.split(os.getcwd())[1]
 
 if "Group A1" in participantPath:
     group = "Group A1"
+    semimegaset = "Semimegaset A1"
     practiceSet = "Set04"
 elif "Group A2" in participantPath:
     group = "Group A2"
+    semimegaset = "Semimegaset A2"
     practiceSet = "Set04"
 elif "Group B1" in participantPath:
     group = "Group B1"
+    semimegaset = "Semimegaset B1"
     practiceSet = "Set01"
 elif "Group B2" in participantPath:
     group = "Group B2"
+    semimegaset = "Semimegaset B2"
     practiceSet = "Set01"
 
 stimLoc = 'Data/' + group + "/" + participantName + "/"  
@@ -54,14 +64,16 @@ worksheet = workbook.add_worksheet()
  
 worksheet.write('A1', 'stimuli_0')
 worksheet.write('B1', 'trigger')
-worksheet.write('C1', 'music attended')
+worksheet.write('C1', 'music_attended')
 
 #Need to get attendance data for part 3:
 with open(semimegasetFile, 'r') as f:
     lines = f.readlines()
+    i=-1
     for line in lines:
-        if group in line:
-            attendedFiles = line
+        i+=1
+        if semimegaset in line:
+            attendedFiles = line + lines[i+1] #It will span two lines.
     f.close
     
 i = 2 #Index for row in sheet. 
@@ -105,6 +117,7 @@ worksheet = workbook.add_worksheet()
  
 worksheet.write('A1', 'stimuli_0')
 worksheet.write('B1', 'trigger')
+worksheet.write('C1', 'music_attended')
 i = 2 #Index for row in sheet.
 
 for file in os.scandir(participantPath):
@@ -124,7 +137,8 @@ for file in os.scandir(participantPath):
                 musicAttended = "Yes"
             else:
                 musicAttended = "No"
-            
+
+            worksheet.write(attdCell, musicAttended)
             i+=1
 
 # Close the xlsx file

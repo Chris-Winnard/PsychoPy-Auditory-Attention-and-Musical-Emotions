@@ -95,13 +95,13 @@ piano = AudioSegment.from_wav(keybPiece)
 [vibrPan, harmPan, keybPan] = np.random.uniform(-1, 1, 3)
 
 #Set up loudness parameter, apply gain:
-vibraphone_loudness = 0.5
+vibraphone_loudness = 0.6
 vibraphone = vibraphone.apply_gain(20*np.log10(vibraphone_loudness))
 
-harmonica_loudness = 0.5
+harmonica_loudness = 0.6
 harmonica = harmonica.apply_gain(20*np.log10(harmonica_loudness))
 
-piano_loudness = 0.5
+piano_loudness = 0.6
 piano = piano.apply_gain(20*np.log10(piano_loudness))
 
 current_instrument = "Vibraphone"
@@ -188,6 +188,8 @@ while True:
         dlg.addField("Change: ")
         dlg.show()
         if dlg.OK:
+            if dlg.data[0] == '':
+                dlg.data[0] = 0
             changeDegrees = float(dlg.data[0])
             currentPan += changeDegrees*(1/90)
             
@@ -198,8 +200,8 @@ while True:
             elif currentPan > 1:
                 diff = currentPan - 1
                 currentPan = 1 - diff
-        else:
-            core.quit()
+    if dlg.OK == False:
+        core.quit()  # user pressed cancel
 
 # Stop the server
 s.stop()
@@ -247,9 +249,9 @@ harmonica = harmonica.pan(harmPan)
 piano = piano.pan(1)
 
 #Set up loudness parameter, apply gain:
-vibraphone_loudness = 0.45
-harmonica_loudness = 0.45
-piano_loudness = 0.45
+vibraphone_loudness = 0.6
+harmonica_loudness = 0.6
+piano_loudness = 0.6
     
 
 while True:
@@ -265,8 +267,8 @@ while True:
         vibraphone_loudness = dlg.data[0]
         harmonica_loudness = dlg.data[1]
         piano_loudness = dlg.data[2]
-    else:
-        core.quit()
+    if dlg.OK == False:
+        core.quit()  # user pressed cancel
     
     #Update:
     vibrOutput = vibraphone.apply_gain(20*np.log10(vibraphone_loudness)) #Apply gain- CONVERT TO DB!
@@ -369,13 +371,14 @@ if dlg.OK:
 else:
     core.quit()
 
+selected_instrument = "Vibraphone"
 while True:
     # Create a GUI to get loudness values from the user
     dlg = gui.Dlg(title="Loudness Adjustment")
     dlg.addText("Now, please adjust the settings so that you can follow it comfortably and easily.")
     dlg.addText("The current instrumnt is the " + selected_instrument.lower() + ".")
     dlg.addField("Current instrument loudness:", initial=vibraphone_loudness if selected_instrument == "Vibraphone" else (harmonica_loudness if selected_instrument == "Harmonica" else piano_loudness))
-    dlg.addField("Play next:", choices=["Vibraphone", "Harmonica", "Piano"])
+    dlg.addField("Play next:", initial=selected_instrument, choices=["Vibraphone", "Harmonica", "Piano"])
     dlg.addField("Do you want to continue adjusting the instruments?", choices=["Yes", "No"]) #Yes by default- acquiescence control.
     dlg.show()
     if dlg.OK:
@@ -392,8 +395,8 @@ while True:
         
         selected_instrument = dlg.data[1]
         continue_adjusting = (dlg.data[2] == "Yes")
-    else:
-        core.quit()
+    if dlg.OK == False:
+        core.quit()  # user pressed cancel
         break
     
     if continue_adjusting == 0: #Best to have this before playing stimuli         
