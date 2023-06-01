@@ -969,7 +969,11 @@ for thisComponent in instructions2Components:
 # the Routine "instructions2" was not non-slip safe, so reset the non-slip timer
 routineTimer.reset()
 
+firstLoop = True
+contAdjustingBool = True
+
 while True:
+    win.flip(clearBuffer=True) #Clear screen
     vibrOutput = vibraphone.apply_gain(20*np.log10(vibraphone_loudness)) #Apply gain- CONVERT TO DB!
     harmOutput = harmonica.apply_gain(20*np.log10(harmonica_loudness))
     pianoOutput = piano.apply_gain(20*np.log10(piano_loudness))
@@ -995,7 +999,176 @@ while True:
     
     # Stop the server
     s.stop()
+    
+    if firstLoop == False: #The first time, the participants are encouraged to adjust
+        
+        # ------Prepare to start Routine "contAdjustingQ2"-------
+      #  win.flip(clearBuffer=True) #Clear screen
+        continueRoutine = True
+        contAdjustingQ2Resp.reset()
+        # update component parameters for each repeat
+        # setup some python lists for storing info about the mouse_4
+        mouse_4.clicked_name = []
+        gotValidClick = False  # until a click is received
+        # keep track of which components have finished
+        contAdjustingQ2Components = [contAdjustingQ2Txt, mouse_4, contAdjustingQ2Resp]
+        for thisComponent in contAdjustingQ2Components:
+            thisComponent.tStart = None
+            thisComponent.tStop = None
+            thisComponent.tStartRefresh = None
+            thisComponent.tStopRefresh = None
+            if hasattr(thisComponent, 'status'):
+                thisComponent.status = NOT_STARTED
+        # reset timers
+        t = 0
+        _timeToFirstFrame = win.getFutureFlipTime(clock="now")
+        contAdjustingQ2Clock.reset(-_timeToFirstFrame)  # t0 is time of first possible flip
+        frameN = -1
+    
+        # -------Run Routine "contAdjustingQ2"-------
+        while continueRoutine:
+            # get current time
+            t = contAdjustingQ2Clock.getTime()
+            tThisFlip = win.getFutureFlipTime(clock=contAdjustingQ2Clock)
+            tThisFlipGlobal = win.getFutureFlipTime(clock=None)
+            frameN = frameN + 1  # number of completed frames (so 0 is the first frame)
+            # update/draw components on each frame
 
+            if contAdjustingQ2Txt.status == NOT_STARTED and tThisFlip >= 0.0-frameTolerance:
+                # keep track of start time/frame for later
+                contAdjustingQ2Txt.frameNStart = frameN  # exact frame index
+                contAdjustingQ2Txt.tStart = t  # local t and not account for scr refresh
+                contAdjustingQ2Txt.tStartRefresh = tThisFlipGlobal  # on global time
+                win.timeOnFlip(contAdjustingQ2Txt, 'tStartRefresh')  # time at next scr refresh
+                contAdjustingQ2Txt.setAutoDraw(True)     
+                
+            if contAdjustingQ2Resp.status == NOT_STARTED and tThisFlip >= 0.0-frameTolerance:
+                # keep track of start time/frame for later
+                contAdjustingQ2Resp.frameNStart = frameN  # exact frame index
+                contAdjustingQ2Resp.tStart = t  # local t and not account for scr refresh
+                contAdjustingQ2Resp.tStartRefresh = tThisFlipGlobal  # on global time
+                win.timeOnFlip(contAdjustingQ2Resp, 'tStartRefresh')  # time at next scr refresh
+                contAdjustingQ2Resp.setAutoDraw(True)
+                            
+            # *mouse_4* updates
+            if mouse_4.status == NOT_STARTED and t >= 0.0-frameTolerance:
+                # keep track of start time/frame for later
+                mouse_4.frameNStart = frameN  # exact frame index
+                mouse_4.tStart = t  # local t and not account for scr refresh
+                mouse_4.tStartRefresh = tThisFlipGlobal  # on global time
+                win.timeOnFlip(mouse_4, 'tStartRefresh')  # time at next scr refresh
+                mouse_4.status = STARTED
+                mouse_4.mouseClock.reset()
+                prevButtonState = mouse_4.getPressed()  # if button is down already this ISN'T a new click
+#            if mouse_4.status == STARTED:  # only update if started and not finished!
+ #               buttons = mouse_4.getPressed()
+  #              if buttons != prevButtonState:  # button state changed?
+   #                 prevButtonState = buttons
+    #                if sum(buttons) > 0:  # state changed to a new click
+            if contAdjustingQ2Resp.getRating() == 0:
+                contAdjustingBool = True
+                continueRoutine = False  # abort routine on response
+            if contAdjustingQ2Resp.getRating() == 1:
+                contAdjustingBool = False
+                continueRoutine = False
+            
+            # check for quit (typically the Esc key)
+            if endExpNow or defaultKeyboard.getKeys(keyList=["escape"]):
+                core.quit()
+            
+            # check if all components have finished
+            if not continueRoutine:  # a component has requested a forced-end of Routine
+                break
+            continueRoutine = False  # will revert to True if at least one component still running
+            for thisComponent in contAdjustingQ2Components:
+                if hasattr(thisComponent, "status") and thisComponent.status != FINISHED:
+                    continueRoutine = True
+                    break  # at least one component has not yet finished
+        
+            # refresh the screen
+            if continueRoutine:  # don't flip if this routine is over or we'll get a blank screen
+                win.flip()
+        
+        # -------Ending Routine "contAdjustingQ2"-------
+        for thisComponent in contAdjustingQ2Components:
+            if hasattr(thisComponent, "setAutoDraw"):
+                thisComponent.setAutoDraw(False)
+            
+    firstLoop = False
+    
+    if contAdjustingBool == False:
+        #Save the results:        
+        gains = ["Vibraphone: ", vibraphone_loudness, " Harmonica: ", harmonica_loudness, " Piano: ", piano_loudness]        
+        #Create a new file in the appropriate location. If there's already a file there of the same name, it's wiped:
+        File = (participantPath + "\Multi-stream Gains.txt")
+        #Open, write to file, and close.
+        with open(File, 'w') as f:
+            for x in gains:
+                f.write("%s" % x )
+            f.close()    
+            
+        # ------Prepare to start Routine "settingsSavedNote"-------
+        # update component parameters for each repeat
+        # keep track of which components have finished
+        continueRoutine = True
+
+        settingsSavedNoteComponents = [settingsSavedNote_txt]
+        for thisComponent in settingsSavedNoteComponents:
+            thisComponent.tStart = None
+            thisComponent.tStop = None
+            thisComponent.tStartRefresh = None
+            thisComponent.tStopRefresh = None
+            if hasattr(thisComponent, 'status'):
+                thisComponent.status = NOT_STARTED
+        # reset timers
+        t = 0
+        _timeToFirstFrame = win.getFutureFlipTime(clock="now")
+        settingsSavedNoteClock.reset(-_timeToFirstFrame)  # t0 is time of first possible flip
+        frameN = -1
+    
+        # -------Run Routine "settingsSavedNote"-------
+        while continueRoutine:
+            # get current time
+            t = settingsSavedNoteClock.getTime()
+            tThisFlip = win.getFutureFlipTime(clock=settingsSavedNoteClock)
+            tThisFlipGlobal = win.getFutureFlipTime(clock=None)
+            frameN = frameN + 1  # number of completed frames (so 0 is the first frame)
+            # update/draw components on each frame
+    
+            if settingsSavedNote_txt.status == NOT_STARTED and tThisFlip >= 0.0-frameTolerance:
+                # keep track of start time/frame for later
+                settingsSavedNote_txt.frameNStart = frameN  # exact frame index
+                settingsSavedNote_txt.tStart = t  # local t and not account for scr refresh
+                settingsSavedNote_txt.tStartRefresh = tThisFlipGlobal  # on global time
+                win.timeOnFlip(settingsSavedNote_txt, 'tStartRefresh')  # time at next scr refresh
+                settingsSavedNote_txt.setAutoDraw(True) 
+        
+            # check for quit (typically the Esc key)
+            if endExpNow or defaultKeyboard.getKeys(keyList=["escape"]):
+                core.quit()
+    
+            if settingsSavedNoteClock.getTime() > 4:
+                settingsSavedNote_txt.status = FINISHED
+        
+            # check if all components have finished
+            if not continueRoutine:  # a component has requested a forced-end of Routine
+                break
+            continueRoutine = False  # will revert to True if at least one component still running
+            for thisComponent in settingsSavedNoteComponents:
+                if hasattr(thisComponent, "status") and thisComponent.status != FINISHED:
+                    continueRoutine = True
+                    break  # at least one component has not yet finished
+    
+            # refresh the screen
+            if continueRoutine:  # don't flip if this routine is over or we'll get a blank screen
+                win.flip()
+    
+        # -------Ending Routine "settingsSavedNote"-------
+        for thisComponent in settingsSavedNoteComponents:
+            if hasattr(thisComponent, "setAutoDraw"):
+                thisComponent.setAutoDraw(False)
+        break
+        
     # ------Prepare to start Routine "msVolFeedbackPg"-------
     continueRoutine = True
     # update component parameters for each repeat
@@ -1057,6 +1230,7 @@ while True:
             msVolFeedbackHarmResp.tStartRefresh = tThisFlipGlobal  # on global time
             win.timeOnFlip(msVolFeedbackHarmResp, 'tStartRefresh')  # time at next scr refresh
             msVolFeedbackHarmResp.setAutoDraw(True)  
+        
         if msVolFeedbackKeybResp.status == NOT_STARTED and tThisFlip >= 0.0-frameTolerance:
             # keep track of start time/frame for later
             msVolFeedbackKeybResp.frameNStart = frameN  # exact frame index
@@ -1125,23 +1299,28 @@ while True:
     for thisComponent in msVolFeedbackPgComponents:
         if hasattr(thisComponent, "setAutoDraw"):
             thisComponent.setAutoDraw(False)
-    # store data for thisExp (ExperimentHandler)
-    x, y = mouse_4.getPos()
-    buttons = mouse_4.getPressed()
+    
+    vibraphone_loudness = float(msVolFeedbackVibrResp.text)
+    harmonica_loudness = float(msVolFeedbackHarmResp.text)
+    keyboard_loudness = float(msVolFeedbackKeybResp.text)
 
 
 
 
 
 
+########################################################################################################################################################################
+#Tell the participant when finished:
 
-
-
-
-
-
-#msVolFeedbackPg
-
+# Initialize components for Routine "thisPartComplete"
+thisPartCompleteClock = core.Clock()
+thisPartCompleteText = visual.TextStim(win=win, name='thisPartCompleteText',
+    text='Calibration completed.',
+    font='Open Sans',
+    pos=(0, 0), height=0.05, wrapWidth=None, ori=0.0, 
+    color='white', colorSpace='rgb', opacity=None, 
+    languageStyle='LTR',
+    depth=0.0);
 
 # ------Prepare to start Routine "thisPartComplete"-------
 # update component parameters for each repeat
