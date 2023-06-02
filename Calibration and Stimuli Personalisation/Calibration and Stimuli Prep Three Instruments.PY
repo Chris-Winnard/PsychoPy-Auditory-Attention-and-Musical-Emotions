@@ -376,7 +376,7 @@ while True:
     # Create a GUI to get loudness values from the user
     dlg = gui.Dlg(title="Loudness Adjustment")
     dlg.addText("Now, please adjust the settings so that you can follow it comfortably and easily.")
-    dlg.addText("The current instrumnt is the " + selected_instrument.lower() + ".")
+    dlg.addText("The current instrument is the " + selected_instrument.lower() + ".")
     dlg.addField("Current instrument loudness:", initial=vibraphone_loudness if selected_instrument == "Vibraphone" else (harmonica_loudness if selected_instrument == "Harmonica" else piano_loudness))
     dlg.addField("Play next:", initial=selected_instrument, choices=["Vibraphone", "Harmonica", "Piano"])
     dlg.addField("Do you want to continue adjusting the instruments?", choices=["Yes", "No"]) #Yes by default- acquiescence control.

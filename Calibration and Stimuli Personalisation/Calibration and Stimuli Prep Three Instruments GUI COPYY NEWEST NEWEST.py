@@ -237,12 +237,11 @@ panningChangeResp = visual.Slider(win=win, name='panningChangeResp',
     flip=False, ori=0.0, depth=-7, readOnly=False)
 nextButton2_2 = visual.ImageStim(
     win=win,
-    name='nextButton2_2', 
-    image='next.png', mask=None, anchor='center',
+    name='nextButton2_2', image='next.png', mask=None, anchor='center',
     ori=0.0, pos=(0, -0.4), size=(0.15, 0.075),
     color=[1,1,1], colorSpace='rgb', opacity=None,
     flipHoriz=False, flipVert=False,
-    texRes=128.0, interpolate=True, depth=-9.0)
+    texRes=128.0, interpolate=True, depth=0.0)
 mouse2_2 = event.Mouse(win=win)
 x, y = [None, None]
 mouse2_2.mouseClock = core.Clock()
@@ -753,7 +752,7 @@ piano_loudness = 0.6
 instructions2Clock = core.Clock()
 instr2_txt = visual.TextStim(win=win, name='instr2_txt',
     text=("The next part of the calibration test is to ensure that you can hear and follow the different instruments comfortably when they are playing together.\n\n"
-    + "You will hear the three instruments from before (vibraphone from the left, harmonica from the centre, piano from the right), and you will need to adjust the loudness settings"
+    + "You will hear the three instruments from before (vibraphone from the left, harmonica from the centre, piano from the right), and you will need to adjust the loudness settings "
     + "until you can hear and focus on each individual instrument comfortably.\n\nWhen you are ready to hear the music for the first time, press \"NEXT\"."),
     font='Open Sans',
     pos=(0, 0.15), height=0.05, wrapWidth=1.8, ori=0.0, 
@@ -838,7 +837,7 @@ nextButton_R1B = visual.ImageStim(
     ori=0.0, pos=(0, -0.4), size=(0.15, 0.075),
     color=[1,1,1], colorSpace='rgb', opacity=None,
     flipHoriz=False, flipVert=False,
-    texRes=128.0, interpolate=True, depth=-2.0)
+    texRes=128.0, interpolate=True, depth=0.0)
 
 # Initialize components for Routine "contAdjustingQ2"
 contAdjustingQ2Clock = core.Clock()
@@ -1342,7 +1341,7 @@ contAdjustingInstP3 = True
 instructions3Clock = core.Clock()
 instr3_txt = visual.TextStim(win=win, name='instr3_txt',
     text=("The final part of the calibration test is to ensure that you can hear and follow the different instruments comfortably when they are playing individually.\n\n"
-    + "You will hear the vibraphone playing from the centre, and you will need to adjust the loudness settings until you can hear and focus on it comfortably. This will then be"
+    + "You will hear the vibraphone playing from the centre, and you will need to adjust the loudness settings until you can hear and focus on it comfortably. This will then be "
     + "repeated with the other instruments.\n\nWhen you are ready to hear the music for the first time, press \"NEXT\"."),
     font='Open Sans',
     pos=(0, 0.15), height=0.05, wrapWidth=1.8, ori=0.0, 

@@ -237,12 +237,11 @@ panningChangeResp = visual.Slider(win=win, name='panningChangeResp',
     flip=False, ori=0.0, depth=-7, readOnly=False)
 nextButton2_2 = visual.ImageStim(
     win=win,
-    name='nextButton2_2', 
-    image='next.png', mask=None, anchor='center',
+    name='nextButton2_2', image='next.png', mask=None, anchor='center',
     ori=0.0, pos=(0, -0.4), size=(0.15, 0.075),
     color=[1,1,1], colorSpace='rgb', opacity=None,
     flipHoriz=False, flipVert=False,
-    texRes=128.0, interpolate=True, depth=-9.0)
+    texRes=128.0, interpolate=True, depth=0.0)
 mouse2_2 = event.Mouse(win=win)
 x, y = [None, None]
 mouse2_2.mouseClock = core.Clock()
@@ -838,7 +837,7 @@ nextButton_R1B = visual.ImageStim(
     ori=0.0, pos=(0, -0.4), size=(0.15, 0.075),
     color=[1,1,1], colorSpace='rgb', opacity=None,
     flipHoriz=False, flipVert=False,
-    texRes=128.0, interpolate=True, depth=-2.0)
+    texRes=128.0, interpolate=True, depth=0.0)
 
 # Initialize components for Routine "contAdjustingQ2"
 contAdjustingQ2Clock = core.Clock()
