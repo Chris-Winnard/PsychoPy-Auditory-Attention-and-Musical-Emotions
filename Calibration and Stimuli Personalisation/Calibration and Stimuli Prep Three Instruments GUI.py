@@ -147,8 +147,8 @@ defaultKeyboard = keyboard.Keyboard(backend='iohub')
 instructions1Clock = core.Clock()
 instr1_txt = visual.TextStim(win=win, name='instr1_txt',
     text=("People can have slightly different perceptions of where the \"centre\" is when they hear music. We are going to run a test to tweak the audio settings to your ears.\n\n"
-            "A vibraphone will play from a random direction, and you will need to adjust the balance so that you hear it as coming from the centre- you can adjust\n"
-            + "as many times as needed. We will then repeat the test twice with other instruments.\n\nWhen you are ready to hear the music for the first time, press \"NEXT\"."),
+            "A vibraphone will play from a random direction, and you will need to adjust the balance so that you hear it as coming from the centre- you can adjust"
+            + " as many times as needed. We will then repeat the test twice with other instruments.\n\nWhen you are ready to hear the music for the first time, press \"NEXT\"."),
     font='Open Sans',
     pos=(0, 0.15), height=0.05, wrapWidth=1.8, ori=0.0, 
     color='white', colorSpace='rgb', opacity=None, 
@@ -754,7 +754,7 @@ instructions2Clock = core.Clock()
 instr2_txt = visual.TextStim(win=win, name='instr2_txt',
     text=("The next part of the calibration test is to ensure that you can hear and follow the different instruments comfortably when they are playing together.\n\n"
     + "You will hear the three instruments from before (vibraphone from the left, harmonica from the centre, piano from the right), and you will need to adjust the loudness settings"
-    + "until you can hear and focus on each individual instrument comfortably.\n\nWhen you are ready to hear the music for the first time, press \"NEXT\"."),
+    + " until you can hear and focus on each individual instrument comfortably.\n\nWhen you are ready to hear the music for the first time, press \"NEXT\"."),
     font='Open Sans',
     pos=(0, 0.15), height=0.05, wrapWidth=1.8, ori=0.0, 
     color='white', colorSpace='rgb', opacity=None, 
@@ -966,6 +966,7 @@ contAdjustingBool = True
 
 while True:
     win.flip(clearBuffer=True) #Clear screen
+    
     vibrOutput = vibraphone.apply_gain(20*np.log10(vibraphone_loudness)) #Apply gain- CONVERT TO DB!
     harmOutput = harmonica.apply_gain(20*np.log10(harmonica_loudness))
     pianoOutput = piano.apply_gain(20*np.log10(piano_loudness))
@@ -995,7 +996,6 @@ while True:
     if firstLoop == False: #The first time, the participants are encouraged to adjust
         
         # ------Prepare to start Routine "contAdjustingQ2"-------
-      #  win.flip(clearBuffer=True) #Clear screen
         continueRoutine = True
         contAdjustingQ2Resp.reset()
         # update component parameters for each repeat
@@ -1155,7 +1155,7 @@ while True:
             if hasattr(thisComponent, "setAutoDraw"):
                 thisComponent.setAutoDraw(False)
         break
-        
+    
     # ------Prepare to start Routine "msVolFeedbackPg"-------
     continueRoutine = True
     # update component parameters for each repeat
@@ -1163,7 +1163,7 @@ while True:
     mouse_4.clicked_name = []
     gotValidClick = False  # until a click is received
     # keep track of which components have finished
-    msVolFeedbackPgComponents = [msVolFeedbackQ, msVolFeedbackLabels, msVolFeedbackVibrResp, msVolFeedbackHarmResp, msVolFeedbackKeybResp, mouse_4]
+    msVolFeedbackPgComponents = [msVolFeedbackQ, msVolFeedbackLabels, msVolFeedbackVibrResp, msVolFeedbackHarmResp, msVolFeedbackKeybResp, mouse_4, nextButton_R1B]
     for thisComponent in msVolFeedbackPgComponents:
         thisComponent.tStart = None
         thisComponent.tStop = None
@@ -1291,31 +1291,10 @@ while True:
     harmonica_loudness = float(msVolFeedbackHarmResp.text)
     piano_loudness = float(msVolFeedbackKeybResp.text)
 
-
-#Fix thing above where NEXT button sometimes not disappearing when it should. This seems to carry over into part 3 (but code above is to blame!) Also, fix ss calibration stuff below:
-
 ########################################################################################################################################################################
 #PART 3 - SINGLE-STREAM GAINS
 
 continue_adjusting = True
-
-#New server:
-s = Server(nchnls=OUT_CHANNELS, duplex=0)
-
-devices = pa_get_output_devices()
-
-for name in devices[0]:
-
-    if SOUNDCARD_DEVICE_NAME in name:
-
-        soundcard_idx = devices[1][devices[0].index(name)]
-
-        print('sound card: ', name)
-
-        s.setOutputDevice(soundcard_idx)
-
-        break
-
  
 s = s.boot()
 
@@ -1343,7 +1322,7 @@ instructions3Clock = core.Clock()
 instr3_txt = visual.TextStim(win=win, name='instr3_txt',
     text=("The final part of the calibration test is to ensure that you can hear and follow the different instruments comfortably when they are playing individually.\n\n"
     + "You will hear the vibraphone playing from the centre, and you will need to adjust the loudness settings until you can hear and focus on it comfortably. This will then be"
-    + "repeated with the other instruments.\n\nWhen you are ready to hear the music for the first time, press \"NEXT\"."),
+    + " repeated with the other instruments.\n\nWhen you are ready to hear the music for the first time, press \"NEXT\"."),
     font='Open Sans',
     pos=(0, 0.15), height=0.05, wrapWidth=1.8, ori=0.0, 
     color='white', colorSpace='rgb', opacity=None, 
@@ -1511,6 +1490,38 @@ routineTimer.reset()
 firstLoop = True
 
 while True:
+    #Play the music, with a blank screen:
+    win.flip(clearBuffer=True) #Clear screen
+    if current_instrument == "Vibraphone":
+        output = vibraphone.apply_gain(20*np.log10(vibraphone_loudness)) #Apply gain- CONVERT TO DB!
+        
+    elif current_instrument == "Harmonica":
+        output = harmonica.apply_gain(20*np.log10(harmonica_loudness))
+    
+    else:
+        output = piano.apply_gain(20*np.log10(piano_loudness))
+    
+    output.export("Temp.wav", format="wav")    
+    
+    #Create players for new mix:
+    players = []
+    for i in range(1, OUT_CHANNELS):
+        if i < len(spk_volume):  # check if spk_volume has the correct number of elements
+            player = sound.Sound("Temp.wav")
+            player.setVolume(spk_volume[i])  # set the volume for the current speaker
+        players.append(player)
+
+    # Start the server
+    s.start()
+    for player in players:
+        player.play()
+        # Wait until 10 seconds pass
+        core.wait(10)
+        player.stop()
+    
+#Stop the server
+    s.stop()    
+    
     if firstLoop == False: #The first time, the participants are encouraged to adjust
         # ------Prepare to start Routine "contAdjustingQ3"-------
         continueRoutine = True
@@ -1808,39 +1819,6 @@ while True:
             if hasattr(thisComponent, "setAutoDraw"):
                 thisComponent.setAutoDraw(False)
         break
-    
-    #Play the music, with a blank screen:
-    win.flip(clearBuffer=True) #Clear screen
-    if current_instrument == "Vibraphone":
-        output = vibraphone.apply_gain(20*np.log10(vibraphone_loudness)) #Apply gain- CONVERT TO DB!
-    
-    elif current_instrument == "Harmonica":
-        output = harmonica.apply_gain(20*np.log10(harmonica_loudness))
-    
-    else:
-        output = piano.apply_gain(20*np.log10(piano_loudness))
-    
-    output.export("Temp.wav", format="wav")    
-    
-    #Create players for new mix:
-    players = []
-    for i in range(1, OUT_CHANNELS):
-        if i < len(spk_volume):  # check if spk_volume has the correct number of elements
-            player = sound.Sound("Temp.wav")
-            print("playing")
-            player.setVolume(spk_volume[i])  # set the volume for the current speaker
-        players.append(player)
-
-    # Start the server
-    s.start()
-    for player in players:
-        player.play()
-        # Wait until 10 seconds pass
-        core.wait(10)
-        player.stop()
-
-#Stop the server
-    s.stop()    
 
 # ------Prepare to start Routine "ssVolFeedbackPg"-------
     continueRoutine = True
