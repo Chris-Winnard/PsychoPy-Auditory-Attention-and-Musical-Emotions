@@ -730,7 +730,7 @@ s.stop()
 
 ##########################################################################################################################################
 #PART 2 - MULTI-STREAM GAINS:
-s = s.boot()
+#s = s.boot()
 
 # Load the audio files
 vibraphone = AudioSegment.from_wav(vibrPiece)
@@ -1296,7 +1296,7 @@ while True:
 
 continue_adjusting = True
  
-s = s.boot()
+#s = s.boot()
 
 #Set default gains. To avoid confusion, these are not necessarily the same as the values which are actually used to control loudness.
 #E.g, piano_loudness might be 1, but piano output will be 0 whilst the vibraphone plays.
@@ -1487,7 +1487,7 @@ for thisComponent in instructions3Components:
 # the Routine "instructions3" was not non-slip safe, so reset the non-slip timer
 routineTimer.reset()
 
-firstLoop = True
+firstLoopThisInst = True
 
 while True:
     #Play the music, with a blank screen:
@@ -1522,7 +1522,7 @@ while True:
 #Stop the server
     s.stop()    
     
-    if firstLoop == False: #The first time, the participants are encouraged to adjust
+    if firstLoopThisInst == False: #The first time, the participants are encouraged to adjust
         # ------Prepare to start Routine "contAdjustingQ3"-------
         continueRoutine = True
         contAdjustingQ2Resp.reset()
@@ -1609,7 +1609,7 @@ while True:
             if hasattr(thisComponent, "setAutoDraw"):
                 thisComponent.setAutoDraw(False)
         
-    firstLoop = False
+    firstLoopThisInst = False
     
     if contAdjustingInstP3 == False and current_instrument == "Vibraphone":
     
@@ -1676,6 +1676,7 @@ while True:
     
         current_instrument = "Harmonica"
         currentInstLoudness = harmonica_loudness
+        firstLoopThisInst = True
         contAdjustingInstP3 = True
     
     #If they said don't continue and the instrument was harm, move onto the piano:
@@ -1744,6 +1745,7 @@ while True:
 
         current_instrument = "Piano"
         currentInstLoudness = piano_loudness
+        firstLoopThisInst = True
         contAdjustingInstP3 = True
 
     if contAdjustingInstP3 == False and current_instrument == "Piano":
@@ -1819,121 +1821,122 @@ while True:
             if hasattr(thisComponent, "setAutoDraw"):
                 thisComponent.setAutoDraw(False)
         break
-
-# ------Prepare to start Routine "ssVolFeedbackPg"-------
-    continueRoutine = True
-# update component parameters for each repeat
-    ssVolFeedbackResp.reset()
-# setup some python lists for storing info about the mouse2_2
-    mouse2_2.clicked_name = []
-    gotValidClick = False  # until a click is received
-# keep track of which components have finished
-    ssVolFeedbackPgComponents = [ssVolFeedbackPg_txt, ssVolFeedbackResp, nextButton2_2, mouse2_2]
-    for thisComponent in ssVolFeedbackPgComponents:
-        thisComponent.tStart = None
-        thisComponent.tStop = None
-        thisComponent.tStartRefresh = None
-        thisComponent.tStopRefresh = None
-        if hasattr(thisComponent, 'status'):
-            thisComponent.status = NOT_STARTED
-    # reset timers
-    t = 0
-    _timeToFirstFrame = win.getFutureFlipTime(clock="now")
-    panningFeedbackPgClock.reset(-_timeToFirstFrame)  # t0 is time of first possible flip
-    frameN = -1
-
-# -------Run Routine "ssVolFeedbackPg"-------
-    while continueRoutine:
-    # get current time
-        t = ssVolFeedbackPgClock.getTime()
-        tThisFlip = win.getFutureFlipTime(clock=ssVolFeedbackPgClock)
-        tThisFlipGlobal = win.getFutureFlipTime(clock=None)
-        frameN = frameN + 1  # number of completed frames (so 0 is the first frame)
-        # update/draw components on each frame
     
-    # *ssVolFeedbackPg_txt* updates
-        if ssVolFeedbackPg_txt.status == NOT_STARTED and tThisFlip >= 0.0-frameTolerance:
-            # keep track of start time/frame for later
-            ssVolFeedbackPg_txt.frameNStart = frameN  # exact frame index
-            ssVolFeedbackPg_txt.tStart = t  # local t and not account for scr refresh
-            ssVolFeedbackPg_txt.tStartRefresh = tThisFlipGlobal  # on global time
-            win.timeOnFlip(ssVolFeedbackPg_txt, 'tStartRefresh')  # time at next scr refresh
-            ssVolFeedbackPg_txt.setAutoDraw(True)
-    
-        # *ssVolFeedbackResp* updates
-        if ssVolFeedbackResp.status == NOT_STARTED and tThisFlip >= 0.0-frameTolerance:
-            # keep track of start time/frame for later
-            ssVolFeedbackResp.frameNStart = frameN  # exact frame index
-            ssVolFeedbackResp.tStart = t  # local t and not account for scr refresh
-            ssVolFeedbackResp.tStartRefresh = tThisFlipGlobal  # on global time
-            win.timeOnFlip(ssVolFeedbackResp, 'tStartRefresh')  # time at next scr refresh
-            ssVolFeedbackResp.setAutoDraw(True)
-        
-        # *mouse2_2* updates
-        if mouse2_2.status == NOT_STARTED and t >= 0.0-frameTolerance:
-            # keep track of start time/frame for later
-            mouse2_2.frameNStart = frameN  # exact frame index
-            mouse2_2.tStart = t  # local t and not account for scr refresh
-            mouse2_2.tStartRefresh = tThisFlipGlobal  # on global time
-            win.timeOnFlip(mouse2_2, 'tStartRefresh')  # time at next scr refresh
-            mouse2_2.status = STARTED
-            mouse2_2.mouseClock.reset()
-            prevButtonState = mouse2_2.getPressed()  # if button is down already this ISN'T a new click
-        if mouse2_2.status == STARTED:  # only update if started and not finished!
-            buttons = mouse2_2.getPressed()
-            if buttons != prevButtonState:  # button state changed?
-                prevButtonState = buttons
-                if sum(buttons) > 0:  # state changed to a new click
-                    # check if the mouse was inside our 'clickable' objects
-                    gotValidClick = False
-                    if nextButton2_2.status == STARTED:
-                        try:
-                            iter(nextButton2_2)
-                            clickableList = nextButton2_2
-                        except:
-                            clickableList = [nextButton2_2]
-                        for obj in clickableList:
-                            if obj.contains(mouse2_2):
-                                gotValidClick = True
-                                mouse2_2.clicked_name.append(obj.name)
-                        if gotValidClick:  
-                            continueRoutine = False  # abort routine on response
-    
-        # *nextButton* updates
-        if nextButton2_2.status == NOT_STARTED:
-            # keep track of start time/frame for later
-            nextButton2_2.frameNStart = frameN  # exact frame index
-            nextButton2_2.tStart = t  # local t and not account for scr refresh
-            nextButton2_2.tStartRefresh = tThisFlipGlobal  # on global time
-            win.timeOnFlip(nextButton2_2, 'tStartRefresh')  # time at next scr refresh
-            nextButton2_2.setAutoDraw(True)
-
-        # check for quit (typically the Esc key)
-        if endExpNow or defaultKeyboard.getKeys(keyList=["escape"]):
-            core.quit()
-        
-        # check if all components have finished
-        if not continueRoutine:  # a component has requested a forced-end of Routine
-            break
-        continueRoutine = False  # will revert to True if at least one component still running
+    if firstLoopThisInst == False:
+    # ------Prepare to start Routine "ssVolFeedbackPg"-------
+        continueRoutine = True
+    # update component parameters for each repeat
+        ssVolFeedbackResp.reset()
+    # setup some python lists for storing info about the mouse2_2
+        mouse2_2.clicked_name = []
+        gotValidClick = False  # until a click is received
+    # keep track of which components have finished
+        ssVolFeedbackPgComponents = [ssVolFeedbackPg_txt, ssVolFeedbackResp, nextButton2_2, mouse2_2]
         for thisComponent in ssVolFeedbackPgComponents:
-            if hasattr(thisComponent, "status") and thisComponent.status != FINISHED:
-                continueRoutine = True
-                break  # at least one component has not yet finished
-        
-        # refresh the screen
-        if continueRoutine:  # don't flip if this routine is over or we'll get a blank screen
-            win.flip()
-
-    # -------Ending Routine "ssVolFeedbackPg"-------
-    for thisComponent in ssVolFeedbackPgComponents:
-        if hasattr(thisComponent, "setAutoDraw"):
-            thisComponent.setAutoDraw(False)
+            thisComponent.tStart = None
+            thisComponent.tStop = None
+            thisComponent.tStartRefresh = None
+            thisComponent.tStopRefresh = None
+            if hasattr(thisComponent, 'status'):
+                thisComponent.status = NOT_STARTED
+        # reset timers
+        t = 0
+        _timeToFirstFrame = win.getFutureFlipTime(clock="now")
+        panningFeedbackPgClock.reset(-_timeToFirstFrame)  # t0 is time of first possible flip
+        frameN = -1
     
-    # the Routine "ssVolFeedbackPg" was not non-slip safe, so reset the non-slip timer
-    routineTimer.reset()
+    # -------Run Routine "ssVolFeedbackPg"-------
+        while continueRoutine:
+        # get current time
+            t = ssVolFeedbackPgClock.getTime()
+            tThisFlip = win.getFutureFlipTime(clock=ssVolFeedbackPgClock)
+            tThisFlipGlobal = win.getFutureFlipTime(clock=None)
+            frameN = frameN + 1  # number of completed frames (so 0 is the first frame)
+            # update/draw components on each frame
         
-    currentInstLoudness = float(ssVolFeedbackResp.text)
+        # *ssVolFeedbackPg_txt* updates
+            if ssVolFeedbackPg_txt.status == NOT_STARTED and tThisFlip >= 0.0-frameTolerance:
+                # keep track of start time/frame for later
+                ssVolFeedbackPg_txt.frameNStart = frameN  # exact frame index
+                ssVolFeedbackPg_txt.tStart = t  # local t and not account for scr refresh
+                ssVolFeedbackPg_txt.tStartRefresh = tThisFlipGlobal  # on global time
+                win.timeOnFlip(ssVolFeedbackPg_txt, 'tStartRefresh')  # time at next scr refresh
+                ssVolFeedbackPg_txt.setAutoDraw(True)
+        
+            # *ssVolFeedbackResp* updates
+            if ssVolFeedbackResp.status == NOT_STARTED and tThisFlip >= 0.0-frameTolerance:
+                # keep track of start time/frame for later
+                ssVolFeedbackResp.frameNStart = frameN  # exact frame index
+                ssVolFeedbackResp.tStart = t  # local t and not account for scr refresh
+                ssVolFeedbackResp.tStartRefresh = tThisFlipGlobal  # on global time
+                win.timeOnFlip(ssVolFeedbackResp, 'tStartRefresh')  # time at next scr refresh
+                ssVolFeedbackResp.setAutoDraw(True)
+            
+            # *mouse2_2* updates
+            if mouse2_2.status == NOT_STARTED and t >= 0.0-frameTolerance:
+                # keep track of start time/frame for later
+                mouse2_2.frameNStart = frameN  # exact frame index
+                mouse2_2.tStart = t  # local t and not account for scr refresh
+                mouse2_2.tStartRefresh = tThisFlipGlobal  # on global time
+                win.timeOnFlip(mouse2_2, 'tStartRefresh')  # time at next scr refresh
+                mouse2_2.status = STARTED
+                mouse2_2.mouseClock.reset()
+                prevButtonState = mouse2_2.getPressed()  # if button is down already this ISN'T a new click
+            if mouse2_2.status == STARTED:  # only update if started and not finished!
+                buttons = mouse2_2.getPressed()
+                if buttons != prevButtonState:  # button state changed?
+                    prevButtonState = buttons
+                    if sum(buttons) > 0:  # state changed to a new click
+                        # check if the mouse was inside our 'clickable' objects
+                        gotValidClick = False
+                        if nextButton2_2.status == STARTED:
+                            try:
+                                iter(nextButton2_2)
+                                clickableList = nextButton2_2
+                            except:
+                                clickableList = [nextButton2_2]
+                            for obj in clickableList:
+                                if obj.contains(mouse2_2):
+                                    gotValidClick = True
+                                    mouse2_2.clicked_name.append(obj.name)
+                            if gotValidClick:  
+                                continueRoutine = False  # abort routine on response
+        
+            # *nextButton* updates
+            if nextButton2_2.status == NOT_STARTED:
+                # keep track of start time/frame for later
+                nextButton2_2.frameNStart = frameN  # exact frame index
+                nextButton2_2.tStart = t  # local t and not account for scr refresh
+                nextButton2_2.tStartRefresh = tThisFlipGlobal  # on global time
+                win.timeOnFlip(nextButton2_2, 'tStartRefresh')  # time at next scr refresh
+                nextButton2_2.setAutoDraw(True)
+    
+            # check for quit (typically the Esc key)
+            if endExpNow or defaultKeyboard.getKeys(keyList=["escape"]):
+                core.quit()
+            
+            # check if all components have finished
+            if not continueRoutine:  # a component has requested a forced-end of Routine
+                break
+            continueRoutine = False  # will revert to True if at least one component still running
+            for thisComponent in ssVolFeedbackPgComponents:
+                if hasattr(thisComponent, "status") and thisComponent.status != FINISHED:
+                    continueRoutine = True
+                    break  # at least one component has not yet finished
+            
+            # refresh the screen
+            if continueRoutine:  # don't flip if this routine is over or we'll get a blank screen
+                win.flip()
+    
+        # -------Ending Routine "ssVolFeedbackPg"-------
+        for thisComponent in ssVolFeedbackPgComponents:
+            if hasattr(thisComponent, "setAutoDraw"):
+                thisComponent.setAutoDraw(False)
+        
+        # the Routine "ssVolFeedbackPg" was not non-slip safe, so reset the non-slip timer
+        routineTimer.reset()
+            
+        currentInstLoudness = float(ssVolFeedbackResp.text)
 
 ########################################################################################################################################################################
 #Tell the participant when finished:
