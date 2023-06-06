@@ -7,7 +7,6 @@
 
 import pathlib
 from psychopy import locale_setup
-from psychopy import prefs
 from psychopy import sound, gui, visual, core, data, event, logging, clock, colors
 from psychopy.constants import (NOT_STARTED, STARTED, PLAYING, PAUSED,
                                 STOPPED, FINISHED, PRESSED, RELEASED, FOREVER)
@@ -730,7 +729,7 @@ s.stop()
 
 ##########################################################################################################################################
 #PART 2 - MULTI-STREAM GAINS:
-#s = s.boot()
+s = s.boot()
 
 # Load the audio files
 vibraphone = AudioSegment.from_wav(vibrPiece)
@@ -1296,7 +1295,7 @@ while True:
 
 continue_adjusting = True
  
-#s = s.boot()
+s = s.boot()
 
 #Set default gains. To avoid confusion, these are not necessarily the same as the values which are actually used to control loudness.
 #E.g, piano_loudness might be 1, but piano output will be 0 whilst the vibraphone plays.
