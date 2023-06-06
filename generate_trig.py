@@ -30,7 +30,7 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(prog='generate_trig')
     parser.add_argument("--in_folder", type=str, required=True, help="input folder containing target and non-target sounds.")
     parser.add_argument("--out_folder", type=str, required=True, help="output folder")
-    parser.add_argument("--sr", type=int, default=48000, help="sampling rate. Default value is 48000.")
+    parser.add_argument("--sr", type=int, default=22050, help="sampling rate. Default value is 22050.")
     parser.add_argument("--channels", type=int, default=1, help="number of output channels. Default value is 1.")
     parser.add_argument("--triggerClk", type=float, default=8.0, help="Clock rate of trigger. Default value is 8.0 Hz.")
     args = parser.parse_args()
