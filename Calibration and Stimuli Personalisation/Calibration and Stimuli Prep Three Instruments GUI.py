@@ -12,7 +12,6 @@ from psychopy.constants import (NOT_STARTED, STARTED, PLAYING, PAUSED,
                                 STOPPED, FINISHED, PRESSED, RELEASED, FOREVER)
 from pyo import *
 import time
-import ctypes  #For dialogue boxes without option to cancel.
 from pydub import AudioSegment
 import numpy as np
 import os
@@ -146,8 +145,8 @@ defaultKeyboard = keyboard.Keyboard(backend='iohub')
 instructions1Clock = core.Clock()
 instr1_txt = visual.TextStim(win=win, name='instr1_txt',
     text=("People can have slightly different perceptions of where the \"centre\" is when they hear music. We are going to run a test to tweak the audio settings to your ears.\n\n"
-            "A vibraphone will play from a random direction, and you will need to adjust the balance so that you hear it as coming from the centre- you can adjust"
-            + " as many times as needed. We will then repeat the test twice with other instruments.\n\nWhen you are ready to hear the music for the first time, press \"NEXT\"."),
+            "A vibraphone will play from a RANDOM direction, and you will need to adjust the balance so that you hear it as coming from the centre- you can adjust"
+          + " as many times as needed. We will then repeat the test twice with other instruments.\n\nWhen you are ready to hear the music for the first time, press \"NEXT\"."),
     font='Open Sans',
     pos=(0, 0.15), height=0.05, wrapWidth=1.8, ori=0.0, 
     color='white', colorSpace='rgb', opacity=None, 
@@ -768,20 +767,20 @@ msVolFeedbackPgClock = core.Clock()
 msVolFeedbackQ = visual.TextStim(win=win, name='msVolFeedbackQ',
     text="Please adjust the gains, so that you can hear and attend to each individual instrument comfortably. The gains should be >0 but do not need to add up to 1.",
     font='Open Sans',
-    pos=(0, 0.34), height=0.04, wrapWidth=1.8, ori=0.0, 
+    pos=(0, 0.34), height=0.05, wrapWidth=1.8, ori=0.0, 
     color='white', colorSpace='rgb', opacity=None,
     languageStyle='LTR',
     depth=0.0); 
 msVolFeedbackLabels = visual.TextStim(win=win, name='msVolFeedbackQ',
-    text="Vibraphone:                 Harmonica:                 Piano:",
+    text="Vibraphone:                     Harmonica:                        Piano:",
     font='Open Sans',
-    pos=(0, 0), height=0.035, wrapWidth=1.8, ori=0.0, 
+    pos=(-0.015, 0), height=0.035, wrapWidth=1.8, ori=0.0, 
     color='white', colorSpace='rgb', opacity=None, 
     languageStyle='LTR',
     depth=0.0); 
 msVolFeedbackVibrResp = visual.TextBox2(
      win, text=vibraphone_loudness, font='Open Sans',
-     pos=(-0.4, -0.1),     letterHeight=0.025,
+     pos=(-0.4, -0.09), letterHeight=0.025,
      size=(0.3, 0.04), borderWidth=2.0,
      color='Black', colorSpace='rgb',
      opacity=None,
@@ -797,7 +796,7 @@ msVolFeedbackVibrResp = visual.TextBox2(
 )
 msVolFeedbackHarmResp = visual.TextBox2(
      win, text=harmonica_loudness, font='Open Sans',
-     pos=(0, -0.1),     letterHeight=0.025,
+     pos=(0, -0.09),     letterHeight=0.025,
      size=(0.3, 0.04), borderWidth=2.0,
      color='Black', colorSpace='rgb',
      opacity=None,
@@ -813,7 +812,7 @@ msVolFeedbackHarmResp = visual.TextBox2(
 )
 msVolFeedbackKeybResp = visual.TextBox2(
      win, text=piano_loudness, font='Open Sans',
-     pos=(0.4, -0.1),     letterHeight=0.025,
+     pos=(0.4, -0.09),     letterHeight=0.025,
      size=(0.3, 0.04), borderWidth=2.0,
      color='Black', colorSpace='rgb',
      opacity=None,
@@ -844,7 +843,7 @@ contAdjustingQ2Clock = core.Clock()
 contAdjustingQ2Txt = visual.TextStim(win=win, name='contAdjustingQ2Txt',
     text="Would you like to continue adjusting?",
     font='Open Sans',
-    pos=(0, 0.15), height=0.05, wrapWidth=None, ori=0.0, 
+    pos=(0, 0.1), height=0.05, wrapWidth=None, ori=0.0, 
     color='white', colorSpace='rgb', opacity=None, 
     languageStyle='LTR',
     depth=0.0);
@@ -852,12 +851,12 @@ mouse_4 = event.Mouse(win=win)
 x, y = [None, None]
 mouse_4.mouseClock = core.Clock()
 contAdjustingQ2Resp = visual.Slider(win=win, name='contAdjustingQ2Resp',
-    startValue=None, size=(1.1, 0.02), pos=(0.0, 0.27), units=None,
+    startValue=None, size=(0.3, 0.02), pos=(0.0, -0.1), units=None,
     labels=("Yes", "No"), ticks=(0, 1), granularity=1.0,
     style='radio', styleTweaks=(), opacity=None,
     labelColor='LightGray', markerColor='Red', lineColor='White', colorSpace='rgb',
     font='Open Sans', labelHeight=0.025,
-    flip=False, ori=0.0, depth=-2, readOnly=False)
+    flip=True, ori=0.0, depth=-2, readOnly=False)
 
 # ------Prepare to start Routine "instructions2"-------
 continueRoutine = True
@@ -1344,7 +1343,7 @@ ssVolFeedbackPgClock = core.Clock()
 ssVolFeedbackPg_txt = visual.TextStim(win=win, name='ssVolFeedbackPg_txt',
     text="Please adjust the loudness, so that you can hear and attend to the current instrument comfortably.",
     font='Open Sans',
-    pos=(0, 0.34), height=0.04, wrapWidth=1.8, ori=0.0, 
+    pos=(0, 0.34), height=0.05, wrapWidth=1.8, ori=0.0, 
     color='white', colorSpace='rgb', opacity=None,
     languageStyle='LTR',
     depth=0.0); 
@@ -1943,7 +1942,7 @@ while True:
 # Initialize components for Routine "thisPartComplete"
 thisPartCompleteClock = core.Clock()
 thisPartCompleteText = visual.TextStim(win=win, name='thisPartCompleteText',
-    text='Calibration completed.',
+    text='Calibration complete.',
     font='Open Sans',
     pos=(0, 0), height=0.05, wrapWidth=None, ori=0.0, 
     color='white', colorSpace='rgb', opacity=None, 
@@ -2033,6 +2032,8 @@ exec(open('personalisedStimuliMixer.py').read()) #Create stimuli with gains appl
 
 exec(open('listMaker.py').read()) #Create lists of the stimuli and the trigger files that can be used in the scripts
 #with minimal extra work.
+
+exec(open('generate_trig_P2.py').read())
 
 win.close()
 core.quit()
