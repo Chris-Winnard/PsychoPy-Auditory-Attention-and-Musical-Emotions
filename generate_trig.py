@@ -1,14 +1,9 @@
 import os
-import sys
 import argparse
 import glob
 import soundfile as sf
 from utils.SerialTriggerEncoder import SerialTriggerEncoder
 
-PART_START_CODE = 0b1110
-PART_END_CODE = 0b1111
-TRIAL_START_CODE = 0b1000
-TRIAL_END_CODE = 0b1001
 
 def getFileList(in_path):
     filepaths = []
@@ -25,7 +20,77 @@ def getFileList(in_path):
 def create_folder(folder):
     full_path = os.path.abspath(folder)
     os.makedirs(full_path, exist_ok=True)
+    
+    
+    
+    
+#################################################################################################################################################    
+#Set up binary for part start and end trigs, and fn to generate:    https://stackoverflow.com/questions/16926130/convert-to-binary-and-keep-leading-zeros
+P1 = 0b00
+P2 = 0b01
+P3 = 0b11
 
+part_subTrigs = [P1, P2, P3]
+
+def single_part_trig(part, triggerEnc, location, partTrigNumber):
+    part = 'P' + str(part+1)
+    
+    #
+    trig_filename = os.path.join(newPath, part + '_' + location + '_trigger.wav')
+    trig_metafilename = os.path.join(newPath, part + '_' + location + '_trigger.txt')            
+    triggerEncoder.resetTrigger()      
+        
+    triggerEncoder.encode(partTrigNumber, 0.0)
+    event_metafile = open(trig_metafilename, 'w')
+    event_metafile.write("{}\t{}\n".format(partTrigNumber, 0)) #position in millisecond
+    triggerEncoder.generateTrigger(trig_filename, 1.0)
+    event_metafile.close()
+
+def part_trigs(part, triggerEnc):
+    partTrigNumber_start = part_subTrigs[part] + 0b0
+    
+    partTrigNumber_end = part_subTrigs[part] + 0b1
+    
+    single_part_trig(part, triggerEnc, "start", partTrigNumber_start)
+    
+    single_part_trig(part, triggerEnc, "end", partTrigNumber_end)
+
+    
+#################################################################################################################################################
+#Binary for trial start and end trigs, and fn to gen:
+    
+set_binary_values = [0b0000, 0b0001, 0b0010, 0b0011, 0b0100, 0b0101, 0b0110, 0b0111, 0b1000, 0b1001, 0b1010, 0b1011] #Remember that Set01 corresponds to 0000, etc.
+inst_binary_values = [0b00, 0b01, 0b11]
+
+def trial_trigs(filename): #Oddball ones- add in trigs at oddball start times? Although would this mean new trig files for EACH participant?
+    for i in range(1, 13):
+        if i < 10:
+            string_I = "0" + str(i)
+        else:
+            string_I = str(i)
+        
+        if string_I in filename:
+            set_binary_thisValue = set_binary_values[i-1]
+    
+    instruments = ["Vibr", "Harm", "Keyb"]
+    
+    for j in range(0, 3):
+        if instruments[j] in filename:
+            inst_binary_thisValue = inst_binary_values[j]
+            
+    if "with Gain Applied" in filename:
+        stream_binary_thisValue = 0b0
+    elif "Oddball Test Mix" in filename:
+        stream_binary_thisValue = 0b1
+    
+    trialTrig_start = set_binary_thisValue + inst_binary_thisValue + stream_binary_thisValue + 0b0
+    trialTrig_end =  set_binary_thisValue + inst_binary_thisValue + stream_binary_thisValue + 0b1
+    return trialTrig_start, trialTrig_end
+
+########################################################################################################################################################
+"""Use the above to generate trigs:"""
+    
+#Trial trigs:    
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(prog='generate_trig')
     parser.add_argument("--in_folder", type=str, required=True, help="input folder containing target and non-target sounds.")
@@ -57,13 +122,20 @@ if __name__ == '__main__':
             file_len = f.frames/f.samplerate
             name = os.path.basename(path)
             trig_filename = os.path.join(out_folder, 'trigger_' + name + '.wav')
-            trig_metafilename = os.path.join(out_folder,'trigger_' + name + '.txt')
-            triggerEncoder.resetTrigger()
+            trig_metafilename = os.path.join(out_folder,'trigger_' + name + '.txt')            
+            triggerEncoder.resetTrigger()            
+            
+            [TRIAL_START_CODE, TRIAL_END_CODE] = trial_trigs(name)
             triggerEncoder.encode(TRIAL_START_CODE, 0.0)
             event_metafile = open(trig_metafilename, 'w')
-            event_metafile.write("{}\t{}\n".format(TRIAL_START_CODE, 0)) # start trig position in milisecond
+            event_metafile.write("{}\t{}\n".format(TRIAL_START_CODE, 0)) # start trig position in millisecond
             #
             triggerEncoder.encode(TRIAL_END_CODE, file_len)
-            event_metafile.write("{}\t{}\n".format(TRIAL_END_CODE, round(file_len*1000))) # end trig position in milisecond
-            triggerEncoder.generateTrigger(trig_filename, file_len+1.0)
+            event_metafile.write("{}\t{}\n".format(TRIAL_END_CODE, round(file_len*1000))) # end trig position in millisecond
+            triggerEncoder.generateTrigger(trig_filename, file_len+1.0) #shorter?
             event_metafile.close()
+    
+    #Part trigs:
+    newPath = os.getcwd()
+    for j in range(4): #Parts 1-3
+        part_trigs(j, triggerEncoder) #Reusing triggerEncoder from before
