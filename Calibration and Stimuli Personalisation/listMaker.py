@@ -50,8 +50,6 @@ elif "Group B2" in participantPath:
     semimegaset = "Semimegaset B2"
     practiceSet = "Set01"
 
-stimLoc = 'Data/' + group + "/" + participantName + "/"  
-
 ##############################################################################################################
 ##############################################################################################################
 #PART 1: CREATING LIST OF STIMULI AND TRIGGER FILES. EXCLUDE PRACTICE TRIAL MATERIALS AND ODDBALL TEST
@@ -83,7 +81,7 @@ for file in os.scandir(participantPath):
     attdCell = "C" + str(i)
     if practiceSet not in file.name:
         if ".wav" in file.name and "Oddball" not in file.name: #Only audio, and no oddball files. 
-            stimPath = stimLoc + str(file.name)
+            stimPath = participantPath + "/" + str(file.name)
             worksheet.write(stimCell, stimPath)
             
             trigFilename = "trigger_" + str(file.name)
@@ -126,7 +124,7 @@ for file in os.scandir(participantPath):
     attdCell = "C" + str(i)
     if practiceSet in file.name:
         if ".wav" in file.name and "Oddball" not in file.name: #Only audio, and no oddball files. 
-            stimPath = stimLoc + str(file.name)
+            stimPath = participantPath  + "/" + str(file.name)
             worksheet.write(stimCell, stimPath)
             
             trigFilename = "trigger_" + str(file.name)
@@ -152,7 +150,7 @@ workbook.close()
 #AND SINGLE-STREAM WORK. Since we're done with the above, here we can reuse i, j variables.
 
 #First, let's read and convert the start time data. This will also be useful for part 4.
-startTimesFile = participantPath + "Oddball Start Times.txt"
+startTimesFile = participantPath + "\Oddball Start Times.txt"
 startTimesData = open(startTimesFile, 'r')
 lines = startTimesData.readlines()
 startTimesData.close()
@@ -181,12 +179,12 @@ for file in os.scandir(participantPath):
             else:
                 attendedInst = "Harm"
                 
-            stimPath = stimLoc + str(file.name)
+            stimPath = participantPath  + "/" + str(file.name)
             worksheet.write(stimCell, stimPath)
             worksheet.write(attCell, str(attendedInst))
             
             trigFilename = "trigger_" + str(file.name)
-            trigFolderPlusFilename = "Trigger Files/" + trigFilename
+            trigFolderPlusFilename = participantPath + "/P2 Trigger Files/" + trigFilename
             worksheet.write(trigCell, trigFolderPlusFilename)
     
             for line in lines:
@@ -229,12 +227,12 @@ for file in os.scandir(participantPath):
             else:
                 attendedInst = "Harm"
                 
-            stimPath = stimLoc + str(file.name)
+            stimPath = participantPath  + "/" + str(file.name)
             worksheet.write(stimCell, stimPath)
             worksheet.write(attCell, str(attendedInst))
             
             trigFilename = "trigger_" + str(file.name)
-            trigFolderPlusFilename = "Trigger Files/" + trigFilename
+            trigFolderPlusFilename = participantPath + "/P2 Trigger Files/" + trigFilename
             worksheet.write(trigCell, trigFolderPlusFilename)
             
             for line in lines:
