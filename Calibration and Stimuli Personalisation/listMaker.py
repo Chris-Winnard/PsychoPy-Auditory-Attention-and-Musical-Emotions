@@ -50,6 +50,7 @@ elif "Group B2" in participantPath:
     semimegaset = "Semimegaset B2"
     practiceSet = "Set01"
 
+stimLoc = 'Data/' + group + '/' + participantName + '/'    
 ##############################################################################################################
 ##############################################################################################################
 #PART 1: CREATING LIST OF STIMULI AND TRIGGER FILES. EXCLUDE PRACTICE TRIAL MATERIALS AND ODDBALL TEST
@@ -81,7 +82,7 @@ for file in os.scandir(participantPath):
     attdCell = "C" + str(i)
     if practiceSet not in file.name:
         if ".wav" in file.name and "Oddball" not in file.name: #Only audio, and no oddball files. 
-            stimPath = participantPath + "/" + str(file.name)
+            stimPath = stimLoc + str(file.name)
             worksheet.write(stimCell, stimPath)
             
             trigFilename = "trigger_" + str(file.name)
@@ -124,7 +125,7 @@ for file in os.scandir(participantPath):
     attdCell = "C" + str(i)
     if practiceSet in file.name:
         if ".wav" in file.name and "Oddball" not in file.name: #Only audio, and no oddball files. 
-            stimPath = participantPath  + "/" + str(file.name)
+            stimPath = stimLoc + str(file.name)
             worksheet.write(stimCell, stimPath)
             
             trigFilename = "trigger_" + str(file.name)
@@ -179,7 +180,7 @@ for file in os.scandir(participantPath):
             else:
                 attendedInst = "Harm"
                 
-            stimPath = participantPath  + "/" + str(file.name)
+            stimPath = stimLoc + str(file.name)
             worksheet.write(stimCell, stimPath)
             worksheet.write(attCell, str(attendedInst))
             
@@ -227,7 +228,7 @@ for file in os.scandir(participantPath):
             else:
                 attendedInst = "Harm"
                 
-            stimPath = participantPath  + "/" + str(file.name)
+            stimPath = stimLoc + str(file.name)
             worksheet.write(stimCell, stimPath)
             worksheet.write(attCell, str(attendedInst))
             
