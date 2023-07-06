@@ -15,7 +15,7 @@ stimuliPath = str(upperFolderPath) + "/Stimuli"
 
 #Create output path:
 dataPath = str(upperFolderPath) + "/Data/"
-participantNo = "P01"
+participantNo = "P13"
 
 
 groupAssignmentFile = dataPath + "/Participant Groups.txt" #Needed for taking collecting stimuli, and saving to right place:
@@ -223,12 +223,12 @@ def oddballsForbidden(currentFilename):
                 forbiddenOddballPeriods_Starts = np.append(forbiddenOddballPeriods_Starts, forbiddenOddballPeriods_StartsOneInstrument) #For all other instruments in the set.
         f.close
         
-    forbiddenOddballPeriods_Starts = forbiddenOddballPeriods_Starts.astype(np.float) #From strings to floats.
+    forbiddenOddballPeriods_Starts = forbiddenOddballPeriods_Starts.astype(float) #From strings to floats.
 
     #Convert start times back FROM seconds:
     forbiddenOddballPeriods_Starts -= 35 #Minus 35s
     forbiddenOddballPeriods_Starts = forbiddenOddballPeriods_Starts*661500/30
-    forbiddenOddballPeriods_Starts = forbiddenOddballPeriods_Starts.astype(np.int) #Should already be integers (or very close with rounding errors), this just affirms the data type.
+    forbiddenOddballPeriods_Starts = forbiddenOddballPeriods_Starts.astype(int) #Should already be integers (or very close with rounding errors), this just affirms the data type.
     return forbiddenOddballPeriods_Starts
 
 for file in os.scandir(thisParticipantStimuliPath):

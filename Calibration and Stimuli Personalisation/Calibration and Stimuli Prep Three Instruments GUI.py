@@ -10,6 +10,9 @@ from psychopy import locale_setup
 from psychopy import sound, gui, visual, core, data, event, logging, clock, colors
 from psychopy.constants import (NOT_STARTED, STARTED, PLAYING, PAUSED,
                                 STOPPED, FINISHED, PRESSED, RELEASED, FOREVER)
+from psychopy import prefs
+prefs.hardware['audioLib'] = 'sounddevice'
+prefs.hardware['audioLatencyMode'] = '3'
 from pyo import *
 import time
 from pydub import AudioSegment
@@ -18,7 +21,7 @@ import os
 import wx
 import psychopy.iohub as io
 from psychopy.hardware import keyboard
-
+import scipy.io.wavfile as siowav
 
 expName = 'Loudness Calibration'  # from the Builder filename that created this script
 expInfo = {'Participant ID': ''}
@@ -60,35 +63,8 @@ with open(groupAssignmentFile, 'r') as f:
     f.close
     
 ##########################################################################################################################################
-#PART 1 - SPATIAL BALANCING. Here we also initialise things such as video settings for later parts:
-SOUNDCARD_DEVICE_NAME = 'DAC8PRO'
-
-OUT_CHANNELS = 2
-
-volume_level = 0.05
-
-volume_ratio = [1, 1, 5]
-
-spk_volume = [x * volume_level for x in volume_ratio]
- 
-
-s = Server(nchnls=OUT_CHANNELS, duplex=0)
-
-devices = pa_get_output_devices()
-
-for name in devices[0]:
-
-    if SOUNDCARD_DEVICE_NAME in name:
-
-        soundcard_idx = devices[1][devices[0].index(name)]
-
-        print('sound card: ', name)
-
-        s.setOutputDevice(soundcard_idx)
-
-        break
-
-s = s.boot()
+#PART 1 - SPATIAL BALANCING. Here we also initialise things such as audio settings for later parts:
+OUTPUT_DEVICE_IDX=3 #FOR THE HEADPHONES
 
 # Load the audio files
 vibraphone = AudioSegment.from_wav(vibrPiece)

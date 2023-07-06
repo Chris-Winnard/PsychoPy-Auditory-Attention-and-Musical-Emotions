@@ -11,8 +11,8 @@ from numpy.random import default_rng
 #Navigating the files, and also specifying which set is the practice set.
     
 #Find the personalised stimuli path:
-currentFolderPath = pathlib.Path(__file__).parent.resolve() #Current folder path
-upperFolderPath = currentFolderPath.parent.resolve() #Path for next level up.
+calibrationStimPrepPath = pathlib.Path(__file__).parent.resolve() #Where this file is located = pathlib.Path(__file__).parent.resolve() #Current folder path
+upperFolderPath = calibrationStimPrepPath = pathlib.Path(__file__).parent.resolve() #Where this file is located.parent.resolve() #Path for next level up.
 dataPath = str(upperFolderPath) + "/Data"
 
 sub_paths = list() # Collect all files in sub directories
@@ -185,7 +185,7 @@ for file in os.scandir(participantPath):
             worksheet.write(attCell, str(attendedInst))
             
             trigFilename = "trigger_" + str(file.name)
-            trigFolderPlusFilename = participantPath + "/P2 Trigger Files/" + trigFilename
+            trigFolderPlusFilename = stimLoc + "P2 Trigger Files/" + trigFilename
             worksheet.write(trigCell, trigFolderPlusFilename)
     
             for line in lines:
@@ -233,7 +233,7 @@ for file in os.scandir(participantPath):
             worksheet.write(attCell, str(attendedInst))
             
             trigFilename = "trigger_" + str(file.name)
-            trigFolderPlusFilename = participantPath + "/P2 Trigger Files/" + trigFilename
+            trigFolderPlusFilename = stimLoc + "P2 Trigger Files/" + trigFilename
             worksheet.write(trigCell, trigFolderPlusFilename)
             
             for line in lines:
@@ -248,3 +248,5 @@ workbook.close()
 
 #For parts 3 and 4 need to keep eye on how trigger filenames dealt with... not an issue if we
 #run generate_trig.py before doing ANY of this, for some generic versions of the files/mixes.
+
+os.chdir(calibrationStimPrepPath)

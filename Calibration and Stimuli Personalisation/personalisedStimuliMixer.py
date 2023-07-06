@@ -82,18 +82,21 @@ for file in os.scandir(thisParticipantStimuliPath):
            signal = signal.apply_gain(ssVibrGain)
            signal = signal.pan(vibrPan)
            outputPathPlusName = participantPath + "/" + str(file.name)[:-4] + " with Gain Applied.wav"
+           signal = signal.set_frame_rate(22050) #Downsample, for consistency with multistream files and everything else
            signal.export(outputPathPlusName, format="wav")
            
         elif file.name[6:10] == "Harm":
             signal = signal.apply_gain(ssHarmGain)
             signal = signal.pan(harmPan)
             outputPathPlusName = participantPath + "/" + str(file.name)[:-4] + " with Gain Applied.wav"
+            signal = signal.set_frame_rate(22050)
             signal.export(outputPathPlusName, format="wav")
             
         elif file.name[6:10] == "Keyb":
             signal = signal.apply_gain(ssKeybGain)
             signal = signal.pan(keybPan)
             outputPathPlusName = participantPath + "/" + str(file.name)[:-4] + " with Gain Applied.wav"
+            signal = signal.set_frame_rate(22050)
             signal.export(outputPathPlusName, format="wav")
 
 ###################################################################################################
@@ -122,7 +125,7 @@ def mixer(attendedInst):
                 string_I = "0" + str(i)
             else:
                 string_I = str(i)
-
+            
             if "Set" + string_I in file.name and attendedInst in file.name: #Only oddball versions. This will also ignore triggers etc.
                 signal = AudioSegment.from_wav(file)
                 signal = signal[0:1433250] #Remove any excess points - should be 1 min 5s exactly.

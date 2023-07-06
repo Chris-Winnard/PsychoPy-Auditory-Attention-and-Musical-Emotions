@@ -80,10 +80,9 @@ def oddballTrigs(filename):
         elif thisMixKeyb in line:
             keybOddballStartTimes = re.findall("\d+\.\d+", line)
             linesReadFrom += 1
-            
+        
         if linesReadFrom == 3:
             break
-    
     #Trigs- 00 for vibr, 01 for harm, 11 for keyb. First two indicate inst to be attended, last two indicate oddball type. e.g, 0111 for keyb oddball
     #when harm attended
     
@@ -132,7 +131,6 @@ if not os.path.exists(out_folder):
   
 file_list = getFileList(participantPath)
 file_list = [x for x in file_list if 'Oddball Test Mix' in x]
-print(file_list)
 triggerEncoder = SerialTriggerEncoder(sr, clkSerial)
 #  print('file_list', file_list)
 for i in range(len(file_list)):    
