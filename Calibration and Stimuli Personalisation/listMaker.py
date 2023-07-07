@@ -36,18 +36,23 @@ participantName = os.path.split(os.getcwd())[1]
 if "Group A1" in participantPath:
     group = "Group A1"
     semimegaset = "Semimegaset A1"
+    practiceSetPrimary = "Set04"
+    practiceSetSecondary = "Set01"
 elif "Group A2" in participantPath:
     group = "Group A2"
     semimegaset = "Semimegaset A2"
+    practiceSetPrimary = "Set04"
+    practiceSetSecondary = "Set01"
 elif "Group B1" in participantPath:
     group = "Group B1"
     semimegaset = "Semimegaset B1"
+    practiceSetPrimary = "Set01"
+    practiceSetSecondary = "Set04"
 elif "Group B2" in participantPath:
     group = "Group B2"
     semimegaset = "Semimegaset B2"
-
-practiceSet1 = "Set04"
-practiceSet2 = "Set01"
+    practiceSetPrimary = "Set01"
+    practiceSetSecondary = "Set04"
 
 stimLoc = 'Data/' + group + '/' + participantName + '/'    
 ##############################################################################################################
@@ -79,7 +84,7 @@ for file in os.scandir(participantPath):
     stimCell = "A" + str(i)
     trigCell = "B" + str(i)
     attdCell = "C" + str(i)
-    if practiceSet1 not in file.name and practiceSet2 not in file.name:
+    if practiceSetPrimary not in file.name and practiceSetSecondary not in file.name:
         if ".wav" in file.name and "Oddball" not in file.name: #Only audio, and no oddball files. 
             stimPath = stimLoc + str(file.name)
             worksheet.write(stimCell, stimPath)
@@ -122,7 +127,7 @@ for file in os.scandir(participantPath):
     stimCell = "A" + str(i)
     trigCell = "B" + str(i)    
     attdCell = "C" + str(i)
-    if practiceSet1 in file.name or practiceSet2 in file.name:
+    if practiceSetPrimary in file.name:
         if ".wav" in file.name and "Oddball" not in file.name: #Only audio, and no oddball files. 
             stimPath = stimLoc + str(file.name)
             worksheet.write(stimCell, stimPath)
@@ -170,7 +175,7 @@ for file in os.scandir(participantPath):
     attCell = "B" + str(i)
     trigCell = "C" + str(i)
     oddCell = "D" + str(i)
-    if practiceSet1 not in file.name and practiceSet2 not in file.name:
+    if practiceSetPrimary not in file.name and practiceSetSecondary not in file.name:
         if ".wav" in file.name and "Oddball Test Mix" in file.name: #Only audio, only oddball files.
             if "Keyb Attended" in file.name:
                 attendedInst = "Keyb"
@@ -218,7 +223,7 @@ for file in os.scandir(participantPath):
     attCell = "B" + str(i)
     trigCell = "C" + str(i)
     oddCell = "D" + str(i)
-    if practiceSet1 in file.name or practiceSet2 in file.name:
+    if practiceSetPrimary in file.name or practiceSetSecondary in file.name:
         if ".wav" in file.name and "Oddball Test Mix" in file.name: #Only audio, only oddball files.
             if "Keyb Attended" in file.name:
                 attendedInst = "Keyb"
@@ -236,7 +241,7 @@ for file in os.scandir(participantPath):
             worksheet.write(trigCell, trigFolderPlusFilename)
             
             for line in lines:
-                if (practiceSet1 in line or practiceSet2 in line) and line.count(attendedInst) ==2:
+                if file.name[3:5] in line and line.count(attendedInst) ==2:
                     oddballStartTimes = re.findall("\d+\.\d+", line)
                     numOddballs = len(oddballStartTimes)
                     worksheet.write(oddCell, str(numOddballs))
