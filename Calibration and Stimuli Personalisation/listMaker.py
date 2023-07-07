@@ -12,7 +12,7 @@ from numpy.random import default_rng
     
 #Find the personalised stimuli path:
 calibrationStimPrepPath = pathlib.Path(__file__).parent.resolve() #Where this file is located = pathlib.Path(__file__).parent.resolve() #Current folder path
-upperFolderPath = calibrationStimPrepPath = pathlib.Path(__file__).parent.resolve() #Where this file is located.parent.resolve() #Path for next level up.
+upperFolderPath = calibrationStimPrepPath.parent.resolve() #Where this file is located.parent.resolve() #Path for next level up.
 dataPath = str(upperFolderPath) + "/Data"
 
 sub_paths = list() # Collect all files in sub directories
@@ -36,19 +36,18 @@ participantName = os.path.split(os.getcwd())[1]
 if "Group A1" in participantPath:
     group = "Group A1"
     semimegaset = "Semimegaset A1"
-    practiceSet = "Set04"
 elif "Group A2" in participantPath:
     group = "Group A2"
     semimegaset = "Semimegaset A2"
-    practiceSet = "Set04"
 elif "Group B1" in participantPath:
     group = "Group B1"
     semimegaset = "Semimegaset B1"
-    practiceSet = "Set01"
 elif "Group B2" in participantPath:
     group = "Group B2"
     semimegaset = "Semimegaset B2"
-    practiceSet = "Set01"
+
+practiceSet1 = "Set04"
+practiceSet2 = "Set01"
 
 stimLoc = 'Data/' + group + '/' + participantName + '/'    
 ##############################################################################################################
@@ -80,7 +79,7 @@ for file in os.scandir(participantPath):
     stimCell = "A" + str(i)
     trigCell = "B" + str(i)
     attdCell = "C" + str(i)
-    if practiceSet not in file.name:
+    if practiceSet1 not in file.name and practiceSet2 not in file.name:
         if ".wav" in file.name and "Oddball" not in file.name: #Only audio, and no oddball files. 
             stimPath = stimLoc + str(file.name)
             worksheet.write(stimCell, stimPath)
@@ -123,7 +122,7 @@ for file in os.scandir(participantPath):
     stimCell = "A" + str(i)
     trigCell = "B" + str(i)    
     attdCell = "C" + str(i)
-    if practiceSet in file.name:
+    if practiceSet1 in file.name or practiceSet2 in file.name:
         if ".wav" in file.name and "Oddball" not in file.name: #Only audio, and no oddball files. 
             stimPath = stimLoc + str(file.name)
             worksheet.write(stimCell, stimPath)
@@ -171,7 +170,7 @@ for file in os.scandir(participantPath):
     attCell = "B" + str(i)
     trigCell = "C" + str(i)
     oddCell = "D" + str(i)
-    if practiceSet not in file.name:
+    if practiceSet1 not in file.name and practiceSet2 not in file.name:
         if ".wav" in file.name and "Oddball Test Mix" in file.name: #Only audio, only oddball files.
             if "Keyb Attended" in file.name:
                 attendedInst = "Keyb"
@@ -219,7 +218,7 @@ for file in os.scandir(participantPath):
     attCell = "B" + str(i)
     trigCell = "C" + str(i)
     oddCell = "D" + str(i)
-    if practiceSet in file.name:
+    if practiceSet1 in file.name or practiceSet2 in file.name:
         if ".wav" in file.name and "Oddball Test Mix" in file.name: #Only audio, only oddball files.
             if "Keyb Attended" in file.name:
                 attendedInst = "Keyb"
@@ -237,7 +236,7 @@ for file in os.scandir(participantPath):
             worksheet.write(trigCell, trigFolderPlusFilename)
             
             for line in lines:
-                if practiceSet in line and line.count(attendedInst) ==2:
+                if (practiceSet1 in line or practiceSet2 in line) and line.count(attendedInst) ==2:
                     oddballStartTimes = re.findall("\d+\.\d+", line)
                     numOddballs = len(oddballStartTimes)
                     worksheet.write(oddCell, str(numOddballs))
