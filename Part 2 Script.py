@@ -667,8 +667,18 @@ for thisBlock0 in block0:
                 attendKeyboardNote.setAutoDraw(False)
         
         if stimuliStarted == False and (attendVibraphoneNote.status == FINISHED or attendHarmonicaNote.status == FINISHED or attendKeyboardNote.status == FINISHED):
-            
+            trigger_filename, trigger_ext = os.path.splitext(trigger)
+            trigger_logfile = os.path.abspath(trigger_filename + '.txt')
+            trial['trigger'] = os.path.abspath(trigger)
+            trial['trigger_log'] = os.path.abspath(trigger_logfile)
+        
+            # trigger channel
+            trigger_chn = SfPlayer(trigger)
+            mm.delInput(0)
+            mm.addInput(0, trigger_chn)
+            mm.setAmp(0,TRIGGER_CHN,spk_volume[TRIGGER_CHN])
             trial['stimuli'] = []
+            
             # create an empty list to store the players
             players = []
                         

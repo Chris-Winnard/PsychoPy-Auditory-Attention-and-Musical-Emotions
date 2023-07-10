@@ -2,7 +2,8 @@
 # -*- coding: utf-8 -*-
 
 from psychopy import locale_setup
-from psychopy import sound, gui, visual, core, data, event, logging, clock, colors, layout
+from psychopy import sound, gui, visual, core, data, event, logging, clock, colors, layout, prefs
+prefs.hardware['audioLatencyMode'] = '3'
 from psychopy.constants import (NOT_STARTED, STARTED, PLAYING, PAUSED,
                                 STOPPED, FINISHED, PRESSED, RELEASED, FOREVER)
 
@@ -198,7 +199,7 @@ nextButton_R1B = visual.ImageStim(
 # Initialize components for Routine "thisPartComplete"
 thisPartCompleteClock = core.Clock()
 thisPartCompleteText = visual.TextStim(win=win, name='thisPartCompleteText',
-    text='Part 3 completed.',
+    text='Part 3 complete.',
     font='Open Sans',
     pos=(0, 0), height=0.05, wrapWidth=None, ori=0.0, 
     color='white', colorSpace='rgb', opacity=None, 
@@ -481,8 +482,8 @@ for thisBlock0 in block0:
     frameN = -1
     
     #Get attendance condition:
-    attend = f"music_attended"
-    
+    attend = f"{music_attended}"
+
     # -------Run Routine "practiceTrial"-------
     while continueRoutine:
         # get current time
@@ -527,7 +528,18 @@ for thisBlock0 in block0:
                 dontAttendNote.setAutoDraw(False)
         
         if stimuliStarted == False and (attendNote.status == FINISHED or dontAttendNote.status == FINISHED):     
+            
+            trigger_filename, trigger_ext = os.path.splitext(trigger)
+            trigger_logfile = os.path.abspath(trigger_filename + '.txt')
+            trial['trigger'] = os.path.abspath(trigger)
+            trial['trigger_log'] = os.path.abspath(trigger_logfile)
         
+            # trigger channel
+            trigger_chn = SfPlayer(trigger)
+            mm.delInput(0)
+            mm.addInput(0, trigger_chn)
+            mm.setAmp(0,TRIGGER_CHN,spk_volume[TRIGGER_CHN])
+            
             # stimuli channels
             trial['stimuli'] = []
             # create an empty list to store the players
@@ -585,8 +597,9 @@ for thisBlock0 in block0:
             thisComponent.setAutoDraw(False)
     
     if attend == "Yes":
-        print("attended")
-    print(attend)
+        print("music attended")
+    else:
+        print("music unattended")
     # the Routine "practiceTrial" was not non-slip safe, so reset the non-slip timer
     routineTimer.reset()
     
@@ -712,20 +725,21 @@ for thisBlock0 in block0:
 print(f'Playing start trigger')
 continueRoutine = True
 routineTimer.add(1)
-startExpTrigger = SfPlayer('start_trigger.wav')
+startExpTrigger = SfPlayer('P3_start_trigger.wav')
 for i in range(PART_3_OUT_CHANNELS):
     mm.delInput(i)
 mm.addInput(0, startExpTrigger)
 #mm.setAmp(0,i,0)
 #for i in range(PART_2_OUT_CHANNELS):
 #    mm.setAmp(0,i,0)
+thisExp.addData('Start Trigger Start Time', globalClock.getTime())
 mm.setAmp(0,TRIGGER_CHN,spk_volume[TRIGGER_CHN])
 while continueRoutine and routineTimer.getTime() > 0:
     mm.out()
 mm.stop()
 routineTimer.reset()
 # end of playing part starting trig
-
+thisExp.nextEntry()
 
 # set up handler to look after randomisation of conditions etc
 block1 = data.TrialHandler(nReps=1.0, method='random', 
@@ -769,8 +783,8 @@ for thisBlock1 in block1:
     trialClock.reset(-_timeToFirstFrame)  # t0 is time of first possible flip
     frameN = -1
     
-    #Set random attend condition:
-    attend = f"music_attended"
+    #Get attendance condition:
+    attend = f"{music_attended}"
     
     # -------Run Routine "trial"-------
     while continueRoutine:
@@ -854,6 +868,8 @@ for thisBlock1 in block1:
             # play the sounds and wait for them to finish
             for player in players:
                 player.play()
+                trialAudioStartTime = globalClock.getTime()
+            block1.addData('Music Start Time', trialAudioStartTime)
         #    while any([player.status == PLAYING for player in players]):
          #       continue
             stimuliStarted = True
@@ -889,13 +905,13 @@ for thisBlock1 in block1:
         if hasattr(thisComponent, "setAutoDraw"):
             thisComponent.setAutoDraw(False)
     
-    if attend == "Yes":
-        block1.addData('attendanceCondition','Attended to music')
-        print("attended")
-    else:
-        block1.addData('attendanceCondition','Did not attend to music')
-        print("not attended")
     thisExp.nextEntry() #Next row on the record.
+    
+    if attend == "Yes":
+        print("music attended")
+    else:
+        print("music unattended")
+        
     # the Routine "trial" was not non-slip safe, so reset the non-slip timer
     routineTimer.reset()
     
@@ -1019,13 +1035,14 @@ for thisBlock1 in block1:
 # playing part stop trig
 continueRoutine = True
 routineTimer.add(1)
-stopExpTrigger = SfPlayer('stop_trigger.wav')
+stopExpTrigger = SfPlayer('P3_end_trigger.wav')
 mm.delInput(0)
 mm.addInput(0, stopExpTrigger)
 
 #for i in range(PART_3_OUT_CHANNELS):
 #    mm.setAmp(0,i,0)
 #mm.setAmp(0,0,spk_volume[0])
+thisExp.addData('End Trigger Start Time', globalClock.getTime())
 mm.setAmp(0,TRIGGER_CHN,spk_volume[TRIGGER_CHN])
 while continueRoutine and routineTimer.getTime() > 0:
     mm.out()

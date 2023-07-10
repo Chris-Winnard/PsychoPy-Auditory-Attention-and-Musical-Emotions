@@ -2,19 +2,14 @@
 # -*- coding: utf-8 -*-
 
 from psychopy import locale_setup
-from psychopy import prefs
-#prefs.hardware['audioLib'] = ['PTB'] -  causes sound.Sound to crash
-from psychopy import sound, gui, visual, core, data, event, logging, clock, colors
+from psychopy import sound, gui, visual, core, data, event, logging, clock, colors, prefs
+prefs.hardware['audioLatencyMode'] = '3'
 from psychopy.constants import (NOT_STARTED, STARTED, PLAYING, PAUSED,
                                 STOPPED, FINISHED, PRESSED, RELEASED, FOREVER)
-
 import numpy as np
-from numpy import (sin, cos, tan, log, log10, pi, average,
-                   sqrt, std, deg2rad, rad2deg, linspace, asarray)
 from numpy.random import random, randint, normal, shuffle, choice as randchoice
 import os  # handy system and path functions
 import sys  # to get file system encoding
-
 import psychopy.iohub as io
 from psychopy.hardware import keyboard
 from pyo import *
@@ -33,23 +28,17 @@ PART_1_OUT_CHANNELS = 3
 TRIGGER_CHN = 2
 print(f'PART_1_OUT_CHANNELS: {PART_1_OUT_CHANNELS}')
 
-pa_list_devices()
-pa_list_devices()
 s = Server(nchnls=PART_1_OUT_CHANNELS, duplex=0)
 devices = pa_get_output_devices()
-#print(devices[0])
-#print(devices[1])
 indx = []
 #for name in devices[0]:
 for i in range(len(devices[0])):
     name = devices[0][i]
     if SOUNDCARD_DEVICE_NAME in name:
-    #    print(name)
         soundcard_idx = devices[1][devices[0].index(name)]
         s.setOutputDevice(soundcard_idx)
         indx.append(devices[1][i])
         break
-#print(indx)
 s = s.boot()
 s.start()
 
@@ -308,7 +297,7 @@ nextButton_R1B = visual.ImageStim(
 # Initialize components for Routine "thisPartComplete"
 thisPartCompleteClock = core.Clock()
 thisPartCompleteText = visual.TextStim(win=win, name='thisPartCompleteText',
-    text='Part 1 completed.',
+    text='Part 1 complete.',
     font='Open Sans',
     pos=(0, 0), height=0.05, wrapWidth=None, ori=0.0, 
     color='white', colorSpace='rgb', opacity=None, 
@@ -543,7 +532,18 @@ for thisBlock0 in block0:
 
     # ------Prepare to start Routine "practiceTrial"-------
     continueRoutine = True
+    
+    trigger_filename, trigger_ext = os.path.splitext(trigger)
+    trigger_logfile = os.path.abspath(trigger_filename + '.txt')
+    trial['trigger'] = os.path.abspath(trigger)
+    trial['trigger_log'] = os.path.abspath(trigger_logfile)
 
+    # trigger channel
+    trigger_chn = SfPlayer(trigger)
+    mm.delInput(0)
+    mm.addInput(0, trigger_chn)
+    mm.setAmp(0,TRIGGER_CHN,spk_volume[TRIGGER_CHN])
+    
     # stimuli channels
     trial['stimuli'] = []
     # create an empty list to store the players
@@ -558,7 +558,6 @@ for thisBlock0 in block0:
     
     # create the rest of the players for stimuli_0
     for i in range(1, PART_2_OUT_CHANNELS):
-        spk_name = f"stimuli_0"
         trial['stimuli'].append(os.path.abspath(globals()[spk_name]))
         if i < len(spk_volume):  # check if spk_volume has the correct number of elements
             player = sound.Sound(globals()[spk_name])
@@ -1014,20 +1013,21 @@ for thisBlock0 in block0:
 print(f'Playing start trigger')
 continueRoutine = True
 routineTimer.add(1)
-startExpTrigger = SfPlayer('start_trigger.wav')
+startExpTrigger = SfPlayer('P1_start_trigger.wav')
 for i in range(PART_1_OUT_CHANNELS):
     mm.delInput(i)
 mm.addInput(0, startExpTrigger)
 #mm.setAmp(0,i,0)
 #for i in range(PART_2_OUT_CHANNELS):
 #    mm.setAmp(0,i,0)
+thisExp.addData('Start Trigger Start Time', globalClock.getTime())
 mm.setAmp(0,TRIGGER_CHN,spk_volume[TRIGGER_CHN])
 while continueRoutine and routineTimer.getTime() > 0:
     mm.out()
 mm.stop()
 routineTimer.reset()
 # end of playing part starting trig
-
+thisExp.nextEntry()
 
 # set up handler to look after randomisation of conditions etc
 block1 = data.TrialHandler(nReps=1.0, method='random', 
@@ -1094,6 +1094,8 @@ for thisBlock1 in block1:
     # play the sounds and wait for them to finish
     for player in players:
         player.play()
+        trialAudioStartTime = globalClock.getTime()
+    block1.addData('Music+Trig Start Time', trialAudioStartTime)
  #   while any([player.status == PLAYING for player in players]):
   #      continue
     
@@ -1537,13 +1539,15 @@ for thisBlock1 in block1:
 # playing part stop trig
 continueRoutine = True
 routineTimer.add(1)
-stopExpTrigger = SfPlayer('stop_trigger.wav')
+stopExpTrigger = SfPlayer('P1_end_trigger.wav')
 mm.delInput(0)
 mm.addInput(0, stopExpTrigger)
 
 #for i in range(PART_2_OUT_CHANNELS):
 #    mm.setAmp(0,i,0)
 #mm.setAmp(0,0,spk_volume[0])
+
+thisExp.addData('End Trigger Start Time', globalClock.getTime())
 mm.setAmp(0,TRIGGER_CHN,spk_volume[TRIGGER_CHN])
 while continueRoutine and routineTimer.getTime() > 0:
     mm.out()
