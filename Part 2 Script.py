@@ -560,9 +560,9 @@ routineTimer.reset()
 
 #Practice trials:
 # set up handler to look after randomisation of conditions etc
-block0 = data.TrialHandler(nReps=1.0, method='sequential', 
+block0 = data.TrialHandler(nReps=1.0, method='random', 
     extraInfo=expInfo, originPath=-1,
-    trialList=data.importConditions(participantPath + '\practiceOddballStimuliList.xlsx', selection='0:3'),
+    trialList=data.importConditions(participantPath + '\practiceOddballStimuliList.xlsx', selection='0:6'),
     seed=None, name='block0')
 thisBlock0 = block0.trialList[0]  # so we can initialise stimuli with some values
 
@@ -1078,63 +1078,7 @@ for thisBlock0 in block0:
         routineTimer.reset()
     
     if idx == 6:
-        # ------Prepare to start Routine "movingToMainTrials"-------        
-        movingToMainTrialsComponents = [movingToMainTrialsText]
-        for thisComponent in movingToMainTrialsComponents:
-            thisComponent.tStart = None
-            thisComponent.tStop = None
-            thisComponent.tStartRefresh = None
-            thisComponent.tStopRefresh = None
-            if hasattr(thisComponent, 'status'):
-                thisComponent.status = NOT_STARTED
-        # reset timers
-        t = 0
-        _timeToFirstFrame = win.getFutureFlipTime(clock="now")
-        movingToMainTrialsClock.reset(-_timeToFirstFrame)  # t0 is time of first possible flip
-        frameN = -1
-            
-        # -------Run Routine "movingToMainTrials"-------
-        while continueRoutine:
-            # get current time
-            t = movingToMainTrialsClock.getTime()
-            tThisFlip = win.getFutureFlipTime(clock=movingToMainTrialsClock)
-            tThisFlipGlobal = win.getFutureFlipTime(clock=None)
-            frameN = frameN + 1  # number of completed frames (so 0 is the first frame)
-            # update/draw components on each frame
-            
-            if movingToMainTrialsText.status == NOT_STARTED and tThisFlip >= 0.0-frameTolerance:
-                # keep track of start time/frame for later
-                movingToMainTrialsText.frameNStart = frameN  # exact frame index
-                movingToMainTrialsText.tStart = t  # local t and not account for scr refresh
-                movingToMainTrialsText.tStartRefresh = tThisFlipGlobal  # on global time
-                win.timeOnFlip(movingToMainTrialsText, 'tStartRefresh')  # time at next scr refresh
-                movingToMainTrialsText.setAutoDraw(True) 
-                
-            # check for quit (typically the Esc key)
-            if endExpNow or defaultKeyboard.getKeys(keyList=["escape"]):
-                core.quit()
-            
-            if movingToMainTrialsClock.getTime() > 4:
-                movingToMainTrialsText.status = FINISHED
-                
-            # check if all components have finished
-            if not continueRoutine:  # a component has requested a forced-end of Routine
-                break
-            continueRoutine = False  # will revert to True if at least one component still running
-            for thisComponent in movingToMainTrialsComponents:
-                if hasattr(thisComponent, "status") and thisComponent.status != FINISHED:
-                    continueRoutine = True
-                    break  # at least one component has not yet finished
-            
-            # refresh the screen
-            if continueRoutine:  # don't flip if this routine is over or we'll get a blank screen
-                win.flip()
-            
-        # -------Ending Routine "movingToMainTrials"-------
-        for thisComponent in movingToMainTrialsComponents:
-            if hasattr(thisComponent, "setAutoDraw"):
-                thisComponent.setAutoDraw(False)
-        break
+        contPracticingBool = False
     
     if idx < 6:
         # ------Prepare to start Routine "contPracticingQ"-------
@@ -1407,8 +1351,6 @@ for thisBlock0 in block0:
                 
         routineTimer.reset()
         break
-    #when done all 6, also break..
-    #some sort of note clarifying that practice trials are over to the participant..
 # completed 1.0 repeats of 'block0'
 
 # playing part starting trig
@@ -1514,7 +1456,6 @@ for thisBlock1 in block1:
         if attendHarmonicaNote.status == STARTED:
             # is it time to stop? (based on global clock, using actual start)
             if tThisFlipGlobal > attendHarmonicaNote.tStartRefresh + 5.0-frameTolerance:
-                print("HERE")
                 # keep track of stop time/frame for later
                 attendHarmonicaNote.tStop = t  # not accounting for scr refresh
                 attendHarmonicaNote.frameNStop = frameN  # exact frame index
