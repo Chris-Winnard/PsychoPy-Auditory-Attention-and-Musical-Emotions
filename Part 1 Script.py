@@ -524,7 +524,7 @@ routineTimer.reset()
 #Note we only want ONE piece to be picked for practice trial - later we include a break to deal with this.
 block0 = data.TrialHandler(nReps=1.0, method='random', 
     extraInfo=expInfo, originPath=-1,
-    trialList=data.importConditions(participantPath + '\practiceStimuliList.xlsx', selection=selection='0:3'),
+    trialList=data.importConditions(participantPath + '\practiceStimuliList.xlsx', selection='0:3'),
     seed=None, name='block0')
 thisExp.addLoop(block0)  # add the loop to the experiment
 thisBlock0 = block0.trialList[0]  # so we can initialise stimuli with some values
