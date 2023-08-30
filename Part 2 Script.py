@@ -4,6 +4,7 @@
 from psychopy import locale_setup
 from psychopy import sound, gui, visual, core, data, event, logging, clock, colors, layout, prefs
 prefs.hardware['audioLatencyMode'] = '3'
+#prefs.hardware['audioDevice'] = 'Speakers (Scarlett 18i8 USB)' #Just "Scarlett 18i8 USB" ?
 from psychopy.constants import (NOT_STARTED, STARTED, PLAYING, PAUSED,
                                 STOPPED, FINISHED, PRESSED, RELEASED, FOREVER)
 
@@ -23,7 +24,7 @@ import json
 sys.path.append('.')
 from constants import *
 
-SOUNDCARD_DEVICE_NAME = 'DAC8PRO'
+SOUNDCARD_DEVICE_NAME = 'Scarlett 18i8 USB'
 volume_level = 0.009
 volume_ratio = [1, 1, 27.5]
 spk_volume = [x * volume_level for x in volume_ratio]
@@ -39,7 +40,8 @@ for name in devices[0]:
    #     print('sound card: ', name)
         s.setOutputDevice(soundcard_idx)
         break
-
+import sounddevice as sd
+print(sd.query_devices())
 s = s.boot()
 s.start()
 
@@ -265,7 +267,7 @@ nextButton_R1B = visual.ImageStim(
 # Initialize components for Routine "movingToMainTrials"
 movingToMainTrialsClock = core.Clock()
 movingToMainTrialsText = visual.TextStim(win=win, name='movingToMainTrialsText',
-    text='We will now move to the main trials.',
+    text='We will now move on to the main trials.',
     font='Open Sans',
     pos=(0, 0), height=0.05, wrapWidth=None, ori=0.0, 
     color='white', colorSpace='rgb', opacity=None, 
@@ -564,6 +566,7 @@ block0 = data.TrialHandler(nReps=1.0, method='random',
     extraInfo=expInfo, originPath=-1,
     trialList=data.importConditions(participantPath + '\practiceOddballStimuliList.xlsx', selection='0:6'),
     seed=None, name='block0')
+thisExp.addLoop(block0)  # add the loop to the experiment
 thisBlock0 = block0.trialList[0]  # so we can initialise stimuli with some values
 
 # abbreviate parameter names if possible (e.g. rgb = thisBlock0.rgb)
@@ -697,6 +700,8 @@ for thisBlock0 in block0:
             # play the sounds and wait for them to finish
             for player in players:
                 player.play()
+                practiceTrialAudioStartTime = globalClock.getTime()
+            block0.addData('Practice Music Start Time', practiceTrialAudioStartTime)
         
             stimuliStarted = True
             
@@ -849,6 +854,8 @@ for thisBlock0 in block0:
     buttons = mouse_4.getPressed()
                 
     oddballsMinusResp = float(f'{attendedOddballs}') - float(oddballsResp.text)
+    block0.addData('oddballsMinusResp', oddballsMinusResp)
+    thisExp.nextEntry() #Next row on the record.
     oddballsResp.reset()
     # the Routine "QuestionBreakPause" was not non-slip safe, so reset the non-slip timer
     routineTimer.reset()
@@ -1381,7 +1388,6 @@ while continueRoutine and routineTimer.getTime() > 0:
 mm.stop()
 routineTimer.reset()
 # end of playing part starting trig
-thisExp.nextEntry()
 
 # set up handler to look after randomisation of conditions etc
 block1 = data.TrialHandler(nReps=1.0, method='random', 

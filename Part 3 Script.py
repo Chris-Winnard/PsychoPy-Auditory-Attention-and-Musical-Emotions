@@ -2,16 +2,15 @@
 # -*- coding: utf-8 -*-
 
 from psychopy import locale_setup
-from psychopy import sound, gui, visual, core, data, event, logging, clock, colors, layout, prefs
+from psychopy import sound, gui, visual, core, data, event, logging, clock, colors, prefs
 prefs.hardware['audioLatencyMode'] = '3'
+prefs.hardware['audioDevice'] = 'Speakers (Scarlett 18i8 USB)' #Just "Scarlett 18i8 USB" ?
 from psychopy.constants import (NOT_STARTED, STARTED, PLAYING, PAUSED,
                                 STOPPED, FINISHED, PRESSED, RELEASED, FOREVER)
-
 import numpy as np
 from numpy.random import random, randint, normal, shuffle, choice as randchoice
 import os  # handy system and path functions
 import sys  # to get file system encoding
-
 import psychopy.iohub as io
 from psychopy.hardware import keyboard
 from pyo import *
@@ -22,22 +21,25 @@ sys.path.append('.')
 from constants import *
 
 SOUNDCARD_DEVICE_NAME = 'DAC8PRO'
+
 volume_level = 0.05
 volume_ratio = [1, 1, 5]
 spk_volume = [x * volume_level for x in volume_ratio]
-PART_3_OUT_CHANNELS = 3
+PART_1_OUT_CHANNELS = 3
 TRIGGER_CHN = 2
-print(f'PART_3_OUT_CHANNELS: {PART_3_OUT_CHANNELS}')
+print(f'PART_1_OUT_CHANNELS: {PART_1_OUT_CHANNELS}')
 
-s = Server(nchnls=PART_3_OUT_CHANNELS, duplex=0)
+s = Server(nchnls=PART_1_OUT_CHANNELS, duplex=0)
 devices = pa_get_output_devices()
-for name in devices[0]:
+indx = []
+#for name in devices[0]:
+for i in range(len(devices[0])):
+    name = devices[0][i]
     if SOUNDCARD_DEVICE_NAME in name:
         soundcard_idx = devices[1][devices[0].index(name)]
-   #     print('sound card: ', name)
         s.setOutputDevice(soundcard_idx)
+        indx.append(devices[1][i])
         break
-
 s = s.boot()
 s.start()
 
@@ -195,7 +197,17 @@ nextButton_R1B = visual.ImageStim(
     color=[1,1,1], colorSpace='rgb', opacity=None,
     flipHoriz=False, flipVert=False,
     texRes=128.0, interpolate=True, depth=-2.0)
-
+    
+# Initialize components for Routine "movingToMainTrials"
+movingToMainTrialsClock = core.Clock()
+movingToMainTrialsText = visual.TextStim(win=win, name='movingToMainTrialsText',
+    text='We will now move on to the main trials.',
+    font='Open Sans',
+    pos=(0, 0), height=0.05, wrapWidth=None, ori=0.0, 
+    color='white', colorSpace='rgb', opacity=None, 
+    languageStyle='LTR',
+    depth=0.0);
+    
 # Initialize components for Routine "thisPartComplete"
 thisPartCompleteClock = core.Clock()
 thisPartCompleteText = visual.TextStim(win=win, name='thisPartCompleteText',
@@ -442,11 +454,12 @@ routineTimer.reset()
 
 #block0 contains the practice trial. Additional practice trials can be added in.
 # set up handler to look after randomisation of conditions etc
-randomNum = np.random.randint(1, 3) #Only want ONE piece to be picked for practice trial. Using TrialHandler randomisation would mean all 3 picked.
+#Note we only want ONE piece to be picked for practice trial - later we include a break to deal with this.
 block0 = data.TrialHandler(nReps=1.0, method='random', 
     extraInfo=expInfo, originPath=-1,
-    trialList=data.importConditions(participantPath + '\practiceStimuliList.xlsx', selection=str(randomNum)),
+    trialList=data.importConditions(participantPath + '\practiceStimuliList.xlsx', selection='0:3'),
     seed=None, name='block0')
+thisExp.addLoop(block0)  # add the loop to the experiment
 thisBlock0 = block0.trialList[0]  # so we can initialise stimuli with some values
 # abbreviate parameter names if possible (e.g. rgb = thisBlock1.rgb)
 if thisBlock0 != None:
@@ -545,13 +558,6 @@ for thisBlock0 in block0:
             # create an empty list to store the players
             players = []
             
-            # create the first player for stimuli_0
-           # spk_name = "stimuli_0"
-            #trial['stimuli'].append(os.path.abspath(globals()[spk_name]))
-           # player = sound.Sound(globals()[spk_name])
-           # player.setVolume(1)  # set the volume to 1
-           # players.append(player)
-            
             # create the rest of the players for stimuli_0
             for i in range(1, PART_2_OUT_CHANNELS):
                 spk_name = f"stimuli_0"
@@ -567,6 +573,8 @@ for thisBlock0 in block0:
             # play the sounds and wait for them to finish
             for player in players:
                 player.play()
+                practiceTrialAudioStartTime = globalClock.getTime()
+            block0.addData('Practice Mus+Trig Start T', practiceTrialAudioStartTime)
          #   while any([player.status == PLAYING for player in players]):
           #      continue
             stimuliStarted = True
@@ -715,10 +723,73 @@ for thisBlock0 in block0:
             if obj.contains(mouse_4):
                 gotValidClick = True
                 mouse_4.clicked_name.append(obj.name)
-    # the Routine "QuestionBreakPause" was not non-slip safe, so reset the non-slip timer
-    routineTimer.reset()
     
+    break
 # completed 1.0 repeats of 'block0'   
+
+routineTimer.reset()
+# ------Prepare to start Routine "movingToMainTrials"-------
+# update component parameters for each repeat
+# keep track of which components have finished
+continueRoutine = True
+
+movingToMainTrialsComponents = [movingToMainTrialsText]
+for thisComponent in movingToMainTrialsComponents:
+    thisComponent.tStart = None
+    thisComponent.tStop = None
+    thisComponent.tStartRefresh = None
+    thisComponent.tStopRefresh = None
+    if hasattr(thisComponent, 'status'):
+        thisComponent.status = NOT_STARTED
+# reset timers
+t = 0
+_timeToFirstFrame = win.getFutureFlipTime(clock="now")
+movingToMainTrialsClock.reset(-_timeToFirstFrame)  # t0 is time of first possible flip
+frameN = -1
+    
+# -------Run Routine "movingToMainTrials"-------
+while continueRoutine:
+    # get current time
+    t = movingToMainTrialsClock.getTime()
+    tThisFlip = win.getFutureFlipTime(clock=movingToMainTrialsClock)
+    tThisFlipGlobal = win.getFutureFlipTime(clock=None)
+    frameN = frameN + 1  # number of completed frames (so 0 is the first frame)
+    # update/draw components on each frame
+    
+    if movingToMainTrialsText.status == NOT_STARTED and tThisFlip >= 0.0-frameTolerance:
+        # keep track of start time/frame for later
+        movingToMainTrialsText.frameNStart = frameN  # exact frame index
+        movingToMainTrialsText.tStart = t  # local t and not account for scr refresh
+        movingToMainTrialsText.tStartRefresh = tThisFlipGlobal  # on global time
+        win.timeOnFlip(movingToMainTrialsText, 'tStartRefresh')  # time at next scr refresh
+        movingToMainTrialsText.setAutoDraw(True) 
+        
+    # check for quit (typically the Esc key)
+    if endExpNow or defaultKeyboard.getKeys(keyList=["escape"]):
+        core.quit()
+    
+    if movingToMainTrialsClock.getTime() > 4:
+        movingToMainTrialsText.status = FINISHED
+        
+    # check if all components have finished
+    if not continueRoutine:  # a component has requested a forced-end of Routine
+        break
+    continueRoutine = False  # will revert to True if at least one component still running
+    for thisComponent in movingToMainTrialsComponents:
+        if hasattr(thisComponent, "status") and thisComponent.status != FINISHED:
+            continueRoutine = True
+            break  # at least one component has not yet finished
+    
+    # refresh the screen
+    if continueRoutine:  # don't flip if this routine is over or we'll get a blank screen
+        win.flip()
+    
+# -------Ending Routine "movingToMainTrials"-------
+for thisComponent in movingToMainTrialsComponents:
+    if hasattr(thisComponent, "setAutoDraw"):
+        thisComponent.setAutoDraw(False)
+        
+routineTimer.reset()
         
 
 # playing part starting trig
@@ -729,9 +800,7 @@ startExpTrigger = SfPlayer('P3_start_trigger.wav')
 for i in range(PART_3_OUT_CHANNELS):
     mm.delInput(i)
 mm.addInput(0, startExpTrigger)
-#mm.setAmp(0,i,0)
-#for i in range(PART_2_OUT_CHANNELS):
-#    mm.setAmp(0,i,0)
+thisExp.nextEntry()
 thisExp.addData('Start Trigger Start Time', globalClock.getTime())
 mm.setAmp(0,TRIGGER_CHN,spk_volume[TRIGGER_CHN])
 while continueRoutine and routineTimer.getTime() > 0:
