@@ -40,30 +40,30 @@ with open(groupAssignmentFile, 'r') as f:
     for line in lines:
         if "Group A1" in line and expInfo['Participant ID'] in line:
             participantPath = dataPath + "Group A1/" + expInfo['Participant ID']
-            vibrPiece = "Calibration Stimuli/Set01-Vibr.wav"
-            harmPiece = "Calibration Stimuli/Set01-Harm.wav"
-            keybPiece = "Calibration Stimuli/Set01-Keyb.wav"
+            vibrPiece = "Calibration Stimuli (Downsampled in Advance)/Set01-Vibr.wav"
+            harmPiece = "Calibration Stimuli (Downsampled in Advance)/Set01-Harm.wav"
+            keybPiece = "Calibration Stimuli (Downsampled in Advance)/Set01-Keyb.wav"
         elif "Group A2" in line and expInfo['Participant ID'] in line:
             participantPath = dataPath + "Group A2/" + expInfo['Participant ID']
-            vibrPiece = "Calibration Stimuli/Set01-Vibr.wav"
-            harmPiece = "Calibration Stimuli/Set01-Harm.wav"
-            keybPiece = "Calibration Stimuli/Set01-Keyb.wav"
+            vibrPiece = "Calibration Stimuli (Downsampled in Advance)/Set01-Vibr.wav"
+            harmPiece = "Calibration Stimuli (Downsampled in Advance)/Set01-Harm.wav"
+            keybPiece = "Calibration Stimuli (Downsampled in Advance)/Set01-Keyb.wav"
             
         elif "Group B1" in line and expInfo['Participant ID'] in line:
             participantPath = dataPath + "Group B1/" + expInfo['Participant ID']
-            vibrPiece = "Calibration Stimuli/Set04-Vibr.wav"
-            harmPiece = "Calibration Stimuli/Set04-Harm.wav"
-            keybPiece = "Calibration Stimuli/Set04-Keyb.wav"
+            vibrPiece = "Calibration Stimuli (Downsampled in Advance)/Set04-Vibr.wav"
+            harmPiece = "Calibration Stimuli (Downsampled in Advance)/Set04-Harm.wav"
+            keybPiece = "Calibration Stimuli (Downsampled in Advance)/Set04-Keyb.wav"
         elif "Group B2" in line and expInfo['Participant ID'] in line:
             participantPath = dataPath + "Group B2/" + expInfo['Participant ID']
-            vibrPiece = "Calibration Stimuli/Set04-Vibr.wav"
-            harmPiece = "Calibration Stimuli/Set04-Harm.wav"
-            keybPiece = "Calibration Stimuli/Set04-Keyb.wav"
+            vibrPiece = "Calibration Stimuli (Downsampled in Advance)/Set04-Vibr.wav"
+            harmPiece = "Calibration Stimuli (Downsampled in Advance)/Set04-Harm.wav"
+            keybPiece = "Calibration Stimuli (Downsampled in Advance)/Set04-Keyb.wav"
     f.close
     
-harmPieceDEPENDENT = "Calibration Stimuli/Set07-Harm.wav"
-keybPieceDEPENDENT = "Calibration Stimuli/Set07-Keyb.wav"
-vibrPieceDEPENDENT = "Calibration Stimuli/Set07-Vibr.wav"
+harmPieceDEPENDENT = "Calibration Stimuli (Downsampled in Advance)/Set07-Harm.wav"
+keybPieceDEPENDENT = "Calibration Stimuli (Downsampled in Advance)/Set07-Keyb.wav"
+vibrPieceDEPENDENT = "Calibration Stimuli (Downsampled in Advance)/Set07-Vibr.wav"
 
 
 ##########################################################################################################################################
