@@ -7,8 +7,8 @@ import re
 import pathlib
 
 #Find the personalised stimuli path:
-currentFolderPath = pathlib.Path(__file__).parent.resolve() #Current folder path
-upperFolderPath = currentFolderPath.parent.resolve() #Path for next level up.
+calibrationStimPrepPath = pathlib.Path(__file__).parent.resolve() #Current folder path
+upperFolderPath = calibrationStimPrepPath.parent.resolve() #Path for next level up.
 dataPath = str(upperFolderPath) + "/Data"
 
 sub_paths = list() # Collect all files in sub directories
@@ -118,7 +118,7 @@ out_folder = participantPath + "/P2 Trigger Files"
 os.path.abspath(out_folder) #E.g "P04/P2 Trigger Files"
 sr = 22050 #sampling rate
 ch = 1 #channels
-clkSerial = 8.0 #Clock rate of trigger. Default value is 8.0 Hz.")
+clkSerial = 10.0 #Clock rate of trigger. Default value is 10.0 Hz.")
 
 #First, let's read and convert the start time data. This will also be useful for part 4.
 startTimesFile = participantPath + "\Oddball Start Times.txt"
