@@ -9,8 +9,8 @@ thisFilePath = pathlib.Path(__file__).parent.resolve() #Where this file is locat
 
 #Find correct path for the gain files, and for outputs:
 dataPath = str(thisFilePath) + "/Data"
-participantPath = max(glob.glob(os.path.join(dataPath, '*/')), key=os.path.getmtime) #Last updated subfolder in Data folder.
-#Because we run this at the end of the Questionnaire script, this will be the relevant one for the current participant.
+participantPathUpper = max(glob.glob(os.path.join(dataPath, '*/')), key=os.path.getmtime) #Last updated subfolder in Data folder. E.g, ".../Group A1"
+participantPath = max(glob.glob(os.path.join(participantPathUpper, '*/')), key=os.path.getmtime) #Last updated subfolder within THAT. E.g, ".../Group A1/P02"
 
 #Change to the participant path, to access questionnaire response files and add the scores to these:
 os.chdir(participantPath)
