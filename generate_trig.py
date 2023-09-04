@@ -78,10 +78,7 @@ def trial_trigs(filename): #Oddball ones- add in trigs at oddball start times? A
         if instruments[j] in filename:
             inst_binary_thisValue = inst_binary_values[j]
             
-    if "with Gain Applied" in filename:
-        stream_binary_thisValue = 0b0
-    elif "Oddball Test Mix" in filename:
-        stream_binary_thisValue = 0b1
+    stream_binary_thisValue = 0b0  #To verify that it is the start/end of a single-stream trial
     
     trialTrig_start = set_binary_thisValue + inst_binary_thisValue + stream_binary_thisValue + 0b0
     trialTrig_end =  set_binary_thisValue + inst_binary_thisValue + stream_binary_thisValue + 0b1
@@ -97,7 +94,7 @@ if __name__ == '__main__':
     parser.add_argument("--out_folder", type=str, required=True, help="output folder")
     parser.add_argument("--sr", type=int, default=22050, help="sampling rate. Default value is 22050.")
     parser.add_argument("--channels", type=int, default=1, help="number of output channels. Default value is 1.")
-    parser.add_argument("--triggerClk", type=float, default=8.0, help="Clock rate of trigger. Default value is 8.0 Hz.")
+    parser.add_argument("--triggerClk", type=float, default=10.0, help="Clock rate of trigger. Default value is 10.0 Hz.")
     args = parser.parse_args()
 
     in_folder = os.path.abspath(args.in_folder)
@@ -110,6 +107,9 @@ if __name__ == '__main__':
         os.makedirs(out_folder)
     
     file_list = getFileList(in_folder)
+    file_list = [x for x in file_list if 'with Gain Applied' in x] #ONLY single-stream stuff- triggers for oddball test mixes dealt with on a per-
+    #participant basis, as they must correspond to the individual oddball files
+    
     triggerEncoder = SerialTriggerEncoder(sr, clkSerial)
     print('file_list', file_list)
     for i in range(len(file_list)):    
