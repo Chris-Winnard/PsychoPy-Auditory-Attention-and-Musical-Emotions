@@ -18,16 +18,11 @@ oddballDemosPath = str(upperFolderPath) + "/Oddball Demos"
 #Find correct path for the gain files, and for outputs:
 dataPath = str(upperFolderPath) + "/Data"
 
-sub_paths = list() # Collect all files in sub directories
-for root, dirs, files in os.walk(dataPath):
-    sub_paths += [os.path.join(root,i) for i in files]
+participantPathUpper = max(glob.glob(os.path.join(dataPath, '*/')), key=os.path.getmtime) #Last updated subfolder in Data folder. E.g, ".../Group A1"
+participantPath = max(glob.glob(os.path.join(participantPathUpper, '*/')), key=os.path.getmtime) #Last updated subfolder within THAT. E.g, ".../Group A1/P02"
 
-participantCalibrationFile = max(sub_paths,key=os.path.getmtime) #Participant single-stream calibration file- the most recently updated file
-#in "Data" folder
-participantPath = pathlib.Path(participantCalibrationFile).parent.resolve() #Subfolder where that file is located, i.e participant's folder
-participantPath = str(participantPath)
 
-oddballDemosOutputPath = str(participantPath) + "/Oddball Demos" 
+oddballDemosOutputPath = participantPath + "/Oddball Demos" 
 os.mkdir(oddballDemosOutputPath)
 
 #Change to the participant path, to access gain files and output the adjusted stimuli:
