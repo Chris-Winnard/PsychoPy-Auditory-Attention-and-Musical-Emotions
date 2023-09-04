@@ -2,7 +2,6 @@
 # -*- coding: utf-8 -*-
 
 from psychopy import locale_setup
-from psychopy import prefs
 from psychopy import sound, gui, visual, core, data, event, logging, clock, colors, layout
 from psychopy.constants import (NOT_STARTED, STARTED, PLAYING, PAUSED,
                                 STOPPED, FINISHED, PRESSED, RELEASED, FOREVER)
@@ -25,7 +24,7 @@ os.chdir(_thisDir)
 # Store info about the experiment session
 psychopyVersion = '2022.1.3'
 expName = 'Questionnaire'  # from the Builder filename that created this script
-expInfo = {'participant': ''}
+expInfo = {'Participant ID': ''}
 dlg = gui.DlgFromDict(dictionary=expInfo, sortKeys=False, title=expName)
 if dlg.OK == False:
     core.quit()  # user pressed cancel
@@ -682,7 +681,7 @@ mouse_4.mouseClock = core.Clock()
 # Initialize components for Routine "thisPartComplete"
 thisPartCompleteClock = core.Clock()
 thisPartCompleteText = visual.TextStim(win=win, name='thisPartCompleteText',
-    text='Questionnaire completed.',
+    text='Questionnaire complete.',
     font='Open Sans',
     pos=(0, 0), height=0.05, wrapWidth=None, ori=0.0, 
     color='white', colorSpace='rgb', opacity=None, 
@@ -1184,7 +1183,7 @@ while moveToPersonalResponses == False:
                 if sum(buttons) > 0:  # state changed to a new click
                     # check if the mouse was inside our 'clickable' objects
                     gotValidClick = False
-                    if (nextButton2_2.status == STARTED and moodValenceResp.rating and moodArousalResp.rating and moodDominanceResp.rating): #Only want the next button to be clickable if it's actually been activated!
+                    if (nextButton2_2.status == STARTED and moodValenceResp.rating != None and moodArousalResp.rating != None and moodDominanceResp.rating != None): #Only want the next button to be clickable if it's actually been activated!
                         try:
                             iter([nextButton2_2, clickForEmotionInfo])
                             clickableList = [nextButton2_2, clickForEmotionInfo]
@@ -1210,8 +1209,7 @@ while moveToPersonalResponses == False:
                         continueRoutine = False  # abort routine on response
         
         # *nextButton* updates
-        if (nextButton2_2.status == NOT_STARTED and moodValenceResp.rating and moodArousalResp.rating and moodDominanceResp.rating):
-            print("done")
+        if (nextButton2_2.status == NOT_STARTED and moodValenceResp.rating != None and moodArousalResp.rating != None and moodDominanceResp.rating != None):
             # keep track of start time/frame for later
             nextButton2_2.frameNStart = frameN  # exact frame index
             nextButton2_2.tStart = t  # local t and not account for scr refresh

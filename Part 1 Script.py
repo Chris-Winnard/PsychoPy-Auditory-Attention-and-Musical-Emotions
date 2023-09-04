@@ -563,6 +563,7 @@ for thisBlock0 in block0:
     
     # create the rest of the players for stimuli_0
     for i in range(1, PART_1_OUT_CHANNELS):
+        spk_name = f"stimuli_0"
         trial['stimuli'].append(os.path.abspath(globals()[spk_name]))
         if i < len(spk_volume):  # check if spk_volume has the correct number of elements
             player = sound.Sound(globals()[spk_name])
@@ -702,7 +703,7 @@ for thisBlock0 in block0:
                     if sum(buttons) > 0:  # state changed to a new click
                         # check if the mouse was inside our 'clickable' objects
                         gotValidClick = False
-                        if (nextButton.status == STARTED and valenceResp.rating and arousalResp.rating and dominanceResp.rating): #Only want the next button to be clickable if it's actually been activated!
+                        if (nextButton.status == STARTED and valenceResp.rating != None and arousalResp.rating != None and dominanceResp.rating != None): #Only want the next button to be clickable if it's actually been activated!
                             try:
                                 iter([nextButton, clickForEmotionInfo])
                                 clickableList = [nextButton, clickForEmotionInfo]
@@ -732,7 +733,7 @@ for thisBlock0 in block0:
                             continueRoutine = False  # abort routine on response
             
             # *nextButton* updates
-            if (nextButton.status == NOT_STARTED and valenceResp.rating and arousalResp.rating and dominanceResp.rating) or (goToQuestions == True and valenceResp.rating and arousalResp.rating and dominanceResp.rating):
+            if (nextButton.status == NOT_STARTED and valenceResp.rating != None and arousalResp.rating != None and dominanceResp.rating != None) or (goToQuestions == True and valenceResp.rating != None and arousalResp.rating != None and dominanceResp.rating != None):
                 # keep track of start time/frame for later
                 nextButton.frameNStart = frameN  # exact frame index
                 nextButton.tStart = t  # local t and not account for scr refresh
@@ -1096,7 +1097,6 @@ while continueRoutine and routineTimer.getTime() > 0:
 mm.stop()
 routineTimer.reset()
 # end of playing part starting trig
-thisExp.nextEntry()
 
 # set up handler to look after randomisation of conditions etc
 block1 = data.TrialHandler(nReps=1.0, method='random', 
@@ -1283,7 +1283,7 @@ for thisBlock1 in block1:
                     if sum(buttons) > 0:  # state changed to a new click
                         # check if the mouse was inside our 'clickable' objects
                         gotValidClick = False
-                        if (nextButton.status == STARTED and valenceResp.rating and arousalResp.rating and dominanceResp.rating): #Only want the next button to be clickable if it's actually been activated!
+                        if (nextButton.status == STARTED and valenceResp.rating != None and arousalResp.rating != None and dominanceResp.rating != None): #Only want the next button to be clickable if it's actually been activated!
                             try:
                                 iter([nextButton, clickForEmotionInfo])
                                 clickableList = [nextButton, clickForEmotionInfo]
@@ -1314,7 +1314,7 @@ for thisBlock1 in block1:
                             continueRoutine = False  # abort routine on response
             
             # *nextButton* updates
-            if (nextButton.status == NOT_STARTED and valenceResp.rating and arousalResp.rating and dominanceResp.rating) or (goToQuestions == True and valenceResp.rating and arousalResp.rating and dominanceResp.rating):
+            if (nextButton.status == NOT_STARTED and valenceResp.rating != None and arousalResp.rating != None and dominanceResp.rating != None) or (goToQuestions == True and valenceResp.rating != None and arousalResp.rating != None and dominanceResp.rating != None):
                 # keep track of start time/frame for later
                 nextButton.frameNStart = frameN  # exact frame index
                 nextButton.tStart = t  # local t and not account for scr refresh
@@ -1354,7 +1354,7 @@ for thisBlock1 in block1:
         if sum(buttons):
             # check if the mouse was inside our 'clickable' objects
             gotValidClick = False
-            if (nextButton.status == STARTED and valenceResp.rating and arousalResp.rating and dominanceResp.rating): #Only want the next button to be clickable if it's actually been activated!
+            if (nextButton.status == STARTED and valenceResp.rating != None and arousalResp.rating != None and dominanceResp.rating != None): #Only want the next button to be clickable if it's actually been activated!
                 try:
                     iter([nextButton, clickForEmotionInfo])
                     clickableList = [nextButton, clickForEmotionInfo]
