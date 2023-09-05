@@ -61,7 +61,7 @@ with open(groupAssignmentFile, 'r') as f:
             keybPiece = "Calibration Stimuli (Downsampled in Advance)/Set04-Keyb.wav"
     f.close
 
-    
+
 ##########################################################################################################################################
 #PART 1 - SPATIAL BALANCING. Here we also initialise things such as video settings for later parts:
 SOUNDCARD_DEVICE_NAME = 'DAC8PRO'
@@ -573,7 +573,8 @@ while True:
         output = harmonica.pan(currentPan)
     else:
         output = piano.pan(currentPan)
-
+    
+    output = output.set_frame_rate(22050)
     output.export("Temp.wav", format="wav")
     
     #Create players for new mix:
@@ -731,6 +732,15 @@ s.stop()
 
 ##########################################################################################################################################
 #PART 2 - MULTI-STREAM GAINS:
+
+def is_float(string): #Needed here and in single-stream gains to check for valid responses
+    # Replace a decimal point (if there is one) with an empty string
+    string_no_decimal = string.replace('.', '', 1)
+    if string_no_decimal.isdigit():
+        return True
+    else:
+        return False
+        
 s = s.boot()
 
 # Load the audio files
@@ -973,6 +983,7 @@ while True:
     pianoOutput = piano.apply_gain(20*np.log10(piano_loudness))
     
     mix = vibrOutput.overlay(harmOutput).overlay(pianoOutput)
+    mix = mix.set_frame_rate(22050)
     mix.export("TempMix.wav", format="wav")    
     
     #Create players for new mix:
@@ -1244,7 +1255,8 @@ while True:
                 if sum(buttons) > 0:  # state changed to a new click
                     # check if the mouse was inside our 'clickable' objects 
                     gotValidClick = False
-                    if nextButton_R1B.status == STARTED: #Only want the next button to be clickable if it's actually been activated!
+                    if nextButton_R1B.status == STARTED and is_float(msVolFeedbackVibrResp.text) and is_float(msVolFeedbackHarmResp.text) and is_float(msVolFeedbackKeybResp.text):
+                        #Only want the next button to be clickable if it's actually been activated, and there are valid responses!
                             try:
                                 iter([nextButton_R1B])
                                 clickableList = [nextButton_R1B]
@@ -1502,6 +1514,7 @@ while True:
     else:
         output = piano.apply_gain(20*np.log10(piano_loudness))
     
+    output = output.set_frame_rate(22050)
     output.export("Temp.wav", format="wav")    
     
     #Create players for new mix:
@@ -1889,7 +1902,7 @@ while True:
                     if sum(buttons) > 0:  # state changed to a new click
                         # check if the mouse was inside our 'clickable' objects
                         gotValidClick = False
-                        if nextButton2_2.status == STARTED:
+                        if nextButton2_2.status == STARTED and is_float(ssVolFeedbackResp.text):
                             try:
                                 iter(nextButton2_2)
                                 clickableList = nextButton2_2
