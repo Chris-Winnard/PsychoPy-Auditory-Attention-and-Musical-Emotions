@@ -806,27 +806,29 @@ for thisBlock0 in block0:
                 if sum(buttons) > 0:  # state changed to a new click
                     # check if the mouse was inside our 'clickable' objects 
                     gotValidClick = False
-                    if (nextButton_R1B.status == STARTED and oddballsResp.text): #Only want the next button to be clickable if it's actually been activated!
-                            try:
-                                iter([nextButton_R1B])
-                                clickableList = [nextButton_R1B]
-                            except:
-                                clickableList = [[nextButton_R1B]]   
-                            for obj in clickableList:
-                                if obj.contains(mouse_4):
-                                    gotValidClick = True
-                                    mouse_4.clicked_name.append(obj.name)
+                    if (nextButton_R1B.status == STARTED and (oddballsResp.text).isdigit()): #Only want the next button to be clickable if it's actually been activated!
+                            if int(oddballsResp.text) == 1 or int(oddballsResp.text) == 2 or int(oddballsResp.text) == 3:
+                                try:
+                                    iter([nextButton_R1B])
+                                    clickableList = [nextButton_R1B]
+                                except:
+                                    clickableList = [[nextButton_R1B]]   
+                                for obj in clickableList:
+                                    if obj.contains(mouse_4):
+                                        gotValidClick = True
+                                        mouse_4.clicked_name.append(obj.name)
                     if gotValidClick:  
                         continueRoutine = False  # abort routine on response
         
         # *nextButton_R1B* updates
-        if nextButton_R1B.status == NOT_STARTED and oddballsResp.text and tThisFlip >= 0.0-frameTolerance:
-            # keep track of start time/frame for later
-            nextButton_R1B.frameNStart = frameN  # exact frame index
-            nextButton_R1B.tStart = t  # local t and not account for scr refresh
-            nextButton_R1B.tStartRefresh = tThisFlipGlobal  # on global time
-            win.timeOnFlip(nextButton_R1B, 'tStartRefresh')  # time at next scr refresh
-            nextButton_R1B.setAutoDraw(True)
+        if nextButton_R1B.status == NOT_STARTED and (oddballsResp.text).isdigit() and tThisFlip >= 0.0-frameTolerance:
+            if int(oddballsResp.text) == 1 or int(oddballsResp.text) == 2 or int(oddballsResp.text) == 3:
+                # keep track of start time/frame for later
+                nextButton_R1B.frameNStart = frameN  # exact frame index
+                nextButton_R1B.tStart = t  # local t and not account for scr refresh
+                nextButton_R1B.tStartRefresh = tThisFlipGlobal  # on global time
+                win.timeOnFlip(nextButton_R1B, 'tStartRefresh')  # time at next scr refresh
+                nextButton_R1B.setAutoDraw(True)
         
         # check for quit (typically the Esc key)
         if endExpNow or defaultKeyboard.getKeys(keyList=["escape"]):
@@ -1634,27 +1636,29 @@ for thisBlock1 in block1:
                 if sum(buttons) > 0:  # state changed to a new click
                     # check if the mouse was inside our 'clickable' objects
                     gotValidClick = False
-                    if (nextButton_R1B.status == STARTED and oddballsResp.text): #Only want the next button to be clickable if it's actually been activated!
-                            try:
-                                iter([nextButton_R1B])
-                                clickableList = [nextButton_R1B]
-                            except:
-                                clickableList = [[nextButton_R1B]]   
-                            for obj in clickableList:
-                                if obj.contains(mouse_4):
-                                    gotValidClick = True
-                                    mouse_4.clicked_name.append(obj.name)
+                    if (nextButton_R1B.status == STARTED and (oddballsResp.text).isdigit()): #Only want the next button to be clickable if it's actually been activated!
+                            if int(oddballsResp.text) == 1 or int(oddballsResp.text) == 2 or int(oddballsResp.text) == 3:
+                                try:
+                                    iter([nextButton_R1B])
+                                    clickableList = [nextButton_R1B]
+                                except:
+                                    clickableList = [[nextButton_R1B]]   
+                                for obj in clickableList:
+                                    if obj.contains(mouse_4):
+                                        gotValidClick = True
+                                        mouse_4.clicked_name.append(obj.name)
                     if gotValidClick:  
                         continueRoutine = False  # abort routine on response
         
         # *nextButton_R1B* updates
-        if nextButton_R1B.status == NOT_STARTED and tThisFlip >= 0.0-frameTolerance:
-            # keep track of start time/frame for later
-            nextButton_R1B.frameNStart = frameN  # exact frame index
-            nextButton_R1B.tStart = t  # local t and not account for scr refresh
-            nextButton_R1B.tStartRefresh = tThisFlipGlobal  # on global time
-            win.timeOnFlip(nextButton_R1B, 'tStartRefresh')  # time at next scr refresh
-            nextButton_R1B.setAutoDraw(True)
+        if nextButton_R1B.status == NOT_STARTED and (oddballsResp.text).isdigit() and tThisFlip >= 0.0-frameTolerance:
+            if int(oddballsResp.text) == 1 or int(oddballsResp.text) == 2 or int(oddballsResp.text) == 3:
+                # keep track of start time/frame for later
+                nextButton_R1B.frameNStart = frameN  # exact frame index
+                nextButton_R1B.tStart = t  # local t and not account for scr refresh
+                nextButton_R1B.tStartRefresh = tThisFlipGlobal  # on global time
+                win.timeOnFlip(nextButton_R1B, 'tStartRefresh')  # time at next scr refresh
+                nextButton_R1B.setAutoDraw(True)
         
         # check for quit (typically the Esc key)
         if endExpNow or defaultKeyboard.getKeys(keyList=["escape"]):
