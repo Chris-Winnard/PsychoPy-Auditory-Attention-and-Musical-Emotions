@@ -574,7 +574,6 @@ while True:
     else:
         output = piano.pan(currentPan)
     
-    output = output.set_frame_rate(22050)
     output.export("Temp.wav", format="wav")
     
     #Create players for new mix:
@@ -983,7 +982,7 @@ while True:
     pianoOutput = piano.apply_gain(20*np.log10(piano_loudness))
     
     mix = vibrOutput.overlay(harmOutput).overlay(pianoOutput)
-    mix = mix.set_frame_rate(22050)
+   # mix = mix.set_frame_rate(22050)
     mix.export("TempMix.wav", format="wav")    
     
     #Create players for new mix:
@@ -1514,7 +1513,6 @@ while True:
     else:
         output = piano.apply_gain(20*np.log10(piano_loudness))
     
-    output = output.set_frame_rate(22050)
     output.export("Temp.wav", format="wav")    
     
     #Create players for new mix:

@@ -601,7 +601,6 @@ while True:
         output = harmonica.pan(currentPan)
     else:
         output = piano.pan(currentPan)
-
     output.export("Temp.wav", format="wav")
     
     #Create players for new mix:
@@ -973,10 +972,6 @@ for thisComponent in instructions3Components:
         thisComponent.setAutoDraw(False)
 # the Routine "instructions3" was not non-slip safe, so reset the non-slip timer
 routineTimer.reset()
-
-print(vibrPan)
-print(harmPan)
-print(keybPan)
 
 firstLoopThisInst = True
 while True:
