@@ -16,7 +16,7 @@ import sys  # to get file system encoding
 import psychopy.iohub as io
 from psychopy.hardware import keyboard
 
-
+import Questionnaire_GSMI_Score_Calculator
 
 # Ensure that relative paths start from the same directory as this script
 _thisDir = os.path.dirname(os.path.abspath(__file__))
@@ -2140,6 +2140,9 @@ win.flip()
 #Save csv of data:
 thisExp.saveAsWideText(filename+'.csv', delim='auto')
 thisExp.saveAsPickle(filename)
+#Calculate GSMI score:
+Questionnaire_GSMI_Score_Calculator.calcAndWrite(filename+'.csv')
+
 logging.flush()
 
 # make sure everything is closed down
@@ -2148,5 +2151,4 @@ if eyetracker:
 thisExp.abort()  # or data files will save again on exit
 win.close()
 
-exec(open('Questionnaire GSMI Score Calculator.py').read()) #Calculates scores and adds them to the csv file of responses
 core.quit()
