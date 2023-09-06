@@ -23,13 +23,11 @@ def calcAndWrite(questionnaireFile):
     
     perceptionScore = sum(perceptionResponses)
     
-    
     ###########################################################################################################################################################
     #Calculate emotion score:
     emotionResponses = np.zeros(6)
     for x in range(19, 25):        
         emotionResponses[x-19] = df.iloc[0, x]
-        
     #Account for negative values:
     emotionResponses[1] = negativeValue(emotionResponses[1])
     
