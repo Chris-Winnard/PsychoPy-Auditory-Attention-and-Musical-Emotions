@@ -1,9 +1,9 @@
-#Calibration software, created with help from ChatGPT. At the end we run 'randomOddballCreator.py' to add
-#oddballs to MS stimuli. Then we run 'personalisedStimuliMixer.py' to implement gains/do mixing, and listmaker
+#Calibration software, created with help from ChatGPT. At the end we run 'personalisedStimuliMixer.py' to implement gains/do mixing, and 'listMaker.py'.
+#A set of oddballs will (must) have already been created, in order for mixes to be created.
 
 
-#NOTE: TRIGGER FILES MUST BE GENERATED BEFORE LISTS (FOR RANDOM SET OF STIMULI + ODDBALL MIXES- DOESN'T MATTER
-#AS FILENAMES THE SAME REGARDLESS OF PARTICIPANT).
+#NOTE: TRIGGER FILES MUST BE GENERATED BEFORE LISTS, EXCEPT FOR P2 TRIAL TRIGGERS, WHICH ARE PERSONALISED IN CORRESPONDENCE WITH THE ODDBALL TRIGGERS.
+#We run 'generate_trig_P2.py' after the above two  to create these.
 
 import pathlib
 from psychopy import locale_setup
@@ -2041,19 +2041,6 @@ os.remove("Temp.wav") #Not strictly needed, keeps things terse.
 os.remove("TempMix.wav")
 
 ##########################################################################################################################################
-exec(open('personalisedStimuliMixer.py').read()) #Create stimuli with gains applied: both single-stream, and
-#mixes of the oddball stimuli.
-
-#Additional note: trigger files have already been created. By the nature of gainApplier and randomOddballCreator,
-#all pieces have the exact same lengths enforced, so can just use one start/end trigger pair for the Set1-Harm files
-#(i.e not different versions of the triggers for different participants), etc.
-
-#Also note that for the trigger files: for oddball tests the start trigger is at the v start of the audio file.
-
-exec(open('listMaker.py').read()) #Create lists of the stimuli and the trigger files that can be used in the scripts
-#with minimal extra work.
-
-exec(open('generate_trig_P2.py').read())
-
+#DON'T FORGET TO RUN OTHER FILE (ON SPYDER) TO CREATE PERSONALISED STIMULI/LISTS/TRIGS.
 win.close()
 core.quit()
