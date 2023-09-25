@@ -9,7 +9,7 @@ import pathlib
 from psychopy import locale_setup
 from psychopy import sound, gui, visual, core, data, event, logging, clock, colors, prefs
 prefs.hardware['audioLatencyMode'] = '3'
-#prefs.hardware['audioDevice'] = 'Speakers (Scarlett 18i8 USB)' #Just "Scarlett 18i8 USB" ?
+prefs.hardware['audioDevice'] = 'Speakers (DAC8PRO)'
 from psychopy.constants import (NOT_STARTED, STARTED, PLAYING, PAUSED,
                                 STOPPED, FINISHED, PRESSED, RELEASED, FOREVER)
 from pyo import *
@@ -70,7 +70,7 @@ OUT_CHANNELS = 2
 
 volume_level = 0.05
 
-volume_ratio = [1, 1, 5]
+volume_ratio = [1, 1]
 
 spk_volume = [x * volume_level for x in volume_ratio]
  
@@ -92,11 +92,18 @@ for name in devices[0]:
         break
 
 s = s.boot()
+s.start()
+mm = Mixer(outs=2)
 
 # Load the audio files
 vibraphone = AudioSegment.from_wav(vibrPiece)
 harmonica = AudioSegment.from_wav(harmPiece)
 piano = AudioSegment.from_wav(keybPiece)
+
+firstTenSecs = len(vibraphone)/3
+vibraphone = vibraphone[:firstTenSecs]
+harmonica = harmonica[:firstTenSecs]
+piano = piano[:firstTenSecs]
 
 # To control for acquiescence, we randomise the initial settings.
 [vibrPan, harmPan, keybPan] = np.random.uniform(-1, 1, 3)
@@ -576,24 +583,22 @@ while True:
     
     output.export("Temp.wav", format="wav")
     
-    #Create players for new mix:
-    players = []
-    for i in range(1, OUT_CHANNELS):
-        if i < len(spk_volume):  # check if spk_volume has the correct number of elements
-            player = sound.Sound("Temp.wav")
-            player.setVolume(spk_volume[i])  # set the volume for the current speaker
-        players.append(player)
-
-    # Start the server
-    s.start()
-    for player in players:
-        player.play()
-        # Wait until 10 seconds pass
-        core.wait(10)
-        player.stop()
+    for i in range(OUT_CHANNELS):
+        mm.delInput(i) #Ensure any previous inputs are cleared
     
-    # Stop the server
-    s.stop()
+    music_stereo = SfPlayer("Temp.wav")
+    mm.addInput(0, music_stereo[0])
+    mm.addInput(1, music_stereo[1])
+    
+    #As well as inputting the streams, specify amplitudes:
+    for i in range(OUT_CHANNELS):
+        mm.setAmp(i, i, spk_volume[i])  
+
+    playMus = True
+    if playMus == True:
+        mm.out()
+       # mm.stop()
+    core.wait(10)
     
 # ------Prepare to start Routine "panningFeedbackPg"-------
     continueRoutine = True
@@ -723,11 +728,7 @@ while True:
         diff = currentPan - 1
         currentPan = 1 - diff
     
-# Stop the server
-s.stop()
-
-
-
+    
 
 ##########################################################################################################################################
 #PART 2 - MULTI-STREAM GAINS:
@@ -740,7 +741,6 @@ def is_float(string): #Needed here and in single-stream gains to check for valid
     else:
         return False
         
-s = s.boot()
 
 # Load the audio files
 vibraphone = AudioSegment.from_wav(vibrPiece)
@@ -985,24 +985,22 @@ while True:
    # mix = mix.set_frame_rate(22050)
     mix.export("TempMix.wav", format="wav")    
     
-    #Create players for new mix:
-    players = []
-    for i in range(1, OUT_CHANNELS):
-        if i < len(spk_volume):  # check if spk_volume has the correct number of elements
-            player = sound.Sound("TempMix.wav")
-            player.setVolume(spk_volume[i])  # set the volume for the current speaker
-        players.append(player)
-
-    # Start the server
-    s.start()
-    for player in players:
-        player.play()
-        # Wait until 10 seconds pass
-        core.wait(10)
-        player.stop()
+    for i in range(OUT_CHANNELS):
+        mm.delInput(i) #Ensure any previous inputs are cleared
     
-    # Stop the server
-    s.stop()
+    music_stereo = SfPlayer("TempMix.wav")
+    mm.addInput(0, music_stereo[0])
+    mm.addInput(1, music_stereo[1])
+    
+    #As well as inputting the streams, specify amplitudes:
+    for i in range(OUT_CHANNELS):
+        mm.setAmp(i, i, spk_volume[i])  
+
+    playMus = True
+    if playMus == True:
+        mm.out()
+       # mm.stop()
+    core.wait(10)
     
     if firstLoop == False: #The first time, the participants are encouraged to adjust
         
@@ -1307,8 +1305,7 @@ while True:
 #PART 3 - SINGLE-STREAM GAINS
 
 continue_adjusting = True
- 
-s = s.boot()
+
 
 #Set default gains. To avoid confusion, these are not necessarily the same as the values which are actually used to control loudness.
 #E.g, piano_loudness might be 1, but piano output will be 0 whilst the vibraphone plays.
@@ -1515,24 +1512,23 @@ while True:
     
     output.export("Temp.wav", format="wav")    
     
-    #Create players for new mix:
-    players = []
-    for i in range(1, OUT_CHANNELS):
-        if i < len(spk_volume):  # check if spk_volume has the correct number of elements
-            player = sound.Sound("Temp.wav")
-            player.setVolume(spk_volume[i])  # set the volume for the current speaker
-        players.append(player)
-
-    # Start the server
-    s.start()
-    for player in players:
-        player.play()
-        # Wait until 10 seconds pass
-        core.wait(10)
-        player.stop()
+    for i in range(OUT_CHANNELS):
+        mm.delInput(i) #Ensure any previous inputs are cleared
     
-#Stop the server
-    s.stop()    
+    music_stereo = SfPlayer("Temp.wav")
+    mm.addInput(0, music_stereo[0])
+    mm.addInput(1, music_stereo[1])
+    
+    #As well as inputting the streams, specify amplitudes:
+    for i in range(OUT_CHANNELS):
+        mm.setAmp(i, i, spk_volume[i])  
+
+    playMus = True
+    if playMus == True:
+        mm.out()
+       # mm.stop()
+    core.wait(10)
+    
     
     if firstLoopThisInst == False: #The first time, the participants are encouraged to adjust
         # ------Prepare to start Routine "contAdjustingQ3"-------
