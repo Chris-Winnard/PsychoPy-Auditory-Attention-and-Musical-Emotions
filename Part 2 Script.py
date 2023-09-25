@@ -4,7 +4,7 @@
 from psychopy import locale_setup
 from psychopy import sound, gui, visual, core, data, event, logging, clock, colors, layout, prefs
 prefs.hardware['audioLatencyMode'] = '3'
-#prefs.hardware['audioDevice'] = 'Speakers (Scarlett 18i8 USB)' #Just "Scarlett 18i8 USB" ?
+prefs.hardware['audioDevice'] = 'Speakers (DAC8PRO)' #Just "Scarlett 18i8 USB" ?
 from psychopy.constants import (NOT_STARTED, STARTED, PLAYING, PAUSED,
                                 STOPPED, FINISHED, PRESSED, RELEASED, FOREVER)
 
@@ -24,9 +24,9 @@ import json
 sys.path.append('.')
 from constants import *
 
-SOUNDCARD_DEVICE_NAME = 'Scarlett 18i8 USB'
-volume_level = 0.009
-volume_ratio = [1, 1, 27.5]
+SOUNDCARD_DEVICE_NAME = 'DAC8PRO'
+volume_level = 0.05 #0.009 Switch this and volume ratio back?
+volume_ratio = [1, 1, 5] #[1, 1, 27.5]
 spk_volume = [x * volume_level for x in volume_ratio]
 PART_2_OUT_CHANNELS = 3
 TRIGGER_CHN = 2
@@ -45,7 +45,6 @@ print(sd.query_devices())
 s = s.boot()
 s.start()
 
-chns = [None]*(PART_2_OUT_CHANNELS-1)
 mm = Mixer(outs=PART_2_OUT_CHANNELS)
 
 # Ensure that relative paths start from the same directory as this script
@@ -670,38 +669,35 @@ for thisBlock0 in block0:
                 attendKeyboardNote.setAutoDraw(False)
         
         if stimuliStarted == False and (attendVibraphoneNote.status == FINISHED or attendHarmonicaNote.status == FINISHED or attendKeyboardNote.status == FINISHED):
+            #Logging:
             trigger_filename, trigger_ext = os.path.splitext(trigger)
             trigger_logfile = os.path.abspath(trigger_filename + '.txt')
             trial['trigger'] = os.path.abspath(trigger)
             trial['trigger_log'] = os.path.abspath(trigger_logfile)
-        
-            # trigger channel
-            trigger_chn = SfPlayer(trigger)
-            mm.delInput(0)
-            mm.addInput(0, trigger_chn)
-            mm.setAmp(0,TRIGGER_CHN,spk_volume[TRIGGER_CHN])
+            
+            
             trial['stimuli'] = []
+            spk_name = f"stimuli_0"
+            trial['stimuli'].append(os.path.abspath(globals()[spk_name]))
             
-            # create an empty list to store the players
-            players = []
-                        
-            # create the rest of the players for stimuli_0
-            for i in range(1, PART_2_OUT_CHANNELS):
-                spk_name = f"stimuli_0"
-                trial['stimuli'].append(os.path.abspath(globals()[spk_name]))
-                if i < len(spk_volume):  # check if spk_volume has the correct number of elements
-                    player = sound.Sound(globals()[spk_name])
-                    player.setVolume(spk_volume[i])  # set the volume for the current speaker
-                else:
-                    player = sound.Sound(globals()[spk_name])
-                    print(f"Warning: no volume specified for speaker {i}")
-                players.append(player)
+            #Use mixer to play stereo audio, plus mono trigger:
+            for i in range(PART_2_OUT_CHANNELS):
+                mm.delInput(i) #Ensure any previous inputs are cleared
             
-            # play the sounds and wait for them to finish
-            for player in players:
-                player.play()
-                practiceTrialAudioStartTime = globalClock.getTime()
+            music_stereo = SfPlayer(stimuli_0)
+            mm.addInput(0, music_stereo[0])
+            mm.addInput(1, music_stereo[1])
+
+            trigger_mono = SfPlayer(trigger)
+            mm.addInput(2, trigger_mono)
+            
+            #As well as inputting the streams, specify amplitudes:
+            for i in range(PART_2_OUT_CHANNELS):
+                mm.setAmp(i, i, spk_volume[i])
+            
+            practiceTrialAudioStartTime = globalClock.getTime()
             block0.addData('Practice Music Start Time', practiceTrialAudioStartTime)
+            mm.out()                        
         
             stimuliStarted = True
             
@@ -1378,19 +1374,16 @@ continueRoutine = True
 routineTimer.add(1)
 startExpTrigger = SfPlayer('P2_start_trigger.wav')
 for i in range(PART_2_OUT_CHANNELS):
-    mm.delInput(i)
-mm.addInput(0, startExpTrigger)
-#mm.setAmp(0,i,0)
-#for i in range(PART_2_OUT_CHANNELS):
-#    mm.setAmp(0,i,0)
+    mm.delInput(i) #Ensure any previous inputs are cleared
+mm.addInput(0, startExpTrigger) #One input - the start trigger
+mm.setAmp(0,TRIGGER_CHN, spk_volume[TRIGGER_CHN])
 thisExp.addData('Start Trigger Start Time', globalClock.getTime())
-mm.setAmp(0,TRIGGER_CHN,spk_volume[TRIGGER_CHN])
 while continueRoutine and routineTimer.getTime() > 0:
     mm.out()
 mm.stop()
 routineTimer.reset()
 # end of playing part starting trig
-
+time.sleep(15)
 # set up handler to look after randomisation of conditions etc
 block1 = data.TrialHandler(nReps=1.0, method='random', 
     extraInfo=expInfo, originPath=-1,
@@ -1499,47 +1492,38 @@ for thisBlock1 in block1:
                 win.flip()
                 
         if stimuliStarted == False and (attendVibraphoneNote.status == FINISHED or attendHarmonicaNote.status == FINISHED or attendKeyboardNote.status == FINISHED):
-            print(f'trigger: {trigger}')
+                        #Logging:
             trigger_filename, trigger_ext = os.path.splitext(trigger)
             trigger_logfile = os.path.abspath(trigger_filename + '.txt')
             trial['trigger'] = os.path.abspath(trigger)
             trial['trigger_log'] = os.path.abspath(trigger_logfile)
-        
-            # trigger channel
-            trigger_chn = SfPlayer(trigger)
-            mm.delInput(0)
-            mm.addInput(0, trigger_chn)
-            mm.setAmp(0,TRIGGER_CHN,spk_volume[TRIGGER_CHN])
             
-            # stimuli channels
+            
             trial['stimuli'] = []
-            # create an empty list to store the players
-            players = []
+            spk_name = f"stimuli_0"
+            trial['stimuli'].append(os.path.abspath(globals()[spk_name]))
             
-            # create the rest of the players for stimuli_0
-            for i in range(1, PART_2_OUT_CHANNELS):
-                spk_name = f"stimuli_0"
-                trial['stimuli'].append(os.path.abspath(globals()[spk_name]))
-                if i < len(spk_volume):  # check if spk_volume has the correct number of elements
-                    player = sound.Sound(globals()[spk_name])
-                    player.setVolume(spk_volume[i])  # set the volume for the current speaker
-                else:
-                    player = sound.Sound(globals()[spk_name])
-                    print(f"Warning: no volume specified for speaker {i}")
-                players.append(player)
+            #Use mixer to play stereo audio, plus mono trigger:
+            for i in range(PART_2_OUT_CHANNELS):
+                mm.delInput(i) #Ensure any previous inputs are cleared
             
-            # play the sounds and wait for them to finish
-            for player in players:
-                player.play()
-                trialAudioStartTime = globalClock.getTime()
-            block1.addData('Music Start Time', trialAudioStartTime)
-            while any([player.status == PLAYING for player in players]):
-                continue
-                
-            stimuliStarted = True
-     
-        mm.out()
+            music_stereo = SfPlayer(stimuli_0)
+            mm.addInput(0, music_stereo[0])
+            mm.addInput(1, music_stereo[1])
+
+            trigger_mono = SfPlayer(trigger)
+            mm.addInput(2, trigger_mono)
+            
+            #As well as inputting the streams, specify amplitudes:
+            for i in range(PART_2_OUT_CHANNELS):
+                mm.setAmp(i, i, spk_volume[i])
+            
+            practiceTrialAudioStartTime = globalClock.getTime()
+            block0.addData('Practice Music Start Time', practiceTrialAudioStartTime)
+            mm.out()                        
         
+            stimuliStarted = True
+            
         # check for quit (typically the Esc key)
         if endExpNow or defaultKeyboard.getKeys(keyList=["escape"]):
             core.quit()
@@ -1932,15 +1916,12 @@ for thisBlock1 in block1:
 # playing part stop trig
 continueRoutine = True
 routineTimer.add(1)
-stopExpTrigger = SfPlayer('P2_end_trigger.wav')
-mm.delInput(0)
-mm.addInput(0, stopExpTrigger)
-
-#for i in range(PART_2_OUT_CHANNELS):
-#    mm.setAmp(0,i,0)
-#mm.setAmp(0,0,spk_volume[0])
-thisExp.addData('End Trigger Start Time', globalClock.getTime())
-mm.setAmp(0,TRIGGER_CHN,spk_volume[TRIGGER_CHN])
+stopExpTrigger = SfPlayer('P2_stop_trigger.wav')
+for i in range(PART_2_OUT_CHANNELS):
+    mm.delInput(i) #Ensure any previous inputs are cleared
+mm.addInput(0, stopExpTrigger) #One input - the stop trigger
+mm.setAmp(0,TRIGGER_CHN, spk_volume[TRIGGER_CHN])
+thisExp.addData('Stop Trigger Start Time', globalClock.getTime())
 while continueRoutine and routineTimer.getTime() > 0:
     mm.out()
 mm.stop()
