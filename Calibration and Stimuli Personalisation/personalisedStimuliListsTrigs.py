@@ -13,7 +13,7 @@ from utils.SerialTriggerEncoder import SerialTriggerEncoder
 
 
 #Find participant full path just from their ID
-participantID = "P01"
+participantID = "P06"
 
 #Find the stimuli path:
 currentFolderPath = pathlib.Path(__file__).parent.resolve()
@@ -169,7 +169,7 @@ def StimMixer(participantPath):
                         os.remove(file)
                                 
                     if KeybDone == True and HarmDone == True and VibrDone == True:
-                        outputPathPlusName = participantPath + "/Set" + string_I + "-Oddball Test Mix - " + attendedInst + ".wav"
+                        outputPathPlusName = participantPath + "/Set" + string_I + "-Oddball Test Mix-" + attendedInst + ".wav"
                         oddballStimMix = VibrSignal.overlay(HarmSignal).overlay(KeybSignal) #All 3 overlaid together (panned in above steps)
                         oddballStimMix.export(outputPathPlusName, format="wav")
     
@@ -504,8 +504,8 @@ def Part2TrialTrigMaker(participantPath):
     def oddballTrigs(filename):
         attendedInst = filename[-13:-9]
         
-        thisMixVibr = filename[0:6] + "Vibr Oddball Test-" + filename[-13:] #E.g, Set01-Oddball Test Mix - Harm Attended.wav -> Set01-Vibr Oddball Test-Harm Attended.wav
-        thisMixHarm = filename[0:6] + "Harm Oddball Test-" + filename[-13:] #E.g, Set01-Oddball Test Mix - Harm Attended.wav -> Set01-Harm Oddball Test-Harm Attended.wav
+        thisMixVibr = filename[0:6] + "Vibr Oddball Test-" + filename[-13:] #E.g, Set01-Oddball Test Mix-Harm Attended.wav -> Set01-Vibr Oddball Test-Harm Attended.wav
+        thisMixHarm = filename[0:6] + "Harm Oddball Test-" + filename[-13:] #E.g, Set01-Oddball Test Mix-Harm Attended.wav -> Set01-Harm Oddball Test-Harm Attended.wav
         thisMixKeyb = filename[0:6] + "Keyb Oddball Test-" + filename[-13:] 
         
         linesReadFrom = 0        
