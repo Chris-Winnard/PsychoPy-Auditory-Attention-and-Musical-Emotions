@@ -71,8 +71,8 @@ if __name__ == '__main__':
                     
             f = sf.SoundFile(nameAndPath)
             file_len = f.frames/f.samplerate
-            trig_filename = os.path.join(out_folder, 'trigger_' + name + '.wav')
-            trig_metafilename = os.path.join(out_folder,'trigger_' + name + '.txt')            
+            trig_filename = os.path.join(out_folder, 'trigger_' + name + ' with Gain Applied.wav')
+            trig_metafilename = os.path.join(out_folder,'trigger_' + name + ' with Gain Applied.txt')            
             triggerEncoder.resetTrigger()            
             
             [TRIAL_START_CODE, TRIAL_END_CODE] = [int(ws.range('B{}'.format(i)).value), int(ws.range('B{}'.format(i+1)).value)]
