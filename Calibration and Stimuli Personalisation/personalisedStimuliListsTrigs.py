@@ -484,9 +484,7 @@ def Part2TrialTrigMaker(participantPath):
     def oddballTrigs(filename):
         
         
-        attendedInst = filename[-17:-13] #NEED TO EDIT/CHECK/CORRECT THIS STUFF!!! THINK IT HAS BEEN MADE MORE CONFUSING DUE TO CHANGE OF FORMATTING IN 
-        #MIX FILE NAMES. Could the issue be bc taking filenames from wrong folder as well? E.g from set03 for the other megaset? THINK THIS IS IT!!!
-        
+        attendedInst = filename[-17:-13]
         
         thisMixVibr = filename[0:6] + "Vibr Oddball Test-" + filename[-17:] #E.g, Set01-Oddball Test Mix-Harm Attended.wav -> Set01-Vibr Oddball Test-Harm Attended.wav
         thisMixHarm = filename[0:6] + "Harm Oddball Test-" + filename[-17:] #E.g, Set01-Oddball Test Mix-Harm Attended.wav -> Set01-Harm Oddball Test-Harm Attended.wav
@@ -507,7 +505,7 @@ def Part2TrialTrigMaker(participantPath):
             if linesReadFrom == 3:
                 break
         
-        if attendedInst == "Vibr":
+        if attendedInst == "Vibr": #Vibr oddball vibr attended: 145; harm oddball vibr attended: 146. Etc.
             vibrOddballTrig = 145
             harmOddballTrig = 146
             keybOddballTrig = 147
