@@ -62,7 +62,11 @@ if __name__ == '__main__':
     for i in range(1, last_row_SS_Stim+1):
         cell = 'A' + str(i) #Need to convert 
         cellValue = str(ws[cell].value)
+        
         if ".wav start" in cellValue:
+            startCode = int(ws['B' + str(i)].value)
+            endCode = int(ws['B' + str(i+1)].value)
+            
             name = cellValue[:-6] #The cell entry, with " start" removed
             
             for filePath in file_list:
@@ -75,7 +79,7 @@ if __name__ == '__main__':
             trig_metafilename = os.path.join(out_folder,'trigger_' + name + ' with Gain Applied.txt')            
             triggerEncoder.resetTrigger()            
             
-            [TRIAL_START_CODE, TRIAL_END_CODE] = [int(ws.range('B{}'.format(i)).value), int(ws.range('B{}'.format(i+1)).value)]
+            [TRIAL_START_CODE, TRIAL_END_CODE] = [startCode, endCode]
             triggerEncoder.encode(TRIAL_START_CODE, 0.0)
             event_metafile = open(trig_metafilename, 'w')
             event_metafile.write("{}\t{}\n".format(TRIAL_START_CODE, 0)) # start trig position in millisecond
