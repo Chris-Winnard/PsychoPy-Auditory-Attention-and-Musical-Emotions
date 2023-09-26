@@ -47,6 +47,7 @@ def single_part_trig(part, triggerEnc, location, partTrigNumber):
     event_metafile.close()
 
 def part_trigs(part, triggerEnc):
+    
     partTrigNumber_start = part_subTrigs[part] + 0b0
     
     partTrigNumber_end = part_subTrigs[part] + 0b1
@@ -102,7 +103,6 @@ if __name__ == '__main__':
     sr = args.sr
     ch = args.channels
     clkSerial = args.triggerClk
-
     if not os.path.exists(out_folder):
         os.makedirs(out_folder)
     
@@ -137,5 +137,5 @@ if __name__ == '__main__':
     
     #Part trigs:
     newPath = os.getcwd()
-    for j in range(4): #Parts 1-3
+    for j in range(0, 3): #Parts 1-3
         part_trigs(j, triggerEncoder) #Reusing triggerEncoder from before
