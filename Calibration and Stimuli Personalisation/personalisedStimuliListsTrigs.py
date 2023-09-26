@@ -460,6 +460,13 @@ def ListMaker(participantPath):
 
 def Part2TrialTrigMaker(participantPath):
     
+    import xlwings as xw #For reading config file
+    # Specify the workbook we are looking at, and the worksheet:
+    wb = xw.Book("Trigger Config.xlsx")
+    ws = wb.sheets['Sheet1']
+    #To parse through this, helpful to know the number of entries for each table section:
+    last_row_MS_Stim = ws.range('A' + str(ws.cells.last_cell.row)).end('up').row
+    
     def getFileList(in_path):
         filepaths = []
         if os.path.isfile(in_path):
@@ -473,40 +480,17 @@ def Part2TrialTrigMaker(participantPath):
         return filepaths
         
     #################################################################################################################################################
-    #Binary for trial start and end trigs, and fn to gen:
-        
-    set_binary_values = [0b0000, 0b0001, 0b0010, 0b0011, 0b0100, 0b0101, 0b0110, 0b0111, 0b1000, 0b1001, 0b1010, 0b1011] #Remember that Set01 corresponds to 0000, etc.
-    inst_binary_values = [0b00, 0b01, 0b11]
-    
-    def trial_trigs(filename): #Oddball ones- add in trigs at oddball start times? Although would this mean new trig files for EACH participant?
-        for i in range(1, 13):
-            if i < 10:
-                string_I = "0" + str(i)
-            else:
-                string_I = str(i)
-            
-            if string_I in filename:
-                set_binary_thisValue = set_binary_values[i-1]
-        
-        instruments = ["Vibr", "Harm", "Keyb"]
-        
-        for j in range(0, 3):
-            if instruments[j] in filename:
-                inst_binary_thisValue = inst_binary_values[j]
-                
-            stream_binary_thisValue = 0b1 #To verify that it is the start/end of a multi-stream trial
-        
-        trialTrig_start = set_binary_thisValue + inst_binary_thisValue + stream_binary_thisValue + 0b0
-        trialTrig_end =  set_binary_thisValue + inst_binary_thisValue + stream_binary_thisValue + 0b1
-        return trialTrig_start, trialTrig_end
-    
-    
+
     def oddballTrigs(filename):
-        attendedInst = filename[-13:-9]
         
-        thisMixVibr = filename[0:6] + "Vibr Oddball Test-" + filename[-13:] #E.g, Set01-Oddball Test Mix-Harm Attended.wav -> Set01-Vibr Oddball Test-Harm Attended.wav
-        thisMixHarm = filename[0:6] + "Harm Oddball Test-" + filename[-13:] #E.g, Set01-Oddball Test Mix-Harm Attended.wav -> Set01-Harm Oddball Test-Harm Attended.wav
-        thisMixKeyb = filename[0:6] + "Keyb Oddball Test-" + filename[-13:] 
+        
+        attendedInst = filename[-17:-13] #NEED TO EDIT/CHECK/CORRECT THIS STUFF!!! THINK IT HAS BEEN MADE MORE CONFUSING DUE TO CHANGE OF FORMATTING IN 
+        #MIX FILE NAMES. Could the issue be bc taking filenames from wrong folder as well? E.g from set03 for the other megaset? THINK THIS IS IT!!!
+        
+        
+        thisMixVibr = filename[0:6] + "Vibr Oddball Test-" + filename[-17:] #E.g, Set01-Oddball Test Mix-Harm Attended.wav -> Set01-Vibr Oddball Test-Harm Attended.wav
+        thisMixHarm = filename[0:6] + "Harm Oddball Test-" + filename[-17:] #E.g, Set01-Oddball Test Mix-Harm Attended.wav -> Set01-Harm Oddball Test-Harm Attended.wav
+        thisMixKeyb = filename[0:6] + "Keyb Oddball Test-" + filename[-17:] 
         
         linesReadFrom = 0        
         for line in lines:
@@ -522,24 +506,24 @@ def Part2TrialTrigMaker(participantPath):
             
             if linesReadFrom == 3:
                 break
-        #Trigs- 00 for vibr, 01 for harm, 11 for keyb. First two indicate inst to be attended, last two indicate oddball type. e.g, 0111 for keyb oddball
-        #when harm attended
         
         if attendedInst == "Vibr":
-            vibrOddballTrig = 0b0000
-            harmOddballTrig = 0b0001
-            keybOddballTrig = 0b0011
+            vibrOddballTrig = 145
+            harmOddballTrig = 146
+            keybOddballTrig = 147
             
         elif attendedInst == "Harm":
-            vibrOddballTrig = 0b0100
-            harmOddballTrig = 0b0101
-            keybOddballTrig = 0b0111
+            vibrOddballTrig = 148
+            harmOddballTrig = 149
+            keybOddballTrig = 150
             
         elif attendedInst == "Keyb":
-            vibrOddballTrig = 0b1100
-            harmOddballTrig = 0b1101
-            keybOddballTrig = 0b1111
-            
+            vibrOddballTrig = 151
+            harmOddballTrig = 152
+            keybOddballTrig = 153
+        
+        
+                   
         vibrOBtrigs = [vibrOddballTrig]*len(vibrOddballStartTimes)
         
         harmOBtrigs = [harmOddballTrig]*len(harmOddballStartTimes)
@@ -555,8 +539,7 @@ def Part2TrialTrigMaker(participantPath):
       
     out_folder = participantPath + "/P2 Trigger Files"
     os.path.abspath(out_folder) #E.g "P04/P2 Trigger Files"
-    sr = 22050 #sampling rate
-    ch = 1 #channels
+    sr = 22050 #sampling rate=
     clkSerial = 10.0 #Clock rate of trigger. Default value is 10.0 Hz.")
     
     #First, let's read and convert the start time data. This will also be useful for part 4.
@@ -571,28 +554,35 @@ def Part2TrialTrigMaker(participantPath):
     file_list = getFileList(participantPath)
     file_list = [x for x in file_list if 'Oddball Test Mix' in x]
     triggerEncoder = SerialTriggerEncoder(sr, clkSerial)
-    #  print('file_list', file_list)
-    for i in range(len(file_list)):    
-        path, ext = os.path.splitext(file_list[i])
-        if ext != ".wav":
-            continue
-        else:
-            f = sf.SoundFile(file_list[i])
-            data, sr = sf.read(file_list[i])
-            file_len = f.frames/f.samplerate
-            name = os.path.basename(path)
-            trig_filename = os.path.join(out_folder, 'trigger_' + name + '.wav')     
-            triggerEncoder.resetTrigger()            
-              
-            [TRIAL_START_CODE, TRIAL_END_CODE] = trial_trigs(name)
-            triggerEncoder.encode(TRIAL_START_CODE, 0.0)
-              
-            oddballTrigsAndTimes = oddballTrigs(name)
-            for x in range(len(oddballTrigsAndTimes[0])): #Number of columns, i.e total triggers
-                triggerEncoder.encode(oddballTrigsAndTimes[0][x], float(oddballTrigsAndTimes[1][x]))
+    
+    for i in range(1, last_row_MS_Stim+1):
+        cell = 'C' + str(i) #Need to convert 
+        cellValue = str(ws[cell].value)
+        
+        if ".wav start" in cellValue:
+            startCode = int(ws['D' + str(i)].value)
+            endCode = int(ws['D' + str(i+1)].value)
+            name = cellValue[:-6] #The cell entry, with " start" removed
             
-            triggerEncoder.encode(TRIAL_END_CODE, file_len)
-            triggerEncoder.generateTrigger(trig_filename, file_len+1.0) #shorter?
+            for filePath in file_list:
+                if name in filePath:
+                    nameAndPath = filePath
+                    
+                    f = sf.SoundFile(nameAndPath)
+                    data, sr = sf.read(nameAndPath)
+                    file_len = f.frames/f.samplerate
+                    trig_filename = os.path.join(out_folder, 'trigger_' + name + '.wav')     
+                    triggerEncoder.resetTrigger()            
+                      
+                    [TRIAL_START_CODE, TRIAL_END_CODE] = [startCode, endCode]
+                    triggerEncoder.encode(TRIAL_START_CODE, 0.0)
+                      
+                    oddballTrigsAndTimes = oddballTrigs(name) #Need to change how this is used!?
+                    for x in range(len(oddballTrigsAndTimes[0])): #Number of columns, i.e total triggers
+                        triggerEncoder.encode(oddballTrigsAndTimes[0][x], float(oddballTrigsAndTimes[1][x]))
+                    
+                    triggerEncoder.encode(TRIAL_END_CODE, file_len)
+                    triggerEncoder.generateTrigger(trig_filename, file_len+1.0) #shorter?
             
     return
 
