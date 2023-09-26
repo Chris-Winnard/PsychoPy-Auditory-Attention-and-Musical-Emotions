@@ -483,7 +483,8 @@ def Part2TrialTrigMaker(participantPath):
 
     def oddballTrigs(filename):
         
-        
+        #Include times of start/end/oddballs in the metafile? At v least, have the order correct in metafile? <<Is it possible that the audio oddballs
+        #themselves aren't playing in right order? E.g, all 149 ones going before 150 ones in audio file???
         attendedInst = filename[-17:-13]
         
         thisMixVibr = filename[0:6] + "Vibr Oddball Test-" + filename[-17:] #E.g, Set01-Oddball Test Mix-Harm Attended.wav -> Set01-Vibr Oddball Test-Harm Attended.wav
@@ -569,18 +570,24 @@ def Part2TrialTrigMaker(participantPath):
                     f = sf.SoundFile(nameAndPath)
                     data, sr = sf.read(nameAndPath)
                     file_len = f.frames/f.samplerate
-                    trig_filename = os.path.join(out_folder, 'trigger_' + name + '.wav')     
+                    trig_filename = os.path.join(out_folder, 'trigger_' + name + '.wav')  
+                    trig_metafilename = os.path.join(out_folder,'trigger_' + name + '.txt')  
                     triggerEncoder.resetTrigger()            
                       
                     [TRIAL_START_CODE, TRIAL_END_CODE] = [startCode, endCode]
                     triggerEncoder.encode(TRIAL_START_CODE, 0.0)
+                    event_metafile = open(trig_metafilename, 'w')
+                    event_metafile.write("{}\t{}\n".format(TRIAL_START_CODE, 0)) # start trig position in millisecond
                       
-                    oddballTrigsAndTimes = oddballTrigs(name) #Need to change how this is used!?
+                    oddballTrigsAndTimes = oddballTrigs(name)
                     for x in range(len(oddballTrigsAndTimes[0])): #Number of columns, i.e total triggers
                         triggerEncoder.encode(oddballTrigsAndTimes[0][x], float(oddballTrigsAndTimes[1][x]))
-                    
+                        event_metafile.write("{}\t{}\n".format(oddballTrigsAndTimes[0][x], 1000*float(oddballTrigsAndTimes[1][x]))) # start trig position in millisecond
+
                     triggerEncoder.encode(TRIAL_END_CODE, file_len)
+                    event_metafile.write("{}\t{}\n".format(TRIAL_END_CODE, round(file_len*1000))) # end trig position in millisecond
                     triggerEncoder.generateTrigger(trig_filename, file_len+1.0) #shorter?
+                    event_metafile.close()
             
     return
 
