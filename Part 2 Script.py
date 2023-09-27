@@ -1383,7 +1383,7 @@ while continueRoutine and routineTimer.getTime() > 0:
 mm.stop()
 routineTimer.reset()
 # end of playing part starting trig
-time.sleep(15)
+
 # set up handler to look after randomisation of conditions etc
 block1 = data.TrialHandler(nReps=1.0, method='random', 
     extraInfo=expInfo, originPath=-1,
