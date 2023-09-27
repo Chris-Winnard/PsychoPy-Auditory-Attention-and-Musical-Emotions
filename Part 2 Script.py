@@ -30,7 +30,6 @@ volume_ratio = [1, 1, 5] #[1, 1, 27.5]
 spk_volume = [x * volume_level for x in volume_ratio]
 PART_2_OUT_CHANNELS = 3
 TRIGGER_CHN = 2
-print(f'PART_2_OUT_CHANNELS: {PART_2_OUT_CHANNELS}')
 
 s = Server(nchnls=PART_2_OUT_CHANNELS, duplex=0)
 devices = pa_get_output_devices()
@@ -1369,7 +1368,6 @@ for thisBlock0 in block0:
 # completed 1.0 repeats of 'block0'
 
 # playing part starting trig
-print(f'Playing start trigger')
 continueRoutine = True
 routineTimer.add(1)
 startExpTrigger = SfPlayer('P2_start_trigger.wav')
@@ -1518,8 +1516,8 @@ for thisBlock1 in block1:
             for i in range(PART_2_OUT_CHANNELS):
                 mm.setAmp(i, i, spk_volume[i])
             
-            practiceTrialAudioStartTime = globalClock.getTime()
-            block0.addData('Practice Music Start Time', practiceTrialAudioStartTime)
+            mainTrialAudioStartTime = globalClock.getTime()
+            block1.addData('Main Trial Mus Start Time', mainTrialAudioStartTime)
             mm.out()                        
         
             stimuliStarted = True
@@ -1553,7 +1551,7 @@ for thisBlock1 in block1:
     for thisComponent in trialComponents:
         if hasattr(thisComponent, "setAutoDraw"):
             thisComponent.setAutoDraw(False)
-
+    
     # the Routine "trial" was not non-slip safe, so reset the non-slip timer
     routineTimer.reset()
     

@@ -27,7 +27,6 @@ volume_ratio = [1, 1, 5]
 spk_volume = [x * volume_level for x in volume_ratio]
 PART_3_OUT_CHANNELS = 3
 TRIGGER_CHN = 2
-print(f'PART_3_OUT_CHANNELS: {PART_3_OUT_CHANNELS}')
 
 s = Server(nchnls=PART_3_OUT_CHANNELS, duplex=0)
 devices = pa_get_output_devices()
@@ -596,9 +595,9 @@ for thisBlock0 in block0:
             thisComponent.setAutoDraw(False)
     
     if attend == "Yes":
-        print("music attended")
+        print(f'Stimulus: {stimuli_0} was attended')
     else:
-        print("music unattended")
+        print(f'Stimulus: {stimuli_0} was unattended')
     # the Routine "practiceTrial" was not non-slip safe, so reset the non-slip timer
     routineTimer.reset()
     
@@ -784,7 +783,6 @@ routineTimer.reset()
         
 
 # playing part starting trig
-print(f'Playing start trigger')
 continueRoutine = True
 routineTimer.add(1)
 startExpTrigger = SfPlayer('P3_start_trigger.wav')
@@ -914,8 +912,8 @@ for thisBlock1 in block1:
             #As well as inputting the streams, specify amplitudes:
             for i in range(PART_3_OUT_CHANNELS):
                 mm.setAmp(i, i, spk_volume[i])
-            practiceTrialAudioStartTime = globalClock.getTime()
-            block0.addData('Practice Music Start Time', practiceTrialAudioStartTime)
+            mainTrialAudioStartTime = globalClock.getTime()
+            block1.addData('Main Trial Mus Start Time', mainTrialAudioStartTime)
             mm.out() #Move this to earlier???
             stimuliStarted = True
      
@@ -952,9 +950,9 @@ for thisBlock1 in block1:
     thisExp.nextEntry() #Next row on the record.
     
     if attend == "Yes":
-        print("music attended")
+        print(f'Stimulus: {stimuli_0} was attended')
     else:
-        print("music unattended")
+        print(f'Stimulus: {stimuli_0} was unattended')
         
     # the Routine "trial" was not non-slip safe, so reset the non-slip timer
     routineTimer.reset()
@@ -1077,7 +1075,6 @@ for thisBlock1 in block1:
 # completed 1.0 repeats of 'block1'
 
 # playing part stopping trig
-print(f'Playing stop trigger')
 continueRoutine = True
 routineTimer.add(1)
 stopExpTrigger = SfPlayer('P3_stop_trigger.wav')

@@ -27,7 +27,6 @@ volume_ratio = [1, 1, 5]
 spk_volume = [x * volume_level for x in volume_ratio]
 PART_1_OUT_CHANNELS = 3
 TRIGGER_CHN = 2
-print(f'PART_1_OUT_CHANNELS: {PART_1_OUT_CHANNELS}')
 
 s = Server(nchnls=PART_1_OUT_CHANNELS, duplex=0)
 devices = pa_get_output_devices()
@@ -553,6 +552,7 @@ for thisBlock0 in block0:
     trial['stimuli'] = []
     spk_name = f"stimuli_0"
     trial['stimuli'].append(os.path.abspath(globals()[spk_name]))
+    print(f'Stimulus: {stimuli_0}')
     
     clickForEmotionInfo.reset()    
     valenceResp.reset()
@@ -1075,7 +1075,6 @@ if sum(buttons):
 routineTimer.reset()
 
 # playing part starting trig
-print(f'Playing start trigger')
 continueRoutine = True
 routineTimer.add(1)
 startExpTrigger = SfPlayer('P1_start_trigger.wav')
@@ -1120,11 +1119,10 @@ for thisBlock1 in block1:
     trigger_logfile = os.path.abspath(trigger_filename + '.txt')
     trial['trigger'] = os.path.abspath(trigger)
     trial['trigger_log'] = os.path.abspath(trigger_logfile)
+    print(f'Stimulus: {stimuli_0}')
     
     trial['stimuli'] = []
-    spk_name = f"stimuli_0"
     trial['stimuli'].append(os.path.abspath(globals()[spk_name]))
-    
     clickForEmotionInfo.reset()    
     valenceResp.reset()
     arousalResp.reset()
@@ -1164,8 +1162,8 @@ for thisBlock1 in block1:
     #As well as inputting the streams, specify amplitudes:
     for i in range(PART_1_OUT_CHANNELS):
         mm.setAmp(i, i, spk_volume[i])
-    practiceTrialAudioStartTime = globalClock.getTime()
-    block0.addData('Practice Music Start Time', practiceTrialAudioStartTime)
+    mainTrialAudioStartTime = globalClock.getTime()
+    block1.addData('Main Trial Mus Start Time', mainTrialAudioStartTime)
     mm.out()
     
     # -------Run Routine "Trial"-------
@@ -1580,7 +1578,6 @@ for thisBlock1 in block1:
 # completed 1.0 repeats of 'block1'
 
 # playing part stopping trig
-print(f'Playing stop trigger')
 continueRoutine = True
 routineTimer.add(1)
 stopExpTrigger = SfPlayer('P1_stop_trigger.wav')
