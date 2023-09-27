@@ -579,6 +579,7 @@ for thisBlock0 in block0:
     idx += 1
     
     currentLoop = block0
+    
     # abbreviate parameter names if possible (e.g. rgb = thisBlock0.rgb)
     if thisBlock0 != None:
         for paramName in thisBlock0:
@@ -678,6 +679,7 @@ for thisBlock0 in block0:
             trial['stimuli'] = []
             spk_name = f"stimuli_0"
             trial['stimuli'].append(os.path.abspath(globals()[spk_name]))
+            print(f'Stimulus: {stimuli_0}')
             
             #Use mixer to play stereo audio, plus mono trigger:
             for i in range(PART_2_OUT_CHANNELS):
@@ -1401,6 +1403,7 @@ for thisBlock1 in block1:
     idx += 1
     print(f'Not counting the practice trial(s), this is trial {idx}')
     currentLoop = block1
+    
     # abbreviate parameter names if possible (e.g. rgb = thisBlock1.rgb)
     if thisBlock1 != None:
         for paramName in thisBlock1:
@@ -1500,6 +1503,7 @@ for thisBlock1 in block1:
             trial['stimuli'] = []
             spk_name = f"stimuli_0"
             trial['stimuli'].append(os.path.abspath(globals()[spk_name]))
+            print(f'Stimulus: {stimuli_0}')
             
             #Use mixer to play stereo audio, plus mono trigger:
             for i in range(PART_2_OUT_CHANNELS):

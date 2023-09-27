@@ -595,9 +595,9 @@ for thisBlock0 in block0:
             thisComponent.setAutoDraw(False)
     
     if attend == "Yes":
-        print(f'Stimulus: {stimuli_0} was attended')
+        print(f'{stimuli_0} was attended')
     else:
-        print(f'Stimulus: {stimuli_0} was unattended')
+        print(f'{stimuli_0} was unattended')
     # the Routine "practiceTrial" was not non-slip safe, so reset the non-slip timer
     routineTimer.reset()
     
@@ -717,6 +717,7 @@ for thisBlock0 in block0:
     break
 # completed 1.0 repeats of 'block0'   
 
+thisExp.nextEntry() #Next row on the record.
 routineTimer.reset()
 # ------Prepare to start Routine "movingToMainTrials"-------
 # update component parameters for each repeat
@@ -950,9 +951,9 @@ for thisBlock1 in block1:
     thisExp.nextEntry() #Next row on the record.
     
     if attend == "Yes":
-        print(f'Stimulus: {stimuli_0} was attended')
+        print(f'{stimuli_0} was attended')
     else:
-        print(f'Stimulus: {stimuli_0} was unattended')
+        print(f'{stimuli_0} was unattended')
         
     # the Routine "trial" was not non-slip safe, so reset the non-slip timer
     routineTimer.reset()
