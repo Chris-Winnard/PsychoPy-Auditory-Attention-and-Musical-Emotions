@@ -21,6 +21,7 @@ upperFolderPath = currentFolderPath.parent.resolve()
 
 #Create output path:
 dataPath = str(upperFolderPath) + "/Data/"
+TriggerConfigFile = r"C:\Users\cjwin\OneDrive - Queen Mary, University of London\Documents\Music Interestingness in the Brain\Par 22-9-23\Trigger Generation (Not Inc P2 Trial Trigs)\Trigger Config.xlsx"
 
 
 groupAssignmentFile = dataPath + "/Participant Groups.txt" #Needed for taking collecting stimuli, and saving to right place:
@@ -462,7 +463,7 @@ def Part2TrialTrigMaker(participantPath):
     
     import xlwings as xw #For reading config file
     # Specify the workbook we are looking at, and the worksheet:
-    wb = xw.Book("Trigger Config.xlsx")
+    wb = xw.Book(TriggerConfigFile)
     ws = wb.sheets['Sheet1']
     #To parse through this, helpful to know the number of entries for each table section:
     last_row_MS_Stim = ws.range('A' + str(ws.cells.last_cell.row)).end('up').row
@@ -570,8 +571,8 @@ def Part2TrialTrigMaker(participantPath):
                     f = sf.SoundFile(nameAndPath)
                     data, sr = sf.read(nameAndPath)
                     file_len = f.frames/f.samplerate
-                    trig_filename = os.path.join(out_folder, 'trigger_' + name + '.wav')  
-                    trig_metafilename = os.path.join(out_folder,'trigger_' + name + '.txt')  
+                    trig_filename = os.path.join(out_folder, 'trigger_' + name[:-4] + '.wav')  
+                    trig_metafilename = os.path.join(out_folder,'trigger_' + name[:-4] + '.txt')  
                     triggerEncoder.resetTrigger()            
                       
                     [TRIAL_START_CODE, TRIAL_END_CODE] = [startCode, endCode]
