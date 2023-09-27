@@ -1001,6 +1001,7 @@ while True:
         mm.out()
        # mm.stop()
     core.wait(10)
+    mm.stop()
     
     if firstLoop == False: #The first time, the participants are encouraged to adjust
         
@@ -1318,9 +1319,9 @@ vibraphone = AudioSegment.from_wav(vibrPiece)
 harmonica = AudioSegment.from_wav(harmPiece)
 piano = AudioSegment.from_wav(keybPiece)
 
-vibraphone.pan(vibrPan)
-harmonica.pan(harmPan)
-piano.pan(keybPan)
+vibraphone = vibraphone.pan(vibrPan)
+harmonica = harmonica.pan(harmPan)
+piano = piano.pan(keybPan)
 
 current_instrument = "Vibraphone"
 currentInstLoudness = vibraphone_loudness
@@ -1528,7 +1529,7 @@ while True:
         mm.out()
        # mm.stop()
     core.wait(10)
-    
+    mm.stop()
     
     if firstLoopThisInst == False: #The first time, the participants are encouraged to adjust
         # ------Prepare to start Routine "contAdjustingQ3"-------
