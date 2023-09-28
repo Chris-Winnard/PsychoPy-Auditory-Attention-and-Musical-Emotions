@@ -98,7 +98,7 @@ frameTolerance = 0.001  # how close to onset before 'same' frame
 win = visual.Window(
     size=[1920, 1080], fullscr=False, screen=0, 
     winType='pyglet', allowGUI=False, allowStencil=False,
-    monitor='AIM Laptop', color=[-0.4510, 0.0196, 0.4118], colorSpace='rgb',
+    monitor='AIM Laptop', color=[-0.4510, 0.0196, 0.4118], colorSpace='rgb', #Aarhus setup: size=[1920, 1080], monitor='testMonitor', screen=1 #AIM laptop: size=[1920, 1080], monitor='AIM Laptop'
     blendMode='avg', useFBO=True, 
     units='height')
 # Setup ioHub
