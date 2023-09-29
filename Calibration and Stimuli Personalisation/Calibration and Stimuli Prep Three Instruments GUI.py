@@ -129,9 +129,9 @@ frameTolerance = 0.001  # how close to onset before 'same' frame
 
 # Setup the Window
 win = visual.Window(
-    size=[1920, 1080], fullscr=True, screen=0, 
+    size=[1920, 1080], fullscr=True, screen=1, 
     winType='pyglet', allowGUI=False, allowStencil=False,
-    monitor='AIM Laptop', color=[-0.4510, 0.0196, 0.4118], colorSpace='rgb',#Aarhus setup: size=[1536, 864], monitor='testMonitor', screen=1 #AIM laptop: size=[1920, 1080], monitor='AIM Laptop'
+    monitor='Aarhus DELL Monitor', color=[-0.4510, 0.0196, 0.4118], colorSpace='rgb', #Aarhus setup: size=[1920, 1080], monitor='Aarhus DELL Monitor', screen=1 #AIM laptop: size=[1920, 1080], monitor='AIM Laptop'
     blendMode='avg', useFBO=True, 
     units='height')
 # Setup ioHub
@@ -158,7 +158,7 @@ instr1_txt = visual.TextStim(win=win, name='instr1_txt',
             "A vibraphone will play from a RANDOM direction, and you will need to adjust the balance so that you hear it as coming from the centre- you can adjust"
           + " as many times as needed. We will then repeat the test twice with other instruments.\n\nWhen you are ready to hear the music for the first time, press \"NEXT\"."),
     font='Open Sans',
-    pos=(0, 0.15), height=0.05, wrapWidth=1.8, ori=0.0, 
+    pos=(0, 0.15), height=0.05, wrapWidth=1.65, ori=0.0, 
     color='white', colorSpace='rgb', opacity=None, 
     languageStyle='LTR',
     depth=0.0);
@@ -179,7 +179,7 @@ moveToHarmNoteClock = core.Clock()
 moveToHarmNote_txt = visual.TextStim(win=win, name='moveToHarmNote_txt',
     text="We will now move on to the harmonica.",
     font='Open Sans',
-    pos=(0, 0.0), height=0.05, wrapWidth=1.8, ori=0.0, 
+    pos=(0, 0.0), height=0.05, wrapWidth=1.65, ori=0.0, 
     color='white', colorSpace='rgb', opacity=None, 
     languageStyle='LTR',
     depth=0.0);
@@ -200,7 +200,7 @@ moveToKeybNoteClock = core.Clock()
 moveToKeybNote_txt = visual.TextStim(win=win, name='moveToKeybNote_txt',
     text="We will now move on to the piano.",
     font='Open Sans',
-    pos=(0, 0), height=0.05, wrapWidth=1.8, ori=0.0, 
+    pos=(0, 0), height=0.05, wrapWidth=1.65, ori=0.0, 
     color='white', colorSpace='rgb', opacity=None, 
     languageStyle='LTR',
     depth=0.0);
@@ -232,7 +232,7 @@ panningFeedbackPgClock = core.Clock()
 panningFeedbackPg_txt = visual.TextStim(win=win, name='panningFeedbackPg_txt',
     text='Please indicate how much you would like to change the angle that the music is coming from.',
     font='Open Sans',
-    pos=(0, 0.34), height=0.05, wrapWidth=1.7, ori=0.0, 
+    pos=(0, 0.34), height=0.05, wrapWidth=1.65, ori=0.0, 
     color='white', colorSpace='rgb', opacity=None, anchorVert='top',
     languageStyle='LTR',
     depth=-1.0);
@@ -766,7 +766,7 @@ instr2_txt = visual.TextStim(win=win, name='instr2_txt',
     + "You will hear the three instruments from before (vibraphone from the left, harmonica from the centre, piano from the right), and you will need to adjust the loudness settings"
     + " until you can hear and focus on each individual instrument comfortably.\n\nWhen you are ready to hear the music for the first time, press \"NEXT\"."),
     font='Open Sans',
-    pos=(0, 0.15), height=0.05, wrapWidth=1.8, ori=0.0, 
+    pos=(0, 0.15), height=0.05, wrapWidth=1.65, ori=0.0, 
     color='white', colorSpace='rgb', opacity=None, 
     languageStyle='LTR',
     depth=0.0);
@@ -779,14 +779,14 @@ msVolFeedbackPgClock = core.Clock()
 msVolFeedbackQ = visual.TextStim(win=win, name='msVolFeedbackQ',
     text="Please adjust the gains, so that you can hear and attend to each individual instrument comfortably. The gains should be >0 but do not need to add up to 1.",
     font='Open Sans',
-    pos=(0, 0.34), height=0.05, wrapWidth=1.8, ori=0.0, 
+    pos=(0, 0.34), height=0.05, wrapWidth=1.65, ori=0.0, 
     color='white', colorSpace='rgb', opacity=None,
     languageStyle='LTR',
     depth=0.0); 
 msVolFeedbackLabels = visual.TextStim(win=win, name='msVolFeedbackQ',
     text="Vibraphone:                     Harmonica:                        Piano:",
     font='Open Sans',
-    pos=(-0.015, 0), height=0.035, wrapWidth=1.8, ori=0.0, 
+    pos=(-0.015, 0), height=0.035, wrapWidth=1.65, ori=0.0, 
     color='white', colorSpace='rgb', opacity=None, 
     languageStyle='LTR',
     depth=0.0); 
@@ -855,7 +855,7 @@ contAdjustingQ2Clock = core.Clock()
 contAdjustingQ2Txt = visual.TextStim(win=win, name='contAdjustingQ2Txt',
     text="Would you like to continue adjusting?",
     font='Open Sans',
-    pos=(0, 0.1), height=0.05, wrapWidth=1.8, ori=0.0, 
+    pos=(0, 0.1), height=0.05, wrapWidth=1.65, ori=0.0, 
     color='white', colorSpace='rgb', opacity=None, 
     languageStyle='LTR',
     depth=0.0);
@@ -1334,7 +1334,7 @@ instr3_txt = visual.TextStim(win=win, name='instr3_txt',
     + "You will hear the vibraphone playing from the centre, and you will need to adjust the loudness settings until you can hear and focus on it comfortably. This will then be"
     + " repeated with the other instruments.\n\nWhen you are ready to hear the music for the first time, press \"NEXT\"."),
     font='Open Sans',
-    pos=(0, 0.15), height=0.05, wrapWidth=1.8, ori=0.0, 
+    pos=(0, 0.15), height=0.05, wrapWidth=1.65, ori=0.0, 
     color='white', colorSpace='rgb', opacity=None, 
     languageStyle='LTR',
     depth=0.0);
@@ -1355,7 +1355,7 @@ ssVolFeedbackPgClock = core.Clock()
 ssVolFeedbackPg_txt = visual.TextStim(win=win, name='ssVolFeedbackPg_txt',
     text="Please adjust the loudness, so that you can hear and attend to the current instrument comfortably.",
     font='Open Sans',
-    pos=(0, 0.315), height=0.05, wrapWidth=1.8, ori=0.0, 
+    pos=(0, 0.315), height=0.05, wrapWidth=1.65, ori=0.0, 
     color='white', colorSpace='rgb', opacity=None,
     languageStyle='LTR',
     depth=0.0); 
@@ -1391,7 +1391,7 @@ nextButton_R1B = visual.ImageStim(
 contAdjustingQ3Txt = visual.TextStim(win=win, name='contAdjustingQ3Txt',
     text="Would you like to continue adjusting the loudness of the current instrument?",
     font='Open Sans',
-    pos=(0, 0.15), height=0.05, wrapWidth=1.8, ori=0.0, 
+    pos=(0, 0.15), height=0.05, wrapWidth=1.65, ori=0.0, 
     color='white', colorSpace='rgb', opacity=None, 
     languageStyle='LTR',
     depth=0.0);
