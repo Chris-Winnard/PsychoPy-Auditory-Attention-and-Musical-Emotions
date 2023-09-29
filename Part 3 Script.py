@@ -95,9 +95,9 @@ frameTolerance = 0.001  # how close to onset before 'same' frame
 
 # Setup the Window
 win = visual.Window(
-    size=[1920, 1080], fullscr=True, screen=0, 
-    winType='pyglet', allowGUI=True, allowStencil=False,
-    monitor='otherExternalMonitor', color=[-0.4510, 0.0196, 0.4118], colorSpace='rgb',#Aarhus setup: size=[1920, 1080], monitor='testMonitor', screen=1 #AIM laptop: size=[1920, 1080], monitor='AIM Laptop'
+    size=[1920, 1080], fullscr=True, screen=1, 
+    winType='pyglet', allowGUI=False, allowStencil=False,
+    monitor='Aarhus DELL Monitor', color=[-0.4510, 0.0196, 0.4118], colorSpace='rgb', #Aarhus setup: size=[1920, 1080], monitor='Aarhus DELL Monitor', screen=1 #AIM laptop: size=[1920, 1080], monitor='AIM Laptop'
     blendMode='avg', useFBO=True, 
     units='height')
 # Setup ioHub
@@ -120,7 +120,7 @@ instructionsClock = core.Clock()
 top_instr_txt = visual.TextStim(win=win, name='top_instr_txt',
     text='You will be told to either attend or NOT attend to some music (let your mind wander), before it plays. Please close your eyes, and try not to move whilst it plays. After this, you will be asked about what you were attending to and you can take a break.\n\nIf you have any questions at all please ask the experimenters.',
     font='Open Sans',
-    pos=(0, 0.15), height=0.05, wrapWidth=1.8, ori=0.0, 
+    pos=(0, 0.15), height=0.05, wrapWidth=1.65, ori=0.0, 
     color='white', colorSpace='rgb', opacity=None, 
     languageStyle='LTR',
     depth=0.0);
@@ -180,7 +180,7 @@ QuestionBreakPauseClock = core.Clock()
 top_instr_txt_4 = visual.TextStim(win=win, name='top_instr_txt_4',
     text='The experimenter will now ask you about the music or your thoughts, and you can take a break. When you are ready for the next trial, click "NEXT".',
     font='Open Sans',
-    pos=(0, 0.15), height=0.05, wrapWidth=1.8, ori=0.0, 
+    pos=(0, 0.15), height=0.05, wrapWidth=1.65, ori=0.0, 
     color='white', colorSpace='rgb', opacity=None, 
     languageStyle='LTR',
     depth=0.0);
@@ -1078,7 +1078,7 @@ for thisBlock1 in block1:
 # playing part stopping trig
 continueRoutine = True
 routineTimer.add(1)
-stopExpTrigger = SfPlayer('P3_stop_trigger.wav')
+stopExpTrigger = SfPlayer('P3_end_trigger.wav')
 for i in range(PART_3_OUT_CHANNELS):
     mm.delInput(i) #Ensure any previous inputs are cleared
 mm.addInput(0, stopExpTrigger) #One input - the stop trigger

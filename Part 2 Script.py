@@ -97,9 +97,9 @@ frameTolerance = 0.001  # how close to onset before 'same' frame
 
 # Setup the Window
 win = visual.Window(
-    size=[1920, 1080], fullscr=True, screen=0, 
-    winType='pyglet', allowGUI=True, allowStencil=False,
-    monitor='otherExternalMonitor', color=[-0.4510, 0.0196, 0.4118], colorSpace='rgb', #Aarhus setup: size=[1920, 1080], monitor='testMonitor', screen=1 #AIM laptop: size=[1920, 1080], monitor='AIM Laptop'
+    size=[1920, 1080], fullscr=True, screen=1, 
+    winType='pyglet', allowGUI=False, allowStencil=False,
+    monitor='Aarhus DELL Monitor', color=[-0.4510, 0.0196, 0.4118], colorSpace='rgb', #Aarhus setup: size=[1920, 1080], monitor='Aarhus DELL Monitor', screen=1 #AIM laptop: size=[1920, 1080], monitor='AIM Laptop'
     blendMode='avg', useFBO=True, 
     units='height')
 # Setup ioHub
@@ -122,7 +122,7 @@ instructionsClock = core.Clock()
 top_instr_txt = visual.TextStim(win=win, name='top_instr_txt',
     text='You will hear three instruments playing together, from different directions. You will be asked to focus on one.\n\nThey will play to remind you what they sound like. After a pause they will repeat, this time with 1-3 oddballs per instrument - close your eyes and try not to move during this. Count the attended instrument\'s oddballs. You will be asked how many you heard, before a break.\n\nIf you have any questions at all please ask the experimenters.',
     font='Open Sans',
-    pos=(0, 0.15), height=0.05, wrapWidth=1.8, ori=0.0, 
+    pos=(0, 0.15), height=0.05, wrapWidth=1.65, ori=0.0, 
     color='white', colorSpace='rgb', opacity=None, 
     languageStyle='LTR',
     depth=0.0);
@@ -188,7 +188,7 @@ QuestionBreakPauseClock = core.Clock()
 oddballsQuestion = visual.TextStim(win=win, name='oddballsQuestion',
     text='How many oddballs did you hear?',
     font='Open Sans',
-    pos=(0, 0.15), height=0.05, wrapWidth=1.8, ori=0.0, 
+    pos=(0, 0.15), height=0.05, wrapWidth=1.65, ori=0.0, 
     color='white', colorSpace='rgb', opacity=None, 
     languageStyle='LTR',
     depth=0.0); 
@@ -277,7 +277,7 @@ contPracticingQClock = core.Clock()
 contPracticingQTxt = visual.TextStim(win=win, name='contPracticingQTxt',
     text="Would you like to complete another practice trial?",
     font='Open Sans',
-    pos=(0, 0.1), height=0.05, wrapWidth=1.8, ori=0.0, 
+    pos=(0, 0.1), height=0.05, wrapWidth=1.65, ori=0.0, 
     color='white', colorSpace='rgb', opacity=None, 
     languageStyle='LTR',
     depth=0.0);
@@ -1918,7 +1918,7 @@ for thisBlock1 in block1:
 # playing part stop trig
 continueRoutine = True
 routineTimer.add(1)
-stopExpTrigger = SfPlayer('P2_stop_trigger.wav')
+stopExpTrigger = SfPlayer('P2_end_trigger.wav')
 for i in range(PART_2_OUT_CHANNELS):
     mm.delInput(i) #Ensure any previous inputs are cleared
 mm.addInput(0, stopExpTrigger) #One input - the stop trigger

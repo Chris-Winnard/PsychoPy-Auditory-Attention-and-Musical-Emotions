@@ -96,9 +96,9 @@ frameTolerance = 0.001  # how close to onset before 'same' frame
 
 # Setup the Window
 win = visual.Window(
-    size=[1920, 1080], fullscr=False, screen=0, 
+    size=[1920, 1080], fullscr=True, screen=1, 
     winType='pyglet', allowGUI=False, allowStencil=False,
-    monitor='AIM Laptop', color=[-0.4510, 0.0196, 0.4118], colorSpace='rgb', #Aarhus setup: size=[1920, 1080], monitor='testMonitor', screen=1 #AIM laptop: size=[1920, 1080], monitor='AIM Laptop'
+    monitor='Aarhus DELL Monitor', color=[-0.4510, 0.0196, 0.4118], colorSpace='rgb', #Aarhus setup: size=[1920, 1080], monitor='Aarhus DELL Monitor', screen=1 #AIM laptop: size=[1920, 1080], monitor='AIM Laptop'
     blendMode='avg', useFBO=True, 
     units='height')
 # Setup ioHub
@@ -121,7 +121,7 @@ instructionsClock = core.Clock()
 instr_txt = visual.TextStim(win=win, name='instr_txt',
     text='Some music will play. Please close your eyes, and try not to move during this period. \n\nYou will then be asked to rate your emotions. You can then take a break.\n\nIf you have any questions at all please ask the experimenters.',
     font='Open Sans',
-    pos=(0, 0.15), height=0.05, wrapWidth=1.8, ori=0.0, 
+    pos=(0, 0.15), height=0.05, wrapWidth=1.65, ori=0.0, 
     color='white', colorSpace='rgb', opacity=None, 
     languageStyle='LTR',
     depth=0.0);
@@ -164,7 +164,7 @@ trialClock = core.Clock()
 text_2 = visual.TextStim(win=win, name='text_2',
     text='Please remember to ask for clarification if you are unsure of any questions.',
     font='Open Sans',
-    pos=(-0.19, 0.43), height=0.04, wrapWidth=1.7, ori=0.0, 
+    pos=(-0.19, 0.43), height=0.04, wrapWidth=1.65, ori=0.0, 
     color='white', colorSpace='rgb', opacity=None, anchorVert='top',
     languageStyle='LTR',
     depth=-1.0);
@@ -268,7 +268,7 @@ text_4 = visual.TextStim(win=win, name='text_4',
 text_3 = visual.TextStim(win=win, name='text_3',
     text='Image adapted from Buechel and Hahn, 2016. Used under the terms of the Creative Commons Attribution Non-Commercial License 4.0.\n',
     font='Open Sans',
-    pos=(0, -0.47), height=0.02, wrapWidth=1.7, ori=0.0, 
+    pos=(0, -0.47), height=0.02, wrapWidth=1.65, ori=0.0, 
     color='white', colorSpace='rgb', opacity=None, 
     languageStyle='LTR',
     depth=-3.0);
@@ -1580,7 +1580,7 @@ for thisBlock1 in block1:
 # playing part stopping trig
 continueRoutine = True
 routineTimer.add(1)
-stopExpTrigger = SfPlayer('P1_stop_trigger.wav')
+stopExpTrigger = SfPlayer('P1_end_trigger.wav')
 for i in range(PART_1_OUT_CHANNELS):
     mm.delInput(i) #Ensure any previous inputs are cleared
 mm.addInput(0, stopExpTrigger) #One input - the stop trigger
