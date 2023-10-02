@@ -73,7 +73,7 @@ win = visual.Window(
     size=[1920, 1080], fullscr=True, screen=1, 
     winType='pyglet', allowGUI=False, allowStencil=False,
     monitor='Aarhus DELL Monitor', color=[-0.4510, 0.0196, 0.4118], colorSpace='rgb', #Aarhus setup: size=[1920, 1080], monitor='Aarhus DELL Monitor', screen=1 #AIM laptop: size=[1920, 1080], monitor='AIM Laptop'
-    blendMode='avg', useFBO=True, 
+    blendMode='avg', useFBO=True,  #Monitor width is about 50.9cm, make sure PsychoPy doesn't round it down to 50cm
     units='height')
 # store frame rate of monitor if we can measure it
 expInfo['frameRate'] = win.getActualFrameRate()
@@ -113,7 +113,7 @@ gender = visual.TextStim(win=win, name='gender',
     languageStyle='LTR',
     depth=-1.0);
 genderResp = visual.Slider(win=win, name='genderResp',
-    startValue=None, size=(1.1, 0.02), pos=(0.0, 0.27), units=None,
+    startValue=None, size=(1.35, 0.02), pos=(0.0, 0.27), units=None,
     labels=("Male", "Female", "Transgender male", "Transgender female", "Other (please specify)"), ticks=(0, 1, 2, 3, 4), granularity=1.0,
     style='radio', styleTweaks=(), opacity=None,
     labelColor='LightGray', markerColor='Red', lineColor='White', colorSpace='rgb',
@@ -240,7 +240,7 @@ tired = visual.TextStim(win=win, name='tired',
     languageStyle='LTR',
     depth=-2.0);
 tiredResp = visual.Slider(win=win, name='tiredResp',
-    startValue=None, size=(1.1, 0.02), pos=(0.0, 0.16), units=None,
+    startValue=None, size=(1.35, 0.02), pos=(0.0, 0.16), units=None,
     labels=("1", "2","3","4","5"), ticks=(1, 2, 3, 4, 5), granularity=1.0,
     style='rating', styleTweaks=(), opacity=None,
     labelColor='LightGray', markerColor='Red', lineColor='White', colorSpace='rgb',
@@ -254,7 +254,7 @@ wired = visual.TextStim(win=win, name='wired',
     languageStyle='LTR',
     depth=-4.0);
 wiredResp = visual.Slider(win=win, name='wiredResp',
-    startValue=None, size=(1.1, 0.02), pos=(0.0, -0.06), units=None,
+    startValue=None, size=(1.35, 0.02), pos=(0.0, -0.06), units=None,
     labels=("1", "2","3","4","5"), ticks=(1, 2, 3, 4, 5), granularity=1.0,
     style='rating', styleTweaks=(), opacity=None,
     labelColor='LightGray', markerColor='Red', lineColor='White', colorSpace='rgb',
@@ -310,7 +310,7 @@ moodValence = visual.TextStim(win=win, name='moodValence',
     languageStyle='LTR',
     depth=-6.0);
 moodValenceResp = visual.Slider(win=win, name='moodValenceResp',
-    startValue=None, size=(1.1, 0.02), pos=(0.0, 0.16), units=None,
+    startValue=None, size=(1.35, 0.02), pos=(0.0, 0.16), units=None,
     labels=("Very negative", "Neutral", "Very positive"), ticks=(0,1,2,3,4,5,6,7,8,9,10), granularity=0.0,
     style='rating', styleTweaks=(), opacity=None,
     labelColor='LightGray', markerColor='Red', lineColor='White', colorSpace='rgb',
@@ -324,7 +324,7 @@ moodArousal = visual.TextStim(win=win, name='moodArousal',
     languageStyle='LTR',
     depth=-5.0);
 moodArousalResp = visual.Slider(win=win, name='moodArousalResp',
-    startValue=None, size=(1.1, 0.02), pos=(0.0, -0.06), units=None,
+    startValue=None, size=(1.35, 0.02), pos=(0.0, -0.06), units=None,
     labels=("Very passive", "Neutral", "Very active"), ticks=(0,1,2,3,4,5,6,7,8,9,10), granularity=0.0,
     style='rating', styleTweaks=(), opacity=None,
     labelColor='LightGray', markerColor='Red', lineColor='White', colorSpace='rgb',
@@ -338,7 +338,7 @@ moodDominance = visual.TextStim(win=win, name='moodDominance',
     languageStyle='LTR',
     depth=-7.0);
 moodDominanceResp = visual.Slider(win=win, name='moodDominanceResp',
-    startValue=None, size=(1.1, 0.02), pos=(0.0, -0.28), units=None,
+    startValue=None, size=(1.35, 0.02), pos=(0.0, -0.28), units=None,
     labels=("Very submissive", "Neutral", "Very dominant"), ticks=(0,1,2,3,4,5,6,7,8,9,10), granularity=0.0,
     style='rating', styleTweaks=(), opacity=None,
     labelColor='LightGray', markerColor='Red', lineColor='White', colorSpace='rgb',
