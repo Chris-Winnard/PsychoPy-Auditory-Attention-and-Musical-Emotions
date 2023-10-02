@@ -237,7 +237,7 @@ panningFeedbackPg_txt = visual.TextStim(win=win, name='panningFeedbackPg_txt',
     languageStyle='LTR',
     depth=-1.0);
 panningChangeResp = visual.Slider(win=win, name='panningChangeResp',
-    startValue=0, size=(1.1, 0.025), pos=(0.0, 0.0), units=None,
+    startValue=0, size=(1.35, 0.025), pos=(0.0, 0.0), units=None,
     labels=("90° left", "No change", "90° right"), ticks=(-90,-80,-70,-60,-50,-40,-30,-20,-10,0,10,20,30,40,50,60,70,80,90), granularity=0.0,
     style='rating', styleTweaks=(), opacity=None,
     labelColor='LightGray', markerColor='Red', lineColor='White', colorSpace='rgb',
@@ -2034,10 +2034,10 @@ win.flip()
 s.stop()
 s.shutdown()
 
-os.remove("Temp.wav") #Not strictly needed, keeps things terse.
-os.remove("TempMix.wav")
 
 ##########################################################################################################################################
 #DON'T FORGET TO RUN OTHER FILE (ON SPYDER) TO CREATE PERSONALISED STIMULI/LISTS/TRIGS.
 win.close()
+os.remove("Temp.wav") #Not strictly needed, keeps things terse.
+os.remove("TempMix.wav")
 core.quit()
