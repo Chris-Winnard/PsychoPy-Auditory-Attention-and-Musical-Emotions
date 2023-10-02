@@ -839,7 +839,7 @@ while continueRoutine:
             if sum(buttons) > 0:  # state changed to a new click
                 # check if the mouse was inside our 'clickable' objects
                 gotValidClick = False
-                if (nextButton.status == STARTED and (genderResp.rating or genderResp.rating == 0.0) and ageResp.text and nationalityResp.text and originCountryResp.text):
+                if (nextButton.status == STARTED and (genderResp.rating or genderResp.rating == 0.0) and (ageResp.text).isdigit() and nationalityResp.text and originCountryResp.text):
                     try:
                         iter(nextButton)
                         clickableList = nextButton
@@ -853,7 +853,7 @@ while continueRoutine:
                         continueRoutine = False  # abort routine on response
                         
     # *nextButton* updates
-    if (nextButton.status == NOT_STARTED and gotValidGender and ageResp.text and nationalityResp.text and originCountryResp.text):
+    if (nextButton.status == NOT_STARTED and gotValidGender and (ageResp.text).isdigit() and nationalityResp.text and originCountryResp.text):
         # keep track of start time/frame for later
         nextButton.frameNStart = frameN  # exact frame index
         nextButton.tStart = t  # local t and not account for scr refresh
