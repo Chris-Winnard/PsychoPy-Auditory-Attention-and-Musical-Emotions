@@ -604,6 +604,7 @@ while True:
     continueRoutine = True
 # update component parameters for each repeat
     panningChangeResp.reset()
+    panningChangeResp.markerPos = 0
 # setup some python lists for storing info about the mouse2_2
     mouse2_2.clicked_name = []
     gotValidClick = False  # until a click is received
@@ -712,8 +713,8 @@ while True:
     
     # the Routine "panningFeedbackPg" was not non-slip safe, so reset the non-slip timer
     routineTimer.reset()
-        
-    if panningChangeResp.getRating() != None:
+      
+    if panningChangeResp.markerPos != 0:
         changeDegrees = float(panningChangeResp.getRating())
         currentPan += changeDegrees*(1/90)
         contAdjustingInstP1 = True
