@@ -853,6 +853,7 @@ for thisBlock0 in block0:
     buttons = mouse_4.getPressed()
                 
     oddballsMinusResp = float(f'{attendedOddballs}') - float(oddballsResp.text)
+
     block0.addData('oddballsMinusResp', oddballsMinusResp)
     thisExp.nextEntry() #Next row on the record.
     oddballsResp.reset()
