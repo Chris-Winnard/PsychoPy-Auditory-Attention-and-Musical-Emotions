@@ -2,18 +2,15 @@ import pathlib
 import glob
 import os
 import soundfile as sf
-import librosa
 import numpy as np
-from numpy.random import default_rng
 from pydub import AudioSegment
 import re
 import xlsxwriter
-import argparse
 from utils.SerialTriggerEncoder import SerialTriggerEncoder
 
 
 #Find participant full path just from their ID
-participantID = "P06"
+participantID = "P02"
 
 #Find the stimuli path:
 currentFolderPath = pathlib.Path(__file__).parent.resolve()
