@@ -97,7 +97,7 @@ frameTolerance = 0.001  # how close to onset before 'same' frame
 
 # Setup the Window
 win = visual.Window(
-    size=[1920, 1080], fullscr=True, screen=1, 
+    size=[1920, 1080], fullscr=True, screen=0, 
     winType='pyglet', allowGUI=False, allowStencil=False,
     monitor='Aarhus DELL Monitor', color=[-0.4510, 0.0196, 0.4118], colorSpace='rgb', #Aarhus setup: size=[1920, 1080], monitor='Aarhus DELL Monitor', screen=1 #AIM laptop: size=[1920, 1080], monitor='AIM Laptop'
     blendMode='avg', useFBO=True, 
@@ -728,15 +728,6 @@ for thisBlock0 in block0:
         if hasattr(thisComponent, "setAutoDraw"):
             thisComponent.setAutoDraw(False)
     
-    if attendedInst == 'Vibr':
-        block0.addData('attendedInst', 'Vibr')
-        print("Vibraphone was attended.")
-    elif attendedInst == 'Harm':
-        block0.addData('attendedInst', 'Harm')
-        print("Harmonica was attended.")
-    elif attendedInst == 'Keyb':
-        block0.addData('attendedInst', 'Keyb')
-        print("Keyboard was attended.")
     # the Routine "trial" was not non-slip safe, so reset the non-slip timer
     routineTimer.reset()
     

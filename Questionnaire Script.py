@@ -49,6 +49,19 @@ with open(groupAssignmentFile, 'r') as f:
     f.close
 
 filename = participantPath + '/Questionnaire Data'
+
+#In case the code has been run previously for the same participant, handle to delete existing files;
+filenameCSV = filename+ '.csv'
+filenamePSYDAT = filename+ '.psydat'
+filenameLOG = filename+ '.log'
+
+if os.path.isfile(filenameCSV):
+    os.remove(filenameCSV)
+if os.path.isfile(filenamePSYDAT):
+    os.remove(filenamePSYDAT)
+if os.path.isfile(filenameLOG):
+    os.remove(filenameLOG)
+
 jsonfilename = filename + '_stimuli.json'
 jsondata = {}
 jsondata['trials'] = []
@@ -70,7 +83,7 @@ frameTolerance = 0.001  # how close to onset before 'same' frame
 
 # Setup the Window
 win = visual.Window(
-    size=[1920, 1080], fullscr=True, screen=1, 
+    size=[1920, 1080], fullscr=True, screen=0, 
     winType='pyglet', allowGUI=False, allowStencil=False,
     monitor='Aarhus DELL Monitor', color=[-0.4510, 0.0196, 0.4118], colorSpace='rgb', #Aarhus setup: size=[1920, 1080], monitor='Aarhus DELL Monitor', screen=1 #AIM laptop: size=[1920, 1080], monitor='AIM Laptop'
     blendMode='avg', useFBO=True,  #Monitor width is about 50.9cm, make sure PsychoPy doesn't round it down to 50cm
@@ -2140,15 +2153,15 @@ win.flip()
 #Save csv of data:
 thisExp.saveAsWideText(filename+'.csv', delim='auto')
 thisExp.saveAsPickle(filename)
+thisExp.abort()
 #Calculate GSMI score:
 Questionnaire_GSMI_Score_Calculator.calcAndWrite(filename+'.csv')
 
+#thisExp.abort()  # or data files will save again on exit
 logging.flush()
 
 # make sure everything is closed down
 if eyetracker:
     eyetracker.setConnectionState(False)
-thisExp.abort()  # or data files will save again on exit
 win.close()
-
 core.quit()
