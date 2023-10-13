@@ -10,7 +10,7 @@ from utils.SerialTriggerEncoder import SerialTriggerEncoder
 
 
 #Find participant full path just from their ID
-participantID = "P02"
+participantID = "P12"
 
 #Find the stimuli path:
 currentFolderPath = pathlib.Path(__file__).parent.resolve()
@@ -537,7 +537,7 @@ def Part2TrialTrigMaker(participantPath):
     out_folder = participantPath + "/P2 Trigger Files"
     os.path.abspath(out_folder) #E.g "P04/P2 Trigger Files"
     sr = 22050 #sampling rate=
-    clkSerial = 10.0 #Clock rate of trigger. Default value is 10.0 Hz.")
+    clkSerial = 16.0 #Clock rate of trigger. Default value is 16.0 Hz.")
     
     #First, let's read and convert the start time data. This will also be useful for part 4.
     startTimesFile = participantPath + "\Oddball Start Times.txt"
