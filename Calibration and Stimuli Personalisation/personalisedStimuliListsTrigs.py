@@ -18,7 +18,7 @@ upperFolderPath = currentFolderPath.parent.resolve()
 
 #Create output path:
 dataPath = str(upperFolderPath) + "/Data/"
-TriggerConfigFile = r"C:\Users\cjwin\OneDrive - Queen Mary, University of London\Documents\Music Interestingness in the Brain\Par 22-9-23\Trigger Generation (Not Inc P2 Trial Trigs)\Trigger Config.xlsx"
+TriggerConfigFile = str(upperFolderPath) + "/Trigger Generation (Not Inc P2 Trial Trigs)/Trigger Config.xlsx"
 
 
 groupAssignmentFile = dataPath + "/Participant Groups.txt" #Needed for taking collecting stimuli, and saving to right place:
