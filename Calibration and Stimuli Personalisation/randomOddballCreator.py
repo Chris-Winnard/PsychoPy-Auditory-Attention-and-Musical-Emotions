@@ -15,7 +15,7 @@ stimuliPath = str(upperFolderPath) + "/Stimuli"
 
 #Create output path:
 dataPath = str(upperFolderPath) + "/Data/"
-participantNo = "P06"
+participantNo = "P01" #GRACE PERIOD IS ODDBALL LENGTH + 1 sec
 
 
 groupAssignmentFile = dataPath + "/Participant Groups.txt" #Needed for taking collecting stimuli, and saving to right place:
@@ -80,41 +80,24 @@ def createOddball(signalCopy, start, actualOB_length):
     return oddball
 
 #Function to add random oddballs:
-def addOddballs(signalCopy, forbiddenOddballPeriods_Starts):
+def addOddballs(signalCopy, forbiddenOddballPeriods_Starts, possibleStartTimes):
     numberOddballs = random.randint(1, 3) #From uniform dist.
     startTimes = np.zeros(numberOddballs)
-    
-    excludedStartTimes = []
+    gracePeriod = idealOB_length+10*tenthSec
     
     #We set it up so that oddballs can't overlap (+/- 1 oddball length buffer period around existing start times). Also include a 1s grace period either side. This applies both WITHIN streams, and between them.
-    
-    #Create chain for excluded ranges. Turn chains into tuples so they can be reused.
-    if len(forbiddenOddballPeriods_Starts) >= 1:
-        excludedStartTimes = range(forbiddenOddballPeriods_Starts[0] -idealOB_length-10*tenthSec, forbiddenOddballPeriods_Starts[0] + idealOB_length+10*tenthSec)
+    for i in range(0, len(forbiddenOddballPeriods_Starts)):
+        lowerLimit = forbiddenOddballPeriods_Starts[i] - gracePeriod
+        upperLimit = forbiddenOddballPeriods_Starts[i] + gracePeriod
+        if upperLimit > max(possibleStartTimes):
+          upperLimit = max(possibleStartTimes)
+        for j in range(lowerLimit, upperLimit):
+            possibleStartTimes = np.delete(possibleStartTimes, np.where(possibleStartTimes == j))   
+        possibleStartTimes = np.asarray(possibleStartTimes, 'int')
         
-        if len(forbiddenOddballPeriods_Starts) >= 2:
-            x2 = range(forbiddenOddballPeriods_Starts[1] -idealOB_length-10*tenthSec, forbiddenOddballPeriods_Starts[1] + idealOB_length+10*tenthSec)
-            excludedStartTimes = tuple(chain(excludedStartTimes, x2))
-            
-            if len(forbiddenOddballPeriods_Starts) >= 3:
-                x3 = range(forbiddenOddballPeriods_Starts[2] - idealOB_length-10*tenthSec, forbiddenOddballPeriods_Starts[2] + idealOB_length+10*tenthSec)
-                excludedStartTimes = tuple(chain(excludedStartTimes, x3))
-                
-                if len(forbiddenOddballPeriods_Starts) >= 4:
-                    x4 = range(forbiddenOddballPeriods_Starts[3] - idealOB_length-10*tenthSec, forbiddenOddballPeriods_Starts[3] + idealOB_length+10*tenthSec)
-                    excludedStartTimes = tuple(chain(excludedStartTimes, x4))
-                    
-                    if len(forbiddenOddballPeriods_Starts) >= 5:
-                        x5 = range(forbiddenOddballPeriods_Starts[4] - idealOB_length-10*tenthSec, forbiddenOddballPeriods_Starts[4] + idealOB_length+10*tenthSec)
-                        excludedStartTimes = tuple(chain(excludedStartTimes, x5))
-                        
-                        if len(forbiddenOddballPeriods_Starts) == 6:
-                            x6 = range(forbiddenOddballPeriods_Starts[5] - idealOB_length-10*tenthSec, forbiddenOddballPeriods_Starts[5] + idealOB_length+10*tenthSec)
-                            excludedStartTimes = tuple(chain(excludedStartTimes, x6))
-
     for i in range(numberOddballs):
         
-    #NOTE: We use a grace period at start, and accounting for time oddball might play at end. Also a grace period of +/- one oddball length either side - so you can't have two
+    #NOTE: We use a grace period at start, and accounting for time oddball might play at end. Also a grace period of +/- one second either side - so you can't have two
     #simultaneously, or even one straight after another. forbiddenOddballPeriods_Starts added in to implement this between streams.
 
         if i == 0:
@@ -122,8 +105,7 @@ def addOddballs(signalCopy, forbiddenOddballPeriods_Starts):
             #Also, oddball lengths must fall within certain tolerances
             
             while validOddball == False:
-                start1 = choice([j for j in possibleStartTimes if j not in excludedStartTimes])
-                
+                start1 = choice([j for j in possibleStartTimes])
                 #Find the zero crossing closest to start1 + an idealised oddball length:
                 shiftedPossStartTimes = possibleStartTimes - start1
                 end1Index = (np.abs(shiftedPossStartTimes - idealOB_length)).argmin()
@@ -139,15 +121,21 @@ def addOddballs(signalCopy, forbiddenOddballPeriods_Starts):
             startTimes[i] = start1
             signalCopy[start1:start1+actualOB_length1] = oddball1 #Insert the oddball.
             
-            #Add oddball and the surrounding period to excludedStartTimes:
-            x7 = range(start1-actualOB_length1-10*tenthSec, start1+actualOB_length1+10*tenthSec)
-            excludedStartTimes = tuple(chain(excludedStartTimes, x7))
+            #Remove oddball and the surrounding period from possibleStartTimes:
+            lowerLimit = start1 - gracePeriod
+            upperLimit = start1 + gracePeriod
+            
+            if upperLimit > max(possibleStartTimes):
+              upperLimit = max(possibleStartTimes)
+            for j in range(lowerLimit, upperLimit):
+                possibleStartTimes = np.delete(possibleStartTimes, np.where(possibleStartTimes == j))
+            possibleStartTimes = np.asarray(possibleStartTimes, 'int')
 
         if i == 1:      
             validOddball = False
             
             while validOddball == False:
-                start2 = choice([j for j in possibleStartTimes if j not in excludedStartTimes])
+                start2 = choice([j for j in possibleStartTimes])
                 
                 shiftedPossStartTimes = possibleStartTimes - start2
                 end2Index = (np.abs(shiftedPossStartTimes - idealOB_length)).argmin()
@@ -163,14 +151,21 @@ def addOddballs(signalCopy, forbiddenOddballPeriods_Starts):
             startTimes[i] = start2
             signalCopy[start2:start2+actualOB_length2] = oddball2
             
-            x8 = range(start2-actualOB_length2-10*tenthSec, start2+actualOB_length2+10*tenthSec)
-            excludedStartTimes = tuple(chain(excludedStartTimes, x8))
+            #Add oddball and the surrounding period to excludedStartTimes:
+            lowerLimit = start2 - gracePeriod
+            upperLimit = start2 + gracePeriod
+            
+            if upperLimit > max(possibleStartTimes):
+              upperLimit = max(possibleStartTimes)
+            for j in range(lowerLimit, upperLimit):
+                possibleStartTimes = np.delete(possibleStartTimes, np.where(possibleStartTimes == j))   
+            possibleStartTimes = np.asarray(possibleStartTimes, 'int')
             
         if i == 2:
             validOddball = False
             
             while validOddball == False:
-                start3 = choice([j for j in possibleStartTimes if j not in excludedStartTimes])
+                start3 = choice([j for j in possibleStartTimes])
                 
                 shiftedPossStartTimes = possibleStartTimes - start3
                 end3Index = (np.abs(shiftedPossStartTimes - idealOB_length)).argmin()
@@ -190,12 +185,12 @@ def addOddballs(signalCopy, forbiddenOddballPeriods_Starts):
 
 def oddballFileWriter(currentFilename, signal, attendedInst):
         pause = np.zeros(110250)
-        forbiddenOddballPeriods_Starts = oddballsForbidden(currentFilename) #Prevents overlapping/consecutive oddballs BETWEEN STREAMS to avoid participant confusion.                
-        augmentedSignalCopy, startTimes = addOddballs(signal, forbiddenOddballPeriods_Starts)
+        forbiddenOddballPeriods_Starts = oddballsForbidden(currentFilename, attendedInst) #Prevents overlapping/consecutive oddballs BETWEEN STREAMS to avoid participant confusion.                
+        augmentedSignalCopy, startTimes = addOddballs(signal, forbiddenOddballPeriods_Starts, possibleStartTimes)
 
         #Create and write oddball file:
         oddballStimulusFull = np.concatenate((originalSignalCopy, pause, augmentedSignalCopy))
-        sf.write(participantPath + "/" + str(currentFilename)[:-4] + " Oddball Test-" + attendedInst + " Attended.wav", oddballStimulusFull, sr)
+        sf.write(participantPath + "/" + str(currentFilename)[:-4] + " Oddball Test-" + attendedInst + ".wav", oddballStimulusFull, sr)
         
         #Record when oddballs start:   
             
@@ -203,22 +198,22 @@ def oddballFileWriter(currentFilename, signal, attendedInst):
         startTimes += 35 #Accounts for first playing and the 5s pause
         startTimes = str(startTimes)
         with open(startTimesFile, 'a') as f:
-            f.write("Oddball Start Times for \"" + str(currentFilename)[:-4] + " Oddball Test-" + attendedInst + " Attended.wav\": ")
+            f.write("Oddball Start Times for \"" + str(currentFilename)[:-4] + " Oddball Test-" + attendedInst + ".wav\": ")
             f.write(startTimes)
             f.write("\n")
             f.close
 
 
-def oddballsForbidden(currentFilename):
+def oddballsForbidden(currentFilename, attendedInst):
     "Prevents overlapping/consecutive oddballs BETWEEN STREAMS, to avoid participant confusion."
     
-    setNumber = currentFilename[3]
-    forbiddenOddballPeriods_Starts = np.array([])
+    setString = currentFilename[:5]
     
+    forbiddenOddballPeriods_Starts = np.array([])
     with open(startTimesFile, 'r') as f:
-        lines = f.readlines(-8) #Read last 8 lines in the file.
+        lines = f.readlines(-6) #Read last 6 lines in the file.
         for line in lines:
-            if "Set" + setNumber in line and attendedInst + " Attended" in line: #E.g Set4 Harm attended- should be up to two lines already written.
+            if setString in line and attendedInst in line: #E.g Set04 ... Harm attended- should be up to two lines already written.
                 forbiddenOddballPeriods_StartsOneInstrument = np.array([re.findall("\d+\.\d+", line)]) #E.g, start times for vibraphone oddballs
                 forbiddenOddballPeriods_Starts = np.append(forbiddenOddballPeriods_Starts, forbiddenOddballPeriods_StartsOneInstrument) #For all other instruments in the set.
         f.close
@@ -249,7 +244,6 @@ for file in os.scandir(thisParticipantStimuliPath):
         #Only want start times at zero crossings:
         crossingsBoolean = librosa.zero_crossings(signal) #Threshold OK?
         possibleStartTimes = np.array([])
-        
         for i in range(adaptedSignalStart, adaptedSignalEnd): #Only in acceptable range...
             if crossingsBoolean[i] == True: #...and only zero-crossings
                 possibleStartTimes = np.append(possibleStartTimes, i)
@@ -259,16 +253,16 @@ for file in os.scandir(thisParticipantStimuliPath):
         
         #Have multiple versions, all with random oddballs. This means that e.g for Set1 mix with Vibr attended
         #there will be different vibraphone oddballs to Set1 mix with Keyb attended
-        attendedInst = "Vibr"
+        attendedInst = "Vibr Attended"
         oddballFileWriter(currentFilename, signal, attendedInst)
         
         signal, sr = librosa.load(file)
         signal = signal[0:661500] #Removing any excess points, so pieces are EXACTLY 30s long.
         
-        attendedInst = "Harm"
+        attendedInst = "Harm Attended"
         oddballFileWriter(currentFilename, signal, attendedInst)
         
         signal, sr = librosa.load(file)
         signal = signal[0:661500] #Removing any excess points, so pieces are EXACTLY 30s long.
-        attendedInst = "Keyb"
+        attendedInst = "Keyb Attended"
         oddballFileWriter(currentFilename, signal, attendedInst)

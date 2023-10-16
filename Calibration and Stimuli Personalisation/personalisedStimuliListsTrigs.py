@@ -10,7 +10,7 @@ from utils.SerialTriggerEncoder import SerialTriggerEncoder
 
 
 #Find participant full path just from their ID
-participantID = "P12"
+participantID = "P01"
 
 #Find the stimuli path:
 currentFolderPath = pathlib.Path(__file__).parent.resolve()
