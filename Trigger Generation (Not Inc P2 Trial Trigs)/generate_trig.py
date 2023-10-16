@@ -44,7 +44,7 @@ if __name__ == '__main__':
     parser.add_argument("--out_folder", type=str, required=True, help="output folder")
     parser.add_argument("--sr", type=int, default=22050, help="sampling rate. Default value is 22050.")
     parser.add_argument("--channels", type=int, default=1, help="number of output channels. Default value is 1.")
-    parser.add_argument("--triggerClk", type=float, default=10.0, help="Clock rate of trigger. Default value is 10.0 Hz.")
+    parser.add_argument("--triggerClk", type=float, default=16.0, help="Clock rate of trigger. Default value is 16.0 Hz.")
     args = parser.parse_args()
 
     stim_folder =  os.path.abspath("Stimuli")
