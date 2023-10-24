@@ -87,6 +87,7 @@ def checkTrigTimes(participantPath):
     ########################################################################################################################################################
     minorProblems = 0
     majorProblems = 0
+    oddballOverlaps_FirstTime = []
     
     for file in os.scandir(participantPath):
      if "Oddball Test Mix" in file.name:
@@ -113,11 +114,92 @@ def checkTrigTimes(participantPath):
                         print("These are in file: " + name)
                         print("\n")
                         majorProblems += 1
+                        
+                        fileAndFirstOddball = [file.name, time1]
+                        oddballOverlaps_FirstTime.append(fileAndFirstOddball)
             
-    return minorProblems, majorProblems
+    return minorProblems, majorProblems, oddballOverlaps_FirstTime
 
 #################################################################################################################################################
 
-minorProblems, majorProblems = checkTrigTimes(participantPath)
+minorProblems, majorProblems, oddballOverlaps_FirstTime = checkTrigTimes(participantPath)
 print(minorProblems)
 print(majorProblems)
+
+#Now run a very similar test, but just to check if triggers specifically likely to be overlapping:
+    
+#To deal with practice trials, need to specify the number and the stimuli used. If not run expt yet, leave this blank
+practiceTrialStimuliPlayed = ["Set04-Oddball Test Mix-Harm Attended.wav", "Set04-Oddball Test Mix-Vibr Attended.wav"]
+
+practiceTrialStimuliAll = ["Set01-Oddball Test Mix-Keyb Attended.wav", "Set01-Oddball Test Mix-Harm Attended.wav", "Set01-Oddball Test Mix-Vibr Attended.wav", "Set04-Oddball Test Mix-Keyb Attended.wav", "Set04-Oddball Test Mix-Harm Attended.wav", "Set04-Oddball Test Mix-Vibr Attended.wav"]
+
+practiceTrialStimuliNotPlayed = filtered_list = list(set(practiceTrialStimuliAll).difference(practiceTrialStimuliPlayed))
+
+
+
+def checkTrigTimes_Specific(participantPath):
+    trig_clk = 16.0 #Hz. Correct for P03??
+    secsPerTrig = 8/16.0 #8 bits per trig
+    
+    #################################################################################################################################################
+
+    def oddballTrigs_Specific(filename):
+        
+        #Include times of start/end/oddballs in the metafile? At v least, have the order correct in metafile? <<Is it possible that the audio oddballs
+        #themselves aren't playing in right order? E.g, all 149 ones going before 150 ones in audio file???
+        attendedInst = filename[-17:-13]
+        
+        thisMixVibr = filename[0:6] + "Vibr Oddball Test-" + filename[-17:] #E.g, Set01-Oddball Test Mix-Harm Attended.wav -> Set01-Vibr Oddball Test-Harm Attended.wav
+        thisMixHarm = filename[0:6] + "Harm Oddball Test-" + filename[-17:] #E.g, Set01-Oddball Test Mix-Harm Attended.wav -> Set01-Harm Oddball Test-Harm Attended.wav
+        thisMixKeyb = filename[0:6] + "Keyb Oddball Test-" + filename[-17:] 
+        
+        linesReadFrom = 0        
+        for line in lines:
+            if thisMixVibr in line:
+                vibrOddballStartTimes = re.findall("\d+\.\d+", line) 
+                linesReadFrom += 1
+            elif thisMixHarm in line:
+                harmOddballStartTimes = re.findall("\d+\.\d+", line)
+                linesReadFrom += 1
+            elif thisMixKeyb in line:
+                keybOddballStartTimes = re.findall("\d+\.\d+", line)
+                linesReadFrom += 1
+            
+            if linesReadFrom == 3:
+                break
+        
+        allOBTimes = vibrOddballStartTimes + harmOddballStartTimes + keybOddballStartTimes
+        
+        return allOBTimes
+        
+    ########################################################################################################################################################
+    expectedTrigOverlaps = 0
+    oddballOverlaps_FirstTime = []
+    
+    for file in os.scandir(participantPath):
+     if "Oddball Test Mix" in file.name and file.name not in practiceTrialStimuliNotPlayed:
+        name = file.name
+        oddballTimes = oddballTrigs_Specific(name)
+        for i in range(len(oddballTimes)):
+            for j in range(i, len(oddballTimes)):
+                if i != j:
+                    time1 = float(oddballTimes[i])
+                    time2 = float(oddballTimes[j])
+                    testBool = math.isclose(time1, time2,abs_tol = secsPerTrig)
+                    
+                    if testBool == True:
+                        print("Warning - found a trigger overlap.")
+         
+                        print("These are in file: " + name)
+                        print("\n")
+                        expectedTrigOverlaps += 1
+                        
+                        fileAndFirstOddball = [file.name, time1, time2]
+                        oddballOverlaps_FirstTime.append(fileAndFirstOddball)
+            
+    return expectedTrigOverlaps, oddballOverlaps_FirstTime
+
+expectedTrigOverlaps, oddballOverlaps_FirstTime = checkTrigTimes_Specific(participantPath)
+
+print(oddballOverlaps_FirstTime)
+print(expectedTrigOverlaps)
