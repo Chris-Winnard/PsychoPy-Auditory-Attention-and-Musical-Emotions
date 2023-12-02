@@ -50,13 +50,14 @@ _thisDir = os.path.dirname(os.path.abspath(__file__))
 os.chdir(_thisDir)
 # Store info about the experiment session
 psychopyVersion = '2022.1.3'
-expName = 'Part 1'  # from the Builder filename that created this script
+task = 'emotion'  # from the Builder filename that created this script
 expInfo = {'Participant ID': ''}
-dlg = gui.DlgFromDict(dictionary=expInfo, sortKeys=False, title=expName)
+dlg = gui.DlgFromDict(dictionary=expInfo, sortKeys=False, title=task)
 if dlg.OK == False:
     core.quit()  # user pressed cancel
 expInfo['date'] = data.getDateStr()  # add a simple timestamp
-expInfo['expName'] = expName
+expInfo['task'] = task
+expInfo['psychopyVersion'] = psychopyVersion
 
 # Data file name stem = absolute path + name; later add .psyexp, .csv, .log, etc
 dataPath = _thisDir + "/Data/"
@@ -73,14 +74,23 @@ with open(groupAssignmentFile, 'r') as f:
         elif "Group B2" in line and expInfo['Participant ID'] in line:
             participantPath = dataPath + "Group B2/" + expInfo['Participant ID']
     f.close
-
+    
+if os.path.isfile(filenameCSV):
+    os.remove(filenameCSV)
+if os.path.isfile(filenamePSYDAT):
+    os.remove(filenamePSYDAT)
+if os.path.isfile(filenameLOG):
+    os.remove(filenameLOG)
+    
 filename = participantPath + '/Part 1 Data'
 jsonfilename = filename + '_stimuli.json'
 jsondata = {}
 jsondata['trials'] = []
 
+expInfo['Participant ID'] = "sub-" + expInfo['Participant ID'][-2:] #BIDS format
+
 # An ExperimentHandler isn't essential but helps with data saving
-thisExp = data.ExperimentHandler(name=expName,
+thisExp = data.ExperimentHandler(name=task,
     extraInfo=expInfo, runtimeInfo=None,
     originPath= _thisDir + '/Part 1 Script.py',
     savePickle=True, saveWideText=True,
@@ -521,8 +531,7 @@ routineTimer.reset()
 #block0 contains the practice trial. Additional practice trials can be added in.
 # set up handler to look after randomisation of conditions etc
 #Note we only want ONE piece to be picked for practice trial - later we include a break to deal with this.
-block0 = data.TrialHandler(nReps=1.0, method='random', 
-    extraInfo=expInfo, originPath=-1,
+block0 = data.TrialHandler(nReps=1.0, method='random', originPath=-1,
     trialList=data.importConditions(participantPath + '\practiceStimuliList.xlsx', selection='0:3'),
     seed=None, name='block0')
 thisExp.addLoop(block0)  # add the loop to the experiment
@@ -1090,8 +1099,7 @@ routineTimer.reset()
 # end of playing part starting trig
 
 # set up handler to look after randomisation of conditions etc
-block1 = data.TrialHandler(nReps=1.0, method='random', 
-    extraInfo=expInfo, originPath=-1,
+block1 = data.TrialHandler(nReps=1.0, method='random', originPath=-1,
     trialList=data.importConditions(participantPath + '\stimuliList.xlsx', selection='0:15'),
     seed=None, name='block1')
 thisExp.addLoop(block1)  # add the loop to the experiment

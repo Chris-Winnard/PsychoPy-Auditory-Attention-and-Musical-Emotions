@@ -51,13 +51,15 @@ _thisDir = os.path.dirname(os.path.abspath(__file__))
 os.chdir(_thisDir)
 # Store info about the experiment session
 psychopyVersion = '2022.1.3'
-expName = 'Part 2'  # from the Builder filename that created this script
+task = 'attnMultInstOBs'  # from the Builder filename that created this script
 expInfo = {'Participant ID': ''}
-dlg = gui.DlgFromDict(dictionary=expInfo, sortKeys=False, title=expName)
+dlg = gui.DlgFromDict(dictionary=expInfo, sortKeys=False, title=task)
 if dlg.OK == False:
     core.quit()  # user pressed cancel
 expInfo['date'] = data.getDateStr()  # add a simple timestamp
-expInfo['expName'] = expName
+expInfo['task'] = attnMultInstOBs
+expInfo['psychopyVersion'] = psychopyVersion
+
 # Data file name stem = absolute path + name; later add .psyexp, .csv, .log, etc
 dataPath = _thisDir + "/Data/"
 
@@ -80,8 +82,10 @@ jsonfilename = filename + '_oddballStimuli.json'
 jsondata = {}
 jsondata['trials'] = []
 
+expInfo['Participant ID'] = "sub-" + expInfo['Participant ID'][-2:] #BIDS format
+
 # An ExperimentHandler isn't essential but helps with data saving
-thisExp = data.ExperimentHandler(name=expName,
+thisExp = data.ExperimentHandler(name=task,
     extraInfo=expInfo, runtimeInfo=None,
     originPath= _thisDir + '/Part 2 Script.py',
     savePickle=True, saveWideText=True,
@@ -560,8 +564,7 @@ routineTimer.reset()
 
 #Practice trials:
 # set up handler to look after randomisation of conditions etc
-block0 = data.TrialHandler(nReps=1.0, method='random', 
-    extraInfo=expInfo, originPath=-1,
+block0 = data.TrialHandler(nReps=1.0, method='random', originPath=-1,
     trialList=data.importConditions(participantPath + '\practiceOddballStimuliList.xlsx', selection='0:6'),
     seed=None, name='block0')
 thisExp.addLoop(block0)  # add the loop to the experiment
@@ -1377,8 +1380,7 @@ routineTimer.reset()
 # end of playing part starting trig
 
 # set up handler to look after randomisation of conditions etc
-block1 = data.TrialHandler(nReps=1.0, method='random', 
-    extraInfo=expInfo, originPath=-1,
+block1 = data.TrialHandler(nReps=1.0, method='random', originPath=-1,
     trialList=data.importConditions(participantPath + '\oddballStimuliList.xlsx', selection='0:15'),
     seed=None, name='block1')
 thisExp.addLoop(block1)  # add the loop to the experiment

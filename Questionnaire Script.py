@@ -23,13 +23,13 @@ _thisDir = os.path.dirname(os.path.abspath(__file__))
 os.chdir(_thisDir)
 # Store info about the experiment session
 psychopyVersion = '2022.1.3'
-expName = 'Questionnaire'  # from the Builder filename that created this script
+task = 'questionnaire'  # from the Builder filename that created this script
 expInfo = {'Participant ID': ''}
-dlg = gui.DlgFromDict(dictionary=expInfo, sortKeys=False, title=expName)
+dlg = gui.DlgFromDict(dictionary=expInfo, sortKeys=False, title=task)
 if dlg.OK == False:
     core.quit()  # user pressed cancel
 expInfo['date'] = data.getDateStr()  # add a simple timestamp
-expInfo['expName'] = expName
+expInfo['task'] = task
 expInfo['psychopyVersion'] = psychopyVersion
 
 # Data file name stem = absolute path + name; later add .psyexp, .csv, .log, etc
@@ -66,12 +66,15 @@ jsonfilename = filename + '_stimuli.json'
 jsondata = {}
 jsondata['trials'] = []
 
+expInfo['Participant ID'] = "sub-" + expInfo['Participant ID'][-2:] #BIDS format
+
 # An ExperimentHandler isn't essential but helps with data saving
-thisExp = data.ExperimentHandler(name=expName, version='',
+thisExp = data.ExperimentHandler(name=task,
     extraInfo=expInfo, runtimeInfo=None,
     originPath= _thisDir + '/Questionnaire Script.py',
     savePickle=True, saveWideText=True,
     dataFileName=filename)
+
 # save a log file for detail verbose info
 logFile = logging.LogFile(filename+'.log', level=logging.EXP)
 logging.console.setLevel(logging.WARNING)  # this outputs to the screen, not a file
@@ -88,12 +91,7 @@ win = visual.Window(
     monitor='Aarhus DELL Monitor', color=[-0.4510, 0.0196, 0.4118], colorSpace='rgb', #Aarhus setup: size=[1920, 1080], monitor='Aarhus DELL Monitor', screen=1 #AIM laptop: size=[1920, 1080], monitor='AIM Laptop'
     blendMode='avg', useFBO=True,  #Monitor width is about 50.9cm, make sure PsychoPy doesn't round it down to 50cm
     units='height')
-# store frame rate of monitor if we can measure it
-expInfo['frameRate'] = win.getActualFrameRate()
-if expInfo['frameRate'] != None:
-    frameDur = 1.0 / round(expInfo['frameRate'])
-else:
-    frameDur = 1.0 / 60.0  # could not measure, so guess
+
 # Setup ioHub
 ioConfig = {}
 
@@ -2080,6 +2078,7 @@ for thisComponent in Personal_Responses_to_Music__Emotion_pg2Components:
     if hasattr(thisComponent, "setAutoDraw"):
         thisComponent.setAutoDraw(False)
 thisExp.addData('Q24Resp.response', Q24Resp.getRating())
+thisExp.nextEntry()
 # store data for thisExp (ExperimentHandler)
 x, y = mouse_4.getPos()
 # the Routine "Personal_Responses_to_Music__Emotion_pg2" was not non-slip safe, so reset the non-slip timer
