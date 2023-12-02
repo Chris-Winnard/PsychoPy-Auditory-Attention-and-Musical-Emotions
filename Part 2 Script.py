@@ -57,7 +57,7 @@ dlg = gui.DlgFromDict(dictionary=expInfo, sortKeys=False, title=task)
 if dlg.OK == False:
     core.quit()  # user pressed cancel
 expInfo['date'] = data.getDateStr()  # add a simple timestamp
-expInfo['task'] = attnMultInstOBs
+expInfo['task'] = task
 expInfo['psychopyVersion'] = psychopyVersion
 
 # Data file name stem = absolute path + name; later add .psyexp, .csv, .log, etc
@@ -78,6 +78,19 @@ with open(groupAssignmentFile, 'r') as f:
     f.close
 
 filename = participantPath + '/Part 2 Data'
+
+#In case the code has been run previously for the same participant, handle to delete existing files;
+filenameCSV = filename+ '.csv'
+filenamePSYDAT = filename+ '.psydat'
+filenameLOG = filename+ '.log'
+
+if os.path.isfile(filenameCSV):
+    os.remove(filenameCSV)
+if os.path.isfile(filenamePSYDAT):
+    os.remove(filenamePSYDAT)
+if os.path.isfile(filenameLOG):
+    os.remove(filenameLOG)
+    
 jsonfilename = filename + '_oddballStimuli.json'
 jsondata = {}
 jsondata['trials'] = []

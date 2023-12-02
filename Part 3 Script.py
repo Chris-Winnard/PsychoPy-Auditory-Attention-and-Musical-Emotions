@@ -75,6 +75,19 @@ with open(groupAssignmentFile, 'r') as f:
     f.close
 
 filename = participantPath + '/Part 3 Data'
+
+#In case the code has been run previously for the same participant, handle to delete existing files;
+filenameCSV = filename+ '.csv'
+filenamePSYDAT = filename+ '.psydat'
+filenameLOG = filename+ '.log'
+
+if os.path.isfile(filenameCSV):
+    os.remove(filenameCSV)
+if os.path.isfile(filenamePSYDAT):
+    os.remove(filenamePSYDAT)
+if os.path.isfile(filenameLOG):
+    os.remove(filenameLOG)
+    
 jsonfilename = filename + '_stimuli.json'
 jsondata = {}
 jsondata['trials'] = []

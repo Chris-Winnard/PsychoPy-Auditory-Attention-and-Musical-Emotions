@@ -74,15 +74,21 @@ with open(groupAssignmentFile, 'r') as f:
         elif "Group B2" in line and expInfo['Participant ID'] in line:
             participantPath = dataPath + "Group B2/" + expInfo['Participant ID']
     f.close
-    
+
+filename = participantPath + '/Part 1 Data'
+
+#In case the code has been run previously for the same participant, handle to delete existing files;
+filenameCSV = filename+ '.csv'
+filenamePSYDAT = filename+ '.psydat'
+filenameLOG = filename+ '.log'
+
 if os.path.isfile(filenameCSV):
     os.remove(filenameCSV)
 if os.path.isfile(filenamePSYDAT):
     os.remove(filenamePSYDAT)
 if os.path.isfile(filenameLOG):
     os.remove(filenameLOG)
-    
-filename = participantPath + '/Part 1 Data'
+
 jsonfilename = filename + '_stimuli.json'
 jsondata = {}
 jsondata['trials'] = []
