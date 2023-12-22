@@ -15,7 +15,7 @@ stimuliPath = str(upperFolderPath) + "/Stimuli"
 
 #Create output path:
 dataPath = str(upperFolderPath) + "/Data/"
-participantNo = "P01" #GRACE PERIOD IS ODDBALL LENGTH + 1 sec
+participantNo = "P10" #GRACE PERIOD IS ODDBALL LENGTH + 1 sec
 
 
 groupAssignmentFile = dataPath + "/Participant Groups.txt" #Needed for taking collecting stimuli, and saving to right place:
@@ -58,22 +58,22 @@ def createOddball(signalCopy, start, actualOB_length):
     actualOB_segmentLength = round(actualOB_length/6)
     
     firstPart = signalCopy[start:start+actualOB_segmentLength]
-    firstPart = librosa.effects.pitch_shift(firstPart, sr, 0.95, bins_per_octave=12)
+    firstPart = librosa.effects.pitch_shift(firstPart, sr, 0.95, bins_per_octave=12, n_fft=1024)
     
     secondPart = signalCopy[start+actualOB_segmentLength:start+2*actualOB_segmentLength]
-    secondPart = librosa.effects.pitch_shift(secondPart, sr, -0.95, bins_per_octave=12)
+    secondPart = librosa.effects.pitch_shift(secondPart, sr, -0.95, bins_per_octave=12, n_fft=1024)
     
     thirdPart = signalCopy[start+2*actualOB_segmentLength:start+3*actualOB_segmentLength]
-    thirdPart = librosa.effects.pitch_shift(thirdPart, sr, 0.95, bins_per_octave=12)
+    thirdPart = librosa.effects.pitch_shift(thirdPart, sr, 0.95, bins_per_octave=12, n_fft=1024)
     
     fourthPart = signalCopy[start+3*actualOB_segmentLength:start+4*actualOB_segmentLength]
-    fourthPart = librosa.effects.pitch_shift(fourthPart, sr, -0.95, bins_per_octave=12)
+    fourthPart = librosa.effects.pitch_shift(fourthPart, sr, -0.95, bins_per_octave=12, n_fft=1024)
     
     fifthPart = signalCopy[start+4*actualOB_segmentLength:start+5*actualOB_segmentLength]
-    fifthPart = librosa.effects.pitch_shift(fifthPart, sr, 0.95, bins_per_octave=12)
+    fifthPart = librosa.effects.pitch_shift(fifthPart, sr, 0.95, bins_per_octave=12, n_fft=1024)
     
     sixthPart = signalCopy[start+5*actualOB_segmentLength:start+actualOB_length] #Notice we don't use "6*actualOB_segmentLength"- avoid rounding problems
-    sixthPart = librosa.effects.pitch_shift(sixthPart, sr, -0.95, bins_per_octave=12)
+    sixthPart = librosa.effects.pitch_shift(sixthPart, sr, -0.95, bins_per_octave=12, n_fft=1024)
     
     oddball = np.concatenate((firstPart, secondPart, thirdPart, fourthPart, fifthPart, sixthPart))    
     
