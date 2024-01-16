@@ -1935,7 +1935,6 @@ while continueRoutine and routineTimer.getTime() > 0:
     mm.out()
 mm.stop()
 routineTimer.reset()
-thisExp.nextEntry()
 # End of playing part stop trig
 
 # ------Prepare to start Routine "thisPartComplete"-------

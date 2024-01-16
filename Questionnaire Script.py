@@ -311,7 +311,7 @@ clickForEmotionInfo = visual.TextBox2(
      flipHoriz=False, flipVert=False, languageStyle='LTR',
      editable=False,
      name='clickForEmotionInfo',
-     autoLog=True,
+     autoLog=False,
 )
 moodValence = visual.TextStim(win=win, name='moodValence',
     text='Q7: How positive/negative is your current emotion?\n',
