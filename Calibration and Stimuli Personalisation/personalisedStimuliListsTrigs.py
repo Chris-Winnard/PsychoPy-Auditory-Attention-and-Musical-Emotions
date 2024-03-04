@@ -10,7 +10,7 @@ from utils.SerialTriggerEncoder import SerialTriggerEncoder
 
 
 #Find participant full path just from their ID
-participantID = "P01"
+participantID = "P10"
 
 #Find the stimuli path:
 currentFolderPath = pathlib.Path(__file__).parent.resolve()
@@ -557,6 +557,7 @@ def Part2TrialTrigMaker(participantPath):
         cellValue = str(ws[cell].value)
         
         if ".wav start" in cellValue:
+            
             startCode = int(ws['D' + str(i)].value)
             endCode = int(ws['D' + str(i+1)].value)
             name = cellValue[:-6] #The cell entry, with " start" removed

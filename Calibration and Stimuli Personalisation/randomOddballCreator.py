@@ -15,7 +15,7 @@ stimuliPath = str(upperFolderPath) + "/Stimuli"
 
 #Create output path:
 dataPath = str(upperFolderPath) + "/Data/"
-participantNo = "P10" #GRACE PERIOD IS ODDBALL LENGTH + 1 sec
+participantNo = "P12" #GRACE PERIOD IS ODDBALL LENGTH + 1 sec
 
 
 groupAssignmentFile = dataPath + "/Participant Groups.txt" #Needed for taking collecting stimuli, and saving to right place:
