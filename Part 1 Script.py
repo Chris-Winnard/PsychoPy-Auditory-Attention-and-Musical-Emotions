@@ -23,7 +23,7 @@ from constants import *
 SOUNDCARD_DEVICE_NAME = 'DAC8PRO'
 
 volume_level = 0.05
-volume_ratio = [1, 1, 5]
+volume_ratio = [1, 1, 7.5]
 spk_volume = [x * volume_level for x in volume_ratio]
 PART_1_OUT_CHANNELS = 3
 TRIGGER_CHN = 2
@@ -112,9 +112,9 @@ frameTolerance = 0.001  # how close to onset before 'same' frame
 
 # Setup the Window
 win = visual.Window(
-    size=[1920, 1080], fullscr=True, screen=0, 
+    size=[2560, 1440], fullscr=True, screen=1, 
     winType='pyglet', allowGUI=False, allowStencil=False,
-    monitor='Aarhus DELL Monitor', color=[-0.4510, 0.0196, 0.4118], colorSpace='rgb', #Aarhus setup: size=[1920, 1080], monitor='Aarhus DELL Monitor', screen=1 #AIM laptop: size=[1920, 1080], monitor='AIM Laptop'
+    monitor='HP Monitor', color=[-0.4510, 0.0196, 0.4118], colorSpace='rgb', #Aarhus setup: size=[1920, 1080], monitor='Aarhus DELL Monitor', screen=1 #AIM laptop: size=[1920, 1080], monitor='AIM Laptop'
     blendMode='avg', useFBO=True, 
     units='height')
 # Setup ioHub
