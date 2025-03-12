@@ -26,7 +26,8 @@ passiveArousalSets = np.array([3, 4, 5, 7, 9, 12])
 
 dominantDominanceSets = np.array([2, 4, 6, 8, 10, 11])
 submissiveDominanceSets = np.array([3, 5, 7, 9])
-#^Comment (noticed much later)- should this include 12, as its mildly submissive? May have been excluded for other constraints? Also may have 
+#^Comment (noticed much later)- should this include 12, as its mildly submissive? May have been excluded for other constraints?
+#Checked and that has NOT affected the randomisation (even if only due to luck)
 #Dom and sub wrong way round (doesn't particularly matter for these purposes)
 
 sameEmotionCombos1 = np.array([3, 5, 9]) #+ve val, high, dom
