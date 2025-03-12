@@ -21,6 +21,8 @@ passiveArousalSets = np.array(["03-Harm","03-Keyb","03-Vibr", "04-Harm", "04-Key
 
 dominantDominanceSets = np.array(["02-Harm", "02-Keyb", "02-Vibr", "04-Harm", "04-Keyb", "04-Vibr", "06-Harm", "06-Keyb", "06-Vibr", "08-Harm","08-Keyb","08-Vibr", "10-Harm","10-Keyb","10-Vibr", "11-Harm","11-Keyb","11-Vibr"])
 submissiveDominanceSets = np.array(["03-Harm","03-Keyb","03-Vibr", "05-Harm","05-Keyb","05-Vibr", "07-Harm", "07-Keyb", "07-Vibr", "09-Harm","09-Keyb","09-Vibr"])
+#^Comment (noticed much later)- should this include 12, as its mildly submissive? May have been excluded for other constraints? Also may have 
+#Dom and sub wrong way round (doesn't particularly matter for these purposes)
 
 sameEmotionCombos1 = np.array(["03-Harm","03-Keyb","03-Vibr", "05-Harm","05-Keyb","05-Vibr", "09-Harm","09-Keyb","09-Vibr"]) #+ve val, high, dom
 sameEmotionCombos2 = np.array(["02-Harm", "02-Keyb", "02-Vibr", "06-Harm", "06-Keyb", "06-Vibr", "08-Harm","08-Keyb","08-Vibr", "11-Harm","11-Keyb","11-Vibr"]) #-ve val, low, sub
